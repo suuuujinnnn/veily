@@ -4,14 +4,20 @@ import { ArrowLeft, CalendarDays, Check, ChevronRight, Clock3, ExternalLink, Fil
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Progress } from '../../components/ui'
 import { contracts, couples, vendors } from '../../data/mockData'
+import type { ChecklistItem } from '../../types'
+import { CategoryChecklist } from '../checklist/CategoryChecklist'
+import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
+import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
 
 type DetailTab = 'overview' | 'timeline' | 'vendors' | 'contracts'
 
 export function CoupleDetailPage() {
   const { id = 'c1' } = useParams()
   const couple = couples.find((item) => item.id === id) ?? couples[0]
-  const { events, checklist, recommendations, toggleChecklist } = useDemoStore()
+  const { events, checklist, recommendations, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
   const [tab, setTab] = useState<DetailTab>('overview')
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [editorItem, setEditorItem] = useState<ChecklistItem | null>(null)
   const coupleEvents = useMemo(() => events.filter((event) => event.coupleId === couple.id), [events, couple.id])
   const coupleTasks = checklist.filter((item) => item.coupleId === couple.id)
   const coupleContracts = contracts.filter((item) => item.coupleId === couple.id)
@@ -24,7 +30,7 @@ export function CoupleDetailPage() {
         <div className={`couple-profile__mark couple-profile__mark--${couple.tone}`}><span>{couple.initials}</span><small>OUR DAY</small></div>
         <div className="couple-profile__main"><div><Badge tone="rose">{couple.status}</Badge><p className="eyebrow">Wedding journey</p></div><h1>{couple.partners}</h1><p>{couple.concept}</p><div className="couple-meta"><span><CalendarDays size={15} /> {couple.weddingDate.replaceAll('-', '. ')}</span><span><MapPin size={15} /> {couple.venue}</span></div></div>
         <div className="couple-profile__progress"><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong><Progress value={couple.progress} /></div>
-        <div className="couple-profile__actions"><Link to={`/portal/${couple.id}`} target="_blank"><Button variant="secondary" icon={<ExternalLink size={15} />}>고객 화면 미리보기</Button></Link><button className="icon-button bordered"><MoreHorizontal size={18} /></button></div>
+        <div className="couple-profile__actions"><Link to={`/client/${couple.id}`} target="_blank"><Button variant="secondary" icon={<ExternalLink size={15} />}>고객 화면 미리보기</Button></Link><button className="icon-button bordered"><MoreHorizontal size={18} /></button></div>
       </section>
       <nav className="detail-tabs">{([['overview','한눈에 보기'],['timeline','일정 & 할 일'],['vendors','추천 업체'],['contracts','계약']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => setTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}</nav>
 
@@ -35,11 +41,33 @@ export function CoupleDetailPage() {
         <Card className="recommendation-peek"><div className="recommendation-peek__head"><span><Sparkles size={17} /> 취향 분석 리포트</span><Badge tone="sage">업데이트됨</Badge></div><h3>Clean · Timeless · Natural</h3><div className="tag-row"><span>미카도 실크</span><span>자연광</span><span>절제된 플라워</span></div><button onClick={() => setTab('vendors')}>추천 업체 보기 <ChevronRight size={14} /></button></Card>
       </div>}
 
-      {tab === 'timeline' && <div className="timeline-tab"><Card><div className="section-heading section-heading--compact"><h2>웨딩 타임라인</h2><Badge tone="neutral">{coupleTasks.length}개 항목</Badge></div><div className="full-task-list">{coupleTasks.map((task) => <label className={`task-row task-row--large ${task.completed ? 'task-row--done' : ''}`} key={task.id}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span className="custom-check"><Check size={14} /></span><div><strong>{task.title}</strong><small>{task.phase} · {task.dueDate}까지 · 담당 {task.owner}</small></div><Badge tone={task.completed ? 'sage' : 'amber'}>{task.completed ? '완료' : '진행 중'}</Badge></label>)}</div></Card><Card className="availability-summary"><CalendarDays size={20} /><h3>고객이 선택한 가능 시간</h3><p>메이크업 테스트 · 8월 8일(토) 11:00</p><span>고객 포털과 실시간으로 공유되는 데모 데이터입니다.</span></Card></div>}
+      {tab === 'timeline' && <div className="checklist-workspace">
+        <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><Badge tone="neutral">템플릿 {coupleTasks.filter((task) => task.isTemplate).length}개 적용</Badge></section>
+        <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />
+        <div className="checklist-workspace__lower">
+          <CategoryChecklist
+            tasks={coupleTasks}
+            onToggle={toggleChecklist}
+            editable
+            onAdd={() => { setEditorItem(null); setEditorOpen(true) }}
+            onEdit={(item) => { setEditorItem(item); setEditorOpen(true) }}
+          />
+          <Card className="availability-summary"><CalendarDays size={20} /><h3>고객이 선택한 가능 시간</h3><p>메이크업 테스트 · 8월 8일(토) 11:00</p><span>고객 포털과 같은 상태를 사용합니다.</span></Card>
+        </div>
+      </div>}
 
       {tab === 'vendors' && <div className="recommended-grid">{recommendedVendors.length ? recommendedVendors.map(({ vendor, status }) => vendor && <article className="vendor-mini-card" key={vendor.id}><img src={vendor.image} style={{ objectPosition: vendor.imagePosition }} alt="" /><div><Badge tone="rose">{vendor.match}% match</Badge><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="vendor-mini-card__status"><span>고객 응답</span><strong className={`status-${status}`}>{status === 'liked' ? '마음에 들어요' : status === 'hold' ? '조금 더 볼게요' : '응답 대기'}</strong></div></div></article>) : <Card><p>아직 추천한 업체가 없습니다.</p></Card>}</div>}
 
       {tab === 'contracts' && <div className="contract-detail-list">{coupleContracts.map((contract) => <Card key={contract.id} className="contract-detail-card"><div className="document-icon"><FileText size={21} /></div><div><Badge tone={contract.status === '확인필요' ? 'amber' : 'sage'}>{contract.status}</Badge><h3>{contract.vendorName}</h3><p>{contract.details}</p><span>{contract.payment} · VAT {contract.vatIncluded ? '포함' : '별도'}</span></div><strong>{contract.amount}</strong></Card>)}</div>}
+      <ChecklistEditorModal
+        open={editorOpen}
+        coupleId={couple.id}
+        item={editorItem}
+        onClose={() => setEditorOpen(false)}
+        onCreate={addChecklist}
+        onUpdate={updateChecklist}
+        onDelete={deleteChecklist}
+      />
     </div>
   )
 }

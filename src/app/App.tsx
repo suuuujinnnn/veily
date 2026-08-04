@@ -8,7 +8,9 @@ import { CoupleDetailPage } from '../features/couples/CoupleDetailPage'
 import { CouplesPage } from '../features/couples/CouplesPage'
 import { DashboardPage } from '../features/dashboard/DashboardPage'
 import { PortalPage } from '../features/portal/PortalPage'
+import { PortalEntryPage } from '../features/portal/PortalEntryPage'
 import { VendorsPage } from '../features/vendors/VendorsPage'
+import { VendorDetailPage } from '../features/vendors/VendorDetailPage'
 import { DemoProvider } from './store'
 
 export function App() {
@@ -22,11 +24,13 @@ export function App() {
             <Route path="couples/:id" element={<CoupleDetailPage />} />
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
+            <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
             <Route path="contracts" element={<ContractsPage />} />
             <Route path="community" element={<CommunityPage />} />
           </Route>
+          <Route path="client/:coupleId" element={<PortalEntryPage />} />
           <Route path="portal" element={<PortalLayout />}>
-            <Route path=":coupleId" element={<PortalPage />} />
+            <Route path=":coupleId/:section?" element={<PortalPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

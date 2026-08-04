@@ -1,25 +1,31 @@
 import { createContext, type PropsWithChildren, useContext, useMemo, useReducer } from 'react'
-import { initialChecklist, initialEvents, initialRecommendations } from '../data/mockData'
-import type { ChecklistItem, Recommendation, RecommendationStatus, WeddingEvent } from '../types'
+import { initialChecklist, initialEvents, initialRecommendations, initialVendorSelections } from '../data/mockData'
+import type { ChecklistItem, Recommendation, RecommendationStatus, VendorSelection, WeddingEvent } from '../types'
 
 export interface DemoState {
   events: WeddingEvent[]
   checklist: ChecklistItem[]
   recommendations: Recommendation[]
   availability: Record<string, string[]>
+  vendorSelections: VendorSelection[]
 }
 
 export type DemoAction =
   | { type: 'ADD_EVENT'; payload: WeddingEvent }
   | { type: 'TOGGLE_CHECKLIST'; payload: string }
+  | { type: 'ADD_CHECKLIST'; payload: ChecklistItem }
+  | { type: 'UPDATE_CHECKLIST'; payload: ChecklistItem }
+  | { type: 'DELETE_CHECKLIST'; payload: string }
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
+  | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
 
 export const initialState: DemoState = {
   events: initialEvents,
   checklist: initialChecklist,
   recommendations: initialRecommendations,
   availability: { e4: ['8월 8일 (토) 11:00'] },
+  vendorSelections: initialVendorSelections,
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -33,6 +39,12 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
           item.id === action.payload ? { ...item, completed: !item.completed } : item,
         ),
       }
+    case 'ADD_CHECKLIST':
+      return { ...state, checklist: [...state.checklist, action.payload] }
+    case 'UPDATE_CHECKLIST':
+      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'DELETE_CHECKLIST':
+      return { ...state, checklist: state.checklist.filter((item) => item.id !== action.payload) }
     case 'SET_RECOMMENDATION': {
       const existing = state.recommendations.find(
         (item) => item.coupleId === action.payload.coupleId && item.vendorId === action.payload.vendorId,
@@ -59,6 +71,12 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
         : [...current, action.payload.slot]
       return { ...state, availability: { ...state.availability, [action.payload.eventId]: next } }
     }
+    case 'SELECT_VENDOR_SLOT': {
+      const otherSelections = state.vendorSelections.filter(
+        (selection) => !(selection.coupleId === action.payload.coupleId && selection.vendorId === action.payload.vendorId),
+      )
+      return { ...state, vendorSelections: [...otherSelections, action.payload] }
+    }
     default:
       return state
   }
@@ -67,8 +85,12 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 interface DemoContextValue extends DemoState {
   addEvent: (event: Omit<WeddingEvent, 'id'>) => void
   toggleChecklist: (id: string) => void
+  addChecklist: (item: Omit<ChecklistItem, 'id'>) => void
+  updateChecklist: (item: ChecklistItem) => void
+  deleteChecklist: (id: string) => void
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
   toggleAvailability: (eventId: string, slot: string) => void
+  selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
@@ -81,10 +103,15 @@ export function DemoProvider({ children }: PropsWithChildren) {
       addEvent: (event) =>
         dispatch({ type: 'ADD_EVENT', payload: { ...event, id: `e-${Date.now()}` } }),
       toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
+      addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: `t-${Date.now()}` } }),
+      updateChecklist: (item) => dispatch({ type: 'UPDATE_CHECKLIST', payload: item }),
+      deleteChecklist: (id) => dispatch({ type: 'DELETE_CHECKLIST', payload: id }),
       setRecommendation: (coupleId, vendorId, status) =>
         dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
       toggleAvailability: (eventId, slot) =>
         dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
+      selectVendorSlot: (coupleId, vendorId, slotId) =>
+        dispatch({ type: 'SELECT_VENDOR_SLOT', payload: { coupleId, vendorId, slotId } }),
     }),
     [state],
   )

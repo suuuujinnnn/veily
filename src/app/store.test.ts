@@ -22,4 +22,22 @@ describe('demoReducer', () => {
     const next = demoReducer(initialState, { type: 'TOGGLE_AVAILABILITY', payload: { eventId: 'e4', slot: '8월 9일 (일) 10:30' } })
     expect(next.availability.e4).toContain('8월 9일 (일) 10:30')
   })
+
+  it('creates, updates and deletes planner checklist items', () => {
+    const created = { ...initialState.checklist[0], id: 'new-task', title: '새 템플릿 항목' }
+    const withTask = demoReducer(initialState, { type: 'ADD_CHECKLIST', payload: created })
+    expect(withTask.checklist.at(-1)?.title).toBe('새 템플릿 항목')
+
+    const updated = demoReducer(withTask, { type: 'UPDATE_CHECKLIST', payload: { ...created, title: '수정된 항목' } })
+    expect(updated.checklist.find((item) => item.id === 'new-task')?.title).toBe('수정된 항목')
+
+    const deleted = demoReducer(updated, { type: 'DELETE_CHECKLIST', payload: 'new-task' })
+    expect(deleted.checklist.some((item) => item.id === 'new-task')).toBe(false)
+  })
+
+  it('replaces a vendor slot selection for the shared couple calendar', () => {
+    const next = demoReducer(initialState, { type: 'SELECT_VENDOR_SLOT', payload: { coupleId: 'c1', vendorId: 'v1', slotId: 'vs9' } })
+    const selections = next.vendorSelections.filter((item) => item.coupleId === 'c1' && item.vendorId === 'v1')
+    expect(selections).toEqual([{ coupleId: 'c1', vendorId: 'v1', slotId: 'vs9' }])
+  })
 })

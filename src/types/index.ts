@@ -24,14 +24,19 @@ export interface WeddingEvent {
   travelMinutes?: number
 }
 
+export type ChecklistCategory = '베뉴' | '스드메' | '예복·예물' | '초대·연출' | '행정·기타'
+
 export interface ChecklistItem {
   id: string
   coupleId: string
   title: string
   dueDate: string
   phase: string
+  month: string
+  category: ChecklistCategory
   completed: boolean
   owner: '플래너' | '신랑·신부' | '함께'
+  isTemplate?: boolean
 }
 
 export interface Vendor {
@@ -45,6 +50,26 @@ export interface Vendor {
   image: string
   location: string
   imagePosition?: string
+  address: string
+  hours: string
+  phone: string
+  instagram: string
+  activeEvent: string
+  gallery: string[]
+}
+
+export interface VendorScheduleSlot {
+  id: string
+  vendorId: string
+  date: string
+  time: string
+  status: 'available' | 'booked'
+}
+
+export interface VendorSelection {
+  coupleId: string
+  vendorId: string
+  slotId: string
 }
 
 export type RecommendationStatus = 'pending' | 'liked' | 'hold'
