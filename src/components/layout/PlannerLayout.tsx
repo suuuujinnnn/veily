@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   Bell,
@@ -7,11 +6,9 @@ import {
   ChevronRight,
   HeartHandshake,
   LayoutDashboard,
-  Menu,
   MessageCircleMore,
   Search,
   UsersRound,
-  X,
 } from 'lucide-react'
 
 const navItems = [
@@ -27,20 +24,18 @@ const pageTitles: Record<string, string> = {
 }
 
 export function PlannerLayout() {
-  const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const title = location.pathname.startsWith('/couples/') ? '커플 상세' : pageTitles[location.pathname] ?? 'VEILY'
   return (
     <div className="planner-shell">
-      <aside className={`sidebar ${mobileOpen ? 'sidebar--open' : ''}`}>
+      <aside className="sidebar">
         <div className="brand-row">
-          <NavLink to="/" className="brand" onClick={() => setMobileOpen(false)}>VEILY<span>for planners</span></NavLink>
-          <button className="icon-button sidebar__close" onClick={() => setMobileOpen(false)} aria-label="메뉴 닫기"><X size={18} /></button>
+          <NavLink to="/" className="brand">VEILY<span>for planners</span></NavLink>
         </div>
         <nav className="sidebar__nav" aria-label="플래너 메뉴">
           <p className="nav-label">Workspace</p>
           {navItems.map(({ to, label, icon: Icon, end }) => (
-            <NavLink key={to} to={to} end={end} onClick={() => setMobileOpen(false)} className={({ isActive }) => `nav-item ${isActive ? 'nav-item--active' : ''}`}>
+            <NavLink key={to} to={to} end={end} className={({ isActive }) => `nav-item ${isActive ? 'nav-item--active' : ''}`}>
               <Icon size={18} strokeWidth={1.8} /><span>{label}</span>{label === '플래너 라운지' && <em>4</em>}
             </NavLink>
           ))}
@@ -57,10 +52,9 @@ export function PlannerLayout() {
           <button className="icon-button" aria-label="프로필 메뉴">•••</button>
         </div>
       </aside>
-      {mobileOpen && <button className="sidebar-scrim" onClick={() => setMobileOpen(false)} aria-label="메뉴 닫기" />}
       <div className="planner-main">
         <header className="topbar">
-          <div className="topbar__title"><button className="icon-button topbar__menu" onClick={() => setMobileOpen(true)} aria-label="메뉴 열기"><Menu size={20} /></button><span>{title}</span></div>
+          <div className="topbar__title"><span>{title}</span></div>
           <div className="topbar__actions">
             <label className="global-search"><Search size={16} /><input aria-label="전체 검색" placeholder="커플, 업체, 일정 검색" /></label>
             <button className="icon-button notification" aria-label="알림"><Bell size={18} /><i /></button>

@@ -59,13 +59,3 @@
 
 .vendor-shortlist { position: sticky; z-index: 8; bottom: 18px; min-height: 78px; padding: 12px 14px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 17px; border: 1px solid #9ac8e6; border-radius: 15px; background: rgba(247,252,255,.96); box-shadow: 0 14px 40px rgba(40,79,105,.18); backdrop-filter: blur(12px); }.vendor-shortlist > div:first-child { display: flex; align-items: center; gap: 9px; }.vendor-shortlist__count { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 10px; background: var(--blue-600); color: #fff; font-size: 13px; font-weight: 800; }.vendor-shortlist > div strong { font-size: 10px; }.vendor-shortlist > div p { margin: 3px 0 0; color: var(--muted); font-size: 8px; }.vendor-shortlist__chips { display: flex; flex-wrap: wrap; gap: 6px; }.vendor-shortlist__chips button { padding: 7px 9px; display: grid; grid-template-columns: 1fr auto; column-gap: 8px; border: 1px solid #cae0ee; border-radius: 8px; background: #fff; color: #5b788b; text-align: left; }.vendor-shortlist__chips span { color: var(--ink); font-size: 9px; font-weight: 700; }.vendor-shortlist__chips small { grid-column: 1; color: var(--muted); font-size: 7px; }.vendor-shortlist__chips button::first-letter { color: var(--blue-600); }
 .vendor-proposal-toast { z-index: 80; }
-
-@media (max-width: 1180px) {
-  .vendor-curation__grid { grid-template-columns: 210px 1fr; }
-  .style-vendor-grid { grid-template-columns: repeat(2, 1fr); }
-  .vendor-shortlist { grid-template-columns: auto 1fr; }.vendor-shortlist > .button { grid-column: 2; justify-self: end; }
-}
-
-@media (max-width: 780px) {
-  .vendor-vision { grid-template-columns: 1fr; }.vendor-curation__header { align-items: flex-start; flex-direction: column; }.vendor-curation__header > label { width: 100%; }.vendor-curation__grid { grid-template-columns: 1fr; }.couple-style-brief { min-height: 240px; }.vendor-style-options, .style-vendor-grid { grid-template-columns: 1fr; }.style-results-heading { align-items: flex-start; flex-direction: column; }.style-results-toolbar { flex-direction: column; }.style-results-toolbar .search-field { width: 100%; }.style-sort { justify-content: space-between; }.vendor-shortlist { position: static; grid-template-columns: 1fr; }.vendor-shortlist > .button { grid-column: auto; width: 100%; }.vendor-shortlist__chips { overflow-x: auto; flex-wrap: nowrap; }
-}

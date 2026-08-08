@@ -1,6 +1,5 @@
 import { imageAssets } from '../assets/images'
 import type { Vendor } from '../types'
-import vendorReferenceImages from 'virtual:vendor-reference-images'
 
 export type PartnerCategory = Vendor['category']
 
@@ -67,8 +66,6 @@ const categoryGallery: Record<PartnerCategory, string[]> = {
 
 function createProfile(seed: PartnerSeed): VendorStyleProfile {
   const gallery = categoryGallery[seed.category]
-  const reviewedImages = vendorReferenceImages[seed.account] ?? []
-  const primaryImage = reviewedImages[0] ?? imageAssets[seed.visual]
   return {
     account: seed.account,
     sampleCount: seed.sampleCount,
@@ -84,7 +81,7 @@ function createProfile(seed: PartnerSeed): VendorStyleProfile {
       tags: Object.entries(seed.styleCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([label]) => label),
       priceRange: seed.priceRange,
       match: Math.min(98, 80 + Math.round(seed.primaryShare * 18)),
-      image: primaryImage,
+      image: imageAssets[seed.visual],
       imagePosition: seed.imagePosition,
       location: seed.location,
       address: `서울 ${seed.location} 제휴 상담 공간`,
@@ -92,7 +89,7 @@ function createProfile(seed: PartnerSeed): VendorStyleProfile {
       phone: '02-000-0000',
       instagram: `@${seed.account}`,
       activeEvent: `${seed.primaryStyle} 스타일 상담 위크 · 플래너 동행 혜택`,
-      gallery: reviewedImages.length ? reviewedImages : [imageAssets[seed.visual], ...gallery],
+      gallery: [imageAssets[seed.visual], ...gallery],
     },
   }
 }

@@ -79,21 +79,3 @@
 .day-base-location { margin-top: 11px; padding: 9px; display: grid; grid-template-columns: 19px auto 1fr; align-items: center; gap: 5px; border-radius: 8px; background: rgba(255,255,255,.055); color: #8fb3ca; font-size: 8px; }
 .day-base-location strong { justify-self: end; color: #d8e7f1; font-size: 8px; }
 .day-empty { padding: 30px 10px; display: flex; flex-direction: column; align-items: center; color: #8ca5b6; text-align: center; }.day-empty strong { margin-top: 8px; color: #d7e6f0; font-size: 11px; }.day-empty p { margin: 5px 0 0; font-size: 8px; }
-
-@media (max-width: 1180px) {
-  .calendar-route-settings { grid-template-columns: 1fr 1fr 1fr; }
-  .calendar-route-settings__intro { grid-column: 1 / -1; }
-  .calendar-layout--routes { grid-template-columns: 1fr; }
-  .day-panel--routes { position: static; display: block; }
-}
-
-@media (max-width: 760px) {
-  .calendar-route-settings { grid-template-columns: 1fr; }
-  .calendar-route-settings__intro { grid-column: auto; }
-  .calendar-conflict-alert { align-items: flex-start; }.calendar-conflict-alert button { flex: none; }
-  .calendar-layout--routes { overflow: visible; }
-  .calendar-layout--routes .month-calendar { min-width: 0; overflow-x: auto; }
-  .calendar-layout--routes .week-header,
-  .calendar-layout--routes .month-grid { min-width: 700px; }
-  .day-panel--routes { width: 100%; }
-}

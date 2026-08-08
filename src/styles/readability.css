@@ -111,19 +111,3 @@ body { font-size: 14px; }
 .portal-schedule p { font-size: 9px; }
 .portal-vendor-body > p { font-size: 10px; }
 .portal-response button { font-size: 9px; }
-
-@media (max-width: 1080px) {
-  .dashboard-primary-grid,
-  .dashboard-secondary-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 680px) {
-  .dashboard-command { padding: 17px; }
-  .dashboard-command__top h1 { font-size: 25px; }
-  .dashboard-metrics article { min-height: 80px; padding: 12px 10px; }
-  .dashboard-primary-grid { grid-template-columns: 1fr; }
-  .dashboard-page .couple-grid--dashboard { grid-template-columns: 1fr; }
-  .contract-filter-row { align-items: flex-start; flex-direction: column; gap: 8px; padding: 12px 14px; }
-  .contract-filter-row > div { flex-wrap: nowrap; width: 100%; overflow-x: auto; padding-bottom: 3px; }
-  .contract-filter-row button { flex: none; }
-}
