@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react'
 import { Save, Trash2 } from 'lucide-react'
 import { Button, Modal } from '../../components/ui'
 import type { ChecklistCategory, ChecklistItem } from '../../types'
+import { checklistCategories } from './checklistCategories'
 
-const categories: ChecklistCategory[] = ['베뉴', '스드메', '예복·예물', '초대·연출', '행정·기타']
 const owners: ChecklistItem['owner'][] = ['플래너', '신랑·신부', '함께']
 
 type ChecklistDraft = Omit<ChecklistItem, 'id' | 'completed'>
 
-const emptyDraft = (coupleId: string): ChecklistDraft => ({
+const emptyDraft = (coupleId: string, category: ChecklistCategory = '스튜디오'): ChecklistDraft => ({
   coupleId,
   title: '',
   dueDate: '8월 20일',
   phase: 'D-58',
   month: '8월',
-  category: '스드메',
+  category,
   owner: '함께',
   isTemplate: false,
 })
@@ -22,6 +22,7 @@ const emptyDraft = (coupleId: string): ChecklistDraft => ({
 export function ChecklistEditorModal({
   open,
   coupleId,
+  defaultCategory,
   item,
   onClose,
   onCreate,
@@ -30,13 +31,14 @@ export function ChecklistEditorModal({
 }: {
   open: boolean
   coupleId: string
+  defaultCategory?: ChecklistCategory
   item: ChecklistItem | null
   onClose: () => void
   onCreate: (item: Omit<ChecklistItem, 'id'>) => void
   onUpdate: (item: ChecklistItem) => void
   onDelete: (id: string) => void
 }) {
-  const [draft, setDraft] = useState<ChecklistDraft>(emptyDraft(coupleId))
+  const [draft, setDraft] = useState<ChecklistDraft>(emptyDraft(coupleId, defaultCategory))
 
   useEffect(() => {
     setDraft(item ? {
@@ -48,8 +50,8 @@ export function ChecklistEditorModal({
       category: item.category,
       owner: item.owner,
       isTemplate: item.isTemplate,
-    } : emptyDraft(coupleId))
-  }, [item, coupleId, open])
+    } : emptyDraft(coupleId, defaultCategory))
+  }, [item, coupleId, defaultCategory, open])
 
   const save = () => {
     if (!draft.title.trim()) return
@@ -75,7 +77,7 @@ export function ChecklistEditorModal({
       <div className="form-grid">
         <label className="form-field form-field--wide"><span>할 일</span><input autoFocus value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="예: 식순 최종 확인" /></label>
         <label className="form-field"><span>월</span><select value={draft.month} onChange={(event) => setDraft({ ...draft, month: event.target.value })}>{['6월','7월','8월','9월','10월'].map((month) => <option key={month}>{month}</option>)}</select></label>
-        <label className="form-field"><span>분야</span><select value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value as ChecklistCategory })}>{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
+        <label className="form-field"><span>분야</span><select value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value as ChecklistCategory })}>{checklistCategories.map((category) => <option key={category.id}>{category.id}</option>)}</select></label>
         <label className="form-field"><span>마감일</span><input value={draft.dueDate} onChange={(event) => setDraft({ ...draft, dueDate: event.target.value })} /></label>
         <label className="form-field"><span>D-day 단계</span><input value={draft.phase} onChange={(event) => setDraft({ ...draft, phase: event.target.value })} /></label>
         <label className="form-field form-field--wide"><span>담당</span><select value={draft.owner} onChange={(event) => setDraft({ ...draft, owner: event.target.value as ChecklistItem['owner'] })}>{owners.map((owner) => <option key={owner}>{owner}</option>)}</select></label>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, CheckCircle2, ChevronRight, Clock3, FileWarning, MapPin, MessageSquareText, TrendingUp, UsersRound } from 'lucide-react'
+import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, Check, CheckCircle2, ChevronRight, Clock3, FileWarning, MapPin, MessageSquareText, TrendingUp, UsersRound } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Progress } from '../../components/ui'
 import { couples } from '../../data/mockData'
@@ -13,6 +13,7 @@ export function DashboardPage() {
   const todayEvents = events.filter((event) => event.date === '2026-08-05')
   const remainingTasks = checklist.filter((item) => !item.completed).length
   const waitingResponses = recommendations.filter((item) => item.status === 'pending').length
+  const activeCouples = couples.filter((couple) => couple.status !== '확정')
 
   return (
     <div className="dashboard-page page-stack">
@@ -29,28 +30,9 @@ export function DashboardPage() {
         </div>
       </section>
 
-      <section className="dashboard-control-grid">
-        <Card className="dashboard-priorities">
-          <div className="dashboard-card-heading"><div><p className="eyebrow">Priority queue</p><h2>우선 처리</h2></div><Badge tone="amber">3건</Badge></div>
-          <div className="priority-list">
-            <Link to="/contracts"><span className="priority-rank">01</span><span className="priority-icon priority-icon--alert"><FileWarning size={17} /></span><div><strong>르블랑 계약서 VAT 항목 확인</strong><small>김서윤 & 이동현 · 오늘 13:00 마감</small></div><ArrowUpRight size={15} /></Link>
-            <Link to="/calendar"><span className="priority-rank">02</span><span className="priority-icon"><Clock3 size={17} /></span><div><strong>청담 → 성수 이동 시간 재조정</strong><small>박민지 & 최현우 · 일정 간격 25분</small></div><ArrowUpRight size={15} /></Link>
-            <Link to="/couples/c1"><span className="priority-rank">03</span><span className="priority-icon"><UsersRound size={17} /></span><div><strong>고객 선택 가능 시간 검토</strong><small>메이크업 테스트 · 신규 응답 2개</small></div><ArrowUpRight size={15} /></Link>
-          </div>
-        </Card>
-
-        <Card className="dashboard-workload">
-          <div className="dashboard-card-heading"><div><p className="eyebrow">Weekly capacity</p><h2>이번 주 업무량</h2></div><span className="workload-total">32 / 40h</span></div>
-          <div className="workload-chart">
-            {[['월',62],['화',84],['수',78],['목',46],['금',70],['토',35]].map(([day, value]) => <div key={day}><span><i style={{ height: `${value}%` }} /></span><small>{day}</small></div>)}
-          </div>
-          <div className="workload-footer"><Activity size={15} /><div><strong>수요일 14:00–18:00 집중 구간</strong><span>이동 포함 3개 일정이 연속되어 있습니다.</span></div></div>
-        </Card>
-      </section>
-
-      <section className="section-block">
-        <div className="section-heading"><div><p className="eyebrow">Today · August 05</p><h2>오늘 일정</h2></div><Link to="/calendar">전체 일정 <ChevronRight size={15} /></Link></div>
-        <div className="today-layout">
+      <section className="dashboard-primary">
+        <div className="dashboard-primary__heading"><div><p className="eyebrow">Today · August 05</p><h2>오늘 일정</h2></div><Link to="/calendar">전체 일정 <ChevronRight size={15} /></Link></div>
+        <div className="dashboard-primary-grid">
           <Card className="timeline-card" padding="none">
             {todayEvents.map((event, index) => {
               const couple = couples.find((item) => item.id === event.coupleId)
@@ -64,18 +46,22 @@ export function DashboardPage() {
               )
             })}
           </Card>
-          <Card className="dashboard-deadlines">
-            <div className="dashboard-card-heading"><div><p className="eyebrow">Deadlines</p><h2>다가오는 마감</h2></div><span>{remainingTasks}개 남음</span></div>
-            {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{task.dueDate.split(' ')[1]}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
-            <Link to="/couples/c1">체크리스트 관리 <ArrowUpRight size={14} /></Link>
+          <Card className="dashboard-todo">
+            <div className="dashboard-card-heading"><div><p className="eyebrow">TODO</p><h2>오늘 할 일</h2></div><Badge tone="amber">3건</Badge></div>
+            <div className="dashboard-todo-list">
+              <Link to="/couples/c1?tab=contracts"><span><FileWarning size={16} /></span><div><strong>르블랑 계약서 VAT 확인</strong><small>13:00까지 · 김서윤 &amp; 이동현 계약</small></div><i><Check size={13} /></i></Link>
+              <Link to="/calendar"><span><Clock3 size={16} /></span><div><strong>청담 → 성수 이동 재조정</strong><small>14:00 일정 · 캘린더</small></div><i><Check size={13} /></i></Link>
+              <Link to="/couples/c1"><span><UsersRound size={16} /></span><div><strong>고객 가능 시간 검토</strong><small>신규 응답 2개 · 김서윤 & 이동현</small></div><i><Check size={13} /></i></Link>
+            </div>
+            <Link className="dashboard-todo__all" to="/couples/c1">전체 체크리스트 <ArrowUpRight size={14} /></Link>
           </Card>
         </div>
       </section>
 
       <section className="section-block">
-        <div className="section-heading"><div><p className="eyebrow">Active clients</p><h2>담당 커플</h2></div><Link to="/couples">전체 커플 <ChevronRight size={15} /></Link></div>
+        <div className="section-heading"><div><p className="eyebrow">Active clients</p><h2>진행 중인 담당 커플</h2></div><Link to="/couples">전체 커플 <ChevronRight size={15} /></Link></div>
         <div className="couple-grid couple-grid--dashboard">
-          {couples.map((couple) => (
+          {activeCouples.map((couple) => (
             <Link key={couple.id} to={`/couples/${couple.id}`} className={`couple-card couple-card--${couple.tone}`}>
               <div className="couple-card__top"><span className="monogram">{couple.initials}</span><Badge tone={couple.status === '집중관리' ? 'rose' : couple.status === '확정' ? 'sage' : 'neutral'}>{couple.status}</Badge></div>
               <h3>{couple.partners}</h3><p>{couple.venue}</p><div className="couple-card__date"><span>WEDDING DAY</span><strong>{couple.weddingDate.replaceAll('-', '. ')}</strong></div>
@@ -83,6 +69,21 @@ export function DashboardPage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="dashboard-secondary-grid">
+        <Card className="dashboard-workload">
+          <div className="dashboard-card-heading"><div><p className="eyebrow">Weekly capacity</p><h2>이번 주 업무량</h2></div><span className="workload-total">32 / 40h</span></div>
+          <div className="workload-chart">
+            {[['월',62],['화',84],['수',78],['목',46],['금',70],['토',35]].map(([day, value]) => <div key={day}><span><i style={{ height: `${value}%` }} /></span><small>{day}</small></div>)}
+          </div>
+          <div className="workload-footer"><Activity size={15} /><div><strong>수요일 14:00–18:00 집중 구간</strong><span>이동 포함 3개 일정이 연속되어 있습니다.</span></div></div>
+        </Card>
+        <Card className="dashboard-deadlines">
+          <div className="dashboard-card-heading"><div><p className="eyebrow">Deadlines</p><h2>다가오는 마감</h2></div><span>{remainingTasks}개 남음</span></div>
+          {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{task.dueDate.split(' ')[1]}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
+          <Link to="/couples/c1">체크리스트 관리 <ArrowUpRight size={14} /></Link>
+        </Card>
       </section>
     </div>
   )

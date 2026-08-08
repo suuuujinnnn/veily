@@ -1,6 +1,5 @@
 node_modules/
 dist/
-dist-single/
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts

@@ -10,6 +10,7 @@ import type {
   WeddingEvent,
 } from '../types'
 import { imageAssets } from '../assets/images'
+import { vendorStyleProfiles } from './vendorStyleData'
 
 export const couples: Couple[] = [
   {
@@ -64,28 +65,34 @@ export const initialEvents: WeddingEvent[] = [
   { id: 'e3', coupleId: 'c4', title: '본식 최종 체크', date: '2026-08-05', time: '17:00', endTime: '18:00', type: '미팅', location: '온라인 미팅' },
   { id: 'e4', coupleId: 'c1', title: '메이크업 테스트', date: '2026-08-08', time: '11:00', endTime: '13:00', type: '메이크업', location: '정샘물 인스피레이션' },
   { id: 'e5', coupleId: 'c3', title: '웨딩홀 투어', date: '2026-08-12', time: '15:00', endTime: '17:00', type: '미팅', location: '빌라드지디 청담' },
+  { id: 'e9', coupleId: 'c1', title: '드레스 최종 셀렉', date: '2026-08-12', time: '16:00', endTime: '17:30', type: '드레스', location: '르블랑 브라이드, 청담' },
   { id: 'e6', coupleId: 'c2', title: '스튜디오 촬영', date: '2026-08-18', time: '09:00', endTime: '15:00', type: '스튜디오', location: '오브제 스튜디오' },
   { id: 'e7', coupleId: 'c1', title: '예물 계약', date: '2026-08-22', time: '13:30', endTime: '15:00', type: '계약', location: '아크레도 청담' },
   { id: 'e8', coupleId: 'c4', title: '본식', date: '2026-09-05', time: '11:30', endTime: '14:30', type: '본식', location: '아펠가모 반포' },
 ]
 
 export const initialChecklist: ChecklistItem[] = [
-  { id: 't1', coupleId: 'c1', title: '예식장 계약금 납부', dueDate: '6월 18일', phase: 'D-121', month: '6월', category: '베뉴', completed: true, owner: '함께', isTemplate: true },
-  { id: 't2', coupleId: 'c1', title: '스튜디오 촬영 콘셉트 확정', dueDate: '6월 26일', phase: 'D-113', month: '6월', category: '스드메', completed: true, owner: '플래너', isTemplate: true },
+  { id: 't1', coupleId: 'c1', title: '예식장 계약금 납부', dueDate: '6월 18일', phase: 'D-121', month: '6월', category: '웨딩홀', completed: true, owner: '함께', isTemplate: true },
+  { id: 't2', coupleId: 'c1', title: '스튜디오 촬영 콘셉트 확정', dueDate: '6월 26일', phase: 'D-113', month: '6월', category: '스튜디오', completed: true, owner: '플래너', isTemplate: true },
   { id: 't3', coupleId: 'c1', title: '신랑 예복 1차 가봉', dueDate: '7월 9일', phase: 'D-100', month: '7월', category: '예복·예물', completed: true, owner: '신랑·신부', isTemplate: true },
-  { id: 't4', coupleId: 'c1', title: '본식 스냅 업체 확정', dueDate: '7월 16일', phase: 'D-93', month: '7월', category: '스드메', completed: true, owner: '함께', isTemplate: true },
-  { id: 't5', coupleId: 'c1', title: '드레스 2차 피팅 준비사항 확인', dueDate: '8월 5일', phase: 'D-73', month: '8월', category: '스드메', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't6', coupleId: 'c1', title: '본식 스냅 셀렉 완료', dueDate: '8월 9일', phase: 'D-69', month: '8월', category: '스드메', completed: true, owner: '함께', isTemplate: true },
+  { id: 't4', coupleId: 'c1', title: '본식 스냅 업체 확정', dueDate: '7월 16일', phase: 'D-93', month: '7월', category: '본식·기록', completed: true, owner: '함께', isTemplate: true },
+  { id: 't5', coupleId: 'c1', title: '본식 드레스 2차 피팅 준비사항 확인', dueDate: '8월 5일', phase: 'D-73', month: '8월', category: '드레스·본식', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't6', coupleId: 'c1', title: '본식 스냅 촬영 구성 확정', dueDate: '8월 9일', phase: 'D-69', month: '8월', category: '본식·기록', completed: true, owner: '함께', isTemplate: true },
   { id: 't7', coupleId: 'c1', title: '청첩장 문구 최종 확인', dueDate: '8월 12일', phase: 'D-66', month: '8월', category: '초대·연출', completed: false, owner: '신랑·신부', isTemplate: true },
   { id: 't8', coupleId: 'c1', title: '부케 레퍼런스 전달', dueDate: '8월 16일', phase: 'D-62', month: '8월', category: '초대·연출', completed: false, owner: '플래너', isTemplate: true },
   { id: 't9', coupleId: 'c1', title: '혼인서약서 초안 작성', dueDate: '9월 3일', phase: 'D-44', month: '9월', category: '행정·기타', completed: false, owner: '신랑·신부', isTemplate: true },
   { id: 't10', coupleId: 'c1', title: '예물 수령 및 사이즈 확인', dueDate: '9월 8일', phase: 'D-39', month: '9월', category: '예복·예물', completed: false, owner: '신랑·신부', isTemplate: true },
   { id: 't11', coupleId: 'c1', title: '하객 좌석 배치 1차 정리', dueDate: '9월 17일', phase: 'D-30', month: '9월', category: '초대·연출', completed: false, owner: '함께', isTemplate: true },
-  { id: 't12', coupleId: 'c1', title: '메이크업 최종 시안 확인', dueDate: '10월 2일', phase: 'D-15', month: '10월', category: '스드메', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't12', coupleId: 'c1', title: '본식 메이크업 최종 시안 확인', dueDate: '10월 2일', phase: 'D-15', month: '10월', category: '메이크업', completed: false, owner: '플래너', isTemplate: true },
   { id: 't13', coupleId: 'c1', title: '식순 및 음원 최종 제출', dueDate: '10월 7일', phase: 'D-10', month: '10월', category: '초대·연출', completed: false, owner: '함께', isTemplate: true },
   { id: 't14', coupleId: 'c1', title: '혼인신고 준비 서류 확인', dueDate: '10월 12일', phase: 'D-5', month: '10월', category: '행정·기타', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't15', coupleId: 'c2', title: '스튜디오 의상 리스트 공유', dueDate: '8월 7일', phase: 'D-127', month: '8월', category: '스드메', completed: false, owner: '플래너', isTemplate: true },
-  { id: 't16', coupleId: 'c3', title: '웨딩홀 투어 동선 확정', dueDate: '8월 10일', phase: 'D-194', month: '8월', category: '베뉴', completed: true, owner: '함께', isTemplate: true },
+  { id: 't15', coupleId: 'c2', title: '스튜디오 의상 리스트 공유', dueDate: '8월 7일', phase: 'D-127', month: '8월', category: '스튜디오', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't16', coupleId: 'c3', title: '웨딩홀 투어 동선 확정', dueDate: '8월 10일', phase: 'D-194', month: '8월', category: '웨딩홀', completed: true, owner: '함께', isTemplate: true },
+  { id: 't17', coupleId: 'c1', title: '촬영 드레스 3벌·액세서리 셀렉', dueDate: '7월 2일', phase: 'D-107', month: '7월', category: '드레스·촬영', completed: true, owner: '함께', isTemplate: true },
+  { id: 't18', coupleId: 'c1', title: '스튜디오 원본 셀렉 및 보정 요청', dueDate: '8월 28일', phase: 'D-50', month: '8월', category: '스튜디오', completed: false, owner: '함께', isTemplate: true },
+  { id: 't19', coupleId: 'c1', title: '본식 드레스 최종 가봉·베일 확정', dueDate: '9월 24일', phase: 'D-23', month: '9월', category: '드레스·본식', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't20', coupleId: 'c1', title: '메이크업 테스트 결과·헤어 변형안 정리', dueDate: '8월 30일', phase: 'D-48', month: '8월', category: '메이크업', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't21', coupleId: 'c1', title: '본식 영상 BGM·인터뷰 구성 확정', dueDate: '9월 20일', phase: 'D-27', month: '9월', category: '본식·기록', completed: false, owner: '함께', isTemplate: true },
 ]
 
 export const vendors: Vendor[] = [
@@ -93,6 +100,7 @@ export const vendors: Vendor[] = [
   { id: 'v2', name: '메종 드 누아', category: '드레스', summary: '과하지 않은 볼륨감과 프렌치 무드의 독창적인 컬렉션', tags: ['프렌치', '러블리', '오간자'], priceRange: '240–380만원', match: 91, image: imageAssets.atelierDress, location: '신사동', imagePosition: '35% 58%', address: '서울 강남구 압구정로 12길 28', hours: '화–일 10:30–19:30', phone: '02-512-3321', instagram: '@maison_de_noir', activeEvent: 'NEW COLLECTION 프리뷰 예약 오픈', gallery: [imageAssets.vendorDressGallery, imageAssets.atelierDress, imageAssets.vendorMakeupGallery] },
   { id: 'v3', name: '오브제 스튜디오', category: '스튜디오', summary: '자연광과 정돈된 건축미를 담는 감각적인 인물 중심 스튜디오', tags: ['자연광', '인물중심', '내추럴'], priceRange: '190–260만원', match: 88, image: imageAssets.vendorStudioGallery, location: '성수동', imagePosition: '50% 40%', address: '서울 성동구 연무장길 42, B1', hours: '매일 09:00–20:00', phone: '02-467-9012', instagram: '@objet_wedding', activeEvent: '평일 오전 자연광 촬영 업그레이드', gallery: [imageAssets.vendorStudioGallery, imageAssets.weddingGarden, imageAssets.vendorDressGallery] },
   { id: 'v4', name: '무드 앤 결', category: '메이크업', summary: '본연의 결을 살린 투명한 피부 표현과 절제된 음영 메이크업', tags: ['투명피부', '내추럴', '음영'], priceRange: '110–170만원', match: 84, image: imageAssets.vendorMakeupGallery, location: '청담동', imagePosition: '50% 35%', address: '서울 강남구 선릉로 152길 22', hours: '화–일 05:00–18:00', phone: '02-3446-1004', instagram: '@mood_and_gyeol', activeEvent: '9월 본식 얼리타임 헤어피스 증정', gallery: [imageAssets.vendorMakeupGallery, imageAssets.vendorDressGallery, imageAssets.vendorStudioGallery] },
+  ...vendorStyleProfiles.map((profile) => profile.vendor),
 ]
 
 export const vendorScheduleSlots: VendorScheduleSlot[] = [
@@ -111,6 +119,11 @@ export const vendorScheduleSlots: VendorScheduleSlot[] = [
   { id: 'vs13', vendorId: 'v1', date: '2026-10-06', time: '10:30', status: 'available' },
   { id: 'vs14', vendorId: 'v1', date: '2026-10-10', time: '15:30', status: 'booked' },
   { id: 'vs15', vendorId: 'v1', date: '2026-10-13', time: '11:00', status: 'available' },
+  { id: 'vs16', vendorId: 'v1', date: '2026-08-18', time: '10:00', status: 'available' },
+  { id: 'vs17', vendorId: 'v1', date: '2026-08-18', time: '15:30', status: 'booked' },
+  { id: 'vs18', vendorId: 'v1', date: '2026-08-19', time: '11:30', status: 'available' },
+  { id: 'vs19', vendorId: 'v1', date: '2026-08-20', time: '14:00', status: 'booked' },
+  { id: 'vs20', vendorId: 'v1', date: '2026-08-22', time: '10:30', status: 'available' },
 ]
 
 export const initialVendorSelections: VendorSelection[] = [

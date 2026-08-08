@@ -8,6 +8,10 @@ import './styles/portal.css'
 import './styles/fixes.css'
 import './styles/modern.css'
 import './styles/experience.css'
+import './styles/readability.css'
+import './styles/calendar-enhancements.css'
+import './styles/vendor-discovery.css'
+import './styles/shared-vendor-calendar.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

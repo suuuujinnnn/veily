@@ -24,7 +24,16 @@ export interface WeddingEvent {
   travelMinutes?: number
 }
 
-export type ChecklistCategory = '베뉴' | '스드메' | '예복·예물' | '초대·연출' | '행정·기타'
+export type ChecklistCategory =
+  | '웨딩홀'
+  | '스튜디오'
+  | '드레스·촬영'
+  | '드레스·본식'
+  | '메이크업'
+  | '본식·기록'
+  | '예복·예물'
+  | '초대·연출'
+  | '행정·기타'
 
 export interface ChecklistItem {
   id: string

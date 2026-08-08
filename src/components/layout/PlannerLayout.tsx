@@ -5,7 +5,6 @@ import {
   Building2,
   CalendarDays,
   ChevronRight,
-  ClipboardCheck,
   HeartHandshake,
   LayoutDashboard,
   Menu,
@@ -20,12 +19,11 @@ const navItems = [
   { to: '/couples', label: '커플 관리', icon: UsersRound },
   { to: '/calendar', label: '일정', icon: CalendarDays },
   { to: '/vendors', label: '업체 찾기', icon: Building2 },
-  { to: '/contracts', label: '계약', icon: ClipboardCheck },
   { to: '/community', label: '플래너 라운지', icon: MessageCircleMore },
 ]
 
 const pageTitles: Record<string, string> = {
-  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '업체 찾기', '/contracts': '계약 관리', '/community': '플래너 라운지',
+  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '업체 찾기', '/community': '플래너 라운지',
 }
 
 export function PlannerLayout() {

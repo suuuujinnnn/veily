@@ -1,9 +1,8 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { PlannerLayout } from '../components/layout/PlannerLayout'
 import { PortalLayout } from '../components/layout/PortalLayout'
 import { CalendarPage } from '../features/calendar/CalendarPage'
 import { CommunityPage } from '../features/community/CommunityPage'
-import { ContractsPage } from '../features/contracts/ContractsPage'
 import { CoupleDetailPage } from '../features/couples/CoupleDetailPage'
 import { CouplesPage } from '../features/couples/CouplesPage'
 import { DashboardPage } from '../features/dashboard/DashboardPage'
@@ -15,7 +14,7 @@ import { DemoProvider } from './store'
 
 export function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <DemoProvider>
         <Routes>
           <Route element={<PlannerLayout />}>
@@ -25,7 +24,7 @@ export function App() {
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
             <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
-            <Route path="contracts" element={<ContractsPage />} />
+            <Route path="contracts" element={<Navigate to="/couples/c1?tab=contracts" replace />} />
             <Route path="community" element={<CommunityPage />} />
           </Route>
           <Route path="client/:coupleId" element={<PortalEntryPage />} />
@@ -35,6 +34,6 @@ export function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </DemoProvider>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
