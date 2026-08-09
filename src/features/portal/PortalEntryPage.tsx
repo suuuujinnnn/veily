@@ -1,10 +1,12 @@
 import { ArrowRight, CalendarDays, CheckCircle2, LayoutDashboard, LockKeyhole, UserRound } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { couples } from '../../data/mockData'
+import { useDemoStore } from '../../app/store'
 
 export function PortalEntryPage() {
   const { coupleId = 'c1' } = useParams()
+  const { couples, portalSettings } = useDemoStore()
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
+  const settings = portalSettings.find((item) => item.coupleId === couple.id)
 
   return (
     <main className="portal-entry">
@@ -25,11 +27,11 @@ export function PortalEntryPage() {
             <div><small>전체 포털</small><h3>준비 현황 전체 보기</h3><p>일정, 할 일, 추천 업체와 진행률을 한 번에 확인합니다.</p></div>
             <ArrowRight size={18} />
           </Link>
-          <Link to={`/portal/${couple.id}/calendar`}>
+          {settings?.showSchedule !== false && <Link to={`/portal/${couple.id}/calendar`}>
             <span className="portal-entry__choice-icon"><CalendarDays size={22} /></span>
             <div><small>일정 전용 링크</small><h3>공유 캘린더만 열기</h3><p>확정 일정과 업체 예약 후보만 바로 확인하고 변경합니다.</p></div>
             <ArrowRight size={18} />
-          </Link>
+          </Link>}
         </div>
         <div className="portal-entry__notice"><CheckCircle2 size={16} /><span>선택한 변경 사항은 담당 플래너 화면에 즉시 반영됩니다.</span></div>
       </section>

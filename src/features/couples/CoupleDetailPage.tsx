@@ -1,17 +1,21 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, CalendarDays, Check, ChevronRight, Clock3, ExternalLink, FileText, Heart, MapPin, MessageCircle, MoreHorizontal, Sparkles } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Check, ChevronRight, Clock3, ExternalLink, MapPin, MessageCircle, MoreHorizontal, Plus, Sparkles } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Progress } from '../../components/ui'
-import { contracts, couples, vendors } from '../../data/mockData'
 import type { ChecklistCategory, ChecklistItem } from '../../types'
 import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
 import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
+import { ConsultationsPanel } from './ConsultationsPanel'
+import { CoupleInfoPanel } from './CoupleInfoPanel'
+import { EstimateSettlementPanel } from './EstimateSettlementPanel'
+import { PublicLinkSettings } from './PublicLinkSettings'
+import { AddEventModal } from '../calendar/AddEventModal'
 
-type DetailTab = 'overview' | 'timeline' | 'vendors' | 'contracts'
+type DetailTab = 'overview' | 'info' | 'timeline' | 'vendors' | 'consultations' | 'finance' | 'public-link'
 
-const detailTabs: DetailTab[] = ['overview', 'timeline', 'vendors', 'contracts']
+const detailTabs: DetailTab[] = ['overview', 'info', 'timeline', 'vendors', 'consultations', 'finance', 'public-link']
 
 function isDetailTab(value: string | null): value is DetailTab {
   return detailTabs.includes(value as DetailTab)
@@ -20,16 +24,16 @@ function isDetailTab(value: string | null): value is DetailTab {
 export function CoupleDetailPage() {
   const { id = 'c1' } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+  const { couples, events, checklist, vendors, recommendations, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
   const couple = couples.find((item) => item.id === id) ?? couples[0]
-  const { events, checklist, recommendations, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
   const requestedTab = searchParams.get('tab')
   const tab: DetailTab = isDetailTab(requestedTab) ? requestedTab : 'overview'
   const [editorOpen, setEditorOpen] = useState(false)
   const [editorItem, setEditorItem] = useState<ChecklistItem | null>(null)
   const [editorCategory, setEditorCategory] = useState<ChecklistCategory>('스튜디오')
+  const [scheduleOpen, setScheduleOpen] = useState(false)
   const coupleEvents = useMemo(() => events.filter((event) => event.coupleId === couple.id), [events, couple.id])
   const coupleTasks = checklist.filter((item) => item.coupleId === couple.id)
-  const coupleContracts = contracts.filter((item) => item.coupleId === couple.id)
   const recommendedVendors = recommendations.filter((item) => item.coupleId === couple.id).map((item) => ({ ...item, vendor: vendors.find((vendor) => vendor.id === item.vendorId) })).filter((item) => item.vendor)
 
   const openTab = (nextTab: DetailTab) => {
@@ -48,7 +52,7 @@ export function CoupleDetailPage() {
         <div className="couple-profile__progress"><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong><Progress value={couple.progress} /></div>
         <div className="couple-profile__actions"><Link to={`/client/${couple.id}`} target="_blank"><Button variant="secondary" icon={<ExternalLink size={15} />}>고객 화면 미리보기</Button></Link><button className="icon-button bordered"><MoreHorizontal size={18} /></button></div>
       </section>
-      <nav className="detail-tabs">{([['overview','한눈에 보기'],['timeline','일정 & 할 일'],['vendors','추천 업체'],['contracts','계약']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}</nav>
+      <nav className="detail-tabs">{([['overview','한눈에 보기'],['info','부부정보'],['timeline','일정 & 할 일'],['vendors','추천 업체'],['consultations','상담'],['finance','견적·정산'],['public-link','고객 링크']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}</nav>
 
       {tab === 'overview' && <div className="detail-overview">
         <section className="detail-column detail-column--wide"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Coming up</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card padding="none" className="upcoming-list">{coupleEvents.slice(0,3).map((event) => <div className="upcoming-row" key={event.id}><div className="date-tile"><strong>{Number(event.date.slice(-2))}</strong><span>8월</span></div><div><Badge tone="rose">{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}–{event.endTime} <i /> <MapPin size={13} /> {event.location}</p></div><ChevronRight size={17} /></div>)}</Card></section>
@@ -58,7 +62,7 @@ export function CoupleDetailPage() {
       </div>}
 
       {tab === 'timeline' && <div className="checklist-workspace">
-        <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><Badge tone="neutral">템플릿 {coupleTasks.filter((task) => task.isTemplate).length}개 적용</Badge></section>
+        <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><div className="heading-actions"><Badge tone="neutral">템플릿 {coupleTasks.filter((task) => task.isTemplate).length}개 적용</Badge><Button variant="secondary" icon={<Plus size={15} />} onClick={() => setScheduleOpen(true)}>일정 추가</Button></div></section>
         <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />
         <div className="checklist-workspace__lower">
           <CategoryChecklist
@@ -72,9 +76,13 @@ export function CoupleDetailPage() {
         </div>
       </div>}
 
+      {tab === 'info' && <CoupleInfoPanel couple={couple} />}
+
       {tab === 'vendors' && <div className="recommended-grid">{recommendedVendors.length ? recommendedVendors.map(({ vendor, status }) => vendor && <article className="vendor-mini-card" key={vendor.id}><img src={vendor.image} style={{ objectPosition: vendor.imagePosition }} alt="" /><div><Badge tone="rose">{vendor.match}% match</Badge><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="vendor-mini-card__status"><span>고객 응답</span><strong className={`status-${status}`}>{status === 'liked' ? '마음에 들어요' : status === 'hold' ? '조금 더 볼게요' : '응답 대기'}</strong></div></div></article>) : <Card><p>아직 추천한 업체가 없습니다.</p></Card>}</div>}
 
-      {tab === 'contracts' && <div className="contract-detail-list">{coupleContracts.map((contract) => <Card key={contract.id} className="contract-detail-card"><div className="document-icon"><FileText size={21} /></div><div><Badge tone={contract.status === '확인필요' ? 'amber' : 'sage'}>{contract.status}</Badge><h3>{contract.vendorName}</h3><p>{contract.details}</p><span>{contract.payment} · VAT {contract.vatIncluded ? '포함' : '별도'}</span></div><strong>{contract.amount}</strong></Card>)}</div>}
+      {tab === 'consultations' && <ConsultationsPanel coupleId={couple.id} />}
+      {tab === 'finance' && <EstimateSettlementPanel coupleId={couple.id} />}
+      {tab === 'public-link' && <PublicLinkSettings coupleId={couple.id} />}
       <ChecklistEditorModal
         open={editorOpen}
         coupleId={couple.id}
@@ -85,6 +93,7 @@ export function CoupleDetailPage() {
         onUpdate={updateChecklist}
         onDelete={deleteChecklist}
       />
+      <AddEventModal open={scheduleOpen} initialCoupleId={couple.id} onClose={() => setScheduleOpen(false)} onAdded={() => undefined} />
     </div>
   )
 }

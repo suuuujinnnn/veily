@@ -2,9 +2,10 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CalendarDays, ChevronRight, Filter, Plus, Search, SlidersHorizontal } from 'lucide-react'
 import { Badge, Button, Progress } from '../../components/ui'
-import { couples } from '../../data/mockData'
+import { useDemoStore } from '../../app/store'
 
 export function CouplesPage() {
+  const { couples } = useDemoStore()
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState('전체')
   const filtered = useMemo(() => couples.filter((couple) => (status === '전체' || couple.status === status) && couple.partners.includes(query)), [query, status])

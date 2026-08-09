@@ -2,13 +2,12 @@ import { ArrowLeft, CalendarDays, Camera, Clock3, ExternalLink, MapPin, Phone, S
 import { Link, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button } from '../../components/ui'
-import { vendors } from '../../data/mockData'
 import { VendorScheduleBoard } from './VendorScheduleBoard'
 
 export function VendorDetailPage() {
   const { vendorId = 'v1' } = useParams()
+  const { vendors, recommendations, setRecommendation } = useDemoStore()
   const vendor = vendors.find((item) => item.id === vendorId) ?? vendors[0]
-  const { recommendations, setRecommendation } = useDemoStore()
   const recommended = recommendations.some((item) => item.coupleId === 'c1' && item.vendorId === vendor.id)
 
   return (

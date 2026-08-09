@@ -1,7 +1,7 @@
 import { imageAssets } from '../assets/images'
-import type { Vendor } from '../types'
+import type { AnalyzedVendorCategory, Vendor } from '../types'
 
-export type PartnerCategory = Vendor['category']
+export type PartnerCategory = AnalyzedVendorCategory
 
 export interface VendorStyleProfile {
   vendor: Vendor
@@ -90,6 +90,10 @@ function createProfile(seed: PartnerSeed): VendorStyleProfile {
       instagram: `@${seed.account}`,
       activeEvent: `${seed.primaryStyle} 스타일 상담 위크 · 플래너 동행 혜택`,
       gallery: [imageAssets[seed.visual], ...gallery],
+      website: `https://www.instagram.com/${seed.account}`,
+      lastContact: '2026-08-01',
+      memo: '스타일 이미지 분석을 완료한 제휴 업체입니다.',
+      evidenceSource: 'analyzed',
     },
   }
 }
