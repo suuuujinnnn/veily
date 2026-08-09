@@ -13,11 +13,12 @@ const settingItems: { key: Exclude<keyof PortalSettings, 'coupleId'>; title: str
 ]
 
 export function PublicLinkSettings({ coupleId }: { coupleId: string }) {
-  const { portalSettings, updatePortalSettings } = useDemoStore()
+  const { portalSettings, recommendations, vendors, updatePortalSettings } = useDemoStore()
   const settings = portalSettings.find((item) => item.coupleId === coupleId) ?? { coupleId, showSchedule: true, showFullEstimate: true, receiveMessages: true, showChecklist: true }
   const [feedback, setFeedback] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const url = `${window.location.origin}/client/${coupleId}`
+  const recommendedVendors = recommendations.filter((item) => item.coupleId === coupleId).map((item) => vendors.find((vendor) => vendor.id === item.vendorId)).filter((vendor): vendor is NonNullable<typeof vendor> => Boolean(vendor))
   const toggle = (key: Exclude<keyof PortalSettings, 'coupleId'>) => updatePortalSettings({ ...settings, [key]: !settings[key] })
   const copy = async () => {
     try { await navigator.clipboard.writeText(url); setFeedback('링크를 복사했습니다.') }
@@ -29,6 +30,6 @@ export function PublicLinkSettings({ coupleId }: { coupleId: string }) {
       <Card className="link-copy-card"><label className="form-field"><span>고객 전용 URL</span><div className="copy-field"><input ref={inputRef} readOnly value={url} /><Button variant="secondary" icon={<Copy size={15} />} onClick={copy}>복사</Button></div></label>{feedback && <p className="copy-feedback" role="status">{feedback}</p>}</Card>
       <div className="setting-list">{settingItems.map((item) => <Card key={item.key} className="setting-row"><span className="setting-icon">{item.icon}</span><div><h3>{item.title}</h3><p>{item.description}</p></div><button type="button" role="switch" aria-checked={settings[item.key]} onClick={() => toggle(item.key)} className={`toggle-switch ${settings[item.key] ? 'active' : ''}`}><span /></button></Card>)}</div>
     </section>
-    <aside><Card className="portal-live-preview"><div className="preview-title"><span><Eye size={17} /> 실시간 미리보기</span><Badge tone="sage">LIVE</Badge></div><div className="preview-window"><div className="preview-window__top">두 분의 Wedding Desk</div><strong>함께 준비하는 오늘</strong>{settings.showSchedule && <p><CalendarDays size={14} /> 다음 일정 · 드레스 피팅</p>}{settings.showChecklist && <p><CheckSquare2 size={14} /> 미완료 할 일 8개</p>}<p><ReceiptText size={14} /> 견적 {settings.showFullEstimate ? '금액까지 공개' : '상태만 공개'}</p>{settings.receiveMessages && <button><MessageCircle size={14} /> 플래너에게 메시지</button>}</div></Card></aside>
+    <aside><Card className="portal-live-preview"><div className="preview-title"><span><Eye size={17} /> 실시간 미리보기</span><Badge tone="sage">LIVE</Badge></div><div className="preview-window"><div className="preview-window__top">두 분의 Wedding Desk</div><strong>함께 준비하는 오늘</strong>{settings.showSchedule && <p><CalendarDays size={14} /> 다음 일정 · 드레스 피팅</p>}{settings.showChecklist && <p><CheckSquare2 size={14} /> 미완료 할 일 8개</p>}<p><ReceiptText size={14} /> 견적 {settings.showFullEstimate ? '금액까지 공개' : '상태만 공개'}</p>{recommendedVendors.length > 0 && <div className="preview-vendors"><span>분석 DB 추천 업체</span>{recommendedVendors.slice(0, 3).map((vendor) => <p key={vendor.id}><img src={vendor.image} alt="" /><strong>{vendor.name}</strong><small>{vendor.category} · {vendor.tags[0]}</small></p>)}</div>}{settings.receiveMessages && <button><MessageCircle size={14} /> 플래너에게 메시지</button>}</div></Card></aside>
   </div>
 }

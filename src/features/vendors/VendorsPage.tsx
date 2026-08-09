@@ -1,10 +1,9 @@
 import { useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { BarChart3, Brush, Camera, Check, CheckCircle2, ChevronRight, Gem, ImagePlus, RefreshCcw, Search, Send, Sparkles, UploadCloud, WandSparkles } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { BarChart3, Brush, Camera, Check, CheckCircle2, ChevronRight, Gem, Heart, RefreshCcw, Search, Send, Sparkles, UploadCloud, WandSparkles } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card } from '../../components/ui'
 import { vendorStyleProfiles, vendorStyleTaxonomy, type PartnerCategory, type VendorStyleProfile } from '../../data/vendorStyleData'
-import { imageAssets } from '../../assets/images'
 import { VendorDatabase } from './VendorDatabase'
 
 type AnalysisState = 'idle' | 'analyzing' | 'done'
@@ -12,6 +11,7 @@ type SortOption = 'style' | 'evidence' | 'name'
 
 const categories: PartnerCategory[] = ['드레스', '스튜디오', '메이크업']
 const categoryIcons = { 드레스: Gem, 스튜디오: Camera, 메이크업: Brush }
+const reviewedReferenceImage = vendorStyleProfiles.find((profile) => profile.vendor.id === 'vp-d4')!.vendor.image
 
 function styleMatch(profile: VendorStyleProfile, selectedStyle: string) {
   const selectedCount = profile.styleCounts[selectedStyle] ?? 0
@@ -21,6 +21,7 @@ function styleMatch(profile: VendorStyleProfile, selectedStyle: string) {
 }
 
 export function VendorsPage() {
+  const navigate = useNavigate()
   const [pageMode, setPageMode] = useState<'discovery' | 'database'>('discovery')
   const [analysis, setAnalysis] = useState<AnalysisState>('idle')
   const [category, setCategory] = useState<PartnerCategory>('드레스')
@@ -29,6 +30,7 @@ export function VendorsPage() {
   const [sort, setSort] = useState<SortOption>('style')
   const [coupleId, setCoupleId] = useState('c1')
   const [shortlist, setShortlist] = useState<string[]>([])
+  const [favorites, setFavorites] = useState<string[]>([])
   const [proposalSent, setProposalSent] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const { couples, vendors, setRecommendation } = useDemoStore()
@@ -75,6 +77,9 @@ export function VendorsPage() {
     setShortlist((current) => current.includes(vendorId) ? current.filter((id) => id !== vendorId) : [...current, vendorId].slice(-3))
   }
 
+  const toggleFavorite = (vendorId: string) => setFavorites((current) => current.includes(vendorId) ? current.filter((id) => id !== vendorId) : [...current, vendorId])
+  const openVendor = (vendorId: string) => navigate(`/vendors/${vendorId}`)
+
   const sendProposal = () => {
     selectedVendors.forEach((vendor) => setRecommendation(coupleId, vendor.id, 'pending'))
     setProposalSent(true)
@@ -92,8 +97,8 @@ export function VendorsPage() {
         <div className="ai-studio__copy"><div className="ai-kicker"><WandSparkles size={16} /> REFERENCE MATCH</div><h2>레퍼런스 한 장으로<br /><em>스타일 후보 찾기</em></h2><p>이미지를 올리면 동일한 라벨 체계로 분석해 아래 제휴업체 아카이브와 바로 연결합니다.</p><div className="ai-points"><span><Check size={13} /> 드레스 · 실크 / 비즈 / 화려 / 유니크</span><span><Check size={13} /> 스튜디오 · 깔끔함 / 화보 / 자연 / 빈티지</span><span><Check size={13} /> 메이크업 · 과즙 / 깔끔 / 누디 / 강하게</span></div></div>
         <div className="ai-studio__workspace">
           {analysis === 'idle' && <button className="drop-zone" onClick={() => fileRef.current?.click()}><input ref={fileRef} type="file" accept="image/*" hidden onChange={analyze} /><span><UploadCloud size={25} /></span><strong>레퍼런스 이미지를 올려주세요</strong><p>분석된 스타일로 아래 필터가 자동 설정됩니다</p><small>JPG, PNG · 최대 10MB</small></button>}
-          {analysis === 'analyzing' && <div className="analyzing-state"><div className="scan-image"><img src={imageAssets.atelierDress} alt="분석할 실크 웨딩드레스" /><span /></div><div><div className="pulse-label"><Sparkles size={16} /> 스타일 라벨 분석 중</div><h3>307장의 분류 기준과 비교하고 있어요</h3><ul><li className="done"><Check size={13} /> 카테고리 판별</li><li className="done"><Check size={13} /> 소재와 디테일 인식</li><li><span className="spinner" /> 제휴업체 분포 매칭</li></ul></div></div>}
-          {analysis === 'done' && <div className="analysis-result"><div className="analysis-result__image"><img src={imageAssets.atelierDress} alt="분석된 실크 웨딩드레스" /><span><Check size={13} /> 분석 완료</span></div><div className="analysis-result__body"><p className="eyebrow">Detected label</p><h3>드레스 · 실크</h3><div className="analysis-score"><span>라벨 확신도</span><strong>94%</strong></div><div className="tag-row tag-row--light"><span>실크</span><span>구조적</span><span>절제된 광택</span></div><p>실크 비중이 높은 제휴업체가 우선 정렬되었습니다.</p></div></div>}
+          {analysis === 'analyzing' && <div className="analyzing-state"><div className="scan-image"><img src={reviewedReferenceImage} alt="라포레 분석 원본 실크 웨딩드레스" /><span /></div><div><div className="pulse-label"><Sparkles size={16} /> 스타일 라벨 분석 중</div><h3>307장의 분류 기준과 비교하고 있어요</h3><ul><li className="done"><Check size={13} /> 카테고리 판별</li><li className="done"><Check size={13} /> 소재와 디테일 인식</li><li><span className="spinner" /> 제휴업체 분포 매칭</li></ul></div></div>}
+          {analysis === 'done' && <div className="analysis-result"><div className="analysis-result__image"><img src={reviewedReferenceImage} alt="라포레에서 검수된 실크 웨딩드레스" /><span><Check size={13} /> 분석 완료</span></div><div className="analysis-result__body"><p className="eyebrow">Detected label</p><h3>드레스 · 실크</h3><div className="analysis-score"><span>라벨 확신도</span><strong>94%</strong></div><div className="tag-row tag-row--light"><span>실크</span><span>구조적</span><span>절제된 광택</span></div><p>실크 비중이 높은 제휴업체가 우선 정렬되었습니다.</p></div></div>}
         </div>
       </section>
 
@@ -122,15 +127,23 @@ export function VendorsPage() {
           const selected = shortlist.includes(profile.vendor.id)
           const match = styleMatch(profile, selectedStyle)
           const maxCount = Math.max(...Object.values(profile.styleCounts))
-          return <article className={`style-vendor-card ${selected ? 'style-vendor-card--selected' : ''}`} key={profile.vendor.id}>
-            <div className="style-vendor-card__image"><img src={profile.vendor.image} style={{ objectPosition: profile.vendor.imagePosition }} alt={`${profile.vendor.name} 포트폴리오`} /><div className="style-match-score"><Sparkles size={12} /><strong>{match}%</strong><span>STYLE FIT</span></div><Link to={`/vendors/${profile.vendor.id}`} aria-label={`${profile.vendor.name} 포트폴리오 상세`}><ImagePlus size={16} /></Link></div>
-            <div className="style-vendor-card__body"><div className="style-vendor-card__meta"><span>{profile.vendor.category} · {profile.vendor.location}</span><em>{profile.profileType}</em></div><h3>{profile.vendor.name}</h3><a href={`https://instagram.com/${profile.account}`} onClick={(event) => event.preventDefault()}>@{profile.account}</a><p>{profile.vendor.summary}</p>
+          const favorite = favorites.includes(profile.vendor.id)
+          return <article className={`style-vendor-card ${selected ? 'style-vendor-card--selected' : ''}`} key={profile.vendor.id} role="link" tabIndex={0} onClick={() => openVendor(profile.vendor.id)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openVendor(profile.vendor.id) } }} aria-label={`${profile.vendor.name} 상세 보기`}>
+            <div className="style-vendor-card__image"><img src={profile.vendor.image} style={{ objectPosition: profile.vendor.imagePosition }} alt={`${profile.vendor.name} 포트폴리오`} /><div className="style-match-score"><Sparkles size={12} /><strong>{match}%</strong><span>STYLE FIT</span></div><button className={`style-favorite-button ${favorite ? 'active' : ''}`} aria-label={`${profile.vendor.name} ${favorite ? '즐겨찾기 해제' : '즐겨찾기'}`} aria-pressed={favorite} onClick={(event) => { event.stopPropagation(); toggleFavorite(profile.vendor.id) }}><Heart size={16} fill={favorite ? 'currentColor' : 'none'} /></button></div>
+            <div className="style-vendor-card__body"><div className="style-vendor-card__meta"><span>{profile.vendor.category} · {profile.vendor.location}</span><em>{profile.profileType}</em></div><h3>{profile.vendor.name}</h3><a href={`https://instagram.com/${profile.account}`} onClick={(event) => { event.preventDefault(); event.stopPropagation() }}>@{profile.account}</a><p>{profile.vendor.summary}</p>
               <div className="style-evidence"><div><span>대표 스타일</span><strong>{profile.primaryStyle} {Math.round(profile.primaryShare * 100)}%</strong></div><div><span>분석 근거</span><strong>{profile.sampleCount}장</strong></div></div>
               <div className="style-distribution">{Object.entries(profile.styleCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([label, count]) => <div key={label} className={label === selectedStyle ? 'is-target' : ''}><span>{label}</span><i><b style={{ width: `${Math.round((count / maxCount) * 100)}%` }} /></i><strong>{count}</strong></div>)}</div>
-              <div className="style-vendor-card__actions"><Link to={`/vendors/${profile.vendor.id}`}>상세 보기 <ChevronRight size={13} /></Link><Button size="sm" variant={selected ? 'secondary' : 'primary'} icon={selected ? <CheckCircle2 size={14} /> : undefined} onClick={() => toggleShortlist(profile.vendor.id)}>{selected ? '후보에 담김' : '제안 후보 담기'}</Button></div>
+              <div className="style-vendor-card__actions"><Link to={`/vendors/${profile.vendor.id}`} onClick={(event) => event.stopPropagation()}>상세 보기 <ChevronRight size={13} /></Link><Button size="sm" variant={selected ? 'secondary' : 'primary'} icon={selected ? <CheckCircle2 size={14} /> : undefined} onClick={(event) => { event.stopPropagation(); toggleShortlist(profile.vendor.id) }}>{selected ? '후보에 담김' : '제안 후보 담기'}</Button></div>
             </div>
           </article>
-        })}{provisionalVendors.map((vendor) => { const selected = shortlist.includes(vendor.id); return <article className={`style-vendor-card style-vendor-card--provisional ${selected ? 'style-vendor-card--selected' : ''}`} key={vendor.id}><div className="style-vendor-card__image"><img src={vendor.image} alt={`${vendor.name} 기본 이미지`} /><Badge tone="sage">태그 기반 임시</Badge><Link to={`/vendors/${vendor.id}`}><ImagePlus size={16} /></Link></div><div className="style-vendor-card__body"><div className="style-vendor-card__meta"><span>{vendor.category} · {vendor.location}</span><em>신규 DB</em></div><h3>{vendor.name}</h3><a href={vendor.website || '#'} onClick={(event) => event.preventDefault()}>{vendor.instagram || '계정 미등록'}</a><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><div className="style-vendor-card__actions"><Link to={`/vendors/${vendor.id}`}>상세 보기 <ChevronRight size={13} /></Link><Button size="sm" variant={selected ? 'secondary' : 'primary'} icon={selected ? <CheckCircle2 size={14} /> : undefined} onClick={() => toggleShortlist(vendor.id)}>{selected ? '후보에 담김' : '제안 후보 담기'}</Button></div></div></article> })}</div>
+        })}{provisionalVendors.map((vendor) => {
+          const selected = shortlist.includes(vendor.id)
+          const favorite = favorites.includes(vendor.id)
+          return <article className={`style-vendor-card style-vendor-card--provisional ${selected ? 'style-vendor-card--selected' : ''}`} key={vendor.id} role="link" tabIndex={0} onClick={() => openVendor(vendor.id)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openVendor(vendor.id) } }} aria-label={`${vendor.name} 상세 보기`}>
+            <div className="style-vendor-card__image"><img src={vendor.image} alt={`${vendor.name} 기본 이미지`} /><Badge tone="sage">태그 기반 임시</Badge><button className={`style-favorite-button ${favorite ? 'active' : ''}`} aria-label={`${vendor.name} ${favorite ? '즐겨찾기 해제' : '즐겨찾기'}`} aria-pressed={favorite} onClick={(event) => { event.stopPropagation(); toggleFavorite(vendor.id) }}><Heart size={16} fill={favorite ? 'currentColor' : 'none'} /></button></div>
+            <div className="style-vendor-card__body"><div className="style-vendor-card__meta"><span>{vendor.category} · {vendor.location}</span><em>신규 DB</em></div><h3>{vendor.name}</h3><a href={vendor.website || '#'} onClick={(event) => { event.preventDefault(); event.stopPropagation() }}>{vendor.instagram || '계정 미등록'}</a><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><div className="style-vendor-card__actions"><Link to={`/vendors/${vendor.id}`} onClick={(event) => event.stopPropagation()}>상세 보기 <ChevronRight size={13} /></Link><Button size="sm" variant={selected ? 'secondary' : 'primary'} icon={selected ? <CheckCircle2 size={14} /> : undefined} onClick={(event) => { event.stopPropagation(); toggleShortlist(vendor.id) }}>{selected ? '후보에 담김' : '제안 후보 담기'}</Button></div></div>
+          </article>
+        })}</div>
         {!filteredProfiles.length && !provisionalVendors.length && <Card className="style-results-empty"><Search size={22} /><strong>조건에 맞는 업체가 없습니다.</strong><p>검색어를 지우거나 다른 스타일을 선택해 보세요.</p></Card>}
       </section>
 

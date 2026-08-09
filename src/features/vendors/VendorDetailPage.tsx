@@ -14,7 +14,7 @@ export function VendorDetailPage() {
     <div className="page-stack vendor-detail-page">
       <div className="vendor-detail-topline">
         <Link className="back-link" to="/vendors"><ArrowLeft size={15} /> 파트너 업체</Link>
-        <div><span>현재 진행 중</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
+        <div><span>분석 데이터</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
       </div>
 
       <section className="vendor-detail-hero">

@@ -2,13 +2,20 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { Building2, CalendarClock, Camera as Instagram, Edit3, MapPin, Plus, Search } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Modal } from '../../components/ui'
-import { imageAssets } from '../../assets/images'
+import { vendorReviewImages } from '../../assets/vendorReviewImages'
 import type { Vendor, VendorCategory } from '../../types'
 import { vendorStyleTaxonomy, type PartnerCategory } from '../../data/vendorStyleData'
 
 const categories: ('전체' | VendorCategory)[] = ['전체', '드레스', '메이크업', '스튜디오', '웨딩홀', '예물', '기타']
 const analyzedCategories: VendorCategory[] = ['드레스', '메이크업', '스튜디오']
-const defaultImages: Record<VendorCategory, string> = { 드레스: imageAssets.vendorDressGallery, 메이크업: imageAssets.vendorMakeupGallery, 스튜디오: imageAssets.vendorStudioGallery, 웨딩홀: imageAssets.weddingGarden, 예물: imageAssets.atelierDress, 기타: imageAssets.weddingGarden }
+const defaultImages: Record<VendorCategory, string> = {
+  드레스: vendorReviewImages.laforet___official[0],
+  메이크업: vendorReviewImages.lkmforetwedding[0],
+  스튜디오: vendorReviewImages.cleve_studio[0],
+  웨딩홀: vendorReviewImages['studio.goyou'][0],
+  예물: vendorReviewImages.louisblanc_official[0],
+  기타: vendorReviewImages.yuha_haus[0],
+}
 const hasDiscoveryStyle = (vendor: Vendor) => analyzedCategories.includes(vendor.category) && vendorStyleTaxonomy[vendor.category as PartnerCategory].some((style) => vendor.tags.includes(style.label))
 
 export const normalizeVendorTags = (value: string) => [...new Set(value.replaceAll('#', '').split(/[\s,]+/).map((tag) => tag.trim()).filter(Boolean))]
