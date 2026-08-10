@@ -7,6 +7,7 @@ import { CoupleDetailPage } from '../features/couples/CoupleDetailPage'
 import { CouplesPage } from '../features/couples/CouplesPage'
 import { DashboardPage } from '../features/dashboard/DashboardPage'
 import { PortalPage } from '../features/portal/PortalPage'
+import { PublicConsultationPage } from '../features/portal/PublicConsultationPage'
 import { PortalEntryPage } from '../features/portal/PortalEntryPage'
 import { VendorsPage } from '../features/vendors/VendorsPage'
 import { VendorDetailPage } from '../features/vendors/VendorDetailPage'
@@ -28,6 +29,7 @@ export function App() {
             <Route path="community" element={<CommunityPage />} />
           </Route>
           <Route path="client/:coupleId" element={<PortalEntryPage />} />
+          <Route path="consultation/new" element={<PublicConsultationPage />} />
           <Route path="portal" element={<PortalLayout />}>
             <Route path=":coupleId/:section?" element={<PortalPage />} />
           </Route>
