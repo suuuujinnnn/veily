@@ -1,67 +1,66 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { CalendarDays, Check, CheckCircle2, ChevronLeft, ChevronRight, Clock3, Copy, MessageCircle, Pause, Plus, ThumbsUp } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowRight, CalendarDays, Check, CheckCircle2, ChevronRight, Clock3, Heart, MapPin, MessageCircle, Pause, Sparkles, ThumbsUp } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Badge, Progress } from '../../components/ui'
-import { couples, vendors } from '../../data/mockData'
+import { Badge, Card, Progress } from '../../components/ui'
+import { contracts, couples as initialCouples, vendors } from '../../data/mockData'
 import { imageAssets } from '../../assets/images'
 import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
-import { PortalVendorAvailability } from './PortalVendorAvailability'
+import type { CoordinationOption } from '../../types'
 
-type PortalTab = 'home' | 'calendar' | 'tasks' | 'vendors'
-const slots = ['8월 8일 (토) 11:00', '8월 8일 (토) 14:00', '8월 9일 (일) 10:30']
+type PortalTab = 'home' | 'calendar' | 'tasks'
+const labels = { home: '홈', calendar: '공유 일정', tasks: '체크리스트', confirmed: '확정', before: '확정 전', okay: '오케이', unavailable: '불가' }
+function dateLabel(value: string) { return new Date(value + 'T00:00:00').toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }) }
+function toDateString(date: Date) { return date.toISOString().slice(0, 10) }
+function isConfirmed(event: { status?: string; sharedWithClient?: boolean }) { return event.status === 'confirmed' || event.sharedWithClient !== false }
 
 export function PortalPage() {
   const { coupleId = 'c1', section } = useParams()
   const navigate = useNavigate()
-  const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
-  const { events, checklist, recommendations, availability, toggleChecklist, setRecommendation, toggleAvailability } = useDemoStore()
-  const initialTab = (['home', 'calendar', 'tasks', 'vendors'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
+  const { couples: storedCouples } = useDemoStore()
+  const couple = storedCouples.find((item) => item.id === coupleId) ?? initialCouples[0]
+  const { events, checklist, coordination, recommendations, toggleChecklist, respondCoordination } = useDemoStore()
+  const initialTab = (['home', 'calendar', 'tasks'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
   const [tab, setTab] = useState<PortalTab>(initialTab)
+  const [calendarView, setCalendarView] = useState<'week' | 'month'>('week')
   const [message, setMessage] = useState(false)
-  const coupleEvents = events.filter((event) => event.coupleId === couple.id)
+  const [otherDateOptionId, setOtherDateOptionId] = useState<string | null>(null)
+  const [otherDate, setOtherDate] = useState('')
+  const [otherStartTime, setOtherStartTime] = useState('')
+  const [otherEndTime, setOtherEndTime] = useState('')
+  const today = useMemo(() => { const now = new Date(); return new Date(now.getFullYear(), now.getMonth(), now.getDate()) }, [])
+  const [monthCursor, setMonthCursor] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1))
+  const minMonth = new Date(today.getFullYear(), today.getMonth(), 1)
+  const maxMonth = new Date(today.getFullYear() + 2, today.getMonth(), 1)
+  const eventsForCouple = events.filter((event) => event.coupleId === couple.id && isConfirmed(event))
   const tasks = checklist.filter((item) => item.coupleId === couple.id)
-  const recs = recommendations.filter((item) => item.coupleId === couple.id).map((item) => ({ ...item, vendor: vendors.find((vendor) => vendor.id === item.vendorId) })).filter((item) => item.vendor)
+  const options = coordination.filter((item) => item.coupleId === couple.id)
+  const contractsForCouple = contracts.filter((item) => item.coupleId === couple.id)
+  const recommended = recommendations.filter((item) => item.coupleId === couple.id).map((item) => ({ ...item, vendor: vendors.find((vendor) => vendor.id === item.vendorId) })).filter((item) => item.vendor)
   const completed = tasks.filter((task) => task.completed).length
-  const partnerGreeting = couple.partners
-    .split(' & ')
-    .map((name) => `${name.slice(1)}님`)
-    .join(', ')
-  const dDay = Math.max(0, Math.ceil((new Date(couple.weddingDate).getTime() - new Date('2026-08-05').getTime()) / 86_400_000))
-  const openTab = (nextTab: PortalTab) => {
-    setTab(nextTab)
-    navigate(`/portal/${couple.id}${nextTab === 'home' ? '' : `/${nextTab}`}`)
-  }
+  const dDay = Math.max(0, Math.ceil((new Date(couple.weddingDate).getTime() - today.getTime()) / 86_400_000))
+  const openTab = (next: PortalTab) => { setTab(next); navigate('/portal/' + couple.id + (next === 'home' ? '' : '/' + next)) }
+  const respond = (option: CoordinationOption, date: string, state: 'available' | 'unavailable') => respondCoordination(option.id, { id: option.id + '-' + date, date, startTime: option.dates.find((item) => item.date === date)?.startTime, endTime: option.dates.find((item) => item.date === date)?.endTime, state, reason: state === 'available' ? '고객 오케이' : '고객 불가' })
+  const openOtherDate = (option: CoordinationOption) => { setOtherDateOptionId(option.id); setOtherDate(''); setOtherStartTime(''); setOtherEndTime('') }
+  const submitOtherDate = (option: CoordinationOption) => { if (!otherDate) return; respondCoordination(option.id, { id: option.id + '-' + otherDate, date: otherDate, startTime: otherStartTime || undefined, endTime: otherEndTime || undefined, state: 'available', reason: '고객이 다른 일정 제안' }); setOtherDateOptionId(null) }
+  const weekDates = useMemo(() => { const start = new Date(today); start.setDate(start.getDate() - start.getDay()); return Array.from({ length: 7 }, (_, index) => { const date = new Date(start); date.setDate(start.getDate() + index); return toDateString(date) }) }, [today])
+  const monthDates = useMemo(() => { const first = new Date(monthCursor.getFullYear(), monthCursor.getMonth(), 1); const leading = first.getDay(); const count = new Date(monthCursor.getFullYear(), monthCursor.getMonth() + 1, 0).getDate(); return [...Array(leading).fill(''), ...Array.from({ length: count }, (_, index) => toDateString(new Date(monthCursor.getFullYear(), monthCursor.getMonth(), index + 1)))] }, [monthCursor])
+  const canPrev = monthCursor > minMonth
+  const canNext = monthCursor < maxMonth
+  const shiftMonth = (amount: number) => setMonthCursor((current) => { const next = new Date(current.getFullYear(), current.getMonth() + amount, 1); return next < minMonth ? minMonth : next > maxMonth ? maxMonth : next })
+  const monthTitle = monthCursor.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long' })
+  const isSdme = (category: string) => ['스튜디오', '드레스', '메이크업', '스드메'].some((item) => category.includes(item))
+  const isJewelry = (category: string) => ['예물', '혼수'].some((item) => category.includes(item))
 
-  return (
-    <div className="portal-page">
-      <section className="portal-hero">
-        <img src={imageAssets.weddingGarden} alt="정원에서 함께 걷는 신랑 신부" />
-        <div className="portal-hero__shade" />
-        <div className="portal-hero__copy"><p>OUR WEDDING JOURNEY</p><h1>{couple.partners.replace('&', 'and')}</h1><div><span>{couple.weddingDate.replaceAll('-', '. ')}</span><i /><span>{couple.venue}</span></div></div>
-        <div className="d-day"><small>OUR DAY</small><strong>D—{dDay}</strong><span>함께 준비한 지 42일</span></div>
-      </section>
-      <div className="portal-context-strip"><span><strong>신랑·신부 전용 포털</strong> · 플래너 관리 화면과 분리되어 있습니다.</span><Link to={`/client/${couple.id}`}>접속 화면으로</Link></div>
-      <nav className="portal-nav"><div>{([['home','우리의 홈'],['calendar','공유 캘린더'],['tasks','할 일'],['vendors','추천 업체']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => !task.completed).length}</em>}</button>)}</div><button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 메시지</button></nav>
-
-      <main className="portal-content">
-        {tab === 'home' && <>
-          <section className="portal-welcome"><div><p className="eyebrow">Hello, our lovely couple</p><h2>{partnerGreeting}.<br /><em>오늘도 설레는 준비를 시작해볼까요?</em></h2><p>결혼식까지 {dDay}일, 지금까지 아주 잘 준비하고 있어요.</p></div><div className="portal-progress"><div><span>전체 준비율</span><strong>{couple.progress}%</strong></div><Progress value={couple.progress} /><div className="milestones"><span className="done"><i><Check size={12} /></i>베뉴</span><span className="done"><i><Check size={12} /></i>스드메</span><span className="active"><i>3</i>예복·예물</span><span><i>4</i>본식 준비</span></div></div></section>
-          <section className="portal-grid">
-            <div className="portal-section portal-section--wide"><div className="portal-section__head"><div><p className="eyebrow">Next schedule</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('calendar')}>전체 보기 <ChevronRight size={14} /></button></div><div className="portal-schedule">{coupleEvents.slice(0,3).map((event, index) => <article key={event.id} className={index === 0 ? 'featured' : ''}><div className="portal-date"><strong>{event.date.slice(-2)}</strong><span>AUG</span></div><div><Badge tone={index === 0 ? 'rose' : 'neutral'}>{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}–{event.endTime}</p><p><MapPin size={13} /> {event.location}</p></div>{index === 0 && <span className="schedule-note">준비물 체크 필요</span>}</article>)}</div></div>
-            <div className="portal-section"><div className="portal-section__head"><div><p className="eyebrow">This week</p><h2>이번 주 할 일</h2></div><span>{completed}/{tasks.length}</span></div><div className="portal-tasks">{tasks.slice(0,4).map((task) => <label key={task.id} className={task.completed ? 'done' : ''}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.dueDate}까지 · {task.owner}</small></div></label>)}</div><button className="portal-full-button" onClick={() => openTab('tasks')}>할 일 전체 보기 <ArrowRight size={14} /></button></div>
-          </section>
-          <section className="portal-recommend-banner"><div><span><Sparkles size={18} /></span><div><p className="eyebrow">Planner selection</p><h2>새 추천 업체 3곳이 등록되었습니다.</h2><p>선호한 스타일 태그와 예상 예산을 기준으로 정리한 업체입니다.</p><button onClick={() => openTab('vendors')}>추천 목록 보기 <ArrowRight size={14} /></button></div></div><img src={imageAssets.vendorDressGallery} alt="추천 실크 웨딩드레스" /></section>
-        </>}
-
-        {tab === 'calendar' && <section className="portal-subpage portal-calendar-page"><div className="portal-subpage__intro"><p className="eyebrow">Shared calendar</p><h2>공유 일정</h2><p>업체가 공개한 주간 일정, 두 분의 가능 시간과 확정 일정을 한곳에서 확인하세요.</p></div><div className="availability-card"><div><span className="availability-icon"><CalendarDays size={22} /></span><div><Badge tone="amber">두 분의 응답</Badge><h3>메이크업 테스트가 가능한 시간을 표시해 주세요</h3><p>여기서는 두 분의 가능 시간을 알려주고, 아래에서는 업체가 공개한 일정을 함께 확인합니다.</p></div></div><div className="slot-list">{slots.map((slot) => { const selected = (availability.e4 ?? []).includes(slot); return <button key={slot} onClick={() => toggleAvailability('e4', slot)} className={selected ? 'selected' : ''}><span>{selected && <Check size={13} />}</span>{slot}</button>})}</div><small>여러 시간을 표시할 수 있습니다 · 플래너 화면과 바로 동기화됩니다</small></div><PortalVendorAvailability vendors={recs.flatMap(({ vendor }) => vendor ? [vendor] : [])} coupleId={couple.id} /><div className="portal-event-list"><h3>확정된 8월 일정</h3>{coupleEvents.map((event) => <article key={event.id}><div className="portal-date"><strong>{event.date.slice(-2)}</strong><span>AUG</span></div><div><Badge tone="rose">{event.type}</Badge><h4>{event.title}</h4><p>{event.time}–{event.endTime} · {event.location}</p></div><span className="event-confirmed"><CheckCircle2 size={14} /> 확정</span></article>)}</div></section>}
-
-        {tab === 'tasks' && <section className="portal-subpage portal-tasks-page"><div className="portal-subpage__intro"><p className="eyebrow">Shared checklist</p><h2>준비 할 일</h2><p>월별 흐름으로 먼저 보고, 분야별 체크리스트에서 완료 여부를 표시할 수 있습니다.</p></div><MonthlyRoadmap tasks={tasks} onToggle={toggleChecklist} /><CategoryChecklist tasks={tasks} onToggle={toggleChecklist} /></section>}
-
-        {tab === 'vendors' && <section className="portal-subpage portal-vendors"><div className="portal-subpage__intro"><p className="eyebrow">Curated by your planner</p><h2>두 분을 위한 셀렉션</h2><p>마음에 드는 곳을 표시해주세요. 지윤 플래너님이 다음 단계를 도와드릴게요.</p></div><div className="portal-vendor-grid">{recs.map(({ vendor, status }) => vendor && <article key={vendor.id}><div className="portal-vendor-image"><img src={vendor.image} style={{ objectPosition: vendor.imagePosition }} alt={vendor.name} /><Badge tone="dark">{vendor.match}% MATCH</Badge></div><div className="portal-vendor-body"><span>{vendor.category} · {vendor.location}</span><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="portal-response"><button className={status === 'liked' ? 'active-like' : ''} onClick={() => setRecommendation(couple.id, vendor.id, 'liked')}><Heart size={15} fill={status === 'liked' ? 'currentColor' : 'none'} /> 마음에 들어요</button><button className={status === 'hold' ? 'active-hold' : ''} onClick={() => setRecommendation(couple.id, vendor.id, 'hold')}><Pause size={15} /> 조금 더 볼게요</button></div></div></article>)}</div></section>}
-      </main>
-      {message && <div className="portal-toast"><ThumbsUp size={17} /><div><strong>메시지 창을 준비했어요</strong><span>데모에서는 플래너에게 알림만 전송됩니다.</span></div></div>}
-    </div>
-  )
+  return <div className="portal-page">
+    <section className="portal-hero"><img src={imageAssets.weddingGarden} alt="커플" /><div className="portal-hero__shade" /><div className="portal-hero__copy"><p>우리의 웨딩 여정</p><h1>{couple.partners}님</h1><div><span>{couple.weddingDate.replaceAll('-', '. ')}</span><i /><span>{couple.venue}</span></div></div><div className="d-day"><small>우리의 날</small><strong>D-{dDay}</strong><span>특별한 우리의 날</span></div></section>
+    <div className="portal-context-strip"><span><strong>플래너 고객 포털</strong> · 일정과 확정 내용을 한곳에서 확인하세요.</span><Link to={'/client/' + couple.id}>플래너 화면</Link></div>
+    <nav className="portal-nav"><div>{([['home', labels.home], ['calendar', labels.calendar], ['tasks', labels.tasks]] as [PortalTab, string][]).map(([key, label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => !task.completed).length}</em>}</button>)}</div><button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 문의</button></nav>
+    <main className="portal-content">
+      {tab === 'home' && <><section className="portal-welcome"><div><p className="eyebrow">안녕하세요, 소중한 커플</p><h2>{couple.partners}님.<br /><em>오늘의 준비를 시작해볼까요?</em></h2><p>결혼식까지 {dDay}일 · {completed}/{tasks.length}개 준비 완료</p></div><div className="portal-progress"><div><span>전체 준비율</span><strong>{couple.progress}%</strong></div><Progress value={couple.progress} /></div></section><section className="portal-grid"><div className="portal-section portal-section--wide"><div className="portal-section__head"><div><p className="eyebrow">확정된 일정</p><h2>확정된 일정</h2></div><button onClick={() => openTab('calendar')}>전체 보기 <ChevronRight size={14} /></button></div><div className="portal-schedule">{eventsForCouple.slice(0, 3).map((event) => <article key={event.id}><div className="portal-date"><strong>{event.date.slice(-2)}</strong><span>{event.date.slice(5, 7)}월</span></div><div><Badge tone="rose">{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}~{event.endTime}</p><p>{event.location}</p></div><span className="schedule-note"><CheckCircle2 size={14} /> {labels.confirmed}</span></article>)}</div></div><div className="portal-section"><div className="portal-section__head"><div><p className="eyebrow">이번 주</p><h2>준비 현황</h2></div><span>{completed}/{tasks.length}</span></div><div className="portal-tasks">{tasks.slice(0, 4).map((task) => <label key={task.id} className={task.completed ? 'done' : ''}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.dueDate} · {task.owner}</small></div></label>)}</div><button className="portal-full-button" onClick={() => openTab('tasks')}>체크리스트 보기 <ChevronRight size={14} /></button></div></section><section className="portal-vendor-confirmed-grid"><article><p className="eyebrow">확정 업체</p><h3>스드메</h3>{contractsForCouple.filter((item) => !isJewelry(item.category) && !item.category.includes('예식장')).map((item) => <p key={item.id}><strong>{item.vendorName}</strong><span>{item.details}</span></p>)}</article><article><p className="eyebrow">확정 업체</p><h3>예물·예식장</h3>{contractsForCouple.filter((item) => isJewelry(item.category) || item.category.includes('예식장')).map((item) => <p key={item.id}><strong>{item.vendorName}</strong><span>{item.details}</span></p>)}</article></section><section className="portal-vendor-confirmed-grid portal-vendor-recommended-grid"><article><p className="eyebrow">플래너 추천 업체</p><h3>스드메</h3>{recommended.filter(({ vendor }) => vendor && isSdme(vendor.category)).map(({ vendor }) => vendor && <p key={vendor.id}><strong>{vendor.name}</strong><span>{vendor.summary}</span></p>)}{!recommended.some(({ vendor }) => vendor && isSdme(vendor.category)) && <p className="portal-vendor-empty">아직 추천된 스드메 업체가 없습니다.</p>}</article><article><p className="eyebrow">플래너 추천 업체</p><h3>예물</h3>{recommended.filter(({ vendor }) => vendor && isJewelry(vendor.category)).map(({ vendor }) => vendor && <p key={vendor.id}><strong>{vendor.name}</strong><span>{vendor.summary}</span></p>)}{!recommended.some(({ vendor }) => vendor && isJewelry(vendor.category)) && <p className="portal-vendor-empty">아직 추천된 예물 업체가 없습니다.</p>}</article></section></>}
+      {tab === 'calendar' && <section className="portal-subpage portal-calendar-page"><div className="portal-subpage__intro"><p className="eyebrow">플래너 · 고객 일정 조율</p><h2>공유 일정</h2><p>확정된 일정과 제안 중인 일정을 색상으로 구분해 보여드립니다.</p></div><div className="portal-calendar-toolbar"><div><button className={calendarView === 'week' ? 'active' : ''} onClick={() => setCalendarView('week')}>주간</button><button className={calendarView === 'month' ? 'active' : ''} onClick={() => setCalendarView('month')}>월간</button></div>{calendarView === 'month' ? <div className="portal-month-nav"><button disabled={!canPrev} onClick={() => shiftMonth(-1)} aria-label="이전 달"><ChevronLeft size={17} /></button><strong>{monthTitle}</strong><button disabled={!canNext} onClick={() => shiftMonth(1)} aria-label="다음 달"><ChevronRight size={17} /></button></div> : <span>{dateLabel(weekDates[0])} – {dateLabel(weekDates[6])}</span>}</div>{calendarView === 'month' && <div className="portal-calendar-weekdays">{['일', '월', '화', '수', '목', '금', '토'].map((day) => <span key={day}>{day}</span>)}</div>}<div className={'portal-calendar-grid portal-calendar-grid--' + calendarView}>{(calendarView === 'week' ? weekDates : monthDates).map((date, index) => date ? <div key={date} className="portal-calendar-day"><strong>{dateLabel(date)}</strong>{eventsForCouple.filter((event) => event.date === date).map((event) => <div className="portal-calendar-event portal-calendar-event--confirmed" key={event.id}><CheckCircle2 size={13} />{event.time} {event.title}<small>{labels.confirmed} · 공유됨</small></div>)}{options.flatMap((option) => option.dates.filter((item) => item.date === date).map((item) => <div className="portal-calendar-event portal-calendar-event--proposal" key={option.id + '-' + date}><CalendarDays size={13} />{item.startTime ?? '종일'} 제안<small>플래너 제안 · 응답 대기</small></div>))}</div> : <div className="portal-calendar-day portal-calendar-day--empty" key={'empty-' + index} />)}</div>{options.map((option) => <article className="portal-coordination-card" key={option.id}><div className="portal-coordination-copy"><Badge tone="amber">{labels.before}</Badge><h3>{option.note}</h3><p>플래너가 제안한 일정입니다. 오케이 또는 불가를 선택해 주세요.</p></div><div className="portal-coordination-dates">{option.dates.map((item) => <strong key={item.date}>{dateLabel(item.date)} · {item.startTime ?? '종일'}~{item.endTime ?? ''}</strong>)}<button className="portal-other-date" onClick={() => openOtherDate(option)}><Plus size={14} /> 다른 일정 제안</button></div><div className="portal-coordination-actions">{option.dates.map((item) => { const response = option.responses.find((entry) => entry.date === item.date); return <div key={item.date}><button className={response?.state === 'available' ? 'selected' : ''} onClick={() => respond(option, item.date, 'available')}><Check size={15} /> {labels.okay}</button><button className={response?.state === 'unavailable' ? 'selected unavailable' : ''} onClick={() => respond(option, item.date, 'unavailable')}><Pause size={15} /> {labels.unavailable}</button></div> })}</div>{otherDateOptionId === option.id && <div className="portal-other-date-panel"><div className="portal-other-date-panel__tabs"><button className="active">다른 일정 제안</button><button type="button" onClick={() => setOtherDateOptionId(null)}>기존 제안 보기</button></div><form onSubmit={(event) => { event.preventDefault(); submitOtherDate(option) }}><label>날짜<input type="date" value={otherDate} onChange={(event) => setOtherDate(event.target.value)} required /></label><label>시작 시간<input type="time" value={otherStartTime} onChange={(event) => setOtherStartTime(event.target.value)} /></label><label>종료 시간<input type="time" value={otherEndTime} onChange={(event) => setOtherEndTime(event.target.value)} /></label><button className="primary-btn" type="submit">이 일정으로 제안하기</button></form></div>}</article>)}</section>}
+      {tab === 'tasks' && <section className="portal-subpage portal-tasks-page"><div className="portal-subpage__intro"><p className="eyebrow">공유 체크리스트</p><h2>준비 현황 체크리스트</h2></div><MonthlyRoadmap tasks={tasks} onToggle={toggleChecklist} /><CategoryChecklist tasks={tasks} onToggle={toggleChecklist} /></section>}
+    </main>{message && <div className="portal-toast"><ThumbsUp size={17} /><div><strong>메시지 창을 준비했어요</strong><span>이 페이지에서 플래너에게 문의할 수 있어요.</span></div></div>}
+  </div>
 }
