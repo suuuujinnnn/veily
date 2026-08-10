@@ -2,7 +2,6 @@ import { Fragment, useMemo, useState } from 'react'
 import { AlertTriangle, ArrowRight, Building2, CalendarPlus, Car, ChevronLeft, ChevronRight, Home, MapPin, Plus, Settings2 } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card } from '../../components/ui'
-import { couples } from '../../data/mockData'
 import type { WeddingEvent } from '../../types'
 import { AddEventModal } from './AddEventModal'
 import { buildTravelPlans, findCalendarConflicts, type TransitPreference } from './calendarUtils'
@@ -15,7 +14,7 @@ const eventClass: Record<string, string> = {
 }
 
 export function CalendarPage() {
-  const { events } = useDemoStore()
+  const { couples, events } = useDemoStore()
   const [view, setView] = useState<'month' | 'week'>('month')
   const [filter, setFilter] = useState('전체')
   const [selectedDate, setSelectedDate] = useState('2026-08-05')
@@ -95,7 +94,7 @@ export function CalendarPage() {
                 onKeyDown={(event) => { if (event.key === 'Enter') setSelectedDate(item.date) }}
                 className={`calendar-cell ${!item.current ? 'calendar-cell--muted' : ''} ${isToday ? 'calendar-cell--today' : ''} ${selectedDate === item.date ? 'calendar-cell--selected' : ''} ${hasConflict ? 'calendar-cell--conflict' : ''}`}
               >
-                <div className="calendar-cell__top"><span>{item.day}</span>{hasConflict ? <small className="cell-conflict"><AlertTriangle size={10} /> 겹침</small> : isToday && <small>오늘</small>}<button onClick={(event) => { event.stopPropagation(); setModalOpen(true) }} aria-label={`${item.day}일 일정 추가`}><Plus size={13} /></button></div>
+                <div className="calendar-cell__top"><span>{item.day}</span>{hasConflict ? <small className="cell-conflict"><AlertTriangle size={10} /> 겹침</small> : isToday && <small>오늘</small>}<button onClick={(event) => { event.stopPropagation(); setSelectedDate(item.date); setModalOpen(true) }} aria-label={`${item.day}일 일정 추가`}><Plus size={13} /></button></div>
                 <div className="calendar-cell__events calendar-cell__events--timeline">
                   {visibleEvents.map((event) => {
                     const plan = dayPlanByEvent.get(event.id)
@@ -129,7 +128,7 @@ export function CalendarPage() {
           <button className="day-panel__add" onClick={() => setModalOpen(true)}><Plus size={15} /> 이 날 일정 추가</button>
         </aside>
       </div>
-      <AddEventModal open={modalOpen} onClose={() => setModalOpen(false)} onAdded={added} />
+      <AddEventModal open={modalOpen} initialDate={selectedDate} onClose={() => setModalOpen(false)} onAdded={added} />
       {toast && <div className="toast"><span>✓</span><div><strong>일정이 등록되었어요.</strong><p>캘린더와 커플 상세에 바로 반영했습니다.</p></div></div>}
     </div>
   )

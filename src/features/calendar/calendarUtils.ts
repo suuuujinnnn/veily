@@ -51,7 +51,7 @@ export function buildTravelPlans(
   const legs: TravelLeg[] = Array.from({ length: sorted.length + 1 }, (_, legIndex) => {
     const previous = sorted[legIndex - 1]
     const next = sorted[legIndex]
-    const mode = legMode(legIndex, preferred, useCar)
+    const mode = next?.travelMode ?? (next ? legMode(legIndex, preferred, useCar) : previous?.travelMode ?? legMode(legIndex, preferred, useCar))
     const from = previous?.location ?? baseLocation
     const to = next?.location ?? baseLocation
     return {

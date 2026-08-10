@@ -2,20 +2,19 @@ import { ArrowLeft, CalendarDays, Camera, Clock3, ExternalLink, MapPin, Phone, S
 import { Link, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button } from '../../components/ui'
-import { vendors } from '../../data/mockData'
 import { VendorScheduleBoard } from './VendorScheduleBoard'
 
 export function VendorDetailPage() {
   const { vendorId = 'v1' } = useParams()
+  const { vendors, recommendations, setRecommendation } = useDemoStore()
   const vendor = vendors.find((item) => item.id === vendorId) ?? vendors[0]
-  const { recommendations, setRecommendation } = useDemoStore()
   const recommended = recommendations.some((item) => item.coupleId === 'c1' && item.vendorId === vendor.id)
 
   return (
     <div className="page-stack vendor-detail-page">
       <div className="vendor-detail-topline">
         <Link className="back-link" to="/vendors"><ArrowLeft size={15} /> 파트너 업체</Link>
-        <div><span>현재 진행 중</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
+        <div><span>분석 데이터</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
       </div>
 
       <section className="vendor-detail-hero">
