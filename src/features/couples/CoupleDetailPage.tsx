@@ -7,6 +7,8 @@ import type { ChecklistCategory, ChecklistItem } from '../../types'
 import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
 import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
+import { WorkflowGuidePanel } from '../checklist/WorkflowGuidePanel'
+import { formatChecklistDate } from '../checklist/checklistUtils'
 import { ConsultationsPanel } from './ConsultationsPanel'
 import { CoupleInfoPanel } from './CoupleInfoPanel'
 import { EstimateSettlementPanel } from './EstimateSettlementPanel'
@@ -33,7 +35,7 @@ export function CoupleDetailPage() {
   const [editorCategory, setEditorCategory] = useState<ChecklistCategory>('스튜디오')
   const [scheduleOpen, setScheduleOpen] = useState(false)
   const coupleEvents = useMemo(() => events.filter((event) => event.coupleId === couple.id), [events, couple.id])
-  const coupleTasks = checklist.filter((item) => item.coupleId === couple.id)
+  const coupleTasks = checklist.filter((item) => item.coupleId === couple.id).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
   const recommendedVendors = recommendations.filter((item) => item.coupleId === couple.id).map((item) => ({ ...item, vendor: vendors.find((vendor) => vendor.id === item.vendorId) })).filter((item) => item.vendor)
 
   const openTab = (nextTab: DetailTab) => {
@@ -56,7 +58,7 @@ export function CoupleDetailPage() {
 
       {tab === 'overview' && <div className="detail-overview">
         <section className="detail-column detail-column--wide"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Coming up</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card padding="none" className="upcoming-list">{coupleEvents.slice(0,3).map((event) => <div className="upcoming-row" key={event.id}><div className="date-tile"><strong>{Number(event.date.slice(-2))}</strong><span>8월</span></div><div><Badge tone="rose">{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}–{event.endTime} <i /> <MapPin size={13} /> {event.location}</p></div><ChevronRight size={17} /></div>)}</Card></section>
-        <section className="detail-column"><div className="section-heading section-heading--compact"><div><p className="eyebrow">To-do</p><h2>이번 주 할 일</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card className="task-list">{coupleTasks.slice(0,4).map((task) => <label className={`task-row ${task.completed ? 'task-row--done' : ''}`} key={task.id}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span className="custom-check"><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.category} · {task.dueDate} · {task.owner}</small></div></label>)}</Card></section>
+        <section className="detail-column"><div className="section-heading section-heading--compact"><div><p className="eyebrow">To-do</p><h2>이번 주 할 일</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card className="task-list">{coupleTasks.slice(0,4).map((task) => <label className={`task-row ${task.completed ? 'task-row--done' : ''}`} key={task.id}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span className="custom-check"><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.category} · {formatChecklistDate(task.dueDate)} · {task.owner}</small></div></label>)}</Card></section>
         <Card className="couple-note"><MessageCircle size={18} /><div><span>플래너 노트</span><p>“서윤님은 장식보다 실루엣을 중요하게 생각해요. 추천 시 깨끗한 실크 소재를 우선으로 보여드리기.”</p><button>노트 편집</button></div></Card>
         <Card className="recommendation-peek"><div className="recommendation-peek__head"><span><Sparkles size={17} /> 취향 분석 리포트</span><Badge tone="sage">업데이트됨</Badge></div><h3>Clean · Timeless · Natural</h3><div className="tag-row"><span>미카도 실크</span><span>자연광</span><span>절제된 플라워</span></div><button onClick={() => openTab('vendors')}>추천 업체 보기 <ChevronRight size={14} /></button></Card>
       </div>}
@@ -64,6 +66,7 @@ export function CoupleDetailPage() {
       {tab === 'timeline' && <div className="checklist-workspace">
         <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><div className="heading-actions"><Badge tone="neutral">템플릿 {coupleTasks.filter((task) => task.isTemplate).length}개 적용</Badge><Button variant="secondary" icon={<Plus size={15} />} onClick={() => setScheduleOpen(true)}>일정 추가</Button></div></section>
         <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />
+        <WorkflowGuidePanel coupleId={couple.id} weddingDate={couple.weddingDate} tasks={coupleTasks} onAdd={addChecklist} />
         <div className="checklist-workspace__lower">
           <CategoryChecklist
             tasks={coupleTasks}

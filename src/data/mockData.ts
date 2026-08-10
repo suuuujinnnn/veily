@@ -1,4 +1,6 @@
 import type {
+  BudgetItem,
+  BudgetPlan,
   ChecklistItem,
   CommunityPost,
   Consultation,
@@ -90,27 +92,40 @@ export const initialEvents: WeddingEvent[] = [
 ]
 
 export const initialChecklist: ChecklistItem[] = [
-  { id: 't1', coupleId: 'c1', title: '예식장 계약금 납부', dueDate: '6월 18일', phase: 'D-121', month: '6월', category: '웨딩홀', completed: true, owner: '함께', isTemplate: true },
-  { id: 't2', coupleId: 'c1', title: '스튜디오 촬영 콘셉트 확정', dueDate: '6월 26일', phase: 'D-113', month: '6월', category: '스튜디오', completed: true, owner: '플래너', isTemplate: true },
-  { id: 't3', coupleId: 'c1', title: '신랑 예복 1차 가봉', dueDate: '7월 9일', phase: 'D-100', month: '7월', category: '예복·예물', completed: true, owner: '신랑·신부', isTemplate: true },
-  { id: 't4', coupleId: 'c1', title: '본식 스냅 업체 확정', dueDate: '7월 16일', phase: 'D-93', month: '7월', category: '본식·기록', completed: true, owner: '함께', isTemplate: true },
-  { id: 't5', coupleId: 'c1', title: '본식 드레스 2차 피팅 준비사항 확인', dueDate: '8월 5일', phase: 'D-73', month: '8월', category: '드레스·본식', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't6', coupleId: 'c1', title: '본식 스냅 촬영 구성 확정', dueDate: '8월 9일', phase: 'D-69', month: '8월', category: '본식·기록', completed: true, owner: '함께', isTemplate: true },
-  { id: 't7', coupleId: 'c1', title: '청첩장 문구 최종 확인', dueDate: '8월 12일', phase: 'D-66', month: '8월', category: '초대·연출', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't8', coupleId: 'c1', title: '부케 레퍼런스 전달', dueDate: '8월 16일', phase: 'D-62', month: '8월', category: '초대·연출', completed: false, owner: '플래너', isTemplate: true },
-  { id: 't9', coupleId: 'c1', title: '혼인서약서 초안 작성', dueDate: '9월 3일', phase: 'D-44', month: '9월', category: '행정·기타', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't10', coupleId: 'c1', title: '예물 수령 및 사이즈 확인', dueDate: '9월 8일', phase: 'D-39', month: '9월', category: '예복·예물', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't11', coupleId: 'c1', title: '하객 좌석 배치 1차 정리', dueDate: '9월 17일', phase: 'D-30', month: '9월', category: '초대·연출', completed: false, owner: '함께', isTemplate: true },
-  { id: 't12', coupleId: 'c1', title: '본식 메이크업 최종 시안 확인', dueDate: '10월 2일', phase: 'D-15', month: '10월', category: '메이크업', completed: false, owner: '플래너', isTemplate: true },
-  { id: 't13', coupleId: 'c1', title: '식순 및 음원 최종 제출', dueDate: '10월 7일', phase: 'D-10', month: '10월', category: '초대·연출', completed: false, owner: '함께', isTemplate: true },
-  { id: 't14', coupleId: 'c1', title: '혼인신고 준비 서류 확인', dueDate: '10월 12일', phase: 'D-5', month: '10월', category: '행정·기타', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't15', coupleId: 'c2', title: '스튜디오 의상 리스트 공유', dueDate: '8월 7일', phase: 'D-127', month: '8월', category: '스튜디오', completed: false, owner: '플래너', isTemplate: true },
-  { id: 't16', coupleId: 'c3', title: '웨딩홀 투어 동선 확정', dueDate: '8월 10일', phase: 'D-194', month: '8월', category: '웨딩홀', completed: true, owner: '함께', isTemplate: true },
-  { id: 't17', coupleId: 'c1', title: '촬영 드레스 3벌·액세서리 셀렉', dueDate: '7월 2일', phase: 'D-107', month: '7월', category: '드레스·촬영', completed: true, owner: '함께', isTemplate: true },
-  { id: 't18', coupleId: 'c1', title: '스튜디오 원본 셀렉 및 보정 요청', dueDate: '8월 28일', phase: 'D-50', month: '8월', category: '스튜디오', completed: false, owner: '함께', isTemplate: true },
-  { id: 't19', coupleId: 'c1', title: '본식 드레스 최종 가봉·베일 확정', dueDate: '9월 24일', phase: 'D-23', month: '9월', category: '드레스·본식', completed: false, owner: '신랑·신부', isTemplate: true },
-  { id: 't20', coupleId: 'c1', title: '메이크업 테스트 결과·헤어 변형안 정리', dueDate: '8월 30일', phase: 'D-48', month: '8월', category: '메이크업', completed: false, owner: '플래너', isTemplate: true },
-  { id: 't21', coupleId: 'c1', title: '본식 영상 BGM·인터뷰 구성 확정', dueDate: '9월 20일', phase: 'D-27', month: '9월', category: '본식·기록', completed: false, owner: '함께', isTemplate: true },
+  { id: 't1', coupleId: 'c1', title: '예식장 계약금 납부', dueDate: '2026-06-18', category: '웨딩홀', completed: true, owner: '함께', isTemplate: true },
+  { id: 't2', coupleId: 'c1', title: '스튜디오 촬영 콘셉트 확정', dueDate: '2026-06-26', category: '스튜디오', completed: true, owner: '플래너', isTemplate: true },
+  { id: 't3', coupleId: 'c1', title: '신랑 예복 1차 가봉', dueDate: '2026-07-09', category: '예복·예물', completed: true, owner: '신랑·신부', isTemplate: true },
+  { id: 't4', coupleId: 'c1', title: '본식 스냅 업체 확정', dueDate: '2026-07-16', category: '본식·기록', completed: true, owner: '함께', isTemplate: true },
+  { id: 't5', coupleId: 'c1', title: '본식 드레스 2차 피팅 준비사항 확인', dueDate: '2026-08-05', category: '드레스·본식', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't6', coupleId: 'c1', title: '본식 스냅 촬영 구성 확정', dueDate: '2026-08-09', category: '본식·기록', completed: true, owner: '함께', isTemplate: true },
+  { id: 't7', coupleId: 'c1', title: '청첩장 문구 최종 확인', dueDate: '2026-08-12', category: '초대·연출', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't8', coupleId: 'c1', title: '부케 레퍼런스 전달', dueDate: '2026-08-16', category: '초대·연출', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't9', coupleId: 'c1', title: '혼인서약서 초안 작성', dueDate: '2026-09-03', category: '행정·기타', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't10', coupleId: 'c1', title: '예물 수령 및 사이즈 확인', dueDate: '2026-09-08', category: '예복·예물', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't11', coupleId: 'c1', title: '하객 좌석 배치 1차 정리', dueDate: '2026-09-17', category: '초대·연출', completed: false, owner: '함께', isTemplate: true },
+  { id: 't12', coupleId: 'c1', title: '본식 메이크업 최종 시안 확인', dueDate: '2026-10-02', category: '메이크업', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't13', coupleId: 'c1', title: '식순 및 음원 최종 제출', dueDate: '2026-10-07', category: '초대·연출', completed: false, owner: '함께', isTemplate: true },
+  { id: 't14', coupleId: 'c1', title: '혼인신고 준비 서류 확인', dueDate: '2026-10-12', category: '행정·기타', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't15', coupleId: 'c2', title: '스튜디오 의상 리스트 공유', dueDate: '2026-08-07', category: '스튜디오', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't16', coupleId: 'c3', title: '웨딩홀 투어 동선 확정', dueDate: '2026-08-10', category: '웨딩홀', completed: true, owner: '함께', isTemplate: true },
+  { id: 't17', coupleId: 'c1', title: '촬영 드레스 3벌·액세서리 셀렉', dueDate: '2026-07-02', category: '드레스·촬영', completed: true, owner: '함께', isTemplate: true },
+  { id: 't18', coupleId: 'c1', title: '스튜디오 원본 셀렉 및 보정 요청', dueDate: '2026-08-28', category: '스튜디오', completed: false, owner: '함께', isTemplate: true },
+  { id: 't19', coupleId: 'c1', title: '본식 드레스 최종 가봉·베일 확정', dueDate: '2026-09-24', category: '드레스·본식', completed: false, owner: '신랑·신부', isTemplate: true },
+  { id: 't20', coupleId: 'c1', title: '메이크업 테스트 결과·헤어 변형안 정리', dueDate: '2026-08-30', category: '메이크업', completed: false, owner: '플래너', isTemplate: true },
+  { id: 't21', coupleId: 'c1', title: '본식 영상 BGM·인터뷰 구성 확정', dueDate: '2026-09-20', category: '본식·기록', completed: false, owner: '함께', isTemplate: true },
+]
+
+export const initialBudgetPlans: BudgetPlan[] = couples.map((couple) => ({
+  coupleId: couple.id,
+  targetAmount: couple.id === 'c1' ? 35_000_000 : 0,
+}))
+
+export const initialBudgetItems: BudgetItem[] = [
+  { id: 'bi1', coupleId: 'c1', category: '웨딩홀·식대', title: '웨딩홀 대관·식대', plannedAmount: 20_000_000, memo: '보증인원 250명 기준' },
+  { id: 'bi2', coupleId: 'c1', category: '스튜디오·드레스·메이크업', title: '드레스 패키지', plannedAmount: 3_000_000, memo: '추가금 별도 확인' },
+  { id: 'bi3', coupleId: 'c1', category: '본식·기록', title: '본식 스냅·영상', plannedAmount: 2_500_000, memo: '' },
+  { id: 'bi4', coupleId: 'c1', category: '예복·예물', title: '예복·웨딩링', plannedAmount: 4_000_000, memo: '' },
+  { id: 'bi5', coupleId: 'c1', category: '초대·하객', title: '청첩장·답례품', plannedAmount: 1_200_000, memo: '' },
 ]
 
 export const vendors: Vendor[] = [
@@ -160,8 +175,8 @@ export const initialRecommendations: Recommendation[] = [
 ]
 
 export const contracts: Contract[] = [
-  { id: 'ct1', coupleId: 'c1', vendorName: '남산 라루체', category: '웨딩홀', contractDate: '2026-04-20', productName: '가든홀 본식', packageDetails: '보증인원 250명 · 식대 · 생화 장식', paymentMethod: '카드', vatType: '포함', totalPrice: 18500000, commission: 740000, deposit: 3000000, paymentDate: '2026-04-20', status: '서명완료', contractFile: '라루체_계약서.pdf', memo: '잔금은 본식 14일 전 납부' },
-  { id: 'ct2', coupleId: 'c1', vendorId: 'vp-d5', vendorName: '루이즈블랑', category: '드레스', contractDate: '2026-05-03', productName: '촬영·본식 드레스 패키지', packageDetails: '본식 1벌 · 촬영 3벌 · 2차 피팅', paymentMethod: '계좌이체', vatType: '별도', totalPrice: 3200000, commission: 320000, deposit: 800000, paymentDate: '2026-05-03', status: '확인필요', contractFile: '루이즈블랑_계약서.pdf', memo: 'VAT 별도 확인 필요' },
+  { id: 'ct1', coupleId: 'c1', vendorName: '남산 라루체', category: '웨딩홀', contractDate: '2026-04-20', productName: '가든홀 본식', packageDetails: '보증인원 250명 · 식대 · 생화 장식', paymentMethod: '카드', vatType: '포함', totalPrice: 18500000, commission: 740000, deposit: 3000000, paymentDate: '2026-04-20', status: '서명완료', contractFile: '라루체_계약서.pdf', memo: '잔금은 본식 14일 전 납부', budgetItemId: 'bi1' },
+  { id: 'ct2', coupleId: 'c1', vendorId: 'vp-d5', vendorName: '루이즈블랑', category: '드레스', contractDate: '2026-05-03', productName: '촬영·본식 드레스 패키지', packageDetails: '본식 1벌 · 촬영 3벌 · 2차 피팅', paymentMethod: '계좌이체', vatType: '별도', totalPrice: 3200000, commission: 320000, deposit: 800000, paymentDate: '2026-05-03', status: '확인필요', contractFile: '루이즈블랑_계약서.pdf', memo: 'VAT 별도 확인 필요', budgetItemId: 'bi2' },
   { id: 'ct3', coupleId: 'c2', vendorId: 'vp-s1', vendorName: '클레브 스튜디오', category: '스튜디오', contractDate: '2026-07-02', productName: '스튜디오 촬영 패키지', packageDetails: '원본 전체 · 수정본 20P · 앨범 2권', paymentMethod: '카드', vatType: '포함', totalPrice: 2150000, commission: 215000, deposit: 500000, paymentDate: '2026-07-02', status: '결제대기', contractFile: '', memo: '촬영일 잔금 결제' },
   { id: 'ct4', coupleId: 'c4', vendorName: '아펠가모 반포', category: '웨딩홀', contractDate: '2026-03-05', productName: '채플홀 본식', packageDetails: '보증인원 280명 · 채플홀 · 생화 장식', paymentMethod: '현금', vatType: '포함', totalPrice: 21800000, commission: 872000, deposit: 4000000, paymentDate: '2026-03-05', status: '서명완료', contractFile: '아펠가모_계약서.pdf', memo: '최종 인원 D-14 확정' },
 ]

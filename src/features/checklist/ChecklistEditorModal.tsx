@@ -11,9 +11,7 @@ type ChecklistDraft = Omit<ChecklistItem, 'id' | 'completed'>
 const emptyDraft = (coupleId: string, category: ChecklistCategory = '스튜디오'): ChecklistDraft => ({
   coupleId,
   title: '',
-  dueDate: '8월 20일',
-  phase: 'D-58',
-  month: '8월',
+  dueDate: new Date().toISOString().slice(0, 10),
   category,
   owner: '함께',
   isTemplate: false,
@@ -45,8 +43,6 @@ export function ChecklistEditorModal({
       coupleId: item.coupleId,
       title: item.title,
       dueDate: item.dueDate,
-      phase: item.phase,
-      month: item.month,
       category: item.category,
       owner: item.owner,
       isTemplate: item.isTemplate,
@@ -76,10 +72,8 @@ export function ChecklistEditorModal({
     >
       <div className="form-grid">
         <label className="form-field form-field--wide"><span>할 일</span><input autoFocus value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="예: 식순 최종 확인" /></label>
-        <label className="form-field"><span>월</span><select value={draft.month} onChange={(event) => setDraft({ ...draft, month: event.target.value })}>{['6월','7월','8월','9월','10월'].map((month) => <option key={month}>{month}</option>)}</select></label>
         <label className="form-field"><span>분야</span><select value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value as ChecklistCategory })}>{checklistCategories.map((category) => <option key={category.id}>{category.id}</option>)}</select></label>
-        <label className="form-field"><span>마감일</span><input value={draft.dueDate} onChange={(event) => setDraft({ ...draft, dueDate: event.target.value })} /></label>
-        <label className="form-field"><span>D-day 단계</span><input value={draft.phase} onChange={(event) => setDraft({ ...draft, phase: event.target.value })} /></label>
+        <label className="form-field"><span>마감일</span><input type="date" value={draft.dueDate} onChange={(event) => setDraft({ ...draft, dueDate: event.target.value })} /></label>
         <label className="form-field form-field--wide"><span>담당</span><select value={draft.owner} onChange={(event) => setDraft({ ...draft, owner: event.target.value as ChecklistItem['owner'] })}>{owners.map((owner) => <option key={owner}>{owner}</option>)}</select></label>
       </div>
     </Modal>

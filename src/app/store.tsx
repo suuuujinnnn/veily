@@ -2,6 +2,8 @@ import { createContext, type PropsWithChildren, useContext, useMemo, useReducer 
 import {
   contracts as initialContracts,
   couples as initialCouples,
+  initialBudgetItems,
+  initialBudgetPlans,
   initialChecklist,
   initialConsultations,
   initialEvents,
@@ -12,6 +14,8 @@ import {
   vendors as initialVendors,
 } from '../data/mockData'
 import type {
+  BudgetItem,
+  BudgetPlan,
   ChecklistItem,
   Consultation,
   Contract,
@@ -33,6 +37,8 @@ export interface DemoState {
   recommendations: Recommendation[]
   contracts: Contract[]
   payments: Payment[]
+  budgetPlans: BudgetPlan[]
+  budgetItems: BudgetItem[]
   consultations: Consultation[]
   portalSettings: PortalSettings[]
   availability: Record<string, string[]>
@@ -53,6 +59,10 @@ export type DemoAction =
   | { type: 'ADD_PAYMENT'; payload: Payment }
   | { type: 'UPDATE_PAYMENT'; payload: Payment }
   | { type: 'DELETE_PAYMENT'; payload: string }
+  | { type: 'UPDATE_BUDGET_PLAN'; payload: BudgetPlan }
+  | { type: 'ADD_BUDGET_ITEM'; payload: BudgetItem }
+  | { type: 'UPDATE_BUDGET_ITEM'; payload: BudgetItem }
+  | { type: 'DELETE_BUDGET_ITEM'; payload: string }
   | { type: 'ADD_VENDOR'; payload: Vendor }
   | { type: 'UPDATE_VENDOR'; payload: Vendor }
   | { type: 'UPDATE_PORTAL_SETTINGS'; payload: PortalSettings }
@@ -68,6 +78,8 @@ export const initialState: DemoState = {
   recommendations: initialRecommendations,
   contracts: initialContracts,
   payments: initialPayments,
+  budgetPlans: initialBudgetPlans,
+  budgetItems: initialBudgetItems,
   consultations: initialConsultations,
   portalSettings: initialPortalSettings,
   availability: { e4: ['8월 8일 (토) 11:00'] },
@@ -102,6 +114,16 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, payments: state.payments.map((item) => item.id === action.payload.id ? action.payload : item) }
     case 'DELETE_PAYMENT':
       return { ...state, payments: state.payments.filter((item) => item.id !== action.payload) }
+    case 'UPDATE_BUDGET_PLAN': {
+      const exists = state.budgetPlans.some((item) => item.coupleId === action.payload.coupleId)
+      return { ...state, budgetPlans: exists ? state.budgetPlans.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.budgetPlans, action.payload] }
+    }
+    case 'ADD_BUDGET_ITEM':
+      return { ...state, budgetItems: [...state.budgetItems, action.payload] }
+    case 'UPDATE_BUDGET_ITEM':
+      return { ...state, budgetItems: state.budgetItems.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'DELETE_BUDGET_ITEM':
+      return { ...state, budgetItems: state.budgetItems.filter((item) => item.id !== action.payload), contracts: state.contracts.map((item) => item.budgetItemId === action.payload ? { ...item, budgetItemId: undefined } : item) }
     case 'ADD_VENDOR':
       return { ...state, vendors: [...state.vendors, action.payload] }
     case 'UPDATE_VENDOR':
@@ -145,6 +167,10 @@ interface DemoContextValue extends DemoState {
   addPayment: (item: Omit<Payment, 'id'>) => void
   updatePayment: (item: Payment) => void
   deletePayment: (id: string) => void
+  updateBudgetPlan: (plan: BudgetPlan) => void
+  addBudgetItem: (item: Omit<BudgetItem, 'id'>) => void
+  updateBudgetItem: (item: BudgetItem) => void
+  deleteBudgetItem: (id: string) => void
   addVendor: (item: Omit<Vendor, 'id'>) => void
   updateVendor: (item: Vendor) => void
   updatePortalSettings: (settings: PortalSettings) => void
@@ -173,6 +199,10 @@ export function DemoProvider({ children }: PropsWithChildren) {
     addPayment: (item) => dispatch({ type: 'ADD_PAYMENT', payload: { ...item, id: makeId('pay') } }),
     updatePayment: (item) => dispatch({ type: 'UPDATE_PAYMENT', payload: item }),
     deletePayment: (id) => dispatch({ type: 'DELETE_PAYMENT', payload: id }),
+    updateBudgetPlan: (plan) => dispatch({ type: 'UPDATE_BUDGET_PLAN', payload: plan }),
+    addBudgetItem: (item) => dispatch({ type: 'ADD_BUDGET_ITEM', payload: { ...item, id: makeId('bi') } }),
+    updateBudgetItem: (item) => dispatch({ type: 'UPDATE_BUDGET_ITEM', payload: item }),
+    deleteBudgetItem: (id) => dispatch({ type: 'DELETE_BUDGET_ITEM', payload: id }),
     addVendor: (item) => dispatch({ type: 'ADD_VENDOR', payload: { ...item, id: makeId('v') } }),
     updateVendor: (item) => dispatch({ type: 'UPDATE_VENDOR', payload: item }),
     updatePortalSettings: (settings) => dispatch({ type: 'UPDATE_PORTAL_SETTINGS', payload: settings }),

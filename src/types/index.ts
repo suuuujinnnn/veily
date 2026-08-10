@@ -60,12 +60,47 @@ export interface ChecklistItem {
   coupleId: string
   title: string
   dueDate: string
-  phase: string
-  month: string
   category: ChecklistCategory
   completed: boolean
   owner: '플래너' | '신랑·신부' | '함께'
   isTemplate?: boolean
+  templateId?: string
+}
+
+export interface WeddingWorkflowTemplate {
+  id: string
+  title: string
+  category: ChecklistCategory
+  offsetDays: number
+  defaultOwner: ChecklistItem['owner']
+  summary: string
+  checkpoints: string[]
+  optional: boolean
+}
+
+export type BudgetCategory =
+  | '웨딩홀·식대'
+  | '스튜디오·드레스·메이크업'
+  | '본식·기록'
+  | '예복·예물'
+  | '초대·하객'
+  | '연출·플라워'
+  | '혼주·교통'
+  | '허니문·행정'
+  | '기타'
+
+export interface BudgetPlan {
+  coupleId: string
+  targetAmount: number
+}
+
+export interface BudgetItem {
+  id: string
+  coupleId: string
+  category: BudgetCategory
+  title: string
+  plannedAmount: number
+  memo: string
 }
 
 export interface Vendor {
@@ -132,6 +167,7 @@ export interface Contract {
   status: '서명완료' | '확인필요' | '결제대기' | '계약진행'
   contractFile: string
   memo: string
+  budgetItemId?: string
 }
 
 export interface Consultation {
