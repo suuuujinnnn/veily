@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { BarChart3, Brush, Camera, Check, CheckCircle2, ChevronRight, Gem, ImagePlus, RefreshCcw, Search, Send, Sparkles, UploadCloud, WandSparkles } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Button, Card } from '../../components/ui'
-import { couples as initialCouples } from '../../data/mockData'
+import { couples } from '../../data/mockData'
 import { vendorStyleProfiles, vendorStyleTaxonomy, type PartnerCategory, type VendorStyleProfile } from '../../data/vendorStyleData'
 import { imageAssets } from '../../assets/images'
 
@@ -30,8 +30,8 @@ export function VendorsPage() {
   const [shortlist, setShortlist] = useState<string[]>([])
   const [proposalSent, setProposalSent] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
-  const { couples: storedCouples, setRecommendation } = useDemoStore()
-  const couple = storedCouples.find((item) => item.id === coupleId) ?? initialCouples[0]
+  const { setRecommendation } = useDemoStore()
+  const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
 
   const filteredProfiles = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
@@ -89,7 +89,7 @@ export function VendorsPage() {
       </section>
 
       <section className="vendor-curation">
-        <header className="vendor-curation__header"><div><p className="eyebrow">Planner curation</p><h2>커플 취향으로 직접 찾기</h2><p>분야와 스타일을 선택하면 해당 특징이 실제 포트폴리오에 많이 나타난 업체부터 보여줍니다.</p></div><label><span>제안할 커플</span><select value={coupleId} onChange={(event) => { setCoupleId(event.target.value); setShortlist([]) }}>{storedCouples.map((item) => <option value={item.id} key={item.id}>{item.partners}</option>)}</select></label></header>
+        <header className="vendor-curation__header"><div><p className="eyebrow">Planner curation</p><h2>커플 취향으로 직접 찾기</h2><p>분야와 스타일을 선택하면 해당 특징이 실제 포트폴리오에 많이 나타난 업체부터 보여줍니다.</p></div><label><span>제안할 커플</span><select value={coupleId} onChange={(event) => { setCoupleId(event.target.value); setShortlist([]) }}>{couples.map((item) => <option value={item.id} key={item.id}>{item.partners}</option>)}</select></label></header>
         <div className="vendor-curation__grid">
           <Card className="couple-style-brief">
             <div className={`couple-style-brief__mark couple-style-brief__mark--${couple.tone}`}>{couple.initials}</div>
@@ -99,7 +99,7 @@ export function VendorsPage() {
           </Card>
           <div className="style-selector">
             <div className="curation-step"><span>1</span><div><strong>먼저 분야를 선택하세요</strong><small>분야마다 서로 다른 스타일 언어를 사용합니다.</small></div></div>
-            <div className="vendor-category-tabs">{categories.map((item) => { const Icon = categoryIcons[item as keyof typeof categoryIcons]; return <button key={item} className={category === item ? 'active' : ''} onClick={() => changeCategory(item)}><Icon size={18} /><span>{item}</span><small>{vendorStyleProfiles.filter((profile) => profile.vendor.category === item).length}개 업체</small></button> })}</div>
+            <div className="vendor-category-tabs">{categories.map((item) => { const Icon = categoryIcons[item]; return <button key={item} className={category === item ? 'active' : ''} onClick={() => changeCategory(item)}><Icon size={18} /><span>{item}</span><small>{vendorStyleProfiles.filter((profile) => profile.vendor.category === item).length}개 업체</small></button> })}</div>
             <div className="curation-step"><span>2</span><div><strong>원하는 스타일을 고르세요</strong><small>라벨 리뷰에서 실제로 확인된 기준입니다.</small></div></div>
             <div className="vendor-style-options">{vendorStyleTaxonomy[category].map((option) => <button key={option.label} className={selectedStyle === option.label ? 'active' : ''} onClick={() => setSelectedStyle(option.label)}><span><strong>{option.label}</strong><em>{option.count}회 감지</em></span><small>{option.description}</small><i><Check size={12} /></i></button>)}</div>
           </div>
@@ -118,14 +118,14 @@ export function VendorsPage() {
             <div className="style-vendor-card__body"><div className="style-vendor-card__meta"><span>{profile.vendor.category} · {profile.vendor.location}</span><em>{profile.profileType}</em></div><h3>{profile.vendor.name}</h3><a href={`https://instagram.com/${profile.account}`} onClick={(event) => event.preventDefault()}>@{profile.account}</a><p>{profile.vendor.summary}</p>
               <div className="style-evidence"><div><span>대표 스타일</span><strong>{profile.primaryStyle} {Math.round(profile.primaryShare * 100)}%</strong></div><div><span>분석 근거</span><strong>{profile.sampleCount}장</strong></div></div>
               <div className="style-distribution">{Object.entries(profile.styleCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([label, count]) => <div key={label} className={label === selectedStyle ? 'is-target' : ''}><span>{label}</span><i><b style={{ width: `${Math.round((count / maxCount) * 100)}%` }} /></i><strong>{count}</strong></div>)}</div>
-              <div className="style-vendor-card__actions"><Link to={`/vendors/${profile.vendor.id}`}>상세 보기 <ChevronRight size={13} /></Link><Button size="sm" variant={selected ? 'secondary' : 'primary'} icon={selected ? <CheckCircle2 size={14} /> : undefined} onClick={() => toggleShortlist(profile.vendor.id)}>{selected ? '후보에 담김' : '업체 후보군에 넣기'}</Button></div>
+              <div className="style-vendor-card__actions"><Link to={`/vendors/${profile.vendor.id}`}>상세 보기 <ChevronRight size={13} /></Link><Button size="sm" variant={selected ? 'secondary' : 'primary'} icon={selected ? <CheckCircle2 size={14} /> : undefined} onClick={() => toggleShortlist(profile.vendor.id)}>{selected ? '후보에 담김' : '제안 후보 담기'}</Button></div>
             </div>
           </article>
         })}</div>
         {!filteredProfiles.length && <Card className="style-results-empty"><Search size={22} /><strong>조건에 맞는 업체가 없습니다.</strong><p>검색어를 지우거나 다른 스타일을 선택해 보세요.</p></Card>}
       </section>
 
-      {selectedProfiles.length > 0 && <section className="vendor-shortlist"><div><span className="vendor-shortlist__count">{selectedProfiles.length}</span><div><strong>{couple.partners}님에게 제안할 업체</strong><p>최대 3곳까지 비교해 보낼 수 있습니다.</p></div></div><div className="vendor-shortlist__chips">{selectedProfiles.map((profile) => <button key={profile.vendor.id} onClick={() => toggleShortlist(profile.vendor.id)}><span>{profile.vendor.name}</span><small>{profile.primaryStyle} 중심</small>×</button>)}</div><Button icon={<Send size={15} />} onClick={sendProposal}>선택한 부부의 추천 업체에 추가</Button></section>}
+      {selectedProfiles.length > 0 && <section className="vendor-shortlist"><div><span className="vendor-shortlist__count">{selectedProfiles.length}</span><div><strong>{couple.partners}님에게 제안할 업체</strong><p>최대 3곳까지 비교해 보낼 수 있습니다.</p></div></div><div className="vendor-shortlist__chips">{selectedProfiles.map((profile) => <button key={profile.vendor.id} onClick={() => toggleShortlist(profile.vendor.id)}><span>{profile.vendor.name}</span><small>{profile.primaryStyle} 중심</small>×</button>)}</div><Button icon={<Send size={15} />} onClick={sendProposal}>신부에게 제안 보내기</Button></section>}
       {proposalSent && <div className="toast vendor-proposal-toast"><span>✓</span><div><strong>제안이 고객 화면에 전달됐어요.</strong><p>{selectedProfiles.map((profile) => profile.vendor.name).join(', ')}</p></div></div>}
     </div>
   )

@@ -1,16 +1,116 @@
-export type EventType = string
-export interface Couple { id:string; partners:string; initials:string; weddingDate:string; venue:string; progress:number; status:string; concept:string; tone:'rose'|'sage'|'sand'; bridePhone?:string; groomPhone?:string; brideEmail?:string; groomEmail?:string; address?:string; contractType?:string; contractDate?:string; ceremonyTime?:string; note?:string }
-export interface WeddingEvent { id:string; coupleId:string; title:string; date:string; time:string; endTime:string; type:EventType; location:string; travelMinutes?:number; status?:'confirmed'|'pending'; sharedWithClient?:boolean }
-export type ChecklistCategory = string
-export interface ChecklistItem { id:string; coupleId:string; title:string; dueDate:string; phase:string; month:string; category:ChecklistCategory; completed:boolean; owner:string; isTemplate?:boolean }
-export interface Vendor { id:string; name:string; category:any; summary:string; tags:string[]; priceRange:string; match:number; image:string; location:string; imagePosition?:string; address:string; hours:string; phone:string; instagram:string; activeEvent:string; gallery:string[] }
-export interface VendorScheduleSlot { id:string; vendorId:string; date:string; time:string; status:'available'|'booked' }
-export interface VendorSelection { coupleId:string; vendorId:string; slotId:string }
-export type RecommendationStatus = 'pending'|'liked'|'hold'
-export interface Recommendation { id:string; coupleId:string; vendorId:string; status:RecommendationStatus }
-export interface Contract { id:string; coupleId:string; vendorName:string; category:string; amount:string; payment:string; vatIncluded:boolean; status:string; details:string; contractDate?:string; item?:string; contractFile?:string; productName?:string; commission?:string; depositDate?:string; commissionInfo?:string; note?:string }
-export interface CommunityPost { id:string; category:string; title:string; excerpt:string; author:string; time:string; replies:number; helpful:number; verified:boolean; tags:string[] }
-export interface CoordinationResponse { id:string; date:string; startTime?:string; endTime?:string; state:'available'|'unavailable'; reason?:string }
-export type CoordinationCategory = '상담'|'스튜디오'|'드레스'|'메이크업'|'기타'|'직접 입력'
-export interface CoordinationOption { id:string; coupleId:string; category?:CoordinationCategory|string; dates:{date:string;startTime?:string;endTime?:string}[]; note:string; responses:CoordinationResponse[] }
-export interface ConsultationCard { id:string; coupleId:string; weddingDate:string; venue:string; budget:string; preferredStyle:string; priorities:string; requestedTopics:string; notes:string; submittedAt:string; plannerResult?:string; plannerFollowUp?:string; shootingDate?:string; coupleNames?:string; couplePhones?:string; preselectedVendors?:string; studioDirection?:string; studioMood?:string; studioComposition?:string; dressStyle?:string; coupleSizes?:string; makeupStyle?:string; otherPlanner?:string; additionalPlanning?:string; weddingHallRequest?:string; meetingRequest?:string; contactPreference?:string }
+export type EventType = '미팅' | '드레스' | '스튜디오' | '메이크업' | '계약' | '본식'
+
+export interface Couple {
+  id: string
+  partners: string
+  initials: string
+  weddingDate: string
+  venue: string
+  progress: number
+  status: '준비중' | '집중관리' | '확정'
+  concept: string
+  tone: 'rose' | 'sage' | 'sand'
+}
+
+export interface WeddingEvent {
+  id: string
+  coupleId: string
+  title: string
+  date: string
+  time: string
+  endTime: string
+  type: EventType
+  location: string
+  travelMinutes?: number
+}
+
+export type ChecklistCategory =
+  | '웨딩홀'
+  | '스튜디오'
+  | '드레스·촬영'
+  | '드레스·본식'
+  | '메이크업'
+  | '본식·기록'
+  | '예복·예물'
+  | '초대·연출'
+  | '행정·기타'
+
+export interface ChecklistItem {
+  id: string
+  coupleId: string
+  title: string
+  dueDate: string
+  phase: string
+  month: string
+  category: ChecklistCategory
+  completed: boolean
+  owner: '플래너' | '신랑·신부' | '함께'
+  isTemplate?: boolean
+}
+
+export interface Vendor {
+  id: string
+  name: string
+  category: '드레스' | '스튜디오' | '메이크업'
+  summary: string
+  tags: string[]
+  priceRange: string
+  match: number
+  image: string
+  location: string
+  imagePosition?: string
+  address: string
+  hours: string
+  phone: string
+  instagram: string
+  activeEvent: string
+  gallery: string[]
+}
+
+export interface VendorScheduleSlot {
+  id: string
+  vendorId: string
+  date: string
+  time: string
+  status: 'available' | 'booked'
+}
+
+export interface VendorSelection {
+  coupleId: string
+  vendorId: string
+  slotId: string
+}
+
+export type RecommendationStatus = 'pending' | 'liked' | 'hold'
+
+export interface Recommendation {
+  id: string
+  coupleId: string
+  vendorId: string
+  status: RecommendationStatus
+}
+
+export interface Contract {
+  id: string
+  coupleId: string
+  vendorName: string
+  category: string
+  amount: string
+  payment: '카드' | '현금' | '계좌이체'
+  vatIncluded: boolean
+  status: '서명완료' | '확인필요' | '결제대기'
+  details: string
+}
+
+export interface CommunityPost {
+  id: string
+  category: string
+  title: string
+  excerpt: string
+  author: string
+  time: string
+  replies: number
+  helpful: number
+  verified: boolean
+  tags: string[]
+}
