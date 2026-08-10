@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ArrowLeft, CalendarDays, Copy, ExternalLink, MapPin, MoreHorizontal } from 'lucide-react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
@@ -31,7 +31,7 @@ function isDetailTab(value: string | null): value is DetailTab {
 export function CoupleDetailPage() {
   const { id = 'c1' } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
-  const { couples: storedCouples, events, checklist, recommendations, coordination, toggleChecklist, addChecklist, updateChecklist, deleteChecklist, finalizeCoordination, consultations, saveConsultation, setRecommendation, addCoordination } = useDemoStore()
+  const { couples: storedCouples, events, checklist, recommendations, coordination, toggleChecklist, addChecklist, updateChecklist, deleteChecklist, finalizeCoordination, consultations, saveConsultation, addCoordination } = useDemoStore()
   const couple = storedCouples.find((item) => item.id === id) ?? initialCouples[0]
   const tab: DetailTab = isDetailTab(searchParams.get('tab')) ? searchParams.get('tab') as DetailTab : 'overview'
   const [editorOpen, setEditorOpen] = useState(false)
@@ -64,7 +64,7 @@ export function CoupleDetailPage() {
       {tab === 'overview' && <CoupleOverviewTab couple={couple} coupleEvents={coupleEvents} coupleTasks={coupleTasks} onOpenTab={openTab} onToggleChecklist={toggleChecklist} />}
       {tab === 'timeline' && <CoupleChecklistTab coupleTasks={coupleTasks} onToggleChecklist={toggleChecklist} onAddTask={(category) => { setEditorItem(null); setEditorCategory(category ?? coupleTasks[0]?.category ?? ('' as ChecklistCategory)); setEditorOpen(true) }} onEditTask={(item) => { setEditorItem(item); setEditorCategory(item.category); setEditorOpen(true) }} />}
       {tab === 'calendar' && <CoupleScheduleTab coupleId={couple.id} events={events} coupleOptions={coupleOptions} onAddCoordination={addCoordination} onFinalizeCoordination={finalizeCoordination} />}
-      {tab === 'vendors' && <CoupleVendorsTab coupleId={couple.id} vendors={vendors} recommendations={recommendations} recommendedVendors={recommendedVendors} onSetRecommendation={setRecommendation} />}
+      {tab === 'vendors' && <CoupleVendorsTab recommendedVendors={recommendedVendors} />}
       {tab === 'contracts' && <CoupleContractsTab initialContracts={coupleContracts} coupleId={couple.id} />}
       {tab === 'consultation' && <CoupleConsultationTab consultation={consultation} onSave={saveConsultation} />}
 
