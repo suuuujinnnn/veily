@@ -167,3 +167,14 @@
 .planner-calendar-event--proposed { background: #fff0df; color: #a65d25; border: 1px solid #f1c29b; }
 .planner-calendar-event--confirmed { background: #e5f2e9; color: #367251; border: 1px solid #bddbc8; }
 @media (max-width: 720px) { .modal:has(.contract-detail-form) { width: min(100%, calc(100vw - 18px)); } .planner-schedule-calendar__cell, .planner-schedule-calendar__blank { min-height: 66px; padding: 5px; } .planner-calendar-event { font-size: 6px; } }
+
+/* Couple overview alignment and separated planner tabs */
+.detail-overview { align-items: start; }
+.detail-overview > .detail-column--wide { grid-row: auto; }
+.detail-overview > .consultation-card { grid-column: 1 / -1; }
+.detail-overview > .couple-note { grid-column: 1 / 2; min-height: 170px; align-self: stretch; }
+.detail-overview > .recommendation-peek { grid-column: 2 / 3; min-height: 170px; align-self: stretch; }
+.detail-overview > .couple-note,
+.detail-overview > .recommendation-peek { box-sizing: border-box; }
+.planner-schedule-empty { margin: 0; padding: 20px; border: 1px dashed var(--line); border-radius: 8px; color: var(--muted); text-align: center; font-size: 9px; }
+@media (max-width: 900px) { .detail-overview > .couple-note, .detail-overview > .recommendation-peek { grid-column: 1 / -1; } }

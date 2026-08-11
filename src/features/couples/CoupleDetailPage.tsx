@@ -10,12 +10,13 @@ import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
 import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
 import { ContractsSection } from '../contracts/ContractsSection'
 
-type DetailTab = 'overview' | 'timeline' | 'vendors' | 'contracts'
+type DetailTab = 'overview' | 'schedule' | 'tasks' | 'vendors' | 'contracts'
 type PlannerTaskMode = 'template' | 'custom' | null
 
 const detailTabs: [DetailTab, string][] = [
   ['overview', '한눈에 보기'],
-  ['timeline', '일정 & 할 일'],
+  ['schedule', '일정 조율'],
+  ['tasks', '할 일'],
   ['vendors', '추천 업체'],
   ['contracts', '계약'],
 ]
@@ -162,22 +163,23 @@ export function CoupleDetailPage() {
       </section>
 
       <nav className="detail-tabs">
-        {detailTabs.map(([key, label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}
+        {detailTabs.map(([key, label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'tasks' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}
       </nav>
 
       {tab === 'overview' && <div className="detail-overview">
         <section className="detail-column detail-column--wide">
-          <div className="section-heading section-heading--compact"><div><p className="eyebrow">Coming up</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div>
+          <div className="section-heading section-heading--compact"><div><p className="eyebrow">Coming up</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('schedule')}>전체 보기 <ChevronRight size={14} /></button></div>
           <Card padding="none" className="upcoming-list">
             {coupleEvents.slice(0, 3).map((event) => <div className="upcoming-row" key={event.id}><div className="date-tile"><strong>{Number(event.date.slice(-2))}</strong><span>{event.date.slice(5, 7)}월</span></div><div><Badge tone="rose">{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}–{event.endTime} <i /> <MapPin size={13} /> {event.location}</p></div>{event.approvalStatus === 'client-ok' && <button onClick={() => updateEvent({ ...event, approvalStatus: 'confirmed' })}>최종 확정</button>}<ChevronRight size={17} /></div>)}
           </Card>
         </section>
-        <section className="detail-column"><div className="section-heading section-heading--compact"><div><p className="eyebrow">To-do</p><h2>이번 주 할 일</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card className="task-list">{coupleTasks.slice(0, 4).map((task) => <label className={`task-row ${task.completed ? 'task-row--done' : ''}`} key={task.id}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span className="custom-check"><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.category} · {task.dueDate} · {task.owner}</small></div></label>)}</Card></section>
-        <Card className="consultation-card"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Consultation card</p><h2>상담 카드</h2></div><Badge tone="sage">{consultationCard.source}</Badge></div><div className="consultation-card__grid"><div><span>희망 예식일</span><strong>{consultationCard.preferredDate}</strong></div><div><span>촬영 일정</span><strong>{consultationCard.shootDate || '-'}</strong></div><div><span>스튜디오</span><p>{consultationCard.studioDirection} · {consultationCard.studioMood}</p></div><div><span>드레스/메이크업</span><p>{consultationCard.dressMood} · {consultationCard.makeupMood}</p></div><div><span>예산</span><strong>{consultationCard.budget || '-'}</strong></div><div><span>메모</span><p>{consultationCard.notes || '-'}</p></div></div></Card>`r`n        <Card className="couple-note"><MessageCircle size={18} /><div><span>플래너 노트</span><p>상담 카드 내용을 기준으로 우선순위와 추천 방향을 정리해 주세요.</p><button>노트 편집</button></div></Card>
+        <section className="detail-column"><div className="section-heading section-heading--compact"><div><p className="eyebrow">To-do</p><h2>이번 주 할 일</h2></div><button onClick={() => openTab('tasks')}>전체 보기 <ChevronRight size={14} /></button></div><Card className="task-list">{coupleTasks.slice(0, 4).map((task) => <label className={`task-row ${task.completed ? 'task-row--done' : ''}`} key={task.id}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span className="custom-check"><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.category} · {task.dueDate} · {task.owner}</small></div></label>)}</Card></section>
+        <Card className="consultation-card"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Consultation card</p><h2>상담 카드</h2></div><Badge tone="sage">{consultationCard.source}</Badge></div><div className="consultation-card__grid"><div><span>희망 예식일</span><strong>{consultationCard.preferredDate}</strong></div><div><span>촬영 일정</span><strong>{consultationCard.shootDate || '-'}</strong></div><div><span>스튜디오</span><p>{consultationCard.studioDirection} · {consultationCard.studioMood}</p></div><div><span>드레스/메이크업</span><p>{consultationCard.dressMood} · {consultationCard.makeupMood}</p></div><div><span>예산</span><strong>{consultationCard.budget || '-'}</strong></div><div><span>메모</span><p>{consultationCard.notes || '-'}</p></div></div></Card>
+        <Card className="couple-note"><MessageCircle size={18} /><div><span>플래너 노트</span><p>상담 카드 내용을 기준으로 우선순위와 추천 방향을 정리해 주세요.</p><button>노트 편집</button></div></Card>
         <Card className="recommendation-peek"><div className="recommendation-peek__head"><span><Sparkles size={17} /> 커플 요약</span><Badge tone="sage">업데이트됨</Badge></div><h3>Clean · Timeless · Natural</h3><div className="tag-row"><span>스튜디오 무드</span><span>드레스 취향</span><span>예산 기준</span></div><button onClick={() => openTab('vendors')}>추천 업체 보기 <ChevronRight size={14} /></button></Card>
       </div>}
 
-      {tab === 'timeline' && <div className="checklist-workspace">
+      {tab === 'schedule' && <div className="checklist-workspace">
         <section className="planner-schedule-panel">
           <div className="section-heading section-heading--compact"><div><p className="eyebrow">Planner proposal</p><h2>플래너 일정 조율</h2></div><Badge tone="amber">고객 오케이 후 최종 확정</Badge></div>
           <div className="planner-schedule-form">
@@ -201,7 +203,9 @@ export function CoupleDetailPage() {
             {coordinationEvents.length ? coordinationEvents.map((event) => <article key={event.id}><div><Badge tone="amber">{statusLabel(event)}</Badge><h3>{event.title}</h3><p>{event.date} · {event.time}–{event.endTime} · {event.location}</p></div>{event.approvalStatus === 'client-ok' ? <Button size="sm" onClick={() => updateEvent({ ...event, approvalStatus: 'confirmed' })}>최종 확정</Button> : <span className={`coordination-status coordination-status--${event.approvalStatus ?? 'planner-proposed'}`}>{statusLabel(event)}</span>}</article>) : <p className="planner-schedule-empty">현재 조율 중인 일정이 없습니다.</p>}
           </div>
         </section>
+      </div>}
 
+      {tab === 'tasks' && <div className="checklist-workspace">
         <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>분야별 할 일</h2><p>기본 템플릿을 적용하거나, 비어 있는 상태에서 직접 작성할 수 있습니다.</p></div>{plannerTaskMode && <Badge tone="neutral">{plannerTaskMode === 'template' ? '템플릿 사용' : '직접 작성'}</Badge>}</section>
         {!plannerTaskMode && <div className="task-template-prompt planner-task-choice"><strong>분야별 할 일을 어떻게 시작할까요?</strong><p>현재 저장된 기본 템플릿을 쓰거나, 공란에서 직접 구성할 수 있습니다.</p><div><button onClick={() => setPlannerTaskMode('template')}>기본 템플릿 사용</button><button className="secondary" onClick={() => setPlannerTaskMode('custom')}>직접 작성</button></div></div>}
         {plannerTaskMode === 'template' && <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />}
