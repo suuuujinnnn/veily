@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren, useContext, useMemo, useReducer } from 'react'
-import { initialChecklist, initialEvents, initialRecommendations, initialVendorSelections } from '../data/mockData'
-import type { ChecklistItem, Recommendation, RecommendationStatus, VendorSelection, WeddingEvent } from '../types'
+import { initialChecklist, initialEvents, initialRecommendations, initialVendorReviews, initialVendorSelections } from '../data/mockData'
+import type { ChecklistItem, Recommendation, RecommendationStatus, VendorReview, VendorSelection, WeddingEvent } from '../types'
 
 export interface DemoState {
   events: WeddingEvent[]
@@ -8,6 +8,7 @@ export interface DemoState {
   recommendations: Recommendation[]
   availability: Record<string, string[]>
   vendorSelections: VendorSelection[]
+  vendorReviews: VendorReview[]
 }
 
 export type DemoAction =
@@ -19,6 +20,7 @@ export type DemoAction =
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
+  | { type: 'ADD_VENDOR_REVIEW'; payload: VendorReview }
 
 export const initialState: DemoState = {
   events: initialEvents,
@@ -26,6 +28,7 @@ export const initialState: DemoState = {
   recommendations: initialRecommendations,
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
+  vendorReviews: initialVendorReviews,
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -77,6 +80,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       )
       return { ...state, vendorSelections: [...otherSelections, action.payload] }
     }
+    case 'ADD_VENDOR_REVIEW':
+      return { ...state, vendorReviews: [action.payload, ...state.vendorReviews] }
     default:
       return state
   }
@@ -91,6 +96,7 @@ interface DemoContextValue extends DemoState {
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
   toggleAvailability: (eventId: string, slot: string) => void
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
+  addVendorReview: (review: Omit<VendorReview, 'id' | 'createdAt'>) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
@@ -112,6 +118,8 @@ export function DemoProvider({ children }: PropsWithChildren) {
         dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
       selectVendorSlot: (coupleId, vendorId, slotId) =>
         dispatch({ type: 'SELECT_VENDOR_SLOT', payload: { coupleId, vendorId, slotId } }),
+      addVendorReview: (review) =>
+        dispatch({ type: 'ADD_VENDOR_REVIEW', payload: { ...review, id: `vr-${Date.now()}`, createdAt: new Date().toISOString() } }),
     }),
     [state],
   )

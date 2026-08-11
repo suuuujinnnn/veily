@@ -8,8 +8,9 @@ import { imageAssets } from '../../assets/images'
 import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
 import { PortalVendorAvailability } from './PortalVendorAvailability'
+import { VendorReviewsPanel } from '../reviews/VendorReviewsPanel'
 
-type PortalTab = 'home' | 'calendar' | 'tasks' | 'vendors'
+type PortalTab = 'home' | 'calendar' | 'tasks' | 'vendors' | 'reviews'
 const slots = ['8월 8일 (토) 11:00', '8월 8일 (토) 14:00', '8월 9일 (일) 10:30']
 
 export function PortalPage() {
@@ -17,7 +18,7 @@ export function PortalPage() {
   const navigate = useNavigate()
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
   const { events, checklist, recommendations, availability, toggleChecklist, setRecommendation, toggleAvailability } = useDemoStore()
-  const initialTab = (['home', 'calendar', 'tasks', 'vendors'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
+  const initialTab = (['home', 'calendar', 'tasks', 'vendors', 'reviews'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
   const [tab, setTab] = useState<PortalTab>(initialTab)
   const [message, setMessage] = useState(false)
   const coupleEvents = events.filter((event) => event.coupleId === couple.id)
@@ -43,7 +44,7 @@ export function PortalPage() {
         <div className="d-day"><small>OUR DAY</small><strong>D—{dDay}</strong><span>함께 준비한 지 42일</span></div>
       </section>
       <div className="portal-context-strip"><span><strong>신랑·신부 전용 포털</strong> · 플래너 관리 화면과 분리되어 있습니다.</span><Link to={`/client/${couple.id}`}>접속 화면으로</Link></div>
-      <nav className="portal-nav"><div>{([['home','우리의 홈'],['calendar','공유 캘린더'],['tasks','할 일'],['vendors','추천 업체']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => !task.completed).length}</em>}</button>)}</div><button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 메시지</button></nav>
+      <nav className="portal-nav"><div>{([['home','우리의 홈'],['calendar','공유 캘린더'],['tasks','할 일'],['vendors','추천 업체'],['reviews','업체 리뷰']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => !task.completed).length}</em>}</button>)}</div><button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 메시지</button></nav>
 
       <main className="portal-content">
         {tab === 'home' && <>
@@ -60,6 +61,8 @@ export function PortalPage() {
         {tab === 'tasks' && <section className="portal-subpage portal-tasks-page"><div className="portal-subpage__intro"><p className="eyebrow">Shared checklist</p><h2>준비 할 일</h2><p>월별 흐름으로 먼저 보고, 분야별 체크리스트에서 완료 여부를 표시할 수 있습니다.</p></div><MonthlyRoadmap tasks={tasks} onToggle={toggleChecklist} /><CategoryChecklist tasks={tasks} onToggle={toggleChecklist} /></section>}
 
         {tab === 'vendors' && <section className="portal-subpage portal-vendors"><div className="portal-subpage__intro"><p className="eyebrow">Curated by your planner</p><h2>두 분을 위한 셀렉션</h2><p>마음에 드는 곳을 표시해주세요. 지윤 플래너님이 다음 단계를 도와드릴게요.</p></div><div className="portal-vendor-grid">{recs.map(({ vendor, status }) => vendor && <article key={vendor.id}><div className="portal-vendor-image"><img src={vendor.image} style={{ objectPosition: vendor.imagePosition }} alt={vendor.name} /><Badge tone="dark">{vendor.match}% MATCH</Badge></div><div className="portal-vendor-body"><span>{vendor.category} · {vendor.location}</span><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="portal-response"><button className={status === 'liked' ? 'active-like' : ''} onClick={() => setRecommendation(couple.id, vendor.id, 'liked')}><Heart size={15} fill={status === 'liked' ? 'currentColor' : 'none'} /> 마음에 들어요</button><button className={status === 'hold' ? 'active-hold' : ''} onClick={() => setRecommendation(couple.id, vendor.id, 'hold')}><Pause size={15} /> 조금 더 볼게요</button></div></div></article>)}</div></section>}
+
+        {tab === 'reviews' && <section className="portal-subpage portal-reviews"><VendorReviewsPanel availableVendors={vendors} showFilters featuredVendorIds={recs.map((recommendation) => recommendation.vendorId)} title="제휴업체 리뷰" description="인증 플래너가 실제 진행 경험을 바탕으로 남긴 리뷰를 업체별로 비교해 보세요." /></section>}
       </main>
       {message && <div className="portal-toast"><ThumbsUp size={17} /><div><strong>메시지 창을 준비했어요</strong><span>데모에서는 플래너에게 알림만 전송됩니다.</span></div></div>}
     </div>

@@ -67,6 +67,21 @@ export interface Vendor {
   gallery: string[]
 }
 
+export interface VendorReview {
+  id: string
+  vendorId: string
+  overallRating: number
+  responseRating: number
+  expertiseRating: number
+  punctualityRating: number
+  strengths: string
+  considerations: string
+  experienceContext: string
+  createdAt: string
+  authorLabel: '인증 플래너'
+  experienceBand: string
+}
+
 export interface VendorScheduleSlot {
   id: string
   vendorId: string
