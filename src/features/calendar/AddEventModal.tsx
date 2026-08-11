@@ -4,11 +4,12 @@ import { useDemoStore } from '../../app/store'
 import { Button, Modal } from '../../components/ui'
 import { couples } from '../../data/mockData'
 import type { EventType } from '../../types'
+import { findCalendarConflicts } from './calendarUtils'
 
 export function AddEventModal({ open, onClose, onAdded }: { open: boolean; onClose: () => void; onAdded: () => void }) {
-  const { addEvent } = useDemoStore()
+  const { events, addEvent } = useDemoStore()
   const [coupleId, setCoupleId] = useState('c1')
-  const [type, setType] = useState<EventType>('미팅')
+  const [type, setType] = useState<EventType>('상담')
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('2026-08-24')
   const [time, setTime] = useState('11:00')
@@ -17,7 +18,9 @@ export function AddEventModal({ open, onClose, onAdded }: { open: boolean; onClo
   const submit = () => {
     if (!title.trim()) return
     const endHour = String(Math.min(23, Number(time.slice(0, 2)) + 1)).padStart(2, '0')
-    addEvent({ coupleId, type, title, date, time, endTime: `${endHour}:${time.slice(3)}`, location: location || '장소 미정' })
+    const candidate = { coupleId, type, title, date, time, endTime: `${endHour}:${time.slice(3)}`, location: location || '장소 미정' }
+    if (findCalendarConflicts([...events, { ...candidate, id: 'draft-event' }]).some((conflict) => conflict.first.id === 'draft-event' || conflict.second.id === 'draft-event')) return
+    addEvent(candidate)
     setTitle('')
     setLocation('')
     onAdded()
@@ -29,7 +32,7 @@ export function AddEventModal({ open, onClose, onAdded }: { open: boolean; onClo
       <div className="form-grid">
         <label className="form-field form-field--wide"><span>일정 이름</span><input autoFocus value={title} onChange={(event) => setTitle(event.target.value)} placeholder="예: 드레스 2차 피팅" /></label>
         <label className="form-field"><span>어떤 커플의 일정인가요?</span><select value={coupleId} onChange={(event) => setCoupleId(event.target.value)}>{couples.map((couple) => <option key={couple.id} value={couple.id}>{couple.partners}</option>)}</select></label>
-        <label className="form-field"><span>업무 유형</span><select value={type} onChange={(event) => setType(event.target.value as EventType)}>{['미팅','드레스','스튜디오','메이크업','계약','본식'].map((item) => <option key={item}>{item}</option>)}</select></label>
+        <label className="form-field"><span>업무 유형</span><select value={type} onChange={(event) => setType(event.target.value as EventType)}>{['상담','스튜디오','드레스','메이크업','예물','기타','직접 입력'].map((item) => <option key={item}>{item}</option>)}</select></label>
         <label className="form-field"><span>날짜</span><input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
         <label className="form-field"><span>시작 시간</span><input type="time" value={time} onChange={(event) => setTime(event.target.value)} /></label>
         <label className="form-field form-field--wide"><span>장소</span><input value={location} onChange={(event) => setLocation(event.target.value)} placeholder="업체명 또는 주소" /></label>

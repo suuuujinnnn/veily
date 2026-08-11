@@ -1,6 +1,7 @@
 import type {
   ChecklistItem,
   CommunityPost,
+  ConsultationCard,
   Contract,
   Couple,
   Recommendation,
@@ -128,6 +129,10 @@ export const vendorScheduleSlots: VendorScheduleSlot[] = [
 
 export const initialVendorSelections: VendorSelection[] = [
   { coupleId: 'c1', vendorId: 'v1', slotId: 'vs4' },
+]
+
+export const initialConsultationCards: ConsultationCard[] = [
+  { id: 'cc1', coupleId: 'c1', preferredDate: '2026-10-17', shootDate: '2026-08-18', coupleNames: '김서윤 & 이도현', phone: '010-0000-0000', existingVendors: '없음', studioDirection: '일반', studioMood: '인물중심', dressMood: '실크', sizes: '신랑 100 / 신부 66', makeupMood: '깔끔', budget: '2,000–3,000만원', otherPlanner: '없다', extraPlanning: '예식 일정 기준 월별 플랜', hallDetails: '', meetingDetails: '', contactPreference: '카톡 상담', priorities: '자연스러운 사진, 동선이 편한 업체', notes: '상담 때 스드메 패키지와 예물까지 함께 비교하고 싶어요.', source: '고객 작성', createdAt: '2026-08-05' },
 ]
 
 export const initialRecommendations: Recommendation[] = [

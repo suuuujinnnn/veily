@@ -1,0 +1,169 @@
+/* Focused polish for the consultation, contracts, and shared-status flows. */
+.consultation-card, .new-couple-form, .public-consultation-card { border: 1px solid #e4ddd5; box-shadow: 0 14px 34px rgba(73, 56, 45, .06); }
+.consultation-card { grid-column: 1 / -1; padding: 26px; background: linear-gradient(135deg, #fffdf9, #f8f1ec); }
+.consultation-card .section-heading { margin-bottom: 18px; }
+.consultation-card__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.consultation-card__grid > div { min-height: 84px; padding: 14px; border: 1px solid rgba(178, 143, 132, .22); background: rgba(255,255,255,.6); }
+.consultation-card__grid span { display: block; margin-bottom: 7px; color: var(--muted); font-size: 8px; letter-spacing: .04em; }
+.consultation-card__grid strong { font-family: var(--serif); font-size: 16px; font-weight: 400; }
+.consultation-card__grid p { margin: 0; color: #665d56; font-size: 9px; line-height: 1.55; }
+.contract-category-tabs, .portal-vendor-category-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+.contract-category-tabs button, .portal-vendor-category-tabs button { min-height: 34px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--muted); font-size: 8px; transition: .18s ease; }
+.contract-category-tabs button:hover, .portal-vendor-category-tabs button:hover { border-color: var(--rose); color: var(--rose-deep); }
+.contract-category-tabs button.active, .portal-vendor-category-tabs button.active { border-color: var(--rose); background: var(--rose-soft); color: var(--rose-deep); font-weight: 700; }
+.contract-detail-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.contract-detail-actions strong { margin-right: 6px; font-family: var(--serif); font-size: 17px; font-weight: 400; }
+.contract-detail-actions button { padding: 5px 8px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 8px; }
+.contract-detail-actions button:hover { border-color: var(--rose); color: var(--rose-deep); }
+.upcoming-row > button { padding: 6px 9px; border: 1px solid #b58a8f; background: var(--rose-soft); color: var(--rose-deep); font-size: 8px; white-space: nowrap; }
+.event-confirmed { min-height: 28px; padding: 0 9px; border: 1px solid transparent; border-radius: 999px; background: transparent; cursor: pointer; font-size: 8px; white-space: nowrap; }
+.event-confirmed--planner-proposed { border-color: #d8b9a1; background: #fff4e8; color: #9a6237; }
+.event-confirmed--client-ok { border-color: #c8b4da; background: #f4eff9; color: #73558d; }
+.event-confirmed--confirmed { color: var(--sage); }
+.portal-calendar-list-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.portal-calendar-list-head h3 { margin: 0; }
+.portal-calendar-list-head > div { display: flex; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; }
+.portal-calendar-list-head button { padding: 5px 10px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-size: 8px; }
+.portal-calendar-list-head button.active { background: var(--ink); color: white; }
+.public-consultation-page { min-height: 100vh; padding: 48px 20px; display: grid; place-items: center; background: radial-gradient(circle at 20% 10%, #f3e5e2, transparent 35%), #f7f3ee; }
+.public-consultation-card { width: min(720px, 100%); padding: clamp(24px, 5vw, 52px); }
+.public-consultation-card h1 { margin: 8px 0 28px; font-family: var(--serif); font-size: clamp(28px, 5vw, 42px); font-weight: 400; }
+.public-consultation-card .form-grid { gap: 16px; }
+.public-consultation-card textarea { min-height: 120px; resize: vertical; }
+.consultation-success { padding: 38px 20px; text-align: center; color: var(--sage); }
+.consultation-success h2 { margin: 15px 0 8px; color: var(--ink); font-family: var(--serif); font-weight: 400; }
+.consultation-success p { margin: 0 0 22px; color: var(--muted); font-size: 10px; }
+@media (max-width: 720px) { .consultation-card__grid { grid-template-columns: repeat(2, 1fr); } .contract-detail-actions { flex-wrap: wrap; } .contract-detail-actions strong { width: 100%; } .portal-vendor-category-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; } .portal-vendor-category-tabs button { flex: none; } }.consultation-card, .consultation-card__grid, .consultation-card__grid p { font-family: var(--sans); }
+.consultation-card h2 { font-family: var(--serif); font-weight: 400; }
+.portal-coordination-calendar { padding: 22px; background: var(--paper); border: 1px solid var(--line); }
+.portal-coordination-calendar .portal-event-list--embedded { margin-top: 16px; padding: 0; border: 0; }
+.portal-calendar-list-toggle { display: flex; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; }
+.portal-calendar-list-toggle button, .portal-coordination-tabs button { border: 0; background: transparent; color: var(--muted); font-size: 8px; }
+.portal-calendar-list-toggle button { padding: 5px 10px; border-radius: 999px; }
+.portal-calendar-list-toggle button.active, .portal-coordination-tabs button.active { background: var(--ink); color: white; }
+.portal-coordination-tabs { display: flex; gap: 24px; margin: 24px 0 0; border-bottom: 1px solid var(--line); }
+.portal-coordination-tabs button { position: relative; padding: 12px 2px; }
+.portal-coordination-tabs button.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--rose); }
+.coordination-status { font-size: 8px; white-space: nowrap; }
+.coordination-status--planner-proposed { color: #a3663b; }
+.coordination-status--client-ok { color: #73558d; }
+.coordination-status--confirmed { color: var(--sage); }
+.portal-empty-state, .task-template-empty { padding: 28px 12px; color: var(--muted); text-align: center; font-size: 9px; }
+.task-template-prompt { margin-top: 25px; padding: 28px; text-align: center; background: #f7ece8; border: 1px solid #ead5d0; }
+.task-template-prompt strong { font-family: var(--serif); font-size: 20px; font-weight: 400; }
+.task-template-prompt p { margin: 8px 0 18px; color: var(--muted); font-size: 9px; }
+.task-template-prompt button { min-height: 34px; padding: 0 14px; border: 1px solid var(--rose-deep); background: var(--rose-deep); color: white; font-size: 8px; }
+.task-template-prompt button.secondary { margin-left: 6px; border-color: var(--line); background: transparent; color: var(--ink); }
+@media (max-width: 620px) { .portal-calendar-list-head { align-items: flex-start; gap: 12px; flex-direction: column; } .portal-coordination-tabs { gap: 14px; } }.couple-profile__actions { min-width: 310px; }
+.customer-link-copy { width: 100%; display: flex; margin-top: 8px; }
+.customer-link-copy input { min-width: 0; flex: 1; height: 30px; padding: 0 8px; border: 1px solid var(--line); background: #fff; color: var(--muted); font-size: 8px; }
+.customer-link-copy button { height: 30px; padding: 0 9px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--ink); background: var(--ink); color: white; font-size: 8px; white-space: nowrap; }
+.new-couple-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.generated-link-box { margin-top: 18px; padding: 14px; display: flex; align-items: center; gap: 10px; border: 1px solid #d9c6c0; background: #fbf2ef; }
+.generated-link-box > div { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.generated-link-box strong { font-size: 9px; }
+.generated-link-box span { overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.generated-link-box button, .generated-link-box a { display: inline-flex; align-items: center; gap: 4px; border: 0; background: transparent; color: var(--rose-deep); font-size: 8px; text-decoration: none; white-space: nowrap; }
+.consultation-form-intro { margin: -18px 0 22px; color: var(--muted); font-size: 10px; }
+.public-consultation-card select + input { margin-top: 7px; }
+@media (max-width: 720px) { .couple-profile__actions { min-width: 0; } .generated-link-box { align-items: flex-start; flex-wrap: wrap; } .generated-link-box > div { flex-basis: 100%; } }
+.portal-month-calendar { margin-top: 16px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.portal-month-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--line); background: #fbfaf8; }
+.portal-month-weekdays span { padding: 10px 8px; color: var(--muted); font-size: 8px; text-align: center; }
+.portal-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.portal-month-cell { min-height: 78px; padding: 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.portal-month-cell:nth-child(7n) { border-right: 0; }
+.portal-month-cell strong { display: block; margin-bottom: 5px; font-size: 9px; font-weight: 700; }
+.portal-month-cell.has-confirmed { background: #fbf5f1; }
+.portal-month-event { display: block; max-width: 100%; margin-top: 4px; padding: 4px 5px; overflow: hidden; border-radius: 5px; font-size: 7px; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+.portal-month-event--confirmed { background: #e5f0e9; color: #377056; }
+.portal-month-event--planner-proposed { background: #fff0df; color: #9a6237; }
+.portal-month-event--client-ok { background: #f4eff9; color: #73558d; }
+.portal-confirmed-vendors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.portal-confirmed-vendors__group { min-height: 150px; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.portal-confirmed-vendors__group header { margin-bottom: 12px; }
+.portal-confirmed-vendors__group h3 { margin: 2px 0 0; font-size: 18px; }
+.portal-confirmed-vendor { padding: 11px 0; border-top: 1px solid var(--line); }
+.portal-confirmed-vendor strong { display: block; font-size: 11px; }
+.portal-confirmed-vendor span { display: inline-block; margin-top: 5px; color: var(--rose-deep); font-size: 8px; font-weight: 700; }
+.portal-confirmed-vendor p { margin: 6px 0 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
+.contracts-workspace { display: grid; gap: 18px; }
+.contracts-toolbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.contract-ledger { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.contract-ledger__head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--line); background: #f7f7fb; }
+.contract-ledger__head h2 { margin: 0; font-size: 18px; }
+.contract-ledger__head span { color: var(--muted); font-size: 9px; }
+.contract-table-scroll { overflow-x: auto; }
+.contract-ledger-table { width: 100%; min-width: 1120px; border-collapse: collapse; }
+.contract-ledger-table th, .contract-ledger-table td { padding: 12px 10px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 9px; text-align: center; vertical-align: middle; }
+.contract-ledger-table th { background: #fbfaf8; color: #1e2a27; font-weight: 700; white-space: nowrap; }
+.contract-ledger-table td { color: #24312e; }
+.contract-file { display: inline-flex; align-items: center; gap: 4px; color: var(--rose-deep); }
+.contract-row-actions { display: inline-flex; gap: 6px; }
+.contract-row-actions button { display: inline-grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--muted); cursor: pointer; }
+.contract-row-actions button:hover { border-color: var(--rose); color: var(--rose-deep); }
+.contract-empty { height: 58px; color: var(--muted) !important; }
+.contract-ledger-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.contract-ledger-summary span { display: flex; justify-content: space-between; padding: 16px 22px; font-size: 10px; font-weight: 700; }
+.contract-ledger-summary span + span { border-left: 1px solid var(--line); }
+.contract-ledger-summary strong { font-size: 12px; color: var(--rose-deep); }
+@media (max-width: 860px) { .portal-confirmed-vendors { grid-template-columns: 1fr; } .contracts-toolbar { display: block; } .contracts-toolbar .button { margin-top: 10px; } }
+@media (max-width: 620px) { .portal-month-cell { min-height: 62px; padding: 5px; } .portal-month-event { font-size: 6px; } }
+
+.contract-detail-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 22px; }
+.contract-detail-form label { display: grid; gap: 8px; color: #66716c; font-size: 10px; font-weight: 700; }
+.contract-detail-form input, .contract-detail-form select, .contract-detail-form textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: #1f2d2a; font: inherit; font-size: 12px; }
+.contract-detail-form input, .contract-detail-form select { min-height: 48px; padding: 0 14px; }
+.contract-detail-form textarea { padding: 14px; resize: vertical; }
+.contract-detail-form__wide { grid-column: 1 / -1; }
+.contract-ledger--deposits { margin-top: 4px; }
+.contract-ledger-table--deposits { min-width: 860px; }
+.contract-ledger-summary--triple { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.planner-schedule-panel { padding: 24px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.planner-schedule-form { display: grid; grid-template-columns: 1.4fr 1fr 1fr .8fr .8fr 1.2fr auto; gap: 12px; align-items: end; margin-top: 18px; }
+.planner-schedule-form label { display: grid; gap: 7px; color: var(--muted); font-size: 8px; font-weight: 700; }
+.planner-schedule-form input, .planner-schedule-form select { min-height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); font: inherit; font-size: 9px; }
+.planner-schedule-list { display: grid; gap: 10px; margin-top: 18px; }
+.planner-schedule-list article { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: #fbfaf8; }
+.planner-schedule-list h3 { margin: 7px 0 4px; font-size: 13px; }
+.planner-schedule-list p { margin: 0; color: var(--muted); font-size: 8px; }
+.planner-task-choice { margin: 0; }
+.consultation-form-grid .form-field input + input, .consultation-form-grid .form-field select + input { margin-top: 8px; }
+@media (max-width: 1100px) { .planner-schedule-form { grid-template-columns: repeat(3, minmax(0, 1fr)); } .planner-schedule-form .button { grid-column: 1 / -1; } }
+@media (max-width: 720px) { .contract-detail-form, .planner-schedule-form { grid-template-columns: 1fr; } .contract-ledger-summary--triple { grid-template-columns: 1fr; } }
+
+/* Refined contract registration popup */
+.modal:has(.contract-detail-form) { width: min(900px, calc(100vw - 32px)); border-radius: 10px; }
+.modal:has(.contract-detail-form) .modal__header { position: sticky; top: 0; z-index: 2; padding: 22px 26px 16px; background: #fbfaf8; }
+.modal:has(.contract-detail-form) .modal__header h2 { font-family: var(--sans); font-size: 22px; font-weight: 760; letter-spacing: 0; }
+.modal:has(.contract-detail-form) .modal__body { padding: 22px 26px 24px; background: #f8faf8; }
+.modal:has(.contract-detail-form) .modal__footer { position: sticky; bottom: 0; z-index: 2; padding: 14px 26px 18px; border-top: 1px solid var(--line); background: #fbfaf8; }
+.contract-detail-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+.contract-detail-form label { position: relative; align-content: start; gap: 7px; min-width: 0; color: #65716c; font-size: 11px; }
+.contract-detail-form label span { line-height: 1.2; }
+.contract-detail-form input, .contract-detail-form select, .contract-detail-form textarea { border-radius: 10px; border-color: #dbe3dd; background: #fff; box-shadow: 0 1px 0 rgba(31, 45, 42, .03); }
+.contract-detail-form input, .contract-detail-form select { min-height: 50px; padding: 0 16px; font-size: 14px; font-weight: 650; }
+.contract-detail-form input[type="file"] { display: flex; align-items: center; padding: 12px 14px; font-size: 11px; font-weight: 500; }
+.contract-detail-form textarea { min-height: 104px; padding: 15px 16px; font-size: 13px; line-height: 1.55; }
+.contract-detail-form input:focus, .contract-detail-form select:focus, .contract-detail-form textarea:focus { border-color: #7bb6a4; box-shadow: 0 0 0 3px rgba(88, 151, 132, .13); outline: none; }
+.contract-detail-form__wide { padding-top: 4px; }
+.contract-detail-form__wide textarea { min-height: 120px; }
+
+/* Planner schedule calendar */
+.planner-schedule-calendar { margin-top: 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.planner-schedule-calendar__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: #fbfaf8; }
+.planner-schedule-calendar__head strong { font-size: 13px; }
+.planner-schedule-calendar__head div { display: flex; flex-wrap: wrap; gap: 8px; }
+.planner-schedule-calendar__head span { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); font-size: 8px; font-weight: 700; }
+.planner-schedule-calendar__head span::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+.planner-schedule-calendar__head .legend-proposed::before { background: #e9853e; }
+.planner-schedule-calendar__head .legend-confirmed::before { background: #4f8f68; }
+.planner-schedule-calendar__weekdays, .planner-schedule-calendar__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.planner-schedule-calendar__weekdays span { padding: 9px 6px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 8px; text-align: center; }
+.planner-schedule-calendar__cell, .planner-schedule-calendar__blank { min-height: 86px; padding: 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.planner-schedule-calendar__cell:nth-child(7n), .planner-schedule-calendar__blank:nth-child(7n) { border-right: 0; }
+.planner-schedule-calendar__cell strong { display: block; margin-bottom: 6px; color: #26322f; font-size: 9px; }
+.planner-calendar-event { display: block; max-width: 100%; margin-top: 5px; padding: 5px 6px; overflow: hidden; border-radius: 6px; font-size: 7px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.planner-calendar-event--proposed { background: #fff0df; color: #a65d25; border: 1px solid #f1c29b; }
+.planner-calendar-event--confirmed { background: #e5f2e9; color: #367251; border: 1px solid #bddbc8; }
+@media (max-width: 720px) { .modal:has(.contract-detail-form) { width: min(100%, calc(100vw - 18px)); } .planner-schedule-calendar__cell, .planner-schedule-calendar__blank { min-height: 66px; padding: 5px; } .planner-calendar-event { font-size: 6px; } }

@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button } from '../../components/ui'
 import { vendors } from '../../data/mockData'
-import { VendorScheduleBoard } from './VendorScheduleBoard'
 
 export function VendorDetailPage() {
   const { vendorId = 'v1' } = useParams()
@@ -49,7 +48,6 @@ export function VendorDetailPage() {
         <div>{[...vendor.gallery, ...vendor.gallery].map((image, index) => <figure key={`${image}-${index}`}><img src={image} alt={`${vendor.name} 인스타그램 포트폴리오 ${index + 1}`} /><span><Camera size={14} /></span></figure>)}</div>
       </section>
 
-      <VendorScheduleBoard vendor={vendor} />
     </div>
   )
 }

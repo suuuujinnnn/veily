@@ -25,8 +25,9 @@ export function CalendarPage() {
   const [modalOpen, setModalOpen] = useState(false)
   const [toast, setToast] = useState(false)
 
-  const filteredEvents = useMemo(() => events.filter((event) => filter === '전체' || event.type === filter), [events, filter])
-  const conflicts = useMemo(() => findCalendarConflicts(events), [events])
+  const confirmedEvents = useMemo(() => events.filter((event) => (event.approvalStatus ?? 'confirmed') === 'confirmed'), [events])
+  const filteredEvents = useMemo(() => confirmedEvents.filter((event) => filter === '전체' || event.type === filter), [confirmedEvents, filter])
+  const conflicts = useMemo(() => findCalendarConflicts(confirmedEvents), [confirmedEvents])
   const conflictIds = useMemo(() => new Set(conflicts.flatMap((conflict) => [conflict.first.id, conflict.second.id])), [conflicts])
   const selectedEvents = useMemo(
     () => filteredEvents.filter((event) => event.date === selectedDate).sort((a, b) => a.time.localeCompare(b.time)),

@@ -4,9 +4,11 @@ import { PortalLayout } from '../components/layout/PortalLayout'
 import { CalendarPage } from '../features/calendar/CalendarPage'
 import { CommunityPage } from '../features/community/CommunityPage'
 import { CoupleDetailPage } from '../features/couples/CoupleDetailPage'
+import { NewCouplePage } from '../features/couples/NewCouplePage'
 import { CouplesPage } from '../features/couples/CouplesPage'
 import { DashboardPage } from '../features/dashboard/DashboardPage'
 import { PortalPage } from '../features/portal/PortalPage'
+import { PublicConsultationCardPage } from '../features/consultation/PublicConsultationCardPage'
 import { PortalEntryPage } from '../features/portal/PortalEntryPage'
 import { VendorsPage } from '../features/vendors/VendorsPage'
 import { VendorDetailPage } from '../features/vendors/VendorDetailPage'
@@ -19,7 +21,7 @@ export function App() {
         <Routes>
           <Route element={<PlannerLayout />}>
             <Route index element={<DashboardPage />} />
-            <Route path="couples" element={<CouplesPage />} />
+            <Route path="couples" element={<CouplesPage />} />`r`n            <Route path="couples/new" element={<NewCouplePage />} />
             <Route path="couples/:id" element={<CoupleDetailPage />} />
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
@@ -27,7 +29,7 @@ export function App() {
             <Route path="contracts" element={<Navigate to="/couples/c1?tab=contracts" replace />} />
             <Route path="community" element={<CommunityPage />} />
           </Route>
-          <Route path="client/:coupleId" element={<PortalEntryPage />} />
+          <Route path="client/:coupleId" element={<PortalEntryPage />} />`r`n          <Route path="consultation/:coupleId" element={<PublicConsultationCardPage />} />
           <Route path="portal" element={<PortalLayout />}>
             <Route path=":coupleId/:section?" element={<PortalPage />} />
           </Route>
