@@ -7,7 +7,6 @@ import type { ChecklistCategory, ChecklistItem } from '../../types'
 import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
 import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
-import { WorkflowGuidePanel } from '../checklist/WorkflowGuidePanel'
 import { formatChecklistDate } from '../checklist/checklistUtils'
 import { ConsultationsPanel } from './ConsultationsPanel'
 import { CoupleInfoPanel } from './CoupleInfoPanel'
@@ -66,7 +65,6 @@ export function CoupleDetailPage() {
       {tab === 'timeline' && <div className="checklist-workspace">
         <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><div className="heading-actions"><Badge tone="neutral">템플릿 {coupleTasks.filter((task) => task.isTemplate).length}개 적용</Badge><Button variant="secondary" icon={<Plus size={15} />} onClick={() => setScheduleOpen(true)}>일정 추가</Button></div></section>
         <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />
-        <WorkflowGuidePanel coupleId={couple.id} weddingDate={couple.weddingDate} tasks={coupleTasks} onAdd={addChecklist} />
         <div className="checklist-workspace__lower">
           <CategoryChecklist
             tasks={coupleTasks}
@@ -75,7 +73,6 @@ export function CoupleDetailPage() {
             onAdd={(category) => { setEditorItem(null); setEditorCategory(category ?? '스튜디오'); setEditorOpen(true) }}
             onEdit={(item) => { setEditorItem(item); setEditorCategory(item.category); setEditorOpen(true) }}
           />
-          <Card className="availability-summary"><CalendarDays size={20} /><h3>고객이 선택한 가능 시간</h3><p>메이크업 테스트 · 8월 8일(토) 11:00</p><span>고객 포털과 같은 상태를 사용합니다.</span></Card>
         </div>
       </div>}
 

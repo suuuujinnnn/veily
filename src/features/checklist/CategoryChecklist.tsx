@@ -1,5 +1,5 @@
 import { Check, MoreHorizontal, Plus } from 'lucide-react'
-import { Badge, Button } from '../../components/ui'
+import { Button } from '../../components/ui'
 import type { ChecklistCategory, ChecklistItem } from '../../types'
 import { checklistCategories } from './checklistCategories'
 import { formatChecklistDate } from './checklistUtils'
@@ -39,7 +39,6 @@ export function CategoryChecklist({
                       <div><strong>{task.title}</strong><small>{formatChecklistDate(task.dueDate)} · {task.owner}</small></div>
                     </label>
                     <div className="checklist-manage-row__meta">
-                      {task.isTemplate && <Badge tone="neutral">템플릿</Badge>}
                       {editable && <button aria-label={`${task.title} 편집`} onClick={() => onEdit?.(task)}><MoreHorizontal size={16} /></button>}
                     </div>
                   </div>

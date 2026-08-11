@@ -13,11 +13,13 @@ export function WorkflowGuidePanel({
   weddingDate,
   tasks,
   onAdd,
+  hideHeading = false,
 }: {
   coupleId: string
   weddingDate: string
   tasks: ChecklistItem[]
   onAdd: (item: Omit<ChecklistItem, 'id'>) => void
+  hideHeading?: boolean
 }) {
   const [query, setQuery] = useState('')
   const [stage, setStage] = useState('all')
@@ -48,11 +50,11 @@ export function WorkflowGuidePanel({
   }
 
   return (
-    <section className="workflow-guide" aria-labelledby="workflow-guide-title">
-      <div className="workflow-guide__head">
+    <section className="workflow-guide" aria-labelledby={hideHeading ? undefined : 'workflow-guide-title'} aria-label={hideHeading ? '표준 업무 가이드' : undefined}>
+      {!hideHeading && <div className="workflow-guide__head">
         <div><p className="eyebrow">Korean wedding workflow</p><h2 id="workflow-guide-title">표준 업무 가이드</h2><p>필요한 업무를 하나씩 추가하면 예식일 기준 마감일이 자동으로 계산됩니다.</p></div>
         <Badge tone="sage">플래너 전용</Badge>
-      </div>
+      </div>}
       <div className="workflow-guide__filters">
         <label className="guide-search"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="업무 또는 확인 포인트 검색" aria-label="가이드 검색" /></label>
         <select value={stage} onChange={(event) => setStage(event.target.value)} aria-label="준비 단계"><option value="all">전체 단계</option>{workflowStages.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</select>

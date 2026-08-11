@@ -89,7 +89,7 @@
 .roadmap-month__tasks button.status-overdue:not(.done) > span { border-color: #d88a78; color: #bd6754; }
 .roadmap-month__tasks button.status-soon:not(.done) { background: #fff9ec; }
 .roadmap-empty { min-width: 100%; padding: 34px; border: 1px dashed var(--line); border-radius: 14px; color: var(--muted); text-align: center; font-size: 11px; }
-.checklist-workspace__lower { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 15px; align-items: start; }
+.checklist-workspace__lower { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; align-items: start; }
 .category-checklist { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: var(--shadow-sm); }
 .category-checklist__heading { margin-bottom: 18px; display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; }
 .category-checklist__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }

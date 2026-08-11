@@ -175,16 +175,15 @@ export const initialRecommendations: Recommendation[] = [
 ]
 
 export const contracts: Contract[] = [
-  { id: 'ct1', coupleId: 'c1', vendorName: '남산 라루체', category: '웨딩홀', contractDate: '2026-04-20', productName: '가든홀 본식', packageDetails: '보증인원 250명 · 식대 · 생화 장식', paymentMethod: '카드', vatType: '포함', totalPrice: 18500000, commission: 740000, deposit: 3000000, paymentDate: '2026-04-20', status: '서명완료', contractFile: '라루체_계약서.pdf', memo: '잔금은 본식 14일 전 납부', budgetItemId: 'bi1' },
-  { id: 'ct2', coupleId: 'c1', vendorId: 'vp-d5', vendorName: '루이즈블랑', category: '드레스', contractDate: '2026-05-03', productName: '촬영·본식 드레스 패키지', packageDetails: '본식 1벌 · 촬영 3벌 · 2차 피팅', paymentMethod: '계좌이체', vatType: '별도', totalPrice: 3200000, commission: 320000, deposit: 800000, paymentDate: '2026-05-03', status: '확인필요', contractFile: '루이즈블랑_계약서.pdf', memo: 'VAT 별도 확인 필요', budgetItemId: 'bi2' },
+  { id: 'ct1', coupleId: 'c1', vendorName: '남산 라루체', category: '웨딩홀', contractDate: '', productName: '', packageDetails: '보증인원 250명 · 식대 82,000원 · 가든홀', paymentMethod: '카드', vatType: '포함', totalPrice: 18500000, commission: 0, deposit: 18500000, paymentDate: '', status: '서명완료', contractFile: '', memo: '', budgetItemId: 'bi1' },
+  { id: 'ct2', coupleId: 'c1', vendorId: 'vp-d5', vendorName: '르블랑 브라이드', category: '드레스', contractDate: '', productName: '', packageDetails: '본식 1벌 · 촬영 3벌 · 2차 피팅 포함', paymentMethod: '계좌이체', vatType: '별도', totalPrice: 3200000, commission: 0, deposit: 3200000, paymentDate: '', status: '확인필요', contractFile: '', memo: '', budgetItemId: 'bi2' },
   { id: 'ct3', coupleId: 'c2', vendorId: 'vp-s1', vendorName: '클레브 스튜디오', category: '스튜디오', contractDate: '2026-07-02', productName: '스튜디오 촬영 패키지', packageDetails: '원본 전체 · 수정본 20P · 앨범 2권', paymentMethod: '카드', vatType: '포함', totalPrice: 2150000, commission: 215000, deposit: 500000, paymentDate: '2026-07-02', status: '결제대기', contractFile: '', memo: '촬영일 잔금 결제' },
   { id: 'ct4', coupleId: 'c4', vendorName: '아펠가모 반포', category: '웨딩홀', contractDate: '2026-03-05', productName: '채플홀 본식', packageDetails: '보증인원 280명 · 채플홀 · 생화 장식', paymentMethod: '현금', vatType: '포함', totalPrice: 21800000, commission: 872000, deposit: 4000000, paymentDate: '2026-03-05', status: '서명완료', contractFile: '아펠가모_계약서.pdf', memo: '최종 인원 D-14 확정' },
 ]
 
 export const initialPayments: Payment[] = [
-  { id: 'pay1', coupleId: 'c1', paymentDate: '2026-04-20', type: '계약금', account: '남산 라루체', amount: 3000000, status: '입금완료', memo: '웨딩홀 계약금' },
-  { id: 'pay2', coupleId: 'c1', paymentDate: '2026-05-03', type: '계약금', account: '루이즈블랑', amount: 800000, status: '입금완료', memo: '드레스 계약금' },
-  { id: 'pay3', coupleId: 'c1', paymentDate: '2026-09-25', type: '잔금', account: '남산 라루체', amount: 15500000, status: '입금예정', memo: '본식 3주 전 안내' },
+  { id: 'pay1', coupleId: 'c1', paymentDate: '', type: '계약금', account: '국민 000-00-0000', amount: 18500000, status: '입금완료', memo: '계약금 입금' },
+  { id: 'pay2', coupleId: 'c1', paymentDate: '', type: '계약금', account: '국민 000-00-0000', amount: 3200000, status: '입금예정', memo: '계약금 입금' },
   { id: 'pay4', coupleId: 'c2', paymentDate: '2026-07-02', type: '계약금', account: '클레브 스튜디오', amount: 500000, status: '입금완료', memo: '' },
 ]
 
