@@ -77,7 +77,30 @@ export function CoupleDetailPage() {
   const coupleTasks = checklist.filter((item) => item.coupleId === couple.id)
   const directTasks = coupleTasks.filter((task) => !task.isTemplate)
   const visibleTasks = plannerTaskMode === 'custom' ? directTasks : coupleTasks
-  const consultationCard = consultationCards.find((item) => item.coupleId === couple.id)
+  const consultationCard = consultationCards.find((item) => item.coupleId === couple.id) ?? {
+    id: `cc-empty-${couple.id}`,
+    coupleId: couple.id,
+    preferredDate: couple.weddingDate,
+    shootDate: '',
+    coupleNames: couple.partners,
+    phone: '',
+    existingVendors: '',
+    studioDirection: '',
+    studioMood: '',
+    dressMood: '',
+    sizes: '',
+    makeupMood: '',
+    budget: '',
+    otherPlanner: '',
+    extraPlanning: '',
+    hallDetails: '',
+    meetingDetails: '',
+    contactPreference: '',
+    priorities: '',
+    notes: '',
+    source: '플래너 입력' as const,
+    createdAt: '2026-08-11',
+  }
   const coupleContracts = contracts.filter((item) => item.coupleId === couple.id)
   const recommendedVendors = recommendations
     .filter((item) => item.coupleId === couple.id)
@@ -150,8 +173,7 @@ export function CoupleDetailPage() {
           </Card>
         </section>
         <section className="detail-column"><div className="section-heading section-heading--compact"><div><p className="eyebrow">To-do</p><h2>이번 주 할 일</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card className="task-list">{coupleTasks.slice(0, 4).map((task) => <label className={`task-row ${task.completed ? 'task-row--done' : ''}`} key={task.id}><input type="checkbox" checked={task.completed} onChange={() => toggleChecklist(task.id)} /><span className="custom-check"><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.category} · {task.dueDate} · {task.owner}</small></div></label>)}</Card></section>
-        {consultationCard && <Card className="consultation-card"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Consultation card</p><h2>상담 카드</h2></div><Badge tone="sage">{consultationCard.source}</Badge></div><div className="consultation-card__grid"><div><span>희망 예식일</span><strong>{consultationCard.preferredDate}</strong></div><div><span>촬영 일정</span><strong>{consultationCard.shootDate || '-'}</strong></div><div><span>스튜디오</span><p>{consultationCard.studioDirection} · {consultationCard.studioMood}</p></div><div><span>드레스/메이크업</span><p>{consultationCard.dressMood} · {consultationCard.makeupMood}</p></div><div><span>예산</span><strong>{consultationCard.budget || '-'}</strong></div><div><span>메모</span><p>{consultationCard.notes || '-'}</p></div></div></Card>}
-        <Card className="couple-note"><MessageCircle size={18} /><div><span>플래너 노트</span><p>상담 카드 내용을 기준으로 우선순위와 추천 방향을 정리해 주세요.</p><button>노트 편집</button></div></Card>
+        <Card className="consultation-card"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Consultation card</p><h2>상담 카드</h2></div><Badge tone="sage">{consultationCard.source}</Badge></div><div className="consultation-card__grid"><div><span>희망 예식일</span><strong>{consultationCard.preferredDate}</strong></div><div><span>촬영 일정</span><strong>{consultationCard.shootDate || '-'}</strong></div><div><span>스튜디오</span><p>{consultationCard.studioDirection} · {consultationCard.studioMood}</p></div><div><span>드레스/메이크업</span><p>{consultationCard.dressMood} · {consultationCard.makeupMood}</p></div><div><span>예산</span><strong>{consultationCard.budget || '-'}</strong></div><div><span>메모</span><p>{consultationCard.notes || '-'}</p></div></div></Card>`r`n        <Card className="couple-note"><MessageCircle size={18} /><div><span>플래너 노트</span><p>상담 카드 내용을 기준으로 우선순위와 추천 방향을 정리해 주세요.</p><button>노트 편집</button></div></Card>
         <Card className="recommendation-peek"><div className="recommendation-peek__head"><span><Sparkles size={17} /> 커플 요약</span><Badge tone="sage">업데이트됨</Badge></div><h3>Clean · Timeless · Natural</h3><div className="tag-row"><span>스튜디오 무드</span><span>드레스 취향</span><span>예산 기준</span></div><button onClick={() => openTab('vendors')}>추천 업체 보기 <ChevronRight size={14} /></button></Card>
       </div>}
 

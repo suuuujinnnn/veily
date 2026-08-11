@@ -31,6 +31,39 @@ export type DemoAction =
   | { type: 'UPDATE_CONTRACT'; payload: Contract }
   | { type: 'DELETE_CONTRACT'; payload: string }
 
+
+function createDefaultConsultationCard(couple: Couple): ConsultationCard {
+  return {
+    id: `cc-${couple.id}`,
+    coupleId: couple.id,
+    preferredDate: couple.weddingDate,
+    shootDate: '',
+    coupleNames: couple.partners,
+    phone: '',
+    existingVendors: '',
+    studioDirection: '',
+    studioMood: '',
+    dressMood: '',
+    sizes: '',
+    makeupMood: '',
+    budget: '',
+    otherPlanner: '',
+    extraPlanning: '',
+    hallDetails: '',
+    meetingDetails: '',
+    contactPreference: '',
+    priorities: '',
+    notes: '',
+    source: '플래너 입력',
+    createdAt: '2026-08-11',
+  }
+}
+
+function ensureConsultationCards(state: DemoState): DemoState {
+  const existingCoupleIds = new Set(state.consultationCards.map((card) => card.coupleId))
+  const missingCards = state.couples.filter((couple) => !existingCoupleIds.has(couple.id)).map(createDefaultConsultationCard)
+  return missingCards.length ? { ...state, consultationCards: [...state.consultationCards, ...missingCards] } : state
+}
 export const initialState: DemoState = {
   couples,
   events: initialEvents.map((event) => ({ ...event, approvalStatus: 'confirmed' })),
@@ -38,14 +71,14 @@ export const initialState: DemoState = {
   recommendations: initialRecommendations,
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
-  consultationCards: initialConsultationCards,
+  consultationCards: ensureConsultationCards({ couples, events: [], checklist: [], recommendations: [], availability: {}, vendorSelections: [], consultationCards: initialConsultationCards, contracts: [] }).consultationCards,
   contracts: initialContracts,
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
   switch (action.type) {
     case 'ADD_COUPLE':
-      return { ...state, couples: [...state.couples, action.payload] }
+      return { ...state, couples: [...state.couples, action.payload], consultationCards: [...state.consultationCards, createDefaultConsultationCard(action.payload)] }
     case 'ADD_EVENT':
       return { ...state, events: [...state.events, action.payload] }
     case 'UPDATE_EVENT':
@@ -135,7 +168,7 @@ const DemoContext = createContext<DemoContextValue | null>(null)
 export function DemoProvider({ children }: PropsWithChildren) {
 const [state, dispatch] = useReducer(demoReducer, initialState, (base) => {
     if (typeof window === 'undefined') return base
-    try { const saved = window.localStorage.getItem('veily-demo-state'); return saved ? { ...base, ...JSON.parse(saved) } : base } catch { return base }
+    try { const saved = window.localStorage.getItem('veily-demo-state'); return ensureConsultationCards(saved ? { ...base, ...JSON.parse(saved) } : base) } catch { return ensureConsultationCards(base) }
   })
   useEffect(() => { window.localStorage.setItem('veily-demo-state', JSON.stringify(state)) }, [state])
   const value = useMemo<DemoContextValue>(
