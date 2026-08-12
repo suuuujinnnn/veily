@@ -24,7 +24,7 @@ export function App() {
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
             <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
-            <Route path="contracts" element={<Navigate to="/couples/c1?tab=contracts" replace />} />
+            <Route path="contracts" element={<Navigate to="/couples/c1?tab=finance" replace />} />
             <Route path="community" element={<CommunityPage />} />
           </Route>
           <Route path="client/:coupleId" element={<PortalEntryPage />} />

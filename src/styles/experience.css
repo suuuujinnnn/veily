@@ -64,7 +64,7 @@
 .checklist-workspace__intro h2, .category-checklist__heading h2 { margin: 3px 0 5px; font-size: 24px; }
 .checklist-workspace__intro p:last-child, .category-checklist__heading p:last-child { margin: 0; color: var(--muted); font-size: 10px; }
 .monthly-roadmap { overflow-x: auto; padding: 8px 0 13px; scrollbar-color: #b8d7ed transparent; }
-.monthly-roadmap__track { min-width: 1110px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.monthly-roadmap__track { width: max-content; min-width: 100%; display: grid; gap: 10px; }
 .roadmap-month { position: relative; min-height: 315px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: var(--shadow-sm); }
 .roadmap-month::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: #cbd4dc; }
 .roadmap-month--current { border-color: #9ecff0; box-shadow: 0 12px 28px rgba(48,126,181,.12); }
@@ -85,7 +85,11 @@
 .roadmap-month__tasks button.done { background: #f1f6f8; }
 .roadmap-month__tasks button.done > span { border-color: var(--blue-600); background: var(--blue-600); color: #fff; }
 .roadmap-month__tasks button.done strong { color: #8a98a5; text-decoration: line-through; }
-.checklist-workspace__lower { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 15px; align-items: start; }
+.roadmap-month__tasks button.status-overdue:not(.done) { background: #fff4f1; }
+.roadmap-month__tasks button.status-overdue:not(.done) > span { border-color: #d88a78; color: #bd6754; }
+.roadmap-month__tasks button.status-soon:not(.done) { background: #fff9ec; }
+.roadmap-empty { min-width: 100%; padding: 34px; border: 1px dashed var(--line); border-radius: 14px; color: var(--muted); text-align: center; font-size: 11px; }
+.checklist-workspace__lower { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; align-items: start; }
 .category-checklist { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: var(--shadow-sm); }
 .category-checklist__heading { margin-bottom: 18px; display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; }
 .category-checklist__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -114,6 +118,26 @@
 .checklist-group__add { min-height: 39px; margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-top: 1px solid var(--line); background: #fff; color: var(--blue-700); font-size: 12px; font-weight: 700; }
 .checklist-group__add:hover { background: var(--blue-50); }
 .checklist-group__add:focus-visible { outline: 2px solid var(--blue-500); outline-offset: -3px; }
+.workflow-guide { padding: 24px; border: 1px solid #cfe1ed; border-radius: 18px; background: linear-gradient(180deg, #f7fbfd 0, #fff 120px); box-shadow: var(--shadow-sm); }
+.workflow-guide__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+.workflow-guide__head h2 { margin: 3px 0 5px; font-size: 24px; }
+.workflow-guide__head p:last-child { margin: 0; color: var(--muted); font-size: 10px; }
+.workflow-guide__filters { margin: 18px 0 12px; display: grid; grid-template-columns: minmax(240px, 1fr) repeat(3, minmax(125px, auto)); gap: 8px; }
+.workflow-guide__filters select, .guide-search { min-height: 40px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--ink); font-size: 11px; }
+.workflow-guide__filters select { padding: 0 10px; }
+.guide-search { padding: 0 12px; display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.guide-search input { width: 100%; border: 0; outline: 0; background: transparent; font: inherit; }
+.workflow-guide__list { max-height: 520px; overflow-y: auto; display: grid; gap: 7px; scrollbar-color: #b8d7ed transparent; }
+.guide-item { overflow: hidden; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+.guide-item--added { background: #f5faf7; }
+.guide-item__summary { width: 100%; min-height: 62px; padding: 11px 13px; display: grid; grid-template-columns: 54px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; border: 0; background: transparent; text-align: left; }
+.guide-item__phase { padding: 6px 5px; border-radius: 7px; background: var(--blue-50); color: var(--blue-700); font-size: 9px; font-weight: 800; text-align: center; }
+.guide-item__title { min-width: 0; }.guide-item__title strong { display: block; font-size: 12px; }.guide-item__title small { margin-top: 5px; display: block; overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.guide-item__detail { padding: 15px 17px 16px 81px; border-top: 1px solid var(--line); background: #fbfcfd; }
+.guide-item__detail > div:first-child { display: flex; align-items: flex-start; gap: 8px; color: var(--blue-700); }.guide-item__detail p { margin: 0; color: #506674; font-size: 11px; line-height: 1.6; }
+.guide-item__detail ul { margin: 11px 0 14px; padding-left: 18px; display: flex; flex-wrap: wrap; gap: 6px 25px; color: var(--muted); font-size: 10px; }
+.guide-empty { padding: 28px; color: var(--muted); text-align: center; }
+.workflow-guide__notice { margin: 13px 0 0; color: var(--muted); font-size: 9px; }
 .modal-footer-spacer { flex: 1; }
 
 /* Vendor detail and availability */

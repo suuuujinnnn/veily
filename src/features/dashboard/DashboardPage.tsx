@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, Check, CheckCircle2, ChevronRight, Clock3, FileWarning, MapPin, MessageSquareText, TrendingUp, UsersRound } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
+import { formatChecklistDate } from '../checklist/checklistUtils'
 import { Badge, Button, Card, Progress } from '../../components/ui'
-import { couples } from '../../data/mockData'
 
 const typeTone: Record<string, 'rose' | 'sage' | 'amber' | 'neutral'> = {
   드레스: 'rose', 스튜디오: 'sage', 미팅: 'amber', 메이크업: 'rose', 계약: 'neutral', 본식: 'rose',
 }
 
 export function DashboardPage() {
-  const { events, checklist, recommendations } = useDemoStore()
+  const { couples, events, checklist, recommendations } = useDemoStore()
   const todayEvents = events.filter((event) => event.date === '2026-08-05')
   const remainingTasks = checklist.filter((item) => !item.completed).length
   const waitingResponses = recommendations.filter((item) => item.status === 'pending').length
@@ -49,7 +49,7 @@ export function DashboardPage() {
           <Card className="dashboard-todo">
             <div className="dashboard-card-heading"><div><p className="eyebrow">TODO</p><h2>오늘 할 일</h2></div><Badge tone="amber">3건</Badge></div>
             <div className="dashboard-todo-list">
-              <Link to="/couples/c1?tab=contracts"><span><FileWarning size={16} /></span><div><strong>르블랑 계약서 VAT 확인</strong><small>13:00까지 · 김서윤 &amp; 이동현 계약</small></div><i><Check size={13} /></i></Link>
+              <Link to="/couples/c1?tab=finance"><span><FileWarning size={16} /></span><div><strong>르블랑 계약서 VAT 확인</strong><small>13:00까지 · 김서윤 &amp; 이동현 계약</small></div><i><Check size={13} /></i></Link>
               <Link to="/calendar"><span><Clock3 size={16} /></span><div><strong>청담 → 성수 이동 재조정</strong><small>14:00 일정 · 캘린더</small></div><i><Check size={13} /></i></Link>
               <Link to="/couples/c1"><span><UsersRound size={16} /></span><div><strong>고객 가능 시간 검토</strong><small>신규 응답 2개 · 김서윤 & 이동현</small></div><i><Check size={13} /></i></Link>
             </div>
@@ -81,7 +81,7 @@ export function DashboardPage() {
         </Card>
         <Card className="dashboard-deadlines">
           <div className="dashboard-card-heading"><div><p className="eyebrow">Deadlines</p><h2>다가오는 마감</h2></div><span>{remainingTasks}개 남음</span></div>
-          {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{task.dueDate.split(' ')[1]}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
+          {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
           <Link to="/couples/c1">체크리스트 관리 <ArrowUpRight size={14} /></Link>
         </Card>
       </section>
