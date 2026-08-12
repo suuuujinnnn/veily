@@ -10,6 +10,7 @@ import './styles/readability.css'
 import './styles/calendar-enhancements.css'
 import './styles/vendor-discovery.css'
 import './styles/shared-vendor-calendar.css'
+import './styles/vendor-reviews.css'
 import './styles/merged-features.css'
 
 createRoot(document.getElementById('root')!).render(

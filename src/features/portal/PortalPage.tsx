@@ -10,7 +10,7 @@ import { formatChecklistDate } from '../checklist/checklistUtils'
 import { PortalVendorAvailability } from './PortalVendorAvailability'
 import { VendorReviewsPanel } from '../reviews/VendorReviewsPanel'
 
-type PortalTab = 'home' | 'calendar' | 'tasks' | 'vendors' | 'estimate'
+type PortalTab = 'home' | 'calendar' | 'tasks' | 'vendors' | 'reviews' | 'estimate'
 const slots = ['8월 8일 (토) 11:00', '8월 8일 (토) 14:00', '8월 9일 (일) 10:30']
 
 export function PortalPage() {
@@ -19,7 +19,7 @@ export function PortalPage() {
   const { couples, events, checklist, vendors, contracts, payments, portalSettings, recommendations, availability, toggleChecklist, setRecommendation, toggleAvailability } = useDemoStore()
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
   const settings = portalSettings.find((item) => item.coupleId === couple.id) ?? { coupleId: couple.id, showSchedule: true, showFullEstimate: true, receiveMessages: true, showChecklist: true }
-  const requestedTab = (['home', 'calendar', 'tasks', 'vendors', 'estimate'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
+  const requestedTab = (['home', 'calendar', 'tasks', 'vendors', 'reviews', 'estimate'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
   const allowedRequestedTab = (requestedTab === 'calendar' && !settings.showSchedule) || (requestedTab === 'tasks' && !settings.showChecklist) ? 'home' : requestedTab
   const initialTab = allowedRequestedTab
   const [tab, setTab] = useState<PortalTab>(initialTab)
@@ -56,7 +56,7 @@ export function PortalPage() {
         <div className="d-day"><small>OUR DAY</small><strong>D—{dDay}</strong><span>함께 준비한 지 42일</span></div>
       </section>
       <div className="portal-context-strip"><span><strong>신랑·신부 전용 포털</strong> · 플래너 관리 화면과 분리되어 있습니다.</span><Link to={`/client/${couple.id}`}>접속 화면으로</Link></div>
-      <nav className="portal-nav"><div>{([['home','우리의 홈'], ...(settings.showSchedule ? [['calendar','공유 캘린더']] : []), ...(settings.showChecklist ? [['tasks','할 일']] : []), ['vendors','추천 업체'], ['estimate','견적']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => !task.completed).length}</em>}</button>)}</div>{settings.receiveMessages && <button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 메시지</button>}</nav>
+      <nav className="portal-nav"><div>{([['home','우리의 홈'], ...(settings.showSchedule ? [['calendar','공유 캘린더']] : []), ...(settings.showChecklist ? [['tasks','할 일']] : []), ['vendors','추천 업체'], ['reviews','공개 리뷰'], ['estimate','견적']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => !task.completed).length}</em>}</button>)}</div>{settings.receiveMessages && <button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 메시지</button>}</nav>
 
       <main className="portal-content">
         {tab === 'home' && <>
@@ -73,6 +73,8 @@ export function PortalPage() {
         {tab === 'tasks' && <section className="portal-subpage portal-tasks-page"><div className="portal-subpage__intro"><p className="eyebrow">Shared checklist</p><h2>준비 할 일</h2><p>월별 흐름으로 먼저 보고, 분야별 체크리스트에서 완료 여부를 표시할 수 있습니다.</p></div><MonthlyRoadmap tasks={tasks} onToggle={toggleChecklist} /><CategoryChecklist tasks={tasks} onToggle={toggleChecklist} /></section>}
 
         {tab === 'vendors' && <section className="portal-subpage portal-vendors"><div className="portal-subpage__intro"><p className="eyebrow">Curated by your planner</p><h2>두 분을 위한 셀렉션</h2><p>마음에 드는 곳을 표시해주세요. 지윤 플래너님이 다음 단계를 도와드릴게요.</p></div><div className="portal-vendor-grid">{recs.map(({ vendor, status }) => vendor && <article key={vendor.id}><div className="portal-vendor-image"><img src={vendor.image} style={{ objectPosition: vendor.imagePosition }} alt={vendor.name} /><Badge tone="dark">{vendor.match}% MATCH</Badge></div><div className="portal-vendor-body"><span>{vendor.category} · {vendor.location}</span><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="portal-response"><button className={status === 'liked' ? 'active-like' : ''} onClick={() => setRecommendation(couple.id, vendor.id, 'liked')}><Heart size={15} fill={status === 'liked' ? 'currentColor' : 'none'} /> 마음에 들어요</button><button className={status === 'hold' ? 'active-hold' : ''} onClick={() => setRecommendation(couple.id, vendor.id, 'hold')}><Pause size={15} /> 조금 더 볼게요</button></div></div></article>)}</div></section>}
+
+        {tab === 'reviews' && <section className="portal-subpage portal-reviews"><div className="portal-subpage__intro"><p className="eyebrow">Verified partner reviews</p><h2>공개 업체 리뷰</h2><p>인증 플래너가 실제 진행 경험을 바탕으로 남긴 리뷰를 업체별로 비교해 보세요.</p></div><VendorReviewsPanel availableVendors={vendors} showFilters featuredVendorIds={recs.map((recommendation) => recommendation.vendorId)} title="제휴업체 리뷰" description="두 분께 추천된 업체의 리뷰가 먼저 표시됩니다." /></section>}
 
         {tab === 'estimate' && <section className="portal-subpage portal-estimate">
           <div className="portal-subpage__intro"><p className="eyebrow">Estimate</p><h2>계약·견적 현황</h2><p>{settings.showFullEstimate ? '업체별 계약 금액과 입금·잔금 현황을 간단히 확인하세요.' : '플래너가 공개한 계약 진행 상태입니다.'}</p></div>
