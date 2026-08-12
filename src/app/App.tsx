@@ -3,6 +3,7 @@ import { PlannerLayout } from '../components/layout/PlannerLayout'
 import { PortalLayout } from '../components/layout/PortalLayout'
 import { CalendarPage } from '../features/calendar/CalendarPage'
 import { CommunityPage } from '../features/community/CommunityPage'
+import { PublicConsultationCardPage } from '../features/consultation/PublicConsultationCardPage'
 import { CoupleDetailPage } from '../features/couples/CoupleDetailPage'
 import { CouplesPage } from '../features/couples/CouplesPage'
 import { DashboardPage } from '../features/dashboard/DashboardPage'
@@ -28,6 +29,7 @@ export function App() {
             <Route path="community" element={<CommunityPage />} />
           </Route>
           <Route path="client/:coupleId" element={<PortalEntryPage />} />
+          <Route path="consultation/:coupleId" element={<PublicConsultationCardPage />} />
           <Route path="portal" element={<PortalLayout />}>
             <Route path=":coupleId/:section?" element={<PortalPage />} />
           </Route>

@@ -5,11 +5,13 @@ import {
   initialBudgetItems,
   initialBudgetPlans,
   initialChecklist,
+  initialConsultationCards,
   initialConsultations,
   initialEvents,
   initialPayments,
   initialPortalSettings,
   initialRecommendations,
+  initialVendorReviews,
   initialVendorSelections,
   vendors as initialVendors,
 } from '../data/mockData'
@@ -18,6 +20,7 @@ import type {
   BudgetPlan,
   ChecklistItem,
   Consultation,
+  ConsultationCard,
   Contract,
   Couple,
   Payment,
@@ -25,6 +28,7 @@ import type {
   Recommendation,
   RecommendationStatus,
   Vendor,
+  VendorReview,
   VendorSelection,
   WeddingEvent,
 } from '../types'
@@ -40,6 +44,7 @@ export interface DemoState {
   budgetPlans: BudgetPlan[]
   budgetItems: BudgetItem[]
   consultations: Consultation[]
+  consultationCards: ConsultationCard[]
   portalSettings: PortalSettings[]
   availability: Record<string, string[]>
   vendorSelections: VendorSelection[]
@@ -48,12 +53,14 @@ export interface DemoState {
 
 export type DemoAction =
   | { type: 'ADD_EVENT'; payload: WeddingEvent }
+  | { type: 'UPDATE_EVENT'; payload: WeddingEvent }
   | { type: 'UPDATE_COUPLE'; payload: Couple }
   | { type: 'TOGGLE_CHECKLIST'; payload: string }
   | { type: 'ADD_CHECKLIST'; payload: ChecklistItem }
   | { type: 'UPDATE_CHECKLIST'; payload: ChecklistItem }
   | { type: 'DELETE_CHECKLIST'; payload: string }
   | { type: 'ADD_CONSULTATION'; payload: Consultation }
+  | { type: 'SAVE_CONSULTATION_CARD'; payload: ConsultationCard }
   | { type: 'ADD_CONTRACT'; payload: Contract }
   | { type: 'UPDATE_CONTRACT'; payload: Contract }
   | { type: 'DELETE_CONTRACT'; payload: string }
@@ -83,6 +90,7 @@ export const initialState: DemoState = {
   budgetPlans: initialBudgetPlans,
   budgetItems: initialBudgetItems,
   consultations: initialConsultations,
+  consultationCards: initialConsultationCards,
   portalSettings: initialPortalSettings,
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
@@ -93,6 +101,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
   switch (action.type) {
     case 'ADD_EVENT':
       return { ...state, events: [...state.events, action.payload] }
+    case 'UPDATE_EVENT':
+      return { ...state, events: state.events.map((item) => item.id === action.payload.id ? action.payload : item) }
     case 'UPDATE_COUPLE':
       return { ...state, couples: state.couples.map((couple) => couple.id === action.payload.id ? action.payload : couple) }
     case 'TOGGLE_CHECKLIST':
@@ -105,6 +115,15 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, checklist: state.checklist.filter((item) => item.id !== action.payload) }
     case 'ADD_CONSULTATION':
       return { ...state, consultations: [action.payload, ...state.consultations] }
+    case 'SAVE_CONSULTATION_CARD': {
+      const exists = state.consultationCards.some((item) => item.coupleId === action.payload.coupleId)
+      return {
+        ...state,
+        consultationCards: exists
+          ? state.consultationCards.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item)
+          : [action.payload, ...state.consultationCards],
+      }
+    }
     case 'ADD_CONTRACT':
       return { ...state, contracts: [...state.contracts, action.payload] }
     case 'UPDATE_CONTRACT':
@@ -160,12 +179,14 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 
 interface DemoContextValue extends DemoState {
   addEvent: (event: Omit<WeddingEvent, 'id'>) => void
+  updateEvent: (event: WeddingEvent) => void
   updateCouple: (couple: Couple) => void
   toggleChecklist: (id: string) => void
   addChecklist: (item: Omit<ChecklistItem, 'id'>) => void
   updateChecklist: (item: ChecklistItem) => void
   deleteChecklist: (id: string) => void
   addConsultation: (item: Omit<Consultation, 'id'>) => void
+  saveConsultationCard: (card: Omit<ConsultationCard, 'id' | 'createdAt'> & Partial<Pick<ConsultationCard, 'id' | 'createdAt'>>) => void
   addContract: (item: Omit<Contract, 'id'>) => void
   updateContract: (item: Contract) => void
   deleteContract: (id: string) => void
@@ -193,12 +214,21 @@ export function DemoProvider({ children }: PropsWithChildren) {
   const value = useMemo<DemoContextValue>(() => ({
     ...state,
     addEvent: (event) => dispatch({ type: 'ADD_EVENT', payload: { ...event, id: makeId('e') } }),
+    updateEvent: (event) => dispatch({ type: 'UPDATE_EVENT', payload: event }),
     updateCouple: (couple) => dispatch({ type: 'UPDATE_COUPLE', payload: couple }),
     toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
     addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: makeId('t') } }),
     updateChecklist: (item) => dispatch({ type: 'UPDATE_CHECKLIST', payload: item }),
     deleteChecklist: (id) => dispatch({ type: 'DELETE_CHECKLIST', payload: id }),
     addConsultation: (item) => dispatch({ type: 'ADD_CONSULTATION', payload: { ...item, id: makeId('con') } }),
+    saveConsultationCard: (card) => dispatch({
+      type: 'SAVE_CONSULTATION_CARD',
+      payload: {
+        ...card,
+        id: card.id ?? makeId('cc'),
+        createdAt: card.createdAt ?? new Date().toISOString().slice(0, 10),
+      },
+    }),
     addContract: (item) => dispatch({ type: 'ADD_CONTRACT', payload: { ...item, id: makeId('ct') } }),
     updateContract: (item) => dispatch({ type: 'UPDATE_CONTRACT', payload: item }),
     deleteContract: (id) => dispatch({ type: 'DELETE_CONTRACT', payload: id }),
@@ -215,6 +245,10 @@ export function DemoProvider({ children }: PropsWithChildren) {
     setRecommendation: (coupleId, vendorId, status) => dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
     toggleAvailability: (eventId, slot) => dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
     selectVendorSlot: (coupleId, vendorId, slotId) => dispatch({ type: 'SELECT_VENDOR_SLOT', payload: { coupleId, vendorId, slotId } }),
+    addVendorReview: (review) => dispatch({
+      type: 'ADD_VENDOR_REVIEW',
+      payload: { ...review, id: makeId('vr'), createdAt: new Date().toISOString() },
+    }),
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>

@@ -12,11 +12,12 @@ import { ConsultationsPanel } from './ConsultationsPanel'
 import { CoupleInfoPanel } from './CoupleInfoPanel'
 import { EstimateSettlementPanel } from './EstimateSettlementPanel'
 import { PublicLinkSettings } from './PublicLinkSettings'
+import { ScheduleCoordinationPanel } from './ScheduleCoordinationPanel'
 import { AddEventModal } from '../calendar/AddEventModal'
 
-type DetailTab = 'overview' | 'info' | 'timeline' | 'vendors' | 'consultations' | 'finance' | 'public-link'
+type DetailTab = 'overview' | 'info' | 'timeline' | 'coordination' | 'vendors' | 'consultations' | 'finance' | 'public-link'
 
-const detailTabs: DetailTab[] = ['overview', 'info', 'timeline', 'vendors', 'consultations', 'finance', 'public-link']
+const detailTabs: DetailTab[] = ['overview', 'info', 'timeline', 'coordination', 'vendors', 'consultations', 'finance', 'public-link']
 
 function isDetailTab(value: string | null): value is DetailTab {
   return detailTabs.includes(value as DetailTab)
@@ -53,7 +54,7 @@ export function CoupleDetailPage() {
         <div className="couple-profile__progress"><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong><Progress value={couple.progress} /></div>
         <div className="couple-profile__actions"><Link to={`/client/${couple.id}`} target="_blank"><Button variant="secondary" icon={<ExternalLink size={15} />}>고객 화면 미리보기</Button></Link><button className="icon-button bordered"><MoreHorizontal size={18} /></button></div>
       </section>
-      <nav className="detail-tabs">{([['overview','한눈에 보기'],['info','부부정보'],['timeline','일정 & 할 일'],['vendors','추천 업체'],['consultations','상담'],['finance','견적·정산'],['public-link','고객 링크']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}</nav>
+      <nav className="detail-tabs">{([['overview','한눈에 보기'],['info','부부정보'],['timeline', 'TODO'],['coordination','일정 조율'],['vendors','추천 업체'],['consultations','상담'],['finance','견적·정산'],['public-link','고객 링크']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => !task.completed).length}</em>}</button>)}</nav>
 
       {tab === 'overview' && <div className="detail-overview">
         <section className="detail-column detail-column--wide"><div className="section-heading section-heading--compact"><div><p className="eyebrow">Coming up</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('timeline')}>전체 보기 <ChevronRight size={14} /></button></div><Card padding="none" className="upcoming-list">{coupleEvents.slice(0,3).map((event) => <div className="upcoming-row" key={event.id}><div className="date-tile"><strong>{Number(event.date.slice(-2))}</strong><span>8월</span></div><div><Badge tone="rose">{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}–{event.endTime} <i /> <MapPin size={13} /> {event.location}</p></div><ChevronRight size={17} /></div>)}</Card></section>
@@ -77,6 +78,8 @@ export function CoupleDetailPage() {
       </div>}
 
       {tab === 'info' && <CoupleInfoPanel couple={couple} />}
+
+      {tab === 'coordination' && <ScheduleCoordinationPanel coupleId={couple.id} />}
 
       {tab === 'vendors' && <div className="recommended-grid">{recommendedVendors.length ? recommendedVendors.map(({ vendor, status }) => vendor && <article className="vendor-mini-card" key={vendor.id}><img src={vendor.image} style={{ objectPosition: vendor.imagePosition }} alt="" /><div><Badge tone="rose">{vendor.match}% match</Badge><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="vendor-mini-card__status"><span>고객 응답</span><strong className={`status-${status}`}>{status === 'liked' ? '마음에 들어요' : status === 'hold' ? '조금 더 볼게요' : '응답 대기'}</strong></div></div></article>) : <Card><p>아직 추천한 업체가 없습니다.</p></Card>}</div>}
 

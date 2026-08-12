@@ -1,4 +1,5 @@
 export type EventType = '미팅' | '드레스' | '스튜디오' | '메이크업' | '계약' | '본식'
+export type EventApprovalStatus = 'planner-proposed' | 'client-ok' | 'confirmed'
 
 export type TravelMode = 'bus' | 'subway' | 'car'
 export type VendorCategory = '드레스' | '메이크업' | '스튜디오' | '웨딩홀' | '예물' | '기타'
@@ -42,6 +43,7 @@ export interface WeddingEvent {
   durationMinutes?: number
   travelMode?: TravelMode
   memo?: string
+  approvalStatus?: EventApprovalStatus
 }
 
 export type ChecklistCategory =
@@ -193,6 +195,31 @@ export interface Consultation {
   requests: string[]
   decisions: string[]
   nextActions: string[]
+}
+
+export interface ConsultationCard {
+  id: string
+  coupleId: string
+  preferredDate: string
+  shootDate: string
+  coupleNames: string
+  phone: string
+  existingVendors: string
+  studioDirection: string
+  studioMood: string
+  dressMood: string
+  sizes: string
+  makeupMood: string
+  budget: string
+  otherPlanner: string
+  extraPlanning: string
+  hallDetails: string
+  meetingDetails: string
+  contactPreference: string
+  priorities: string
+  notes: string
+  source: '플래너 입력' | '고객 작성'
+  createdAt: string
 }
 
 export interface Payment {
