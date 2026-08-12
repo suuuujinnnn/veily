@@ -65,3 +65,81 @@
 @media (max-width: 1180px) { .coordination-proposal-form { grid-template-columns: repeat(3, minmax(0, 1fr)); }.coordination-proposal-form__title { grid-column: span 2; }.coordination-proposal-form .button { grid-column: 1 / -1; }.coordination-main { grid-template-columns: 1fr; } }
 @media (max-width: 1000px) { .info-card-grid, .vendor-db-grid { grid-template-columns: repeat(2, 1fr); }.finance-metrics { grid-template-columns: repeat(2, 1fr); }.public-link-layout { grid-template-columns: 1fr; }.portal-live-preview { position: static; }.vendor-db__toolbar { grid-template-columns: 1fr 1fr; }.couple-consultation-card__body { grid-template-columns: 1fr; }.couple-consultation-card__taste { border-right: 0; border-bottom: 1px solid var(--line); } }
 @media (max-width: 680px) { .feature-panel-heading { align-items: flex-start; flex-direction: column; }.info-card-grid, .consultation-columns, .vendor-db-grid, .finance-metrics, .portal-estimate-summary { grid-template-columns: 1fr; }.coordination-proposal-form { grid-template-columns: 1fr; }.coordination-proposal-form__title, .coordination-proposal-form .button { grid-column: auto; }.coordination-calendar__day, .coordination-calendar__blank { min-height: 63px; padding: 4px; }.coordination-calendar-event { font-size: 6px; }.coordination-item { grid-template-columns: 45px 1fr; }.coordination-item__actions { grid-column: 2; justify-content: flex-start; }.couple-consultation-card__header { align-items: flex-start; flex-direction: column; }.couple-consultation-card__details > div { grid-template-columns: 1fr; gap: 5px; padding: 10px 0; }.couple-consultation-card__details dd { text-align: left; }.couple-consultation-card__footer { grid-template-columns: 1fr; }.couple-consultation-card__footer > div + div { border-top: 1px solid var(--line); border-left: 0; }.consultation-start-card { grid-template-columns: auto 1fr; }.consultation-start-card a { grid-column: 2; }.preference-page { padding: 22px 12px 46px; }.preference-form-card__header { padding: 24px 20px; grid-template-columns: auto 1fr; }.preference-form-card__header > .badge { grid-column: 2; }.preference-section { padding: 24px 20px; }.preference-form__footer { padding: 18px 20px; align-items: stretch; flex-direction: column; }.vendor-db__toolbar { grid-template-columns: 1fr; }.copy-field { align-items: stretch; flex-direction: column; }.setting-row { grid-template-columns: 38px 1fr auto; }.form-grid { grid-template-columns: 1fr; }.form-field--wide { grid-column: auto; }.finance-table-summary--two, .finance-table-summary--three { grid-template-columns: 1fr; }.finance-table-summary span + span { border-top: 1px solid var(--line); border-left: 0; } }
+
+/* Couple overview — modern service grid */
+.detail-overview { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+.detail-overview .overview-schedule { grid-column: span 7; }
+.detail-overview .overview-tasks { grid-column: span 5; }
+.detail-overview .overview-note { grid-column: span 5; }
+.detail-overview .overview-preference { grid-column: span 7; }
+.detail-overview .detail-column { min-width: 0; display: flex; flex-direction: column; }
+.detail-overview .section-heading { min-height: 49px; margin-bottom: 10px; }
+.detail-overview .section-heading h2 { margin-top: 3px; font-size: 20px; }
+.detail-overview .section-heading button { display: flex; align-items: center; gap: 2px; color: var(--blue-700); font-size: 9px; text-decoration: none; }
+.detail-overview .upcoming-list, .detail-overview .task-list { flex: 1; border-color: var(--silver-200); box-shadow: var(--shadow-sm); }
+.detail-overview .upcoming-row { min-height: 92px; border-color: #e8edf1; }
+.detail-overview .date-tile { border: 1px solid var(--blue-100); border-radius: 11px; background: var(--blue-50); }
+.detail-overview .date-tile strong { color: var(--navy-900); font-family: var(--sans); font-size: 18px; font-weight: 750; }
+.detail-overview .date-tile span { color: var(--blue-700); font-size: 8px; font-weight: 700; }
+.detail-overview .upcoming-row h3 { color: var(--navy-900); font-size: 12px; }
+.detail-overview .upcoming-row > svg { color: var(--silver-400); }
+.detail-overview .task-row { min-height: 55px; padding: 10px 0; border-color: #e8edf1; }
+.detail-overview .custom-check { border-color: #b9c9d4; border-radius: 7px; }
+.detail-overview .task-row input:checked + .custom-check { border-color: var(--blue-600); background: var(--blue-600); }
+.detail-overview .task-row strong { color: var(--navy-900); font-size: 10px; }
+.detail-overview .overview-note, .detail-overview .overview-preference { min-height: 158px; border: 1px solid var(--silver-200); border-radius: 16px; box-shadow: var(--shadow-sm); }
+.detail-overview .overview-note { gap: 14px; background: linear-gradient(135deg, #f7fafc, #fff); }
+.detail-overview .overview-note > svg { width: 38px; height: 38px; padding: 10px; flex: none; border-radius: 11px; background: var(--blue-100); color: var(--blue-700); }
+.detail-overview .overview-note span { display: block; color: var(--blue-600); font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.detail-overview .overview-note strong { display: block; margin-top: 3px; color: var(--navy-900); font-size: 13px; }
+.detail-overview .overview-note p { margin: 9px 0; color: #586d7b; font-family: var(--sans); font-size: 11px; line-height: 1.6; }
+.detail-overview .overview-note button, .detail-overview .overview-preference button { color: var(--blue-700); font-weight: 700; text-decoration: none; }
+.detail-overview .overview-preference { background: linear-gradient(135deg, #f3f9fd, #fff 72%); }
+.detail-overview .recommendation-peek__head > span { color: var(--blue-700); font-size: 10px; }
+.detail-overview .overview-preference h3 { margin: 18px 0 12px; color: var(--navy-900); font-family: var(--sans); font-size: 19px; font-weight: 750; }
+.detail-overview .overview-preference .tag-row span { border: 1px solid #cfe3ef; background: #fff; color: #39789e; }
+.detail-overview .overview-preference button { margin-top: 16px; }
+
+/* Consultation preference card — white, silver and sky-blue */
+.couple-consultation-card { border: 1px solid var(--silver-200); border-radius: 18px; background: #fff; box-shadow: var(--shadow-sm); }
+.couple-consultation-card__header { min-height: 90px; padding: 19px 22px; border-color: #e5ebef; background: linear-gradient(110deg, #fff, #f7fafc); }
+.couple-consultation-card__header .document-icon { border-radius: 12px; background: var(--blue-100); color: var(--blue-700); }
+.couple-consultation-card__header h3 { margin: 4px 0 3px; color: var(--navy-900); font-family: var(--sans); font-size: 19px; font-weight: 750; }
+.couple-consultation-card__header small { font-size: 9px; }
+.couple-consultation-card__header a { padding: 7px 9px; border: 1px solid var(--silver-200); border-radius: 8px; background: #fff; color: var(--blue-700); font-size: 9px; font-weight: 700; text-decoration: none; }
+.couple-consultation-card__body { grid-template-columns: minmax(0, 1.05fr) minmax(390px, .95fr); }
+.couple-consultation-card__taste { position: relative; min-height: 220px; padding: 29px; overflow: hidden; border-color: #dce8ef; background: linear-gradient(135deg, #edf7fd 0%, #f8fbfd 70%); }
+.couple-consultation-card__taste::after { content: ''; position: absolute; width: 180px; height: 180px; right: -80px; bottom: -100px; border: 28px solid rgba(97,166,220,.08); border-radius: 50%; }
+.couple-consultation-card__taste > span { color: var(--blue-700); font-size: 10px; }
+.couple-consultation-card__taste h4 { position: relative; z-index: 1; margin: 19px 0 9px; color: var(--navy-900); font-family: var(--sans); font-size: 22px; font-weight: 750; }
+.couple-consultation-card__taste p { position: relative; z-index: 1; color: #536c7b; font-family: var(--sans); font-size: 11px; line-height: 1.65; }
+.couple-consultation-card__taste .tag-row { position: relative; z-index: 1; }
+.couple-consultation-card__taste .tag-row span { border: 1px solid #c9e2f1; background: rgba(255,255,255,.86); color: #34789f; }
+.couple-consultation-card__details { padding: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: stretch; gap: 8px; background: #fff; }
+.couple-consultation-card__details > div { min-height: 86px; padding: 13px; display: flex; align-items: flex-start; justify-content: space-between; flex-direction: column; gap: 9px; border: 1px solid #e4eaee; border-radius: 11px; background: #fafcfd; }
+.couple-consultation-card__details > div:last-child { border-bottom: 1px solid #e4eaee; }
+.couple-consultation-card__details dt { color: #728590; font-size: 9px; }
+.couple-consultation-card__details dt svg { color: var(--blue-600); }
+.couple-consultation-card__details dd { color: var(--navy-900); font-size: 11px; text-align: left; }
+.couple-consultation-card__footer { border-color: #e5ebef; background: #fbfcfd; }
+.couple-consultation-card__footer > div { min-height: 82px; padding: 17px 21px; }
+.couple-consultation-card__footer > div + div { border-color: #e5ebef; }
+.couple-consultation-card__footer span { color: var(--blue-700); font-size: 8px; font-weight: 800; letter-spacing: .04em; }
+.couple-consultation-card__footer strong { color: #415866; font-size: 10px; }
+.consultation-start-card { border: 1px solid #d8e7ef; border-radius: 16px; background: linear-gradient(115deg, #f2f9fd, #fff); box-shadow: var(--shadow-sm); }
+.consultation-start-card .document-icon { border-radius: 12px; background: var(--blue-100); color: var(--blue-700); }
+.consultation-start-card h3 { color: var(--navy-900); font-family: var(--sans); font-weight: 750; }
+
+@media (max-width: 1000px) {
+  .detail-overview .overview-schedule, .detail-overview .overview-tasks { grid-column: span 6; }
+  .detail-overview .overview-note, .detail-overview .overview-preference { grid-column: span 6; }
+  .couple-consultation-card__body { grid-template-columns: 1fr; }
+  .couple-consultation-card__taste { border-right: 0; border-bottom: 1px solid #dce8ef; }
+}
+
+@media (max-width: 720px) {
+  .detail-overview { grid-template-columns: 1fr; }
+  .detail-overview .overview-schedule, .detail-overview .overview-tasks, .detail-overview .overview-note, .detail-overview .overview-preference { grid-column: 1; }
+  .couple-consultation-card__details { grid-template-columns: 1fr; }
+  .couple-consultation-card__details > div { min-height: 72px; }
+}

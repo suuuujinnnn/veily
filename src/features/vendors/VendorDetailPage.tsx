@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button } from '../../components/ui'
 import { VendorScheduleBoard } from './VendorScheduleBoard'
+import { InstagramPortfolio } from './InstagramPortfolio'
 import { VendorReviewsPanel } from '../reviews/VendorReviewsPanel'
 
 export function VendorDetailPage() {
@@ -44,10 +45,7 @@ export function VendorDetailPage() {
         <article><CalendarDays size={18} /><div><span>예상 금액</span><strong>{vendor.priceRange}</strong></div></article>
       </section>
 
-      <section className="instagram-portfolio">
-        <header><div><p className="eyebrow">Instagram portfolio</p><h2>최근 포트폴리오</h2></div><span><Camera size={15} /> {vendor.instagram}에서 가져온 목업 피드</span></header>
-        <div>{[...vendor.gallery, ...vendor.gallery].map((image, index) => <figure key={`${image}-${index}`}><img src={image} alt={`${vendor.name} 인스타그램 포트폴리오 ${index + 1}`} /><span><Camera size={14} /></span></figure>)}</div>
-      </section>
+      <InstagramPortfolio key={vendor.id} vendor={vendor} />
 
       <VendorReviewsPanel availableVendors={vendors} vendorId={vendor.id} canWrite title={`${vendor.name} 리뷰`} description="인증 플래너가 실제 진행 경험을 바탕으로 남긴 공개 리뷰입니다. 고객 포털에도 동일하게 공유됩니다." />
 
