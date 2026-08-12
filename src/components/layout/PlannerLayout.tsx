@@ -1,15 +1,22 @@
+import { useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   Bell,
   Building2,
   CalendarDays,
+  ClipboardList,
   ChevronRight,
   HeartHandshake,
   LayoutDashboard,
   MessageCircleMore,
   Search,
+  Settings,
+  UserRound,
   UsersRound,
 } from 'lucide-react'
+import { useDemoStore } from '../../app/store'
+import { Button, Modal } from '../ui'
+import { WorkflowGuidePanel } from '../../features/checklist/WorkflowGuidePanel'
 
 const navItems = [
   { to: '/', label: '홈', icon: LayoutDashboard, end: true },
@@ -25,7 +32,18 @@ const pageTitles: Record<string, string> = {
 
 export function PlannerLayout() {
   const location = useLocation()
+  const { couples, checklist, addChecklist } = useDemoStore()
+  const currentCoupleId = location.pathname.match(/^\/couples\/([^/]+)/)?.[1]
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | 'guide' | null>(null)
+  const [guideCoupleId, setGuideCoupleId] = useState(currentCoupleId ?? couples[0]?.id ?? '')
+  const guideCouple = couples.find((couple) => couple.id === guideCoupleId) ?? couples[0]
   const title = location.pathname.startsWith('/couples/') ? '커플 상세' : pageTitles[location.pathname] ?? 'VEILY'
+  const openUtility = (modal: 'profile' | 'notifications' | 'guide') => {
+    if (modal === 'guide' && currentCoupleId && couples.some((couple) => couple.id === currentCoupleId)) setGuideCoupleId(currentCoupleId)
+    setUtilityModal(modal)
+    setProfileMenuOpen(false)
+  }
   return (
     <div className="planner-shell">
       <aside className="sidebar">
@@ -49,7 +67,12 @@ export function PlannerLayout() {
         <div className="planner-profile">
           <span className="avatar">YJ</span>
           <div><strong>이지윤 플래너</strong><small>VEILY Partner</small></div>
-          <button className="icon-button" aria-label="프로필 메뉴">•••</button>
+          <button className="icon-button" aria-label="프로필 메뉴" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen((open) => !open)}>•••</button>
+          {profileMenuOpen && <div className="planner-profile-menu" role="menu">
+            <button role="menuitem" onClick={() => openUtility('profile')}><UserRound size={16} /><span>마이페이지</span></button>
+            <button role="menuitem" onClick={() => openUtility('notifications')}><Settings size={16} /><span>알림 설정</span></button>
+            <button role="menuitem" onClick={() => openUtility('guide')}><ClipboardList size={16} /><span>표준 업무 가이드</span></button>
+          </div>}
         </div>
       </aside>
       <div className="planner-main">
@@ -62,6 +85,15 @@ export function PlannerLayout() {
         </header>
         <main className="page-content"><Outlet /></main>
       </div>
+      <Modal open={utilityModal === 'profile'} onClose={() => setUtilityModal(null)} title="마이페이지" eyebrow="Planner profile" footer={<Button onClick={() => setUtilityModal(null)}>확인</Button>}>
+        <div className="utility-modal-content"><span className="avatar utility-modal-avatar">YJ</span><div><strong>이지윤 플래너</strong><p>VEILY Partner · 인증 플래너</p><small>프로필과 계정 정보 관리 기능은 데모 범위에서 준비 중입니다.</small></div></div>
+      </Modal>
+      <Modal open={utilityModal === 'notifications'} onClose={() => setUtilityModal(null)} title="알림 설정" eyebrow="Notifications" footer={<Button onClick={() => setUtilityModal(null)}>확인</Button>}>
+        <div className="utility-setting-list"><label><span><strong>일정 알림</strong><small>예정된 상담과 업체 일정을 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label><label><span><strong>고객 응답 알림</strong><small>추천 업체와 일정에 고객이 응답하면 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label><label><span><strong>정산 알림</strong><small>입금 예정일과 확인이 필요한 계약을 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label></div>
+      </Modal>
+      <Modal open={utilityModal === 'guide'} onClose={() => setUtilityModal(null)} title="표준 업무 가이드" eyebrow="Korean wedding workflow" footer={<Button variant="secondary" onClick={() => setUtilityModal(null)}>닫기</Button>}>
+        {guideCouple && <div className="workflow-guide-modal-body"><label className="workflow-guide-couple"><span>적용할 커플</span><select value={guideCouple.id} onChange={(event) => setGuideCoupleId(event.target.value)}>{couples.map((couple) => <option key={couple.id} value={couple.id}>{couple.partners} · {couple.weddingDate}</option>)}</select></label><WorkflowGuidePanel coupleId={guideCouple.id} weddingDate={guideCouple.weddingDate} tasks={checklist.filter((task) => task.coupleId === guideCouple.id)} onAdd={addChecklist} hideHeading /></div>}
+      </Modal>
     </div>
   )
 }

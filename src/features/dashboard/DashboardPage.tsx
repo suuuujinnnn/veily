@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, Check, CheckCircle2, ChevronRight, Clock3, FileWarning, MapPin, MessageSquareText, TrendingUp, UsersRound } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
+import { formatChecklistDate } from '../checklist/checklistUtils'
 import { Badge, Button, Card, Progress } from '../../components/ui'
 
 const typeTone: Record<string, 'rose' | 'sage' | 'amber' | 'neutral'> = {
@@ -80,7 +81,7 @@ export function DashboardPage() {
         </Card>
         <Card className="dashboard-deadlines">
           <div className="dashboard-card-heading"><div><p className="eyebrow">Deadlines</p><h2>다가오는 마감</h2></div><span>{remainingTasks}개 남음</span></div>
-          {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{task.dueDate.split(' ')[1]}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
+          {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
           <Link to="/couples/c1">체크리스트 관리 <ArrowUpRight size={14} /></Link>
         </Card>
       </section>

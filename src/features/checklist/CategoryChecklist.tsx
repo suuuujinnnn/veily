@@ -1,7 +1,8 @@
 import { Check, MoreHorizontal, Plus } from 'lucide-react'
-import { Badge, Button } from '../../components/ui'
+import { Button } from '../../components/ui'
 import type { ChecklistCategory, ChecklistItem } from '../../types'
 import { checklistCategories } from './checklistCategories'
+import { formatChecklistDate } from './checklistUtils'
 
 export function CategoryChecklist({
   tasks,
@@ -24,7 +25,7 @@ export function CategoryChecklist({
       </div>
       <div className="category-checklist__grid">
         {checklistCategories.map((category, categoryIndex) => {
-          const categoryTasks = tasks.filter((task) => task.category === category.id)
+          const categoryTasks = tasks.filter((task) => task.category === category.id).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
           const done = categoryTasks.filter((task) => task.completed).length
           return (
             <article className="checklist-group" key={category.id}>
@@ -35,10 +36,9 @@ export function CategoryChecklist({
                     <label>
                       <input type="checkbox" checked={task.completed} onChange={() => onToggle(task.id)} />
                       <span><Check size={13} /></span>
-                      <div><strong>{task.title}</strong><small>{task.dueDate} · {task.owner}</small></div>
+                      <div><strong>{task.title}</strong><small>{formatChecklistDate(task.dueDate)} · {task.owner}</small></div>
                     </label>
                     <div className="checklist-manage-row__meta">
-                      {task.isTemplate && <Badge tone="neutral">템플릿</Badge>}
                       {editable && <button aria-label={`${task.title} 편집`} onClick={() => onEdit?.(task)}><MoreHorizontal size={16} /></button>}
                     </div>
                   </div>
