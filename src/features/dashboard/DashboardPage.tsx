@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom'
-import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, Check, CheckCircle2, ChevronRight, Clock3, FileWarning, MapPin, MessageSquareText, TrendingUp, UsersRound } from 'lucide-react'
+import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, CheckCircle2, ChevronRight, Clock3, MapPin, MessageSquareText, TrendingUp } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { formatChecklistDate } from '../checklist/checklistUtils'
 import { Badge, Button, Card, Progress } from '../../components/ui'
+import { ReminderListItem } from '../../components/reminders/ReminderListItem'
+import { buildReminders } from '../reminders/reminderUtils'
 
 const typeTone: Record<string, 'rose' | 'sage' | 'amber' | 'neutral'> = {
   드레스: 'rose', 스튜디오: 'sage', 미팅: 'amber', 메이크업: 'rose', 계약: 'neutral', 본식: 'rose',
 }
 
 export function DashboardPage() {
-  const { couples, events, checklist, recommendations } = useDemoStore()
+  const { couples, events, checklist, recommendations, orderApprovals, vendors } = useDemoStore()
+  const reminders = buildReminders({ couples, events, recommendations, orderApprovals, vendors }, 'planner')
   const todayEvents = events.filter((event) => event.date === '2026-08-05')
   const remainingTasks = checklist.filter((item) => !item.completed).length
   const waitingResponses = recommendations.filter((item) => item.status === 'pending').length
@@ -24,7 +27,7 @@ export function DashboardPage() {
         </div>
         <div className="dashboard-metrics">
           <article><span className="metric-icon"><CalendarDays size={18} /></span><div><small>오늘 일정</small><strong>{todayEvents.length}<em>건</em></strong><p>다음 일정 10:30</p></div></article>
-          <article><span className="metric-icon"><AlertTriangle size={18} /></span><div><small>확인 필요</small><strong>3<em>건</em></strong><p>계약 1 · 일정 2</p></div></article>
+          <article><span className="metric-icon"><AlertTriangle size={18} /></span><div><small>확인 필요</small><strong>{reminders.length}<em>건</em></strong><p>발주·선택 기한 중심</p></div></article>
           <article><span className="metric-icon"><MessageSquareText size={18} /></span><div><small>고객 응답 대기</small><strong>{waitingResponses + 2}<em>건</em></strong><p>어제보다 2건 감소</p></div></article>
           <article><span className="metric-icon"><CheckCircle2 size={18} /></span><div><small>이번 주 완료</small><strong>18<em>건</em></strong><p><TrendingUp size={11} /> 완료율 81%</p></div></article>
         </div>
@@ -47,13 +50,12 @@ export function DashboardPage() {
             })}
           </Card>
           <Card className="dashboard-todo">
-            <div className="dashboard-card-heading"><div><p className="eyebrow">TODO</p><h2>오늘 할 일</h2></div><Badge tone="amber">3건</Badge></div>
+            <div className="dashboard-card-heading"><div><p className="eyebrow">TODO</p><h2>오늘 할 일</h2></div><Badge tone="amber">{reminders.length}건</Badge></div>
             <div className="dashboard-todo-list">
-              <Link to="/couples/c1?tab=finance"><span><FileWarning size={16} /></span><div><strong>르블랑 계약서 VAT 확인</strong><small>13:00까지 · 김서윤 &amp; 이동현 계약</small></div><i><Check size={13} /></i></Link>
-              <Link to="/calendar"><span><Clock3 size={16} /></span><div><strong>청담 → 성수 이동 재조정</strong><small>14:00 일정 · 캘린더</small></div><i><Check size={13} /></i></Link>
-              <Link to="/couples/c1"><span><UsersRound size={16} /></span><div><strong>고객 가능 시간 검토</strong><small>신규 응답 2개 · 김서윤 & 이동현</small></div><i><Check size={13} /></i></Link>
+              {reminders.slice(0, 3).map((reminder) => <ReminderListItem key={reminder.id} reminder={reminder} compact />)}
+              {!reminders.length && <p className="dashboard-todo-empty">지금 처리할 알림이 없습니다.</p>}
             </div>
-            <Link className="dashboard-todo__all" to="/couples/c1">전체 체크리스트 <ArrowUpRight size={14} /></Link>
+            <Link className="dashboard-todo__all" to="/couples">고객별 업무 보기 <ArrowUpRight size={14} /></Link>
           </Card>
         </div>
       </section>

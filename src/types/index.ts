@@ -1,5 +1,6 @@
 export type EventType = '미팅' | '드레스' | '스튜디오' | '메이크업' | '계약' | '본식'
 export type EventApprovalStatus = 'planner-proposed' | 'client-ok' | 'confirmed'
+export type ScheduleVisibility = 'couple-shared' | 'planner-private'
 
 export type TravelMode = 'bus' | 'subway' | 'car'
 export type VendorCategory = '드레스' | '메이크업' | '스튜디오' | '웨딩홀' | '예물' | '기타'
@@ -31,7 +32,7 @@ export interface Couple {
 
 export interface WeddingEvent {
   id: string
-  coupleId: string
+  coupleId?: string
   title: string
   date: string
   time: string
@@ -44,6 +45,7 @@ export interface WeddingEvent {
   travelMode?: TravelMode
   memo?: string
   approvalStatus?: EventApprovalStatus
+  visibility: ScheduleVisibility
 }
 
 export type ChecklistCategory =
@@ -126,7 +128,37 @@ export interface Vendor {
   lastContact?: string
   memo?: string
   evidenceSource?: 'analyzed' | 'tag'
+  details?: VendorDetails
 }
+
+export interface StudioVendorDetails {
+  kind: 'studio'
+  bouquetProvided: boolean
+  propsProvided: boolean
+  veilProvided: boolean
+  backgrounds: string[]
+  outdoorShooting: boolean
+  parking: boolean
+  elevator: boolean
+}
+
+export interface DressVendorDetails {
+  kind: 'dress'
+  fittingFee: string
+  fittingCount: number
+  shootingAvailable: boolean
+  surchargeConditions: string
+}
+
+export interface MakeupVendorDetails {
+  kind: 'makeup'
+  earlyStartFee: string
+  directorRequestAvailable: boolean
+  hairpieces: string
+  parentMakeup: string
+}
+
+export type VendorDetails = StudioVendorDetails | DressVendorDetails | MakeupVendorDetails
 
 export interface VendorReview {
   id: string
@@ -164,6 +196,45 @@ export interface Recommendation {
   coupleId: string
   vendorId: string
   status: RecommendationStatus
+  proposedAt: string
+  selectionDeadline: string
+}
+
+export type OrderApprovalStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'expired'
+export type OrderRejectionReason = 'schedule-unavailable' | 'product-unavailable' | 'other'
+
+export interface OrderApproval {
+  id: string
+  coupleId: string
+  vendorId: string
+  recommendationId?: string
+  productName: string
+  relatedEventId?: string
+  requestedAt: string
+  approvalDeadline: string
+  reviewerName: string
+  reviewerRole: string
+  reviewerTeam: string
+  viewedAt: string
+  status: OrderApprovalStatus
+  rejectionReason?: OrderRejectionReason
+  confirmedAt?: string
+  respondedAt?: string
+}
+
+export type ReminderKind = 'selection-deadline' | 'order-approval-deadline' | 'confirmed-schedule'
+
+export interface ReminderItem {
+  id: string
+  kind: ReminderKind
+  audience: 'planner' | 'client'
+  sourceId: string
+  coupleId?: string
+  title: string
+  message: string
+  dueAt: string
+  urgency: 'normal' | 'soon' | 'overdue'
+  href: string
 }
 
 export interface Contract {

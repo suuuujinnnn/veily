@@ -30,7 +30,7 @@ export function ConsultationsPanel({ coupleId }: { coupleId: string }) {
       const [eventDate, time = '19:00'] = date.split('T')
       const [hour, minute] = time.split(':').map(Number)
       const end = `${String((hour + 1) % 24).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
-      addEvent({ coupleId, title: '고객 상담', date: eventDate, time, endTime: end, type: '미팅', location, workflowType: '고객 상담', durationMinutes: 60, memo: nextActions, travelMode: 'subway' })
+      addEvent({ coupleId, title: '고객 상담', date: eventDate, time, endTime: end, type: '미팅', location, workflowType: '고객 상담', durationMinutes: 60, memo: nextActions, travelMode: 'subway', visibility: 'couple-shared' })
     }
     setOriginalText(''); setRequests(''); setDecisions(''); setNextActions(''); setOpen(false)
   }

@@ -7,6 +7,7 @@ import type {
   ConsultationCard,
   Contract,
   Couple,
+  OrderApproval,
   Payment,
   PortalSettings,
   Recommendation,
@@ -82,15 +83,16 @@ export const couples: Couple[] = [
 ]
 
 export const initialEvents: WeddingEvent[] = [
-  { id: 'e1', coupleId: 'c1', title: '루이즈블랑 드레스 2차 피팅', date: '2026-08-05', time: '10:30', endTime: '12:00', type: '드레스', location: '루이즈블랑, 논현동', travelMinutes: 35 },
-  { id: 'e2', coupleId: 'c2', title: '클레브 스튜디오 컨셉 미팅', date: '2026-08-05', time: '14:00', endTime: '15:30', type: '스튜디오', location: '클레브 스튜디오, 성수동', travelMinutes: 42 },
-  { id: 'e3', coupleId: 'c4', title: '본식 최종 체크', date: '2026-08-05', time: '17:00', endTime: '18:00', type: '미팅', location: '온라인 미팅' },
-  { id: 'e4', coupleId: 'c1', title: '메이크업 테스트', date: '2026-08-08', time: '11:00', endTime: '13:00', type: '메이크업', location: '정샘물 인스피레이션', approvalStatus: 'client-ok' },
-  { id: 'e5', coupleId: 'c3', title: '웨딩홀 투어', date: '2026-08-12', time: '15:00', endTime: '17:00', type: '미팅', location: '빌라드지디 청담' },
-  { id: 'e9', coupleId: 'c1', title: '루이즈블랑 드레스 최종 셀렉', date: '2026-08-12', time: '16:00', endTime: '17:30', type: '드레스', location: '루이즈블랑, 논현동', approvalStatus: 'planner-proposed' },
-  { id: 'e6', coupleId: 'c2', title: '클레브 스튜디오 촬영', date: '2026-08-18', time: '09:00', endTime: '15:00', type: '스튜디오', location: '클레브 스튜디오, 성수동' },
-  { id: 'e7', coupleId: 'c1', title: '예물 계약', date: '2026-08-22', time: '13:30', endTime: '15:00', type: '계약', location: '아크레도 청담' },
-  { id: 'e8', coupleId: 'c4', title: '본식', date: '2026-09-05', time: '11:30', endTime: '14:30', type: '본식', location: '아펠가모 반포' },
+  { id: 'e1', coupleId: 'c1', title: '루이즈블랑 드레스 2차 피팅', date: '2026-08-05', time: '10:30', endTime: '12:00', type: '드레스', location: '루이즈블랑, 논현동', travelMinutes: 35, visibility: 'couple-shared' },
+  { id: 'e2', coupleId: 'c2', title: '클레브 스튜디오 컨셉 미팅', date: '2026-08-05', time: '14:00', endTime: '15:30', type: '스튜디오', location: '클레브 스튜디오, 성수동', travelMinutes: 42, visibility: 'couple-shared' },
+  { id: 'e3', coupleId: 'c4', title: '본식 최종 체크', date: '2026-08-05', time: '17:00', endTime: '18:00', type: '미팅', location: '온라인 미팅', visibility: 'couple-shared' },
+  { id: 'e4', coupleId: 'c1', title: '메이크업 테스트', date: '2026-08-08', time: '11:00', endTime: '13:00', type: '메이크업', location: '정샘물 인스피레이션', approvalStatus: 'confirmed', visibility: 'couple-shared' },
+  { id: 'e5', coupleId: 'c3', title: '웨딩홀 투어', date: '2026-08-12', time: '15:00', endTime: '17:00', type: '미팅', location: '빌라드지디 청담', visibility: 'couple-shared' },
+  { id: 'e9', coupleId: 'c1', title: '루이즈블랑 드레스 최종 셀렉', date: '2026-08-12', time: '16:00', endTime: '17:30', type: '드레스', location: '루이즈블랑, 논현동', approvalStatus: 'planner-proposed', visibility: 'couple-shared' },
+  { id: 'e6', coupleId: 'c2', title: '클레브 스튜디오 촬영', date: '2026-08-18', time: '09:00', endTime: '15:00', type: '스튜디오', location: '클레브 스튜디오, 성수동', visibility: 'couple-shared' },
+  { id: 'e7', coupleId: 'c1', title: '예물 계약', date: '2026-08-22', time: '13:30', endTime: '15:00', type: '계약', location: '아크레도 청담', visibility: 'couple-shared' },
+  { id: 'e8', coupleId: 'c4', title: '본식', date: '2026-09-05', time: '11:30', endTime: '14:30', type: '본식', location: '아펠가모 반포', visibility: 'couple-shared' },
+  { id: 'e-private-1', title: '치과 예약', date: '2026-08-05', time: '15:20', endTime: '16:10', type: '미팅', location: '한남동', visibility: 'planner-private', memo: '플래너 개인 일정' },
 ]
 
 export const initialChecklist: ChecklistItem[] = [
@@ -131,7 +133,16 @@ export const initialBudgetItems: BudgetItem[] = [
 ]
 
 export const vendors: Vendor[] = [
-  ...vendorStyleProfiles.map((profile) => profile.vendor),
+  ...vendorStyleProfiles.map(({ vendor }, index) => ({
+    ...vendor,
+    details: vendor.category === '스튜디오'
+      ? { kind: 'studio' as const, bouquetProvided: index % 2 === 0, propsProvided: true, veilProvided: index % 3 !== 0, backgrounds: ['자연광', index % 2 ? '클래식 세트' : '화이트 호리존'], outdoorShooting: index % 2 === 0, parking: true, elevator: index % 3 !== 0 }
+      : vendor.category === '드레스'
+        ? { kind: 'dress' as const, fittingFee: index % 2 ? '5만원' : '무료', fittingCount: index % 2 ? 4 : 3, shootingAvailable: true, surchargeConditions: index % 2 ? '수입 라인·프리미엄 소재 별도' : '지정 외 액세서리 추가 시 별도' }
+        : vendor.category === '메이크업'
+          ? { kind: 'makeup' as const, earlyStartFee: '시간당 5만원', directorRequestAvailable: true, hairpieces: '기본 2종 포함 · 추가 대여 가능', parentMakeup: '양가 혼주 패키지 상담 가능' }
+          : undefined,
+  })),
 ]
 
 export const vendorScheduleSlots: VendorScheduleSlot[] = [
@@ -162,18 +173,25 @@ export const initialVendorSelections: VendorSelection[] = [
 ]
 
 export const initialRecommendations: Recommendation[] = [
-  { id: 'r1', coupleId: 'c1', vendorId: 'vp-d4', status: 'liked' },
-  { id: 'r2', coupleId: 'c1', vendorId: 'vp-s1', status: 'pending' },
-  { id: 'r3', coupleId: 'c1', vendorId: 'vp-m3', status: 'hold' },
-  { id: 'r4', coupleId: 'c2', vendorId: 'vp-d1', status: 'pending' },
-  { id: 'r5', coupleId: 'c2', vendorId: 'vp-s4', status: 'liked' },
-  { id: 'r6', coupleId: 'c2', vendorId: 'vp-m2', status: 'pending' },
-  { id: 'r7', coupleId: 'c3', vendorId: 'vp-d5', status: 'hold' },
-  { id: 'r8', coupleId: 'c3', vendorId: 'vp-s3', status: 'pending' },
-  { id: 'r9', coupleId: 'c3', vendorId: 'vp-m5', status: 'liked' },
-  { id: 'r10', coupleId: 'c4', vendorId: 'vp-d3', status: 'liked' },
-  { id: 'r11', coupleId: 'c4', vendorId: 'vp-s2', status: 'pending' },
-  { id: 'r12', coupleId: 'c4', vendorId: 'vp-m1', status: 'pending' },
+  { id: 'r1', coupleId: 'c1', vendorId: 'vp-d4', status: 'liked', proposedAt: '2026-07-28', selectionDeadline: '2026-08-04' },
+  { id: 'r2', coupleId: 'c1', vendorId: 'vp-s1', status: 'pending', proposedAt: '2026-08-01', selectionDeadline: '2026-08-08' },
+  { id: 'r3', coupleId: 'c1', vendorId: 'vp-m3', status: 'hold', proposedAt: '2026-08-02', selectionDeadline: '2026-08-09' },
+  { id: 'r4', coupleId: 'c2', vendorId: 'vp-d1', status: 'pending', proposedAt: '2026-07-27', selectionDeadline: '2026-08-03' },
+  { id: 'r5', coupleId: 'c2', vendorId: 'vp-s4', status: 'liked', proposedAt: '2026-07-30', selectionDeadline: '2026-08-06' },
+  { id: 'r6', coupleId: 'c2', vendorId: 'vp-m2', status: 'pending', proposedAt: '2026-08-03', selectionDeadline: '2026-08-10' },
+  { id: 'r7', coupleId: 'c3', vendorId: 'vp-d5', status: 'hold', proposedAt: '2026-07-29', selectionDeadline: '2026-08-05' },
+  { id: 'r8', coupleId: 'c3', vendorId: 'vp-s3', status: 'pending', proposedAt: '2026-08-02', selectionDeadline: '2026-08-09' },
+  { id: 'r9', coupleId: 'c3', vendorId: 'vp-m5', status: 'liked', proposedAt: '2026-08-01', selectionDeadline: '2026-08-08' },
+  { id: 'r10', coupleId: 'c4', vendorId: 'vp-d3', status: 'liked', proposedAt: '2026-07-31', selectionDeadline: '2026-08-07' },
+  { id: 'r11', coupleId: 'c4', vendorId: 'vp-s2', status: 'pending', proposedAt: '2026-07-25', selectionDeadline: '2026-08-01' },
+  { id: 'r12', coupleId: 'c4', vendorId: 'vp-m1', status: 'pending', proposedAt: '2026-08-04', selectionDeadline: '2026-08-11' },
+]
+
+export const initialOrderApprovals: OrderApproval[] = [
+  { id: 'oa1', coupleId: 'c1', vendorId: 'vp-m3', recommendationId: 'r3', productName: '신부 메이크업 테스트', relatedEventId: 'e4', requestedAt: '2026-07-29T10:14:32+09:00', approvalDeadline: '2026-08-05T10:14:32+09:00', reviewerName: '박수진', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-07-29T10:22:08+09:00', status: 'approved', confirmedAt: '2026-08-01T14:05:19+09:00', respondedAt: '2026-08-01T14:05:19+09:00' },
+  { id: 'oa2', coupleId: 'c2', vendorId: 'vp-s4', recommendationId: 'r5', productName: '스튜디오 촬영 패키지', relatedEventId: 'e6', requestedAt: '2026-08-02T09:30:12+09:00', approvalDeadline: '2026-08-09T09:30:12+09:00', reviewerName: '김태훈', reviewerRole: '팀장', reviewerTeam: '촬영운영팀', viewedAt: '2026-08-02T11:42:51+09:00', status: 'pending' },
+  { id: 'oa3', coupleId: 'c3', vendorId: 'vp-d5', recommendationId: 'r7', productName: '본식 드레스 피팅', requestedAt: '2026-08-01T15:08:44+09:00', approvalDeadline: '2026-08-08T15:08:44+09:00', reviewerName: '이현정', reviewerRole: '수석실장', reviewerTeam: '피팅팀', viewedAt: '2026-08-01T15:37:20+09:00', status: 'rejected', rejectionReason: 'schedule-unavailable', respondedAt: '2026-08-01T16:02:11+09:00' },
+  { id: 'oa4', coupleId: 'c4', vendorId: 'vp-s2', recommendationId: 'r11', productName: '본식 스냅 촬영', requestedAt: '2026-07-20T13:21:09+09:00', approvalDeadline: '2026-07-27T13:21:09+09:00', reviewerName: '최민석', reviewerRole: '팀장', reviewerTeam: '스냅1팀', viewedAt: '2026-07-20T17:05:33+09:00', status: 'expired' },
 ]
 
 export const contracts: Contract[] = [

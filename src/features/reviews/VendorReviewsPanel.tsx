@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { BadgeCheck, MessageSquareText, PenLine, Sparkles, Star } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Badge, Button, Modal } from '../../components/ui'
+import { Badge, Button, Modal, Toast } from '../../components/ui'
 import type { Vendor, VendorReview } from '../../types'
 
 type ReviewSort = 'latest' | 'rating'
@@ -28,7 +28,7 @@ function RatingInput({ label, value, onChange }: { label: string; value: number;
   )
 }
 
-function ReviewComposer({ open, onClose, vendors, initialVendorId }: { open: boolean; onClose: () => void; vendors: Vendor[]; initialVendorId?: string }) {
+function ReviewComposer({ open, onClose, onReward, vendors, initialVendorId }: { open: boolean; onClose: () => void; onReward: () => void; vendors: Vendor[]; initialVendorId?: string }) {
   const { addVendorReview } = useDemoStore()
   const [selectedVendorId, setSelectedVendorId] = useState(initialVendorId ?? vendors[0]?.id ?? '')
   const [responseRating, setResponseRating] = useState(5)
@@ -61,12 +61,13 @@ function ReviewComposer({ open, onClose, vendors, initialVendorId }: { open: boo
     setExperienceContext('')
     setError('')
     onClose()
+    onReward()
   }
 
   return (
     <Modal open={open} onClose={onClose} eyebrow="Verified planner review" title="제휴업체 공개 리뷰 작성" footer={<><Button variant="ghost" onClick={onClose}>취소</Button><Button onClick={submit}>공개 리뷰 등록</Button></>}>
       <div className="review-compose-form">
-        <div className="review-privacy-notice"><BadgeCheck size={17} /><div><strong>인증 플래너 리뷰</strong><span>고객에게는 ‘인증 플래너 · 경력 5–10년’으로만 공개됩니다.</span></div></div>
+        <div className="review-privacy-notice"><BadgeCheck size={17} /><div><strong>인증 플래너 리뷰 · 작성하고 +10P 받기</strong><span>고객에게는 ‘인증 플래너 · 경력 5–10년’으로만 공개됩니다.</span></div></div>
         <label className="form-field form-field--wide"><span>제휴업체</span><select value={selectedVendorId} disabled={Boolean(initialVendorId)} onChange={(event) => setSelectedVendorId(event.target.value)}><option value="">업체를 선택해 주세요</option>{vendors.map((vendor) => <option value={vendor.id} key={vendor.id}>{vendor.name} · {vendor.category}</option>)}</select></label>
         <label className="form-field form-field--wide"><span>진행 배경</span><input value={experienceContext} onChange={(event) => setExperienceContext(event.target.value)} placeholder="예: 2026년 6월 본식 · 실크 선호 신부와 최종 피팅 동행" /></label>
         <div className="review-rating-grid">
@@ -88,6 +89,8 @@ export function VendorReviewsPanel({ availableVendors, vendorId, canWrite = fals
   const [category, setCategory] = useState('전체')
   const [filterVendorId, setFilterVendorId] = useState(vendorId ?? '전체')
   const [composeOpen, setComposeOpen] = useState(false)
+  const [rewardToast, setRewardToast] = useState(false)
+  const showReward = () => { setRewardToast(true); window.setTimeout(() => setRewardToast(false), 2200) }
 
   const vendorMap = useMemo(() => new Map(availableVendors.map((vendor) => [vendor.id, vendor])), [availableVendors])
   const categories = ['전체', ...new Set(availableVendors.map((vendor) => vendor.category))]
@@ -109,7 +112,7 @@ export function VendorReviewsPanel({ availableVendors, vendorId, canWrite = fals
     <section className="vendor-reviews-panel">
       <header className="vendor-reviews-heading">
         <div><p className="eyebrow">Verified partner reviews</p><h2>{title}</h2><p>{description}</p></div>
-        {canWrite && <Button icon={<PenLine size={15} />} onClick={() => setComposeOpen(true)}>리뷰 작성</Button>}
+        {canWrite && <Button icon={<PenLine size={15} />} onClick={() => setComposeOpen(true)}>리뷰 작성하고 +10P</Button>}
       </header>
 
       <div className="review-summary">
@@ -141,7 +144,8 @@ export function VendorReviewsPanel({ availableVendors, vendorId, canWrite = fals
         })}
         {!reviews.length && <div className="review-empty"><MessageSquareText size={27} /><strong>아직 등록된 리뷰가 없습니다.</strong><p>{canWrite ? '첫 번째 진행 경험을 공유해 주세요.' : '인증 플래너의 리뷰가 등록되면 이곳에서 확인할 수 있어요.'}</p>{canWrite && <Button size="sm" onClick={() => setComposeOpen(true)}>첫 리뷰 작성</Button>}</div>}
       </div>
-      {canWrite && <ReviewComposer open={composeOpen} onClose={() => setComposeOpen(false)} vendors={availableVendors} initialVendorId={vendorId} />}
+      {canWrite && <ReviewComposer open={composeOpen} onClose={() => setComposeOpen(false)} onReward={showReward} vendors={availableVendors} initialVendorId={vendorId} />}
+      <Toast open={rewardToast} reward title="+10P 적립" message="진행 경험을 공유해 주셔서 감사합니다." />
     </section>
   )
 }

@@ -12,6 +12,7 @@ import './styles/vendor-discovery.css'
 import './styles/shared-vendor-calendar.css'
 import './styles/vendor-reviews.css'
 import './styles/merged-features.css'
+import './styles/confirmed-requirements.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

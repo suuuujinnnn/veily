@@ -35,7 +35,7 @@ export function ScheduleCoordinationPanel({ coupleId }: { coupleId: string }) {
   const moveMonth = (offset: number) => setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + offset, 1))
   const propose = () => {
     if (!draft.title.trim() || !draft.date) return
-    addEvent({ ...draft, coupleId, approvalStatus: 'planner-proposed', workflowType: '일정 조율', durationMinutes: 60, travelMode: 'subway' })
+    addEvent({ ...draft, coupleId, approvalStatus: 'planner-proposed', workflowType: '일정 조율', durationMinutes: 60, travelMode: 'subway', visibility: 'couple-shared' })
     setVisibleMonth(new Date(`${draft.date.slice(0, 7)}-01T00:00:00`))
     setDraft((current) => ({ ...current, title: '상담 일정 조율' }))
   }

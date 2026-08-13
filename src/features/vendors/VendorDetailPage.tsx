@@ -5,6 +5,7 @@ import { Badge, Button } from '../../components/ui'
 import { VendorScheduleBoard } from './VendorScheduleBoard'
 import { InstagramPortfolio } from './InstagramPortfolio'
 import { VendorReviewsPanel } from '../reviews/VendorReviewsPanel'
+import { VendorDetailFacts } from './VendorDetailFacts'
 
 export function VendorDetailPage() {
   const { vendorId = 'v1' } = useParams()
@@ -44,6 +45,8 @@ export function VendorDetailPage() {
         <article><Phone size={18} /><div><span>예약 문의</span><strong>{vendor.phone}</strong></div></article>
         <article><CalendarDays size={18} /><div><span>예상 금액</span><strong>{vendor.priceRange}</strong></div></article>
       </section>
+
+      <VendorDetailFacts vendor={vendor} />
 
       <InstagramPortfolio key={vendor.id} vendor={vendor} />
 

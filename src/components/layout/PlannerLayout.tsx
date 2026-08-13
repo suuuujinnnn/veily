@@ -17,6 +17,8 @@ import {
 import { useDemoStore } from '../../app/store'
 import { Button, Modal } from '../ui'
 import { WorkflowGuidePanel } from '../../features/checklist/WorkflowGuidePanel'
+import { ReminderListItem } from '../reminders/ReminderListItem'
+import { buildReminders } from '../../features/reminders/reminderUtils'
 
 const navItems = [
   { to: '/', label: '홈', icon: LayoutDashboard, end: true },
@@ -32,10 +34,13 @@ const pageTitles: Record<string, string> = {
 
 export function PlannerLayout() {
   const location = useLocation()
-  const { couples, checklist, addChecklist } = useDemoStore()
+  const store = useDemoStore()
+  const { couples, checklist, addChecklist, events, recommendations, orderApprovals, vendors } = store
+  const reminders = buildReminders({ couples, events, recommendations, orderApprovals, vendors }, 'planner')
   const currentCoupleId = location.pathname.match(/^\/couples\/([^/]+)/)?.[1]
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | 'guide' | null>(null)
+  const [notificationOpen, setNotificationOpen] = useState(false)
   const [guideCoupleId, setGuideCoupleId] = useState(currentCoupleId ?? couples[0]?.id ?? '')
   const guideCouple = couples.find((couple) => couple.id === guideCoupleId) ?? couples[0]
   const title = location.pathname.startsWith('/couples/') ? '커플 상세' : pageTitles[location.pathname] ?? 'VEILY'
@@ -80,7 +85,8 @@ export function PlannerLayout() {
           <div className="topbar__title"><span>{title}</span></div>
           <div className="topbar__actions">
             <label className="global-search"><Search size={16} /><input aria-label="전체 검색" placeholder="커플, 업체, 일정 검색" /></label>
-            <button className="icon-button notification" aria-label="알림"><Bell size={18} /><i /></button>
+            <button className="icon-button notification" aria-label={`알림 ${reminders.length}건`} aria-expanded={notificationOpen} onClick={() => setNotificationOpen((open) => !open)}><Bell size={18} />{reminders.length > 0 && <em>{reminders.length}</em>}</button>
+            {notificationOpen && <aside className="notification-panel"><header><div><p className="eyebrow">Notifications</p><h2>처리할 알림</h2></div><BadgeCount count={reminders.length} /></header><div>{reminders.length ? reminders.slice(0, 7).map((reminder) => <div key={reminder.id} onClick={() => setNotificationOpen(false)}><ReminderListItem reminder={reminder} compact /></div>) : <p className="notification-panel__empty">새로운 알림이 없습니다.</p>}</div><button onClick={() => { setNotificationOpen(false); setUtilityModal('notifications') }}>알림 설정</button></aside>}
           </div>
         </header>
         <main className="page-content"><Outlet /></main>
@@ -96,4 +102,8 @@ export function PlannerLayout() {
       </Modal>
     </div>
   )
+}
+
+function BadgeCount({ count }: { count: number }) {
+  return <span className="notification-count">{count}건</span>
 }
