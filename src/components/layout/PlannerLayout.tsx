@@ -35,8 +35,8 @@ const pageTitles: Record<string, string> = {
 export function PlannerLayout() {
   const location = useLocation()
   const store = useDemoStore()
-  const { couples, checklist, addChecklist, events, recommendations, orderApprovals, vendors } = store
-  const reminders = buildReminders({ couples, events, recommendations, orderApprovals, vendors }, 'planner')
+  const { couples, checklist, addChecklist, events, recommendations, orderApprovals, vendors, favoriteVendorIds } = store
+  const reminders = buildReminders({ couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds }, 'planner')
   const currentCoupleId = location.pathname.match(/^\/couples\/([^/]+)/)?.[1]
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | 'guide' | null>(null)

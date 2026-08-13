@@ -1,4 +1,6 @@
-import type { Couple, OrderApproval, Recommendation, ReminderItem, Vendor, WeddingEvent } from '../../types'
+import type { ChecklistItem, Couple, OrderApproval, Recommendation, ReminderItem, Vendor, WeddingEvent } from '../../types'
+import { taskUrgency } from '../checklist/checklistUtils'
+import { isVendorStale, staleOperationalFacts } from '../vendors/vendorInfoUtils'
 
 const dayDifference = (date: string, today: string) => Math.round((new Date(`${date.slice(0, 10)}T12:00:00`).getTime() - new Date(`${today.slice(0, 10)}T12:00:00`).getTime()) / 86_400_000)
 const urgencyFor = (days: number): ReminderItem['urgency'] => days < 0 ? 'overdue' : days <= 3 ? 'soon' : 'normal'
@@ -9,12 +11,42 @@ interface ReminderSource {
   recommendations: Recommendation[]
   orderApprovals: OrderApproval[]
   events: WeddingEvent[]
+  checklist: ChecklistItem[]
+  favoriteVendorIds: string[]
 }
 
 export function buildReminders(source: ReminderSource, audience: ReminderItem['audience'], today = '2026-08-05', coupleId?: string) {
   const reminders: ReminderItem[] = []
   const coupleName = (id?: string) => source.couples.find((item) => item.id === id)?.brideName ?? '고객'
   const vendorName = (id: string) => source.vendors.find((item) => item.id === id)?.name ?? '제휴업체'
+
+  if (audience === 'planner') {
+    source.checklist
+      .filter((item) => item.status !== 'completed' && (!coupleId || item.coupleId === coupleId))
+      .forEach((item) => {
+        const { days, urgency } = taskUrgency(item.dueDate, item.status, today)
+        if (days > 7) return
+        const dDay = days === 0 ? 'D-DAY' : days > 0 ? `D-${days}` : `D+${Math.abs(days)}`
+        reminders.push({
+          id: `planner-task-${item.id}`, kind: 'task-deadline', audience, sourceId: item.id, coupleId: item.coupleId,
+          title: item.kind === 'decision' && item.status === 'pending' ? '미결정 항목 확인' : '준비 업무 확인',
+          message: `${coupleName(item.coupleId)} 고객 · ${item.title} · ${dDay}`,
+          dueAt: item.dueDate, urgency, href: `/couples/${item.coupleId}?tab=timeline`,
+        })
+      })
+
+    source.vendors
+      .filter((vendor) => source.favoriteVendorIds.includes(vendor.id) && isVendorStale(vendor, today))
+      .forEach((vendor) => {
+        const staleFacts = staleOperationalFacts(vendor, today)
+        reminders.push({
+          id: `planner-vendor-stale-${vendor.id}`, kind: 'vendor-stale', audience, sourceId: vendor.id,
+          title: '업체 정보 확인 필요',
+          message: `${vendor.name} · ${staleFacts.length ? `실무정보 ${staleFacts.length}개` : '전체 정보'} 1년 이상 미갱신`,
+          dueAt: vendor.updatedAt, urgency: 'overdue', href: `/vendors/${vendor.id}`,
+        })
+      })
+  }
 
   source.recommendations
     .filter((item) => item.status !== 'liked' && (!coupleId || item.coupleId === coupleId))
@@ -53,13 +85,13 @@ export function buildReminders(source: ReminderSource, audience: ReminderItem['a
     .filter((item) => item.visibility === 'couple-shared' && item.approvalStatus === 'confirmed' && (!coupleId || item.coupleId === coupleId))
     .forEach((item) => {
       const days = dayDifference(item.date, today)
-      if (![14, 7, 3].includes(days)) return
+      if (!(item.reminderOffsets ?? [14, 7, 1]).includes(days)) return
       reminders.push({
         id: `${audience}-schedule-${item.id}-${days}`,
         kind: 'confirmed-schedule', audience, sourceId: item.id, coupleId: item.coupleId,
         title: `${item.title} D-${days}`,
         message: audience === 'planner' ? `${coupleName(item.coupleId)} 고객의 ${item.title}가 ${days}일 남았습니다.` : `${item.title}가 ${days}일 남았어요.`,
-        dueAt: item.date, urgency: days === 3 ? 'soon' : 'normal', href: audience === 'planner' ? `/couples/${item.coupleId}` : `/portal/${item.coupleId}/calendar`,
+        dueAt: item.date, urgency: days === 1 ? 'soon' : 'normal', href: audience === 'planner' ? `/couples/${item.coupleId}` : `/portal/${item.coupleId}/calendar`,
       })
     })
 

@@ -11,10 +11,10 @@ const typeTone: Record<string, 'rose' | 'sage' | 'amber' | 'neutral'> = {
 }
 
 export function DashboardPage() {
-  const { couples, events, checklist, recommendations, orderApprovals, vendors } = useDemoStore()
-  const reminders = buildReminders({ couples, events, recommendations, orderApprovals, vendors }, 'planner')
+  const { couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds } = useDemoStore()
+  const reminders = buildReminders({ couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds }, 'planner')
   const todayEvents = events.filter((event) => event.date === '2026-08-05')
-  const remainingTasks = checklist.filter((item) => !item.completed).length
+  const remainingTasks = checklist.filter((item) => item.status !== 'completed').length
   const waitingResponses = recommendations.filter((item) => item.status === 'pending').length
   const activeCouples = couples.filter((couple) => couple.status !== '확정')
 
@@ -83,7 +83,7 @@ export function DashboardPage() {
         </Card>
         <Card className="dashboard-deadlines">
           <div className="dashboard-card-heading"><div><p className="eyebrow">Deadlines</p><h2>다가오는 마감</h2></div><span>{remainingTasks}개 남음</span></div>
-          {checklist.filter((item) => !item.completed).slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</span><div><strong>{task.title}</strong><small>{task.category} · {task.owner}</small></div></div>)}
+          {checklist.filter((item) => item.status !== 'completed').slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</span><div><strong>{task.title}</strong><small>{task.kind === 'decision' ? '결정 필요' : task.category} · {task.owner}</small></div></div>)}
           <Link to="/couples/c1">체크리스트 관리 <ArrowUpRight size={14} /></Link>
         </Card>
       </section>

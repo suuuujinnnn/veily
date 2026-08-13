@@ -1,5 +1,5 @@
 import { Check, MoreHorizontal, Plus } from 'lucide-react'
-import { Button } from '../../components/ui'
+import { Badge, Button } from '../../components/ui'
 import type { ChecklistCategory, ChecklistItem } from '../../types'
 import { checklistCategories } from './checklistCategories'
 import { formatChecklistDate } from './checklistUtils'
@@ -8,12 +8,14 @@ export function CategoryChecklist({
   tasks,
   onToggle,
   editable = false,
+  readOnly = false,
   onAdd,
   onEdit,
 }: {
   tasks: ChecklistItem[]
   onToggle: (id: string) => void
   editable?: boolean
+  readOnly?: boolean
   onAdd?: (category?: ChecklistCategory) => void
   onEdit?: (item: ChecklistItem) => void
 }) {
@@ -26,19 +28,20 @@ export function CategoryChecklist({
       <div className="category-checklist__grid">
         {checklistCategories.map((category, categoryIndex) => {
           const categoryTasks = tasks.filter((task) => task.category === category.id).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
-          const done = categoryTasks.filter((task) => task.completed).length
+          const done = categoryTasks.filter((task) => task.status === 'completed').length
           return (
             <article className="checklist-group" key={category.id}>
               <header><div><span className={`category-dot category-dot--${categoryIndex + 1}`} /><div><h3>{category.id}</h3><p>{category.description}</p></div></div><small>{done}/{categoryTasks.length}</small></header>
               <div>
                 {categoryTasks.map((task) => (
-                  <div className={`checklist-manage-row ${task.completed ? 'done' : ''}`} key={task.id}>
+                  <div className={`checklist-manage-row ${task.status === 'completed' ? 'done' : ''}`} key={task.id}>
                     <label>
-                      <input type="checkbox" checked={task.completed} onChange={() => onToggle(task.id)} />
+                      {!readOnly && <input type="checkbox" checked={task.status === 'completed'} onChange={() => onToggle(task.id)} />}
                       <span><Check size={13} /></span>
                       <div><strong>{task.title}</strong><small>{formatChecklistDate(task.dueDate)} · {task.owner}</small></div>
                     </label>
                     <div className="checklist-manage-row__meta">
+                      {task.kind === 'decision' && <Badge tone={task.status === 'completed' ? 'sage' : task.status === 'in-progress' ? 'amber' : 'rose'}>{task.status === 'completed' ? '완료' : task.status === 'in-progress' ? '진행 중' : '미결정'}</Badge>}
                       {editable && <button aria-label={`${task.title} 편집`} onClick={() => onEdit?.(task)}><MoreHorizontal size={16} /></button>}
                     </div>
                   </div>

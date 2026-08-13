@@ -42,10 +42,9 @@ export function VendorsPage() {
   const [sort, setSort] = useState<SortOption>('match')
   const [coupleId, setCoupleId] = useState('c1')
   const [shortlist, setShortlist] = useState<string[]>([])
-  const [favorites, setFavorites] = useState<string[]>([])
   const [proposalSent, setProposalSent] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
-  const { couples, vendors, setRecommendation } = useDemoStore()
+  const { couples, vendors, favoriteVendorIds, setRecommendation, toggleFavoriteVendor } = useDemoStore()
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
 
   const liveProfiles = useMemo(() => vendorStyleProfiles.map((profile) => ({ ...profile, vendor: vendors.find((vendor) => vendor.id === profile.vendor.id) ?? profile.vendor })), [vendors])
@@ -98,7 +97,6 @@ export function VendorsPage() {
     setShortlist((current) => current.includes(vendorId) ? current.filter((id) => id !== vendorId) : [...current, vendorId].slice(-3))
   }
 
-  const toggleFavorite = (vendorId: string) => setFavorites((current) => current.includes(vendorId) ? current.filter((id) => id !== vendorId) : [...current, vendorId])
   const openVendor = (vendorId: string) => navigate(`/vendors/${vendorId}`)
 
   const sendProposal = () => {
@@ -133,7 +131,7 @@ export function VendorsPage() {
             <label className="couple-result-select"><span>제안할 커플</span><select value={coupleId} onChange={(event) => { setCoupleId(event.target.value); setShortlist([]) }}>{couples.map((item) => <option value={item.id} key={item.id}>{item.partners}</option>)}</select></label>
           </div>
           <div className="style-results-toolbar"><div><strong>{filteredProfiles.length}개 업체</strong><span> · 포트폴리오 분류 기준</span></div><label className="style-sort"><span>정렬</span><select value={sort} onChange={(event) => setSort(event.target.value as SortOption)}><option value="match">조건 일치도순</option><option value="evidence">분석 이미지 많은순</option><option value="name">업체명순</option></select></label></div>
-          <div className="style-vendor-grid">{filteredProfiles.map((profile) => <ReferenceVendorCard key={profile.vendor.id} profile={profile} category={category} selectedKeywords={selectedKeywords} selected={shortlist.includes(profile.vendor.id)} favorite={favorites.includes(profile.vendor.id)} onOpen={openVendor} onFavorite={toggleFavorite} onShortlist={toggleShortlist} />)}</div>
+          <div className="style-vendor-grid">{filteredProfiles.map((profile) => <ReferenceVendorCard key={profile.vendor.id} profile={profile} category={category} selectedKeywords={selectedKeywords} selected={shortlist.includes(profile.vendor.id)} favorite={favoriteVendorIds.includes(profile.vendor.id)} onOpen={openVendor} onFavorite={toggleFavoriteVendor} onShortlist={toggleShortlist} />)}</div>
           {!filteredProfiles.length && <Card className="style-results-empty"><Search size={22} /><strong>{category === '웨딩홀' && !query && !selectedKeywords.length ? '웨딩홀 분류는 준비됐고, 업체 데이터를 연결 중입니다.' : '조합한 조건에 맞는 업체가 없습니다.'}</strong><p>{category === '웨딩홀' ? '업체 DB에 웨딩홀 포트폴리오가 등록되면 이 기준으로 바로 검색할 수 있어요.' : '조건을 하나 줄이거나 다른 키워드로 검색해 보세요.'}</p>{(query || selectedKeywords.length > 0) && <Button size="sm" variant="secondary" onClick={resetSearch}>검색 조건 초기화</Button>}</Card>}
         </section>
 

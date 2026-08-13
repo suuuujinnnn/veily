@@ -53,11 +53,13 @@ export interface DemoState {
   vendorSelections: VendorSelection[]
   vendorReviews: VendorReview[]
   orderApprovals: OrderApproval[]
+  favoriteVendorIds: string[]
 }
 
 export type DemoAction =
   | { type: 'ADD_EVENT'; payload: WeddingEvent }
   | { type: 'UPDATE_EVENT'; payload: WeddingEvent }
+  | { type: 'DELETE_EVENT'; payload: string }
   | { type: 'UPDATE_COUPLE'; payload: Couple }
   | { type: 'TOGGLE_CHECKLIST'; payload: string }
   | { type: 'ADD_CHECKLIST'; payload: ChecklistItem }
@@ -77,6 +79,7 @@ export type DemoAction =
   | { type: 'DELETE_BUDGET_ITEM'; payload: string }
   | { type: 'ADD_VENDOR'; payload: Vendor }
   | { type: 'UPDATE_VENDOR'; payload: Vendor }
+  | { type: 'TOGGLE_FAVORITE_VENDOR'; payload: string }
   | { type: 'UPDATE_PORTAL_SETTINGS'; payload: PortalSettings }
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
@@ -104,6 +107,7 @@ export const initialState: DemoState = {
   vendorSelections: initialVendorSelections,
   vendorReviews: initialVendorReviews,
   orderApprovals: initialOrderApprovals,
+  favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -112,10 +116,12 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, events: [...state.events, action.payload] }
     case 'UPDATE_EVENT':
       return { ...state, events: state.events.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'DELETE_EVENT':
+      return { ...state, events: state.events.filter((item) => item.id !== action.payload) }
     case 'UPDATE_COUPLE':
       return { ...state, couples: state.couples.map((couple) => couple.id === action.payload.id ? action.payload : couple) }
     case 'TOGGLE_CHECKLIST':
-      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, completed: !item.completed } : item) }
+      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, status: item.status === 'completed' ? 'pending' : 'completed' } : item) }
     case 'ADD_CHECKLIST':
       return { ...state, checklist: [...state.checklist, action.payload] }
     case 'UPDATE_CHECKLIST':
@@ -159,6 +165,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, vendors: [...state.vendors, action.payload] }
     case 'UPDATE_VENDOR':
       return { ...state, vendors: state.vendors.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'TOGGLE_FAVORITE_VENDOR':
+      return { ...state, favoriteVendorIds: state.favoriteVendorIds.includes(action.payload) ? state.favoriteVendorIds.filter((id) => id !== action.payload) : [...state.favoriteVendorIds, action.payload] }
     case 'UPDATE_PORTAL_SETTINGS':
       return { ...state, portalSettings: state.portalSettings.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) }
     case 'SET_RECOMMENDATION': {
@@ -205,6 +213,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 interface DemoContextValue extends DemoState {
   addEvent: (event: Omit<WeddingEvent, 'id'>) => void
   updateEvent: (event: WeddingEvent) => void
+  deleteEvent: (id: string) => void
   updateCouple: (couple: Couple) => void
   toggleChecklist: (id: string) => void
   addChecklist: (item: Omit<ChecklistItem, 'id'>) => void
@@ -224,6 +233,7 @@ interface DemoContextValue extends DemoState {
   deleteBudgetItem: (id: string) => void
   addVendor: (item: Omit<Vendor, 'id'>) => void
   updateVendor: (item: Vendor) => void
+  toggleFavoriteVendor: (id: string) => void
   updatePortalSettings: (settings: PortalSettings) => void
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
   toggleAvailability: (eventId: string, slot: string) => void
@@ -256,6 +266,7 @@ export function DemoProvider({ children }: PropsWithChildren) {
     ...state,
     addEvent: (event) => dispatch({ type: 'ADD_EVENT', payload: { ...event, id: makeId('e') } }),
     updateEvent: (event) => dispatch({ type: 'UPDATE_EVENT', payload: event }),
+    deleteEvent: (id) => dispatch({ type: 'DELETE_EVENT', payload: id }),
     updateCouple: (couple) => dispatch({ type: 'UPDATE_COUPLE', payload: couple }),
     toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
     addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: makeId('t') } }),
@@ -282,6 +293,7 @@ export function DemoProvider({ children }: PropsWithChildren) {
     deleteBudgetItem: (id) => dispatch({ type: 'DELETE_BUDGET_ITEM', payload: id }),
     addVendor: (item) => dispatch({ type: 'ADD_VENDOR', payload: { ...item, id: makeId('v') } }),
     updateVendor: (item) => dispatch({ type: 'UPDATE_VENDOR', payload: item }),
+    toggleFavoriteVendor: (id) => dispatch({ type: 'TOGGLE_FAVORITE_VENDOR', payload: id }),
     updatePortalSettings: (settings) => dispatch({ type: 'UPDATE_PORTAL_SETTINGS', payload: settings }),
     setRecommendation: (coupleId, vendorId, status) => dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
     toggleAvailability: (eventId, slot) => dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),

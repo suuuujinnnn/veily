@@ -33,6 +33,7 @@ export interface Couple {
 export interface WeddingEvent {
   id: string
   coupleId?: string
+  vendorId?: string
   title: string
   date: string
   time: string
@@ -46,6 +47,7 @@ export interface WeddingEvent {
   memo?: string
   approvalStatus?: EventApprovalStatus
   visibility: ScheduleVisibility
+  reminderOffsets?: number[]
 }
 
 export type ChecklistCategory =
@@ -65,7 +67,8 @@ export interface ChecklistItem {
   title: string
   dueDate: string
   category: ChecklistCategory
-  completed: boolean
+  kind: 'preparation' | 'decision'
+  status: 'pending' | 'in-progress' | 'completed'
   owner: '플래너' | '신랑·신부' | '함께'
   isTemplate?: boolean
   templateId?: string
@@ -126,39 +129,50 @@ export interface Vendor {
   gallery: string[]
   website?: string
   lastContact?: string
+  updatedAt: string
   memo?: string
   evidenceSource?: 'analyzed' | 'tag'
-  details?: VendorDetails
+  operationalDetails?: VendorOperationalDetails
 }
 
-export interface StudioVendorDetails {
+export interface VerifiedFact<T> {
+  value: T
+  verifiedAt: string
+}
+
+export interface StudioVendorOperationalDetails {
   kind: 'studio'
-  bouquetProvided: boolean
-  propsProvided: boolean
-  veilProvided: boolean
-  backgrounds: string[]
-  outdoorShooting: boolean
-  parking: boolean
-  elevator: boolean
+  bouquetProvided: VerifiedFact<boolean>
+  propsProvided: VerifiedFact<boolean>
+  veilProvided: VerifiedFact<boolean>
+  backgrounds: VerifiedFact<string[]>
+  outdoorShooting: VerifiedFact<boolean>
+  parking: VerifiedFact<boolean>
+  elevator: VerifiedFact<boolean>
+  shootingDuration: VerifiedFact<string>
+  extensionAvailable: VerifiedFact<boolean>
+  surchargeConditions: VerifiedFact<string>
 }
 
-export interface DressVendorDetails {
+export interface DressVendorOperationalDetails {
   kind: 'dress'
-  fittingFee: string
-  fittingCount: number
-  shootingAvailable: boolean
-  surchargeConditions: string
+  fittingFee: VerifiedFact<string>
+  fittingCount: VerifiedFact<number>
+  shootingAvailable: VerifiedFact<boolean>
+  surchargeConditions: VerifiedFact<string>
+  parking: VerifiedFact<boolean>
 }
 
-export interface MakeupVendorDetails {
+export interface MakeupVendorOperationalDetails {
   kind: 'makeup'
-  earlyStartFee: string
-  directorRequestAvailable: boolean
-  hairpieces: string
-  parentMakeup: string
+  earlyStartFee: VerifiedFact<string>
+  directorRequestAvailable: VerifiedFact<boolean>
+  hairpieces: VerifiedFact<string>
+  parentMakeup: VerifiedFact<string>
+  parking: VerifiedFact<boolean>
 }
 
-export type VendorDetails = StudioVendorDetails | DressVendorDetails | MakeupVendorDetails
+export type VendorOperationalDetails = StudioVendorOperationalDetails | DressVendorOperationalDetails | MakeupVendorOperationalDetails
 
 export interface VendorReview {
   id: string
@@ -222,7 +236,7 @@ export interface OrderApproval {
   respondedAt?: string
 }
 
-export type ReminderKind = 'selection-deadline' | 'order-approval-deadline' | 'confirmed-schedule'
+export type ReminderKind = 'selection-deadline' | 'order-approval-deadline' | 'confirmed-schedule' | 'task-deadline' | 'vendor-stale'
 
 export interface ReminderItem {
   id: string
