@@ -83,6 +83,7 @@ function createProfile(seed: PartnerSeed): VendorStyleProfile {
       phone: '02-000-0000',
       instagram: `@${seed.account}`,
       activeEvent: `${seed.primaryStyle} 스타일 상담 위크 · 플래너 동행 혜택`,
+      updatedAt: '2026-07-14',
       gallery,
       website: `https://www.instagram.com/${seed.account}`,
       lastContact: '',

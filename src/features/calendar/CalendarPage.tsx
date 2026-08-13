@@ -21,7 +21,9 @@ export function CalendarPage() {
   const [transitPreference, setTransitPreference] = useState<TransitPreference>('bus')
   const [baseLocation, setBaseLocation] = useState('VEILY 오피스 · 한남')
   const [useCar, setUseCar] = useState(true)
+  const [calculateTravel, setCalculateTravel] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
+  const [editingEvent, setEditingEvent] = useState<WeddingEvent | null>(null)
   const [toast, setToast] = useState(false)
 
   const filteredEvents = useMemo(() => events.filter((event) => filter === '전체' || event.type === filter), [events, filter])
@@ -32,8 +34,8 @@ export function CalendarPage() {
     [filteredEvents, selectedDate],
   )
   const travelPlans = useMemo(
-    () => buildTravelPlans(selectedEvents, baseLocation, transitPreference, useCar),
-    [selectedEvents, baseLocation, transitPreference, useCar],
+    () => calculateTravel ? buildTravelPlans(selectedEvents, baseLocation, transitPreference, useCar) : [],
+    [selectedEvents, baseLocation, transitPreference, useCar, calculateTravel],
   )
   const travelPlanByEvent = new Map(travelPlans.map((plan) => [plan.eventId, plan]))
   const selectedDateObject = new Date(`${selectedDate}T00:00:00`)
@@ -57,20 +59,20 @@ export function CalendarPage() {
 
   return (
     <div className="page-stack calendar-page">
-      <section className="page-intro"><div><p className="eyebrow">Shared calendar</p><h1>일정</h1><p>일정 사이 이동시간과 겹치는 시간을 함께 확인하세요.</p></div><Button icon={<CalendarPlus size={16} />} onClick={() => setModalOpen(true)}>새 일정 등록</Button></section>
+      <section className="page-intro"><div><p className="eyebrow">Shared calendar</p><h1>일정</h1><p>일정 사이 이동시간과 겹치는 시간을 함께 확인하세요.</p></div><Button icon={<CalendarPlus size={16} />} onClick={() => { setEditingEvent(null); setModalOpen(true) }}>새 일정 등록</Button></section>
 
-      <section className="calendar-route-settings">
+      <section className={`calendar-route-settings ${calculateTravel ? '' : 'calendar-route-settings--disabled'}`}>
         <div className="calendar-route-settings__intro"><span><Settings2 size={18} /></span><div><strong>이동 기준 설정</strong><p>첫 일정 전과 마지막 일정 후에는 선택한 기준 위치를 사용합니다.</p></div></div>
-        <label><span>자주 이용하는 교통</span><select value={transitPreference} onChange={(event) => setTransitPreference(event.target.value as TransitPreference)}><option value="bus">버스 중심</option><option value="subway">지하철 중심</option><option value="car">자차 중심</option></select></label>
-        <label><span>기준 위치</span><select value={baseLocation} onChange={(event) => setBaseLocation(event.target.value)}><option>VEILY 오피스 · 한남</option><option>집 · 잠실</option><option>집 · 성수</option></select></label>
-        <label className="car-toggle"><input type="checkbox" checked={useCar} disabled={transitPreference === 'car'} onChange={(event) => setUseCar(event.target.checked)} /><span><Car size={14} /></span><div><strong>자차 병행</strong><small>일부 구간 자동 추천</small></div></label>
+        <label><span>자주 이용하는 교통</span><select disabled={!calculateTravel} value={transitPreference} onChange={(event) => setTransitPreference(event.target.value as TransitPreference)}><option value="bus">버스 중심</option><option value="subway">지하철 중심</option><option value="car">자차 중심</option></select></label>
+        <label><span>기준 위치</span><select disabled={!calculateTravel} value={baseLocation} onChange={(event) => setBaseLocation(event.target.value)}><option>VEILY 오피스 · 한남</option><option>집 · 잠실</option><option>집 · 성수</option></select></label>
+        <label className="car-toggle"><input type="checkbox" checked={useCar} disabled={!calculateTravel || transitPreference === 'car'} onChange={(event) => setUseCar(event.target.checked)} /><span><Car size={14} /></span><div><strong>자차 병행</strong><small>일부 구간 자동 추천</small></div></label>
       </section>
 
       {conflicts.length > 0 && <section className="calendar-conflict-alert" role="alert"><span><AlertTriangle size={19} /></span><div><strong>겹치는 일정 {conflicts.length}건이 있습니다.</strong><p>{Number(conflicts[0].date.slice(-2))}일 {conflicts[0].first.time} {conflicts[0].first.title}과 {conflicts[0].second.time} {conflicts[0].second.title}</p></div><button onClick={openConflict}>일정 확인 <ArrowRight size={14} /></button></section>}
 
       <div className="calendar-toolbar">
         <div className="month-controller"><button aria-label="이전 달"><ChevronLeft size={18} /></button><h2>2026년 8월</h2><button aria-label="다음 달"><ChevronRight size={18} /></button><button className="today-button" onClick={() => setSelectedDate('2026-08-05')}>오늘</button></div>
-        <div className="calendar-view-toggle"><button onClick={() => setView('month')} className={view === 'month' ? 'active' : ''}>월</button><button onClick={() => setView('week')} className={view === 'week' ? 'active' : ''}>주</button></div>
+        <div className="calendar-toolbar__right"><label className="travel-calculation-toggle travel-calculation-toggle--toolbar"><span><strong>이동 시간</strong><small>{calculateTravel ? '표시' : '숨김'}</small></span><input type="checkbox" checked={calculateTravel} onChange={(event) => setCalculateTravel(event.target.checked)} /><i /></label><div className="calendar-view-toggle"><button onClick={() => setView('month')} className={view === 'month' ? 'active' : ''}>월</button><button onClick={() => setView('week')} className={view === 'week' ? 'active' : ''}>주</button></div></div>
       </div>
       <div className="calendar-filter-row"><span>일정 유형</span>{filters.map((item) => <button key={item} onClick={() => setFilter(item)} className={filter === item ? 'active' : ''}><i className={`filter-dot filter-dot--${eventClass[item] ?? 'all'}`} />{item}</button>)}</div>
       <div className="calendar-layout calendar-layout--routes">
@@ -79,7 +81,7 @@ export function CalendarPage() {
           <div className={`month-grid ${view === 'week' ? 'month-grid--week' : ''}`}>
             {monthDays.map((item, index) => {
               const dayEvents = filteredEvents.filter((event) => event.date === item.date).sort((a, b) => a.time.localeCompare(b.time))
-              const dayPlans = buildTravelPlans(dayEvents, baseLocation, transitPreference, useCar)
+              const dayPlans = calculateTravel ? buildTravelPlans(dayEvents, baseLocation, transitPreference, useCar) : []
               const dayPlanByEvent = new Map(dayPlans.map((plan) => [plan.eventId, plan]))
               const visibleEvents = dayEvents.slice(0, view === 'week' ? 5 : 3)
               const finalVisiblePlan = visibleEvents.length === dayEvents.length ? dayPlanByEvent.get(visibleEvents.at(-1)?.id ?? '') : undefined
@@ -94,13 +96,13 @@ export function CalendarPage() {
                 onKeyDown={(event) => { if (event.key === 'Enter') setSelectedDate(item.date) }}
                 className={`calendar-cell ${!item.current ? 'calendar-cell--muted' : ''} ${isToday ? 'calendar-cell--today' : ''} ${selectedDate === item.date ? 'calendar-cell--selected' : ''} ${hasConflict ? 'calendar-cell--conflict' : ''}`}
               >
-                <div className="calendar-cell__top"><span>{item.day}</span>{hasConflict ? <small className="cell-conflict"><AlertTriangle size={10} /> 겹침</small> : isToday && <small>오늘</small>}<button onClick={(event) => { event.stopPropagation(); setSelectedDate(item.date); setModalOpen(true) }} aria-label={`${item.day}일 일정 추가`}><Plus size={13} /></button></div>
+                <div className="calendar-cell__top"><span>{item.day}</span>{hasConflict ? <small className="cell-conflict"><AlertTriangle size={10} /> 겹침</small> : isToday && <small>오늘</small>}<button onClick={(event) => { event.stopPropagation(); setSelectedDate(item.date); setEditingEvent(null); setModalOpen(true) }} aria-label={`${item.day}일 일정 추가`}><Plus size={13} /></button></div>
                 <div className="calendar-cell__events calendar-cell__events--timeline">
                   {visibleEvents.map((event) => {
                     const plan = dayPlanByEvent.get(event.id)
                     return <Fragment key={event.id}>
                       {plan && <TravelLegBlock leg={plan.before} position="before" />}
-                      <div className={`calendar-event calendar-event--${eventClass[event.type]} ${conflictIds.has(event.id) ? 'calendar-event--conflict' : ''}`}><strong>{event.time}</strong><span>{event.title}</span>{conflictIds.has(event.id) && <AlertTriangle size={10} />}</div>
+                      <div role="button" tabIndex={0} onClick={(clickEvent) => { clickEvent.stopPropagation(); setEditingEvent(event); setModalOpen(true) }} className={`calendar-event calendar-event--${event.visibility === 'planner-private' ? 'private' : eventClass[event.type]} ${conflictIds.has(event.id) ? 'calendar-event--conflict' : ''}`}><strong>{event.time}</strong><span>{event.title}</span>{event.visibility === 'planner-private' && <small>개인</small>}{conflictIds.has(event.id) && <AlertTriangle size={10} />}</div>
                     </Fragment>
                   })}
                   {finalVisiblePlan && <TravelLegBlock leg={finalVisiblePlan.after} position="after" />}
@@ -119,17 +121,17 @@ export function CalendarPage() {
               const plan = travelPlanByEvent.get(event.id)
               return <div className="day-route-group" key={event.id}>
                 {plan && <TravelLegBlock leg={plan.before} position="before" variant="panel" />}
-                <div className={`day-event day-event--${eventClass[event.type]} ${conflictIds.has(event.id) ? 'day-event--conflict' : ''}`}><span className={`day-event__line day-event__line--${eventClass[event.type]}`} /><div className="day-event__time"><strong>{event.time}</strong><span>{event.endTime}</span></div><div className="day-event__body"><span className={`event-type-pill event-type-pill--${eventClass[event.type]}`}>{event.type}</span><h3>{event.title}</h3><p>{couple?.partners}</p><small><MapPin size={12} /> {event.location}</small></div>{conflictIds.has(event.id) && <AlertTriangle className="day-event__warning" size={15} />}</div>
+                <div role="button" tabIndex={0} onClick={() => { setEditingEvent(event); setModalOpen(true) }} className={`day-event day-event--${event.visibility === 'planner-private' ? 'private' : eventClass[event.type]} ${conflictIds.has(event.id) ? 'day-event--conflict' : ''}`}><span className={`day-event__line day-event__line--${event.visibility === 'planner-private' ? 'private' : eventClass[event.type]}`} /><div className="day-event__time"><strong>{event.time}</strong><span>{event.endTime}</span></div><div className="day-event__body"><span className={`event-type-pill event-type-pill--${event.visibility === 'planner-private' ? 'private' : eventClass[event.type]}`}>{event.visibility === 'planner-private' ? '개인 일정' : event.type}</span><h3>{event.title}</h3><p>{event.visibility === 'planner-private' ? '나에게만 표시' : couple?.partners}</p><small><MapPin size={12} /> {event.location}</small></div>{conflictIds.has(event.id) && <AlertTriangle className="day-event__warning" size={15} />}</div>
                 {plan && index === selectedEvents.length - 1 && <TravelLegBlock leg={plan.after} position="after" variant="panel" />}
               </div>
             }) : <div className="day-empty"><Building2 size={20} /><strong>등록된 일정이 없습니다.</strong><p>{baseLocation}을 기준으로 새 일정을 추가할 수 있습니다.</p></div>}
           </div>
-          <div className="day-base-location">{baseLocation.startsWith('집') ? <Home size={13} /> : <Building2 size={13} />}<span>기준 위치</span><strong>{baseLocation}</strong></div>
-          <button className="day-panel__add" onClick={() => setModalOpen(true)}><Plus size={15} /> 이 날 일정 추가</button>
+          {calculateTravel && <div className="day-base-location">{baseLocation.startsWith('집') ? <Home size={13} /> : <Building2 size={13} />}<span>기준 위치</span><strong>{baseLocation}</strong></div>}
+          <button className="day-panel__add" onClick={() => { setEditingEvent(null); setModalOpen(true) }}><Plus size={15} /> 이 날 일정 추가</button>
         </aside>
       </div>
-      <AddEventModal open={modalOpen} initialDate={selectedDate} onClose={() => setModalOpen(false)} onAdded={added} />
-      {toast && <div className="toast"><span>✓</span><div><strong>일정이 등록되었어요.</strong><p>캘린더와 커플 상세에 바로 반영했습니다.</p></div></div>}
+      <AddEventModal open={modalOpen} initialDate={selectedDate} initialEvent={editingEvent} onClose={() => { setModalOpen(false); setEditingEvent(null) }} onAdded={added} />
+      {toast && <div className="toast"><span>✓</span><div><strong>일정이 등록되었어요.</strong><p>캘린더에 바로 반영했습니다.</p></div></div>}
     </div>
   )
 }

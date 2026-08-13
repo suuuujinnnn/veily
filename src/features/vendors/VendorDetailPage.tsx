@@ -1,14 +1,15 @@
-import { ArrowLeft, CalendarDays, Camera, Clock3, ExternalLink, MapPin, Phone, Send, Sparkles } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Camera, Clock3, ExternalLink, Heart, MapPin, Phone, Send, Sparkles } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
-import { Badge, Button } from '../../components/ui'
+import { Badge, Button, Card } from '../../components/ui'
 import { VendorScheduleBoard } from './VendorScheduleBoard'
 import { InstagramPortfolio } from './InstagramPortfolio'
 import { VendorReviewsPanel } from '../reviews/VendorReviewsPanel'
+import { VendorDetailFacts } from './VendorDetailFacts'
 
 export function VendorDetailPage() {
   const { vendorId = 'v1' } = useParams()
-  const { vendors, recommendations, setRecommendation } = useDemoStore()
+  const { vendors, recommendations, favoriteVendorIds, setRecommendation, toggleFavoriteVendor } = useDemoStore()
   const vendor = vendors.find((item) => item.id === vendorId) ?? vendors[0]
   const recommended = recommendations.some((item) => item.coupleId === 'c1' && item.vendorId === vendor.id)
 
@@ -16,7 +17,7 @@ export function VendorDetailPage() {
     <div className="page-stack vendor-detail-page">
       <div className="vendor-detail-topline">
         <Link className="back-link" to="/vendors"><ArrowLeft size={15} /> 파트너 업체</Link>
-        <div><span>분석 데이터</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
+        <div><button className={`style-favorite-button vendor-detail-favorite ${favoriteVendorIds.includes(vendor.id) ? 'active' : ''}`} onClick={() => toggleFavoriteVendor(vendor.id)} aria-label="즐겨찾기 변경"><Heart size={16} fill={favoriteVendorIds.includes(vendor.id) ? 'currentColor' : 'none'} /></button><span>분석 데이터</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
       </div>
 
       <section className="vendor-detail-hero">
@@ -44,6 +45,10 @@ export function VendorDetailPage() {
         <article><Phone size={18} /><div><span>예약 문의</span><strong>{vendor.phone}</strong></div></article>
         <article><CalendarDays size={18} /><div><span>예상 금액</span><strong>{vendor.priceRange}</strong></div></article>
       </section>
+
+      <section className="vendor-style-section"><div className="section-heading"><div><p className="eyebrow">Style profile</p><h2>스타일 정보</h2><p>포트폴리오 분석과 레퍼런스 분류를 바탕으로 정리한 분위기와 콘셉트입니다.</p></div></div><Card><div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><p>{vendor.summary}</p></Card></section>
+
+      <VendorDetailFacts vendor={vendor} />
 
       <InstagramPortfolio key={vendor.id} vendor={vendor} />
 

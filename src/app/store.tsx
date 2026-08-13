@@ -8,6 +8,7 @@ import {
   initialConsultationCards,
   initialConsultations,
   initialEvents,
+  initialOrderApprovals,
   initialPayments,
   initialPortalSettings,
   initialRecommendations,
@@ -23,6 +24,8 @@ import type {
   ConsultationCard,
   Contract,
   Couple,
+  OrderApproval,
+  OrderRejectionReason,
   Payment,
   PortalSettings,
   Recommendation,
@@ -49,11 +52,14 @@ export interface DemoState {
   availability: Record<string, string[]>
   vendorSelections: VendorSelection[]
   vendorReviews: VendorReview[]
+  orderApprovals: OrderApproval[]
+  favoriteVendorIds: string[]
 }
 
 export type DemoAction =
   | { type: 'ADD_EVENT'; payload: WeddingEvent }
   | { type: 'UPDATE_EVENT'; payload: WeddingEvent }
+  | { type: 'DELETE_EVENT'; payload: string }
   | { type: 'UPDATE_COUPLE'; payload: Couple }
   | { type: 'TOGGLE_CHECKLIST'; payload: string }
   | { type: 'ADD_CHECKLIST'; payload: ChecklistItem }
@@ -73,11 +79,16 @@ export type DemoAction =
   | { type: 'DELETE_BUDGET_ITEM'; payload: string }
   | { type: 'ADD_VENDOR'; payload: Vendor }
   | { type: 'UPDATE_VENDOR'; payload: Vendor }
+  | { type: 'TOGGLE_FAVORITE_VENDOR'; payload: string }
   | { type: 'UPDATE_PORTAL_SETTINGS'; payload: PortalSettings }
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
   | { type: 'ADD_VENDOR_REVIEW'; payload: VendorReview }
+  | { type: 'REQUEST_ORDER_APPROVAL'; payload: OrderApproval }
+  | { type: 'APPROVE_ORDER'; payload: { id: string; confirmedAt: string; respondedAt: string } }
+  | { type: 'REJECT_ORDER'; payload: { id: string; reason: OrderRejectionReason; respondedAt: string } }
+  | { type: 'RETRY_ORDER'; payload: { id: string; requestedAt: string; approvalDeadline: string; viewedAt: string } }
 
 export const initialState: DemoState = {
   couples: initialCouples,
@@ -95,6 +106,8 @@ export const initialState: DemoState = {
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
   vendorReviews: initialVendorReviews,
+  orderApprovals: initialOrderApprovals,
+  favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -103,10 +116,12 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, events: [...state.events, action.payload] }
     case 'UPDATE_EVENT':
       return { ...state, events: state.events.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'DELETE_EVENT':
+      return { ...state, events: state.events.filter((item) => item.id !== action.payload) }
     case 'UPDATE_COUPLE':
       return { ...state, couples: state.couples.map((couple) => couple.id === action.payload.id ? action.payload : couple) }
     case 'TOGGLE_CHECKLIST':
-      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, completed: !item.completed } : item) }
+      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, status: item.status === 'completed' ? 'pending' : 'completed' } : item) }
     case 'ADD_CHECKLIST':
       return { ...state, checklist: [...state.checklist, action.payload] }
     case 'UPDATE_CHECKLIST':
@@ -150,6 +165,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, vendors: [...state.vendors, action.payload] }
     case 'UPDATE_VENDOR':
       return { ...state, vendors: state.vendors.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'TOGGLE_FAVORITE_VENDOR':
+      return { ...state, favoriteVendorIds: state.favoriteVendorIds.includes(action.payload) ? state.favoriteVendorIds.filter((id) => id !== action.payload) : [...state.favoriteVendorIds, action.payload] }
     case 'UPDATE_PORTAL_SETTINGS':
       return { ...state, portalSettings: state.portalSettings.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) }
     case 'SET_RECOMMENDATION': {
@@ -158,7 +175,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
         ...state,
         recommendations: existing
           ? state.recommendations.map((item) => item.id === existing.id ? { ...item, status: action.payload.status } : item)
-          : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload }],
+          : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload, proposedAt: DEMO_TODAY, selectionDeadline: addDays(DEMO_TODAY, 7) }],
       }
     }
     case 'TOGGLE_AVAILABILITY': {
@@ -172,6 +189,22 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
     }
     case 'ADD_VENDOR_REVIEW':
       return { ...state, vendorReviews: [action.payload, ...state.vendorReviews] }
+    case 'REQUEST_ORDER_APPROVAL':
+      return { ...state, orderApprovals: [action.payload, ...state.orderApprovals] }
+    case 'APPROVE_ORDER': {
+      const order = state.orderApprovals.find((item) => item.id === action.payload.id)
+      return {
+        ...state,
+        orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'approved', confirmedAt: action.payload.confirmedAt, respondedAt: action.payload.respondedAt, rejectionReason: undefined } : item),
+        events: order?.relatedEventId
+          ? state.events.map((event) => event.id === order.relatedEventId ? { ...event, approvalStatus: 'confirmed' } : event)
+          : state.events,
+      }
+    }
+    case 'REJECT_ORDER':
+      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'rejected', rejectionReason: action.payload.reason, respondedAt: action.payload.respondedAt, confirmedAt: undefined } : item) }
+    case 'RETRY_ORDER':
+      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'pending', requestedAt: action.payload.requestedAt, approvalDeadline: action.payload.approvalDeadline, viewedAt: action.payload.viewedAt, rejectionReason: undefined, confirmedAt: undefined, respondedAt: undefined } : item) }
     default:
       return state
   }
@@ -180,6 +213,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 interface DemoContextValue extends DemoState {
   addEvent: (event: Omit<WeddingEvent, 'id'>) => void
   updateEvent: (event: WeddingEvent) => void
+  deleteEvent: (id: string) => void
   updateCouple: (couple: Couple) => void
   toggleChecklist: (id: string) => void
   addChecklist: (item: Omit<ChecklistItem, 'id'>) => void
@@ -199,15 +233,32 @@ interface DemoContextValue extends DemoState {
   deleteBudgetItem: (id: string) => void
   addVendor: (item: Omit<Vendor, 'id'>) => void
   updateVendor: (item: Vendor) => void
+  toggleFavoriteVendor: (id: string) => void
   updatePortalSettings: (settings: PortalSettings) => void
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
   toggleAvailability: (eventId: string, slot: string) => void
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
   addVendorReview: (review: Omit<VendorReview, 'id' | 'createdAt'>) => void
+  requestOrderApproval: (order: Omit<OrderApproval, 'id' | 'requestedAt' | 'approvalDeadline' | 'reviewerName' | 'reviewerRole' | 'reviewerTeam' | 'viewedAt' | 'status' | 'confirmedAt' | 'respondedAt'>) => void
+  approveOrder: (id: string) => void
+  rejectOrder: (id: string, reason: OrderRejectionReason) => void
+  retryOrder: (id: string) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
 const makeId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+export const DEMO_TODAY = '2026-08-05'
+export const DEMO_NOW = '2026-08-05T10:30:00+09:00'
+const addDays = (date: string, days: number) => {
+  const next = new Date(`${date}T12:00:00`)
+  next.setDate(next.getDate() + days)
+  return next.toISOString().slice(0, 10)
+}
+const addDaysTimestamp = (value: string, days: number) => {
+  const next = new Date(value)
+  next.setDate(next.getDate() + days)
+  return next.toISOString()
+}
 
 export function DemoProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(demoReducer, initialState)
@@ -215,6 +266,7 @@ export function DemoProvider({ children }: PropsWithChildren) {
     ...state,
     addEvent: (event) => dispatch({ type: 'ADD_EVENT', payload: { ...event, id: makeId('e') } }),
     updateEvent: (event) => dispatch({ type: 'UPDATE_EVENT', payload: event }),
+    deleteEvent: (id) => dispatch({ type: 'DELETE_EVENT', payload: id }),
     updateCouple: (couple) => dispatch({ type: 'UPDATE_COUPLE', payload: couple }),
     toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
     addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: makeId('t') } }),
@@ -241,6 +293,7 @@ export function DemoProvider({ children }: PropsWithChildren) {
     deleteBudgetItem: (id) => dispatch({ type: 'DELETE_BUDGET_ITEM', payload: id }),
     addVendor: (item) => dispatch({ type: 'ADD_VENDOR', payload: { ...item, id: makeId('v') } }),
     updateVendor: (item) => dispatch({ type: 'UPDATE_VENDOR', payload: item }),
+    toggleFavoriteVendor: (id) => dispatch({ type: 'TOGGLE_FAVORITE_VENDOR', payload: id }),
     updatePortalSettings: (settings) => dispatch({ type: 'UPDATE_PORTAL_SETTINGS', payload: settings }),
     setRecommendation: (coupleId, vendorId, status) => dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
     toggleAvailability: (eventId, slot) => dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
@@ -249,6 +302,10 @@ export function DemoProvider({ children }: PropsWithChildren) {
       type: 'ADD_VENDOR_REVIEW',
       payload: { ...review, id: makeId('vr'), createdAt: new Date().toISOString() },
     }),
+    requestOrderApproval: (order) => dispatch({ type: 'REQUEST_ORDER_APPROVAL', payload: { ...order, id: makeId('oa'), requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), reviewerName: '정하린', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-08-05T10:42:18+09:00', status: 'pending' } }),
+    approveOrder: (id) => dispatch({ type: 'APPROVE_ORDER', payload: { id, confirmedAt: DEMO_NOW, respondedAt: DEMO_NOW } }),
+    rejectOrder: (id, reason) => dispatch({ type: 'REJECT_ORDER', payload: { id, reason, respondedAt: DEMO_NOW } }),
+    retryOrder: (id) => dispatch({ type: 'RETRY_ORDER', payload: { id, requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), viewedAt: '2026-08-05T10:42:18+09:00' } }),
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>

@@ -11,6 +11,7 @@ import { PortalPage } from '../features/portal/PortalPage'
 import { PortalEntryPage } from '../features/portal/PortalEntryPage'
 import { VendorsPage } from '../features/vendors/VendorsPage'
 import { VendorDetailPage } from '../features/vendors/VendorDetailPage'
+import { PartnerApprovalMockPage } from '../features/partner/PartnerApprovalMockPage'
 import { DemoProvider } from './store'
 
 export function App() {
@@ -33,6 +34,7 @@ export function App() {
           <Route path="portal" element={<PortalLayout />}>
             <Route path=":coupleId/:section?" element={<PortalPage />} />
           </Route>
+          <Route path="partner/approvals" element={<PartnerApprovalMockPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </DemoProvider>

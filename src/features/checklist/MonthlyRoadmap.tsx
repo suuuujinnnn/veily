@@ -2,14 +2,14 @@ import { Check, Circle } from 'lucide-react'
 import type { ChecklistItem } from '../../types'
 import { dueStatus, formatChecklistDate, formatMonth, monthKey } from './checklistUtils'
 
-export function MonthlyRoadmap({ tasks, onToggle }: { tasks: ChecklistItem[]; onToggle: (id: string) => void }) {
+export function MonthlyRoadmap({ tasks, onToggle, readOnly = false }: { tasks: ChecklistItem[]; onToggle: (id: string) => void; readOnly?: boolean }) {
   const roadmapMonths = [...new Set(tasks.map((task) => monthKey(task.dueDate)))].sort()
   return (
     <section className="monthly-roadmap" aria-label="월별 준비 로드맵">
       <div className="monthly-roadmap__track" style={{ gridTemplateColumns: `repeat(${Math.max(roadmapMonths.length, 1)}, minmax(205px, 1fr))` }}>
         {roadmapMonths.map((month) => {
           const monthTasks = tasks.filter((task) => monthKey(task.dueDate) === month).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
-          const completed = monthTasks.filter((task) => task.completed).length
+          const completed = monthTasks.filter((task) => task.status === 'completed').length
           const isCurrent = month === new Date().toISOString().slice(0, 7)
           return (
             <article className={`roadmap-month ${isCurrent ? 'roadmap-month--current' : ''}`} key={month}>
@@ -20,8 +20,8 @@ export function MonthlyRoadmap({ tasks, onToggle }: { tasks: ChecklistItem[]; on
               <div className="roadmap-month__progress"><span style={{ width: `${monthTasks.length ? (completed / monthTasks.length) * 100 : 0}%` }} /></div>
               <div className="roadmap-month__tasks">
                 {monthTasks.map((task) => (
-                  <button className={`${task.completed ? 'done' : ''} status-${dueStatus(task.dueDate, task.completed)}`} onClick={() => onToggle(task.id)} key={task.id}>
-                    <span>{task.completed ? <Check size={12} /> : <Circle size={10} />}</span>
+                  <button disabled={readOnly} className={`${task.status === 'completed' ? 'done' : ''} status-${dueStatus(task.dueDate, task.status)}`} onClick={() => !readOnly && onToggle(task.id)} key={task.id}>
+                    <span>{task.status === 'completed' ? <Check size={12} /> : <Circle size={10} />}</span>
                     <div><strong>{task.title}</strong><small>{formatChecklistDate(task.dueDate)} · {task.category}</small></div>
                   </button>
                 ))}
