@@ -11,6 +11,21 @@ export interface InstagramMediaItem {
   permalink: string
   caption?: string
   timestamp: string
+  /** media_product_type 으로 판별한다. media_type 에는 REELS 값이 없다. */
+  isReel?: boolean
+  /** 캐러셀 내부 이미지 URL. */
+  children?: string[]
+}
+
+export interface InstagramProfile {
+  username: string
+  name?: string
+  profilePictureUrl?: string
+  followersCount?: number
+  followsCount?: number
+  mediaCount?: number
+  biography?: string
+  website?: string
 }
 
 export interface InstagramPortfolio {
@@ -18,6 +33,8 @@ export interface InstagramPortfolio {
   source: 'mock' | 'instagram-api'
   refreshedAt: string
   media: InstagramMediaItem[]
+  profile?: InstagramProfile
+  nextCursor?: string
 }
 
 const accountName = (instagram: string) => instagram.replace(/^@/, '').trim()
