@@ -1,0 +1,21 @@
+# 저장소 개행은 LF 로 통일한다.
+#
+# WSL·Windows 편집기가 섞여 있어서, 편집기가 CRLF 로 저장하면 내용이 그대로여도
+# 파일 전체가 변경으로 잡힌다. 실제로 2026-08-14 에 75개 파일이 변경으로 떴는데
+# 그중 65개가 개행만 바뀐 것이었다. text=auto 로 인덱스에 LF 로 정규화해 이를 막는다.
+* text=auto eol=lf
+
+# 이미지·폰트는 정규화 대상이 아니다. 업체 사진(data/vendors/**)이 여기 걸린다.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.avif  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.pdf   binary
+*.mp4   binary
