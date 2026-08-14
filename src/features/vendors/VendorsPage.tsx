@@ -1,13 +1,15 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Check, CheckCircle2, ChevronRight, Heart, RefreshCcw, Search, Send, Sparkles, UploadCloud, WandSparkles } from 'lucide-react'
+import { Check, CheckCircle2, ChevronRight, Heart, Images, RefreshCcw, Search, Send, Sparkles, UploadCloud, WandSparkles } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card } from '../../components/ui'
 import { getReferenceCategory, vendorReferenceKeywords, type ReferenceCategory } from '../../data/referenceKeywordData'
 import { vendorStyleProfiles, type VendorStyleProfile } from '../../data/vendorStyleData'
+import { ReferenceBoard } from './ReferenceBoard'
 import { ReferenceSearchPanel } from './ReferenceSearchPanel'
 import { VendorDatabase } from './VendorDatabase'
 
+type PageMode = 'discovery' | 'board' | 'database'
 type AnalysisState = 'idle' | 'analyzing' | 'done'
 type SortOption = 'match' | 'evidence' | 'name'
 
@@ -34,7 +36,7 @@ function referenceMatch(keywords: string[], selectedKeywords: string[]) {
 
 export function VendorsPage() {
   const navigate = useNavigate()
-  const [pageMode, setPageMode] = useState<'discovery' | 'database'>('discovery')
+  const [pageMode, setPageMode] = useState<PageMode>('discovery')
   const [analysis, setAnalysis] = useState<AnalysisState>('idle')
   const [category, setCategory] = useState<ReferenceCategory>('드레스')
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
@@ -111,9 +113,9 @@ export function VendorsPage() {
         <div><p className="eyebrow">Partner workspace</p><h1>업체 찾기</h1><p>레퍼런스에서 보이는 구체적인 요소를 조합해, 취향과 가까운 업체를 빠르게 찾아보세요.</p></div>
         {pageMode === 'discovery' ? <Button variant="secondary" icon={<RefreshCcw size={15} />} onClick={() => { setAnalysis('idle'); resetSearch() }}>새 이미지 분석</Button> : <Badge tone="sage">{vendors.length} partners</Badge>}
       </section>
-      <nav className="workspace-switch"><button className={pageMode === 'discovery' ? 'active' : ''} onClick={() => setPageMode('discovery')}><Sparkles size={16} /> 레퍼런스로 찾기</button><button className={pageMode === 'database' ? 'active' : ''} onClick={() => setPageMode('database')}><Search size={16} /> 업체 DB</button></nav>
+      <nav className="workspace-switch"><button className={pageMode === 'discovery' ? 'active' : ''} onClick={() => setPageMode('discovery')}><Sparkles size={16} /> 레퍼런스로 찾기</button><button className={pageMode === 'board' ? 'active' : ''} onClick={() => setPageMode('board')}><Images size={16} /> 레퍼런스 보드</button><button className={pageMode === 'database' ? 'active' : ''} onClick={() => setPageMode('database')}><Search size={16} /> 업체 DB</button></nav>
 
-      {pageMode === 'database' ? <VendorDatabase /> : <>
+      {pageMode === 'board' ? <ReferenceBoard /> : pageMode === 'database' ? <VendorDatabase /> : <>
         <section className={`ai-studio vendor-vision vendor-vision--${analysis}`}>
           <div className="ai-studio__copy"><div className="ai-kicker"><WandSparkles size={16} /> REFERENCE MATCH</div><h2>레퍼런스 한 장을<br /><em>검색 조건으로 바꿔드려요</em></h2><p>드레스 라인, 헤어 높이, 피부 표현, 촬영 공간과 홀 분위기까지 같은 언어로 분류합니다.</p><div className="ai-points"><span><Check size={13} /> 5개 분야 · 20개 세부 분류</span><span><Check size={13} /> 서로 다른 조건을 동시에 조합</span><span><Check size={13} /> 실제 포트폴리오 근거로 매칭</span></div></div>
           <div className="ai-studio__workspace">

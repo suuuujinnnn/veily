@@ -11,6 +11,7 @@ import './styles/calendar-enhancements.css'
 import './styles/vendor-discovery.css'
 import './styles/shared-vendor-calendar.css'
 import './styles/vendor-reviews.css'
+import './styles/reference-board.css'
 import './styles/merged-features.css'
 import './styles/confirmed-requirements.css'
 

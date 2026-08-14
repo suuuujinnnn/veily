@@ -40,6 +40,12 @@ export interface FetchPortfolioParams {
   after?: string
 }
 
+export interface GraphCredentials {
+  /** 페이지 토큰이면 만료가 없고, 사용자 토큰이면 60일이다. TokenStore 가 골라준다. */
+  token: string
+  igUserId: string
+}
+
 export interface AppUsage {
   callCount?: number
   totalTime?: number
@@ -97,14 +103,18 @@ function toPublicError(body: unknown, status: number): PublicError {
   return new PublicError(502, 'GRAPH_ERROR', `Instagram 조회에 실패했습니다. (${message})`)
 }
 
-export async function fetchBusinessDiscovery(config: Config, params: FetchPortfolioParams): Promise<GraphFetchResult> {
+export async function fetchBusinessDiscovery(
+  config: Config,
+  credentials: GraphCredentials,
+  params: FetchPortfolioParams,
+): Promise<GraphFetchResult> {
   if (!USERNAME_PATTERN.test(params.account)) {
     throw new PublicError(400, 'INVALID_ACCOUNT', '사용자명 형식이 올바르지 않습니다.')
   }
 
-  const url = new URL(`${GRAPH_HOST}/${config.GRAPH_API_VERSION}/${config.IG_USER_ID}`)
+  const url = new URL(`${GRAPH_HOST}/${config.GRAPH_API_VERSION}/${credentials.igUserId}`)
   url.searchParams.set('fields', buildFields(params))
-  url.searchParams.set('access_token', config.IG_ACCESS_TOKEN)
+  url.searchParams.set('access_token', credentials.token)
 
   const response = await fetch(url, { headers: { Accept: 'application/json' } })
   const appUsage = parseAppUsage(response.headers.get('x-app-usage'))
