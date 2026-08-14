@@ -2,7 +2,10 @@ import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   Bell,
+  Building2,
+  ArrowUpRight,
   CalendarDays,
+  Check,
   ClipboardList,
   ChevronRight,
   HeartHandshake,
@@ -11,6 +14,7 @@ import {
   MessageCircleMore,
   PackageCheck,
   Search,
+  SendHorizontal,
   Settings,
   UserRound,
   UsersRound,
@@ -26,29 +30,40 @@ const navItems = [
   { to: '/couples', label: '커플 관리', icon: UsersRound },
   { to: '/calendar', label: '일정', icon: CalendarDays },
   { to: '/vendors', label: '레퍼런스 보드', icon: Search },
+  { to: '/vendor-database', label: '업체 DB', icon: Building2 },
   { to: '/orders', label: '발주 관리', icon: PackageCheck },
   { to: '/community', label: '플래너 라운지', icon: MessageCircleMore },
 ]
 
 const pageTitles: Record<string, string> = {
-  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '레퍼런스 보드', '/orders': '발주 관리', '/community': '플래너 라운지',
+  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '레퍼런스 보드', '/vendor-database': '업체 DB', '/orders': '발주 관리', '/community': '플래너 라운지',
 }
 
 export function PlannerLayout() {
   const location = useLocation()
   const store = useDemoStore()
-  const { couples, checklist, addChecklist, events, recommendations, orderApprovals, vendors, favoriteVendorIds, customerRequests, setCustomerRequestStatus } = store
+  const { couples, checklist, addChecklist, events, recommendations, orderApprovals, vendors, favoriteVendorIds, customerRequests, updateCustomerRequest, setCustomerRequestStatus } = store
   const reminders = buildReminders({ couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds }, 'planner')
   const currentCoupleId = location.pathname.match(/^\/couples\/([^/]+)/)?.[1]
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | 'guide' | null>(null)
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [inboxOpen, setInboxOpen] = useState(false)
+  const [replyDrafts, setReplyDrafts] = useState<Record<string, string>>({})
   const [guideCoupleId, setGuideCoupleId] = useState(currentCoupleId ?? couples[0]?.id ?? '')
   const guideCouple = couples.find((couple) => couple.id === guideCoupleId) ?? couples[0]
-  const title = location.pathname.startsWith('/couples/') ? '커플 상세' : pageTitles[location.pathname] ?? 'VEILY'
+  const title = location.pathname.startsWith('/couples/') ? '커플 상세' : location.pathname.startsWith('/vendor-database/') || location.pathname.startsWith('/vendors/') ? '업체 상세' : pageTitles[location.pathname] ?? 'VEILY'
   const unreadRequests = customerRequests.filter((request) => request.status === 'requested')
-  const requestStatusLabel = { requested: '새 요청', confirmed: '확인', 'in-progress': '처리 중', completed: '완료' } as const
+  const sendQuickReply = (requestId: string) => {
+    const message = replyDrafts[requestId]?.trim()
+    const request = customerRequests.find((item) => item.id === requestId)
+    if (!message || !request) return
+    updateCustomerRequest(requestId, {
+      resultNote: [request.resultNote, message].filter(Boolean).join('\n'),
+      status: request.status === 'requested' ? 'confirmed' : request.status,
+    })
+    setReplyDrafts((current) => ({ ...current, [requestId]: '' }))
+  }
   const openUtility = (modal: 'profile' | 'notifications' | 'guide') => {
     if (modal === 'guide' && currentCoupleId && couples.some((couple) => couple.id === currentCoupleId)) setGuideCoupleId(currentCoupleId)
     setUtilityModal(modal)
@@ -89,7 +104,7 @@ export function PlannerLayout() {
           <div className="topbar__actions">
             <label className="global-search"><Search size={16} /><input aria-label="전체 검색" placeholder="커플, 업체, 일정 검색" /></label>
             <button className="icon-button notification inbox-trigger" aria-label={`고객 메시지 ${unreadRequests.length}건`} aria-expanded={inboxOpen} onClick={() => { setInboxOpen((open) => !open); setNotificationOpen(false) }}><Inbox size={18} />{unreadRequests.length > 0 && <em>{unreadRequests.length}</em>}</button>
-            {inboxOpen && <aside className="message-inbox-panel"><header><div><p className="eyebrow">Customer inbox</p><h2>고객 메시지</h2></div><BadgeCount count={unreadRequests.length} /></header><div className="message-inbox-list">{customerRequests.map((request) => { const sender = couples.find((couple) => couple.id === request.coupleId); return <article className={request.status === 'requested' ? 'unread' : ''} key={request.id}><div className={`message-sender message-sender--${sender?.tone ?? 'sand'}`}>{sender?.initials ?? '—'}</div><div><div><strong>{sender?.partners ?? '고객'}</strong><span>{request.createdAt.slice(5, 10).replace('-', '.')} · {request.createdAt.slice(11, 16)}</span></div><BadgeCount count={requestStatusLabel[request.status]} /><p>{request.originalText}</p><footer><Link to={`/couples/${request.coupleId}`} onClick={() => setInboxOpen(false)}>커플 보기</Link>{request.status === 'requested' && <button onClick={() => setCustomerRequestStatus(request.id, 'confirmed')}>확인 처리</button>}</footer></div></article> })}</div></aside>}
+            {inboxOpen && <aside className="message-inbox-panel"><header><div><p className="eyebrow">Customer inbox</p><h2>고객 메시지</h2></div><BadgeCount count={unreadRequests.length} /></header><div className="message-inbox-list">{customerRequests.map((request) => { const sender = couples.find((couple) => couple.id === request.coupleId); return <article className={request.status === 'requested' ? 'unread' : ''} key={request.id}><div className="message-sender">{sender?.initials ?? '—'}</div><div><div className="message-inbox-meta"><strong>{sender?.partners ?? '고객'}<Link to={`/couples/${request.coupleId}`} aria-label={`${sender?.partners ?? '고객'} 커플 상세로 이동`} onClick={() => setInboxOpen(false)}><ArrowUpRight size={13} /></Link></strong><span>{request.createdAt.slice(5, 10).replace('-', '.')} · {request.createdAt.slice(11, 16)}{request.status === 'requested' && <button className="message-read-button" aria-label="읽음으로 표시" title="읽음으로 표시" onClick={() => setCustomerRequestStatus(request.id, 'confirmed')}><Check size={13} /></button>}</span></div><p className="message-inbox-body">{request.originalText}</p>{request.resultNote && <div className="message-reply-preview"><small>내 답장</small><p>{request.resultNote}</p></div>}<form className="message-quick-reply" onSubmit={(event) => { event.preventDefault(); sendQuickReply(request.id) }}><input value={replyDrafts[request.id] ?? ''} onChange={(event) => setReplyDrafts((current) => ({ ...current, [request.id]: event.target.value }))} placeholder="바로 답장하기" aria-label={`${sender?.partners ?? '고객'}에게 답장`} /><button type="submit" disabled={!replyDrafts[request.id]?.trim()} aria-label="답장 보내기"><SendHorizontal size={14} /></button></form></div></article> })}</div></aside>}
             <button className="icon-button notification" aria-label={`알림 ${reminders.length}건`} aria-expanded={notificationOpen} onClick={() => { setNotificationOpen((open) => !open); setInboxOpen(false) }}><Bell size={18} />{reminders.length > 0 && <em>{reminders.length}</em>}</button>
             {notificationOpen && <aside className="notification-panel"><header><div><p className="eyebrow">Notifications</p><h2>처리할 알림</h2></div><BadgeCount count={reminders.length} /></header><div>{reminders.length ? reminders.slice(0, 7).map((reminder) => <div key={reminder.id} onClick={() => setNotificationOpen(false)}><ReminderListItem reminder={reminder} compact /></div>) : <p className="notification-panel__empty">새로운 알림이 없습니다.</p>}</div><button onClick={() => { setNotificationOpen(false); setUtilityModal('notifications') }}>알림 설정</button></aside>}
           </div>

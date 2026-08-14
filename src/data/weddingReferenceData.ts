@@ -1,6 +1,6 @@
 import type { ReferenceBoard, ReferenceCategory, WeddingReference } from '../types'
 import { vendorStyleProfiles } from './vendorStyleData'
-import { imageAssets } from '../assets/images'
+import { venueReferences } from './weddingVenueData'
 
 const dressTags: Record<string, string[][]> = {
   'vp-d1': [['아플리케 레이스', '상체 디테일탑', 'A라인'], ['튤', '화려한 비즈', '오프숄더'], ['캉캉 스커트', '하트탑', '벨라인']],
@@ -49,8 +49,7 @@ export const weddingReferences: WeddingReference[] = [
   ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('헤어', id)),
   ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('메이크업', id)),
   ...['vp-s1', 'vp-s2', 'vp-s3', 'vp-s4', 'vp-s5'].flatMap((id) => referencesForProfile('스튜디오', id)),
-  { id: 'ref-웨딩홀-garden-1', category: '웨딩홀', image: imageAssets.weddingGarden, vendorName: '가든홀 레퍼런스', account: '검수 예정 샘플', tags: ['야외·가든', '자연광', '초록', '싱그러운'], purpose: '예식 공간', source: '검수 아카이브', reviewStatus: '확인필요' },
-  { id: 'ref-웨딩홀-hotel-1', category: '웨딩홀', image: imageAssets.vendorStudioGallery, vendorName: '클래식홀 레퍼런스', account: '검수 예정 샘플', tags: ['호텔', '실내', '어두운 홀', '인공 조명'], purpose: '예식 공간', source: '검수 아카이브', reviewStatus: '확인필요' },
+  ...venueReferences,
 ]
 
 export const initialReferenceBoards: ReferenceBoard[] = [{

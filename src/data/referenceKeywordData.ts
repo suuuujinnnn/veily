@@ -145,14 +145,9 @@ export const referenceCategories: ReferenceCategoryDefinition[] = [
   {
     label: '웨딩홀',
     englishLabel: 'WEDDING HALL',
-    description: '홀 유형과 공간 조건을 한 번에',
-    searchHint: '예: 밝은 채플, 높은 층고 단독홀',
-    groups: [
-      { label: '유형', keywords: ['일반 예식장', '컨벤션', '호텔', '하우스', '레스토랑', '한옥', '교회·성당', '기타'] },
-      { label: '콘셉트', keywords: ['채플', '소규모', '야외·가든', '전통혼례'] },
-      { label: '공간', keywords: ['높은 층고', '단독홀', '긴 버진로드', '통창', '실내', '야외'] },
-      { label: '빛·무드', keywords: ['밝은 홀', '어두운 홀', '자연광', '인공 조명', '초록', '싱그러운'] },
-    ],
+    description: '지역·접근성·식사를 먼저',
+    searchHint: '예: 서초구 터미널 뷔페',
+    groups: [],
   },
 ];
 

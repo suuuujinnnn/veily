@@ -16,7 +16,7 @@ export function VendorDetailPage() {
   return (
     <div className="page-stack vendor-detail-page">
       <div className="vendor-detail-topline">
-        <Link className="back-link" to="/vendors"><ArrowLeft size={15} /> 파트너 업체</Link>
+        <Link className="back-link" to="/vendor-database"><ArrowLeft size={15} /> 파트너 업체</Link>
         <div><button className={`style-favorite-button vendor-detail-favorite ${favoriteVendorIds.includes(vendor.id) ? 'active' : ''}`} onClick={() => toggleFavoriteVendor(vendor.id)} aria-label="즐겨찾기 변경"><Heart size={16} fill={favoriteVendorIds.includes(vendor.id) ? 'currentColor' : 'none'} /></button><span>분석 데이터</span><strong>{vendor.activeEvent}</strong><Sparkles size={15} /></div>
       </div>
 

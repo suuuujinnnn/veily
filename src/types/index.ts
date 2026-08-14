@@ -230,11 +230,65 @@ export interface Recommendation {
 export type ReferenceCategory = '드레스' | '헤어' | '메이크업' | '스튜디오' | '웨딩홀'
 export type ReferenceSource = '검수 아카이브' | '플래너 업로드'
 
+export type VenueRegionGroup = '서울' | '경기·인천'
+export type VenueMealType = '뷔페' | '한식' | '양식' | '기타'
+export type VenueType =
+  | '일반·컨벤션예식장(어두운 홀)'
+  | '호텔예식'
+  | '채플홀'
+  | '하우스웨딩(밝은 홀)'
+  | '스몰웨딩(100명 이하)'
+  | '야외웨딩'
+  | '한옥웨딩'
+export type VenueWish = '밝은 홀' | '어두운 홀' | '높은 천고' | '원형 테이블' | '화려한 꽃 장식' | '단독홀' | '단독건물'
+export type VenueAccessKind = '지하철역' | '기차역' | '터미널'
+export type VenueAccessOption = '도보 10분 이내' | '셔틀 운행' | '대형 주차'
+
+export interface VenueAccessPoint {
+  id: string
+  name: string
+  kind: VenueAccessKind
+  mode: '도보' | '차량' | '셔틀'
+  minutes: number
+  tagLabel: string
+}
+
+export interface WeddingVenue {
+  id: string
+  name: string
+  regionGroup: VenueRegionGroup
+  locality: string
+  address: string
+  mealTypes: VenueMealType[]
+  mealDetail: string
+  venueType: VenueType
+  wishes: VenueWish[]
+  accessPoints: VenueAccessPoint[]
+  accessOptions: VenueAccessOption[]
+  shuttleNote: string
+  parkingNote: string
+  summary: string
+  referenceImageIds: string[]
+}
+
+export interface VenueFilterState {
+  regionGroup: VenueRegionGroup | ''
+  localities: string[]
+  accessKinds: VenueAccessKind[]
+  accessPointIds: string[]
+  accessOptions: VenueAccessOption[]
+  mealTypes: VenueMealType[]
+  venueTypes: VenueType[]
+  wishes: VenueWish[]
+  query: string
+}
+
 export interface WeddingReference {
   id: string
   category: ReferenceCategory
   image: string
   vendorId?: string
+  venueId?: string
   vendorName: string
   account: string
   tags: string[]
@@ -274,7 +328,7 @@ export interface CustomerReferenceSubmission {
   status: '작성 중' | '전송완료' | '재전송됨'
 }
 
-export type OrderApprovalStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'expired'
+export type OrderApprovalStatus = 'draft' | 'ordered' | 'reverse-pending' | 'approved' | 'rejected' | 'expired'
 export type OrderRejectionReason = 'schedule-unavailable' | 'product-unavailable' | 'other'
 
 export interface OrderApproval {
@@ -294,6 +348,7 @@ export interface OrderApproval {
   rejectionReason?: OrderRejectionReason
   confirmedAt?: string
   respondedAt?: string
+  memo?: string
 }
 
 export type ReminderKind = 'selection-deadline' | 'order-approval-deadline' | 'confirmed-schedule' | 'task-deadline' | 'vendor-stale'

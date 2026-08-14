@@ -1,6 +1,5 @@
 import type { ChecklistItem, Couple, OrderApproval, Recommendation, ReminderItem, Vendor, WeddingEvent } from '../../types'
 import { taskUrgency } from '../checklist/checklistUtils'
-import { isVendorStale, staleOperationalFacts } from '../vendors/vendorInfoUtils'
 
 const dayDifference = (date: string, today: string) => Math.round((new Date(`${date.slice(0, 10)}T12:00:00`).getTime() - new Date(`${today.slice(0, 10)}T12:00:00`).getTime()) / 86_400_000)
 const urgencyFor = (days: number): ReminderItem['urgency'] => days < 0 ? 'overdue' : days <= 3 ? 'soon' : 'normal'
@@ -35,17 +34,6 @@ export function buildReminders(source: ReminderSource, audience: ReminderItem['a
         })
       })
 
-    source.vendors
-      .filter((vendor) => source.favoriteVendorIds.includes(vendor.id) && isVendorStale(vendor, today))
-      .forEach((vendor) => {
-        const staleFacts = staleOperationalFacts(vendor, today)
-        reminders.push({
-          id: `planner-vendor-stale-${vendor.id}`, kind: 'vendor-stale', audience, sourceId: vendor.id,
-          title: '업체 정보 확인 필요',
-          message: `${vendor.name} · ${staleFacts.length ? `실무정보 ${staleFacts.length}개` : '전체 정보'} 1년 이상 미갱신`,
-          dueAt: vendor.updatedAt, urgency: 'overdue', href: `/vendors/${vendor.id}`,
-        })
-      })
   }
 
   source.recommendations
@@ -66,18 +54,18 @@ export function buildReminders(source: ReminderSource, audience: ReminderItem['a
     })
 
   source.orderApprovals
-    .filter((item) => !['approved', 'draft'].includes(item.status) && (!coupleId || item.coupleId === coupleId))
+    .filter((item) => ['reverse-pending', 'rejected', 'expired'].includes(item.status) && (!coupleId || item.coupleId === coupleId))
     .forEach((item) => {
       const days = dayDifference(item.approvalDeadline, today)
       const rejected = item.status === 'rejected'
       reminders.push({
         id: `${audience}-order-${item.id}`,
         kind: 'order-approval-deadline', audience, sourceId: item.id, coupleId: item.coupleId,
-        title: rejected ? '업체 일정 확인 불가' : days < 0 || item.status === 'expired' ? '업체 확인 기한 초과' : '업체 확인 대기 중',
+        title: rejected ? '업체 일정 확인 불가' : days < 0 || item.status === 'expired' ? '역발주 승인 지연' : '역발주 승인 대기',
         message: audience === 'planner'
-          ? rejected ? `${coupleName(item.coupleId)} 고객의 ${vendorName(item.vendorId)} 요청이 거절되었습니다.` : `${vendorName(item.vendorId)} 승인 기한이 ${days < 0 ? `${Math.abs(days)}일 지났습니다.` : `${days}일 남았습니다.`}`
+          ? rejected ? `${coupleName(item.coupleId)} 고객의 ${vendorName(item.vendorId)} 요청이 거절되었습니다.` : `${coupleName(item.coupleId)} 고객 · ${vendorName(item.vendorId)} 승인이 ${days < 0 ? `${Math.abs(days)}일 지연되었습니다.` : `${days}일 남았습니다.`}`
           : rejected ? '해당 일정 진행이 어려워 다른 후보를 확인하고 있어요.' : '업체에서 일정을 확인하고 있어요.',
-        dueAt: item.approvalDeadline, urgency: rejected || days < 0 ? 'overdue' : urgencyFor(days), href: audience === 'planner' ? `/couples/${item.coupleId}?tab=orders` : `/portal/${item.coupleId}/vendors`,
+        dueAt: item.approvalDeadline, urgency: rejected || days < 0 ? 'overdue' : urgencyFor(days), href: audience === 'planner' ? '/orders' : `/portal/${item.coupleId}/vendors`,
       })
     })
 

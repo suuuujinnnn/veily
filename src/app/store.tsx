@@ -97,6 +97,7 @@ export type DemoAction =
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
   | { type: 'ADD_VENDOR_REVIEW'; payload: VendorReview }
   | { type: 'REQUEST_ORDER_APPROVAL'; payload: OrderApproval }
+  | { type: 'UPDATE_ORDER_APPROVAL'; payload: OrderApproval }
   | { type: 'APPROVE_ORDER'; payload: { id: string; confirmedAt: string; respondedAt: string } }
   | { type: 'REJECT_ORDER'; payload: { id: string; reason: OrderRejectionReason; respondedAt: string } }
   | { type: 'RETRY_ORDER'; payload: { id: string; requestedAt: string; approvalDeadline: string; viewedAt: string } }
@@ -211,6 +212,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, vendorReviews: [action.payload, ...state.vendorReviews] }
     case 'REQUEST_ORDER_APPROVAL':
       return { ...state, orderApprovals: [action.payload, ...state.orderApprovals] }
+    case 'UPDATE_ORDER_APPROVAL':
+      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? action.payload : item) }
     case 'APPROVE_ORDER': {
       const order = state.orderApprovals.find((item) => item.id === action.payload.id)
       return {
@@ -224,7 +227,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
     case 'REJECT_ORDER':
       return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'rejected', rejectionReason: action.payload.reason, respondedAt: action.payload.respondedAt, confirmedAt: undefined } : item) }
     case 'RETRY_ORDER':
-      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'pending', requestedAt: action.payload.requestedAt, approvalDeadline: action.payload.approvalDeadline, viewedAt: action.payload.viewedAt, rejectionReason: undefined, confirmedAt: undefined, respondedAt: undefined } : item) }
+      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'reverse-pending', requestedAt: action.payload.requestedAt, approvalDeadline: action.payload.approvalDeadline, viewedAt: action.payload.viewedAt, rejectionReason: undefined, confirmedAt: undefined, respondedAt: undefined } : item) }
     case 'SAVE_REFERENCE_BOARD': {
       const exists = state.referenceBoards.some((item) => item.id === action.payload.id)
       return { ...state, referenceBoards: exists ? state.referenceBoards.map((item) => item.id === action.payload.id ? action.payload : item) : [...state.referenceBoards, action.payload] }
@@ -274,6 +277,7 @@ interface DemoContextValue extends DemoState {
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
   addVendorReview: (review: Omit<VendorReview, 'id' | 'createdAt'>) => void
   requestOrderApproval: (order: Omit<OrderApproval, 'id' | 'requestedAt' | 'approvalDeadline' | 'reviewerName' | 'reviewerRole' | 'reviewerTeam' | 'viewedAt' | 'status' | 'confirmedAt' | 'respondedAt'>) => void
+  updateOrderApproval: (id: string, update: Partial<Pick<OrderApproval, 'status' | 'memo' | 'confirmedAt' | 'respondedAt'>>) => void
   approveOrder: (id: string) => void
   rejectOrder: (id: string, reason: OrderRejectionReason) => void
   retryOrder: (id: string) => void
@@ -342,7 +346,11 @@ export function DemoProvider({ children }: PropsWithChildren) {
       type: 'ADD_VENDOR_REVIEW',
       payload: { ...review, id: makeId('vr'), createdAt: new Date().toISOString() },
     }),
-    requestOrderApproval: (order) => dispatch({ type: 'REQUEST_ORDER_APPROVAL', payload: { ...order, id: makeId('oa'), requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), reviewerName: '정하린', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-08-05T10:42:18+09:00', status: 'pending' } }),
+    requestOrderApproval: (order) => dispatch({ type: 'REQUEST_ORDER_APPROVAL', payload: { ...order, id: makeId('oa'), requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), reviewerName: '정하린', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-08-05T10:42:18+09:00', status: 'reverse-pending' } }),
+    updateOrderApproval: (id, update) => {
+      const current = state.orderApprovals.find((item) => item.id === id)
+      if (current) dispatch({ type: 'UPDATE_ORDER_APPROVAL', payload: { ...current, ...update } })
+    },
     approveOrder: (id) => dispatch({ type: 'APPROVE_ORDER', payload: { id, confirmedAt: DEMO_NOW, respondedAt: DEMO_NOW } }),
     rejectOrder: (id, reason) => dispatch({ type: 'REJECT_ORDER', payload: { id, reason, respondedAt: DEMO_NOW } }),
     retryOrder: (id) => dispatch({ type: 'RETRY_ORDER', payload: { id, requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), viewedAt: '2026-08-05T10:42:18+09:00' } }),

@@ -15,6 +15,7 @@ import './styles/merged-features.css'
 import './styles/confirmed-requirements.css'
 import './styles/client-taste.css'
 import './styles/workspace-updates.css'
+import './styles/venue-search.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
