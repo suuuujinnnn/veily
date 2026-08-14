@@ -74,6 +74,19 @@ export interface ChecklistItem {
   templateId?: string
 }
 
+export type CustomerRequestStatus = 'requested' | 'confirmed' | 'in-progress' | 'completed'
+
+export interface CustomerRequest {
+  id: string
+  coupleId: string
+  category: '레퍼런스' | '업체 문의' | '일정' | '계약·견적' | '기타'
+  originalText: string
+  status: CustomerRequestStatus
+  createdAt: string
+  updatedAt: string
+  resultNote?: string
+}
+
 export interface WeddingWorkflowTemplate {
   id: string
   title: string
@@ -212,6 +225,53 @@ export interface Recommendation {
   status: RecommendationStatus
   proposedAt: string
   selectionDeadline: string
+}
+
+export type ReferenceCategory = '드레스' | '헤어' | '메이크업' | '스튜디오' | '웨딩홀'
+export type ReferenceSource = '검수 아카이브' | '플래너 업로드'
+
+export interface WeddingReference {
+  id: string
+  category: ReferenceCategory
+  image: string
+  vendorId?: string
+  vendorName: string
+  account: string
+  tags: string[]
+  purpose: string
+  source: ReferenceSource
+  reviewStatus: '검수완료' | '확인필요'
+  imagePosition?: string
+}
+
+export interface ReferenceBoardItem {
+  referenceId: string
+  comment: string
+}
+
+export interface ReferenceBoard {
+  id: string
+  coupleId: string
+  title: string
+  memo: string
+  items: ReferenceBoardItem[]
+  status: '작성 중' | '공유됨'
+  updatedAt: string
+}
+
+export interface CustomerReferenceSelection {
+  referenceId: string
+  note: string
+}
+
+export interface CustomerReferenceSubmission {
+  id: string
+  coupleId: string
+  selections: CustomerReferenceSelection[]
+  preferredTags: string[]
+  categoryCounts: Partial<Record<ReferenceCategory, number>>
+  submittedAt: string
+  status: '작성 중' | '전송완료' | '재전송됨'
 }
 
 export type OrderApprovalStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'expired'

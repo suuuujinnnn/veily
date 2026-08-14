@@ -13,6 +13,8 @@ import './styles/shared-vendor-calendar.css'
 import './styles/vendor-reviews.css'
 import './styles/merged-features.css'
 import './styles/confirmed-requirements.css'
+import './styles/client-taste.css'
+import './styles/workspace-updates.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

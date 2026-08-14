@@ -12,6 +12,7 @@ import { PortalEntryPage } from '../features/portal/PortalEntryPage'
 import { VendorsPage } from '../features/vendors/VendorsPage'
 import { VendorDetailPage } from '../features/vendors/VendorDetailPage'
 import { PartnerApprovalMockPage } from '../features/partner/PartnerApprovalMockPage'
+import { OrdersPage } from '../features/orders/OrdersPage'
 import { DemoProvider } from './store'
 
 export function App() {
@@ -26,6 +27,7 @@ export function App() {
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
             <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
+            <Route path="orders" element={<OrdersPage />} />
             <Route path="contracts" element={<Navigate to="/couples/c1?tab=finance" replace />} />
             <Route path="community" element={<CommunityPage />} />
           </Route>

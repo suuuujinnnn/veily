@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarDays, CheckCircle2, LayoutDashboard, LockKeyhole, UserRound } from 'lucide-react'
+import { ArrowRight, CalendarDays, CheckCircle2, Heart, LayoutDashboard, LockKeyhole, UserRound } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
 
@@ -25,6 +25,11 @@ export function PortalEntryPage() {
           <Link to={`/portal/${couple.id}`}>
             <span className="portal-entry__choice-icon"><LayoutDashboard size={22} /></span>
             <div><small>전체 포털</small><h3>준비 현황 전체 보기</h3><p>일정, 할 일, 추천 업체와 진행률을 한 번에 확인합니다.</p></div>
+            <ArrowRight size={18} />
+          </Link>
+          <Link className="portal-entry__taste-link" to={`/portal/${couple.id}/discover`}>
+            <span className="portal-entry__choice-icon"><Heart size={22} /></span>
+            <div><small>취향 탐색 전용</small><h3>내 웨딩 취향 찾기</h3><p>마음이 가는 레퍼런스를 고르고 플래너에게 보내세요.</p></div>
             <ArrowRight size={18} />
           </Link>
           {settings?.showSchedule !== false && <Link to={`/portal/${couple.id}/calendar`}>

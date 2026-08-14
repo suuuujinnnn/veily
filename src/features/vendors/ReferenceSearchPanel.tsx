@@ -29,11 +29,11 @@ export function ReferenceSearchPanel({ category, query, selectedKeywords, result
       <header className="reference-search-panel__header">
         <div>
           <span className="reference-search-panel__kicker"><SlidersHorizontal size={14} /> REFERENCE FINDER</span>
-          <h2>말로 설명하기 어려운 취향도<br /><em>조건을 조합해서 찾아보세요</em></h2>
+          <h2>고객이 원하는 디자인을<br /><em>사진 단위로 모아보세요</em></h2>
         </div>
         <div className="reference-search-panel__summary">
           <span>현재 검색 결과</span>
-          <strong>{resultCount}<small>곳</small></strong>
+          <strong>{resultCount}<small>장</small></strong>
           {hasFilters && <button onClick={onReset}><RotateCcw size={13} /> 조건 초기화</button>}
         </div>
       </header>
@@ -44,10 +44,10 @@ export function ReferenceSearchPanel({ category, query, selectedKeywords, result
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
           placeholder={currentCategory.searchHint}
-          aria-label={`${category} 업체 검색`}
+          aria-label={`${category} 레퍼런스 검색`}
         />
         {query && <button className="reference-search-box__clear" onClick={() => onQueryChange('')} aria-label="검색어 지우기"><X size={15} /></button>}
-        <span>업체명 · 계정 · 키워드 검색</span>
+        <span>샵명 · 계정 · 디자인 키워드</span>
       </div>
 
       <div className="reference-category-tabs" role="tablist" aria-label="레퍼런스 분야">
@@ -78,7 +78,7 @@ export function ReferenceSearchPanel({ category, query, selectedKeywords, result
       </div>
 
       <footer className="reference-search-panel__footer">
-        <span>같은 분류 안에서는 하나만 맞아도, 서로 다른 분류는 모두 맞는 업체를 찾아요.</span>
+        <span>같은 분류의 조건은 하나만 맞아도 표시하고, 서로 다른 분류는 모두 맞는 화보를 모아요.</span>
         <div>{selectedKeywords.length ? selectedKeywords.map((keyword) => <button key={keyword} onClick={() => onKeywordToggle(keyword)}>#{keyword}<X size={11} /></button>) : <small>키워드를 선택하면 여기에 검색 조건이 표시됩니다.</small>}</div>
       </footer>
     </section>

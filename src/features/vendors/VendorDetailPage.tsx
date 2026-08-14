@@ -27,7 +27,7 @@ export function VendorDetailPage() {
           <p>{vendor.summary}</p>
           <div className="tag-row">{vendor.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
           <div className="vendor-detail-actions">
-            <Button icon={<Send size={15} />} onClick={() => setRecommendation('c1', vendor.id, recommended ? 'pending' : 'liked')}>{recommended ? '추천 목록에 담김' : '서윤 & 도현에게 추천'}</Button>
+            <Button icon={<Send size={15} />} onClick={() => setRecommendation('c1', vendor.id, 'pending')}>{recommended ? '추천 목록에 담김' : '서윤 & 도현에게 추천'}</Button>
             <Link to="/portal/c1/calendar" target="_blank"><Button variant="secondary" icon={<ExternalLink size={15} />}>고객 일정 화면</Button></Link>
           </div>
         </div>

@@ -16,6 +16,8 @@ import {
   initialVendorSelections,
   vendors as initialVendors,
 } from '../data/mockData'
+import { initialReferenceBoards } from '../data/weddingReferenceData'
+import { initialCustomerRequests } from '../data/customerRequestData'
 import type {
   BudgetItem,
   BudgetPlan,
@@ -34,6 +36,11 @@ import type {
   VendorReview,
   VendorSelection,
   WeddingEvent,
+  ReferenceBoard,
+  WeddingReference,
+  CustomerReferenceSubmission,
+  CustomerRequest,
+  CustomerRequestStatus,
 } from '../types'
 
 export interface DemoState {
@@ -54,6 +61,10 @@ export interface DemoState {
   vendorReviews: VendorReview[]
   orderApprovals: OrderApproval[]
   favoriteVendorIds: string[]
+  referenceBoards: ReferenceBoard[]
+  uploadedReferences: WeddingReference[]
+  customerReferenceSubmissions: CustomerReferenceSubmission[]
+  customerRequests: CustomerRequest[]
 }
 
 export type DemoAction =
@@ -89,6 +100,11 @@ export type DemoAction =
   | { type: 'APPROVE_ORDER'; payload: { id: string; confirmedAt: string; respondedAt: string } }
   | { type: 'REJECT_ORDER'; payload: { id: string; reason: OrderRejectionReason; respondedAt: string } }
   | { type: 'RETRY_ORDER'; payload: { id: string; requestedAt: string; approvalDeadline: string; viewedAt: string } }
+  | { type: 'SAVE_REFERENCE_BOARD'; payload: ReferenceBoard }
+  | { type: 'ADD_UPLOADED_REFERENCE'; payload: WeddingReference }
+  | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
+  | { type: 'ADD_CUSTOMER_REQUEST'; payload: CustomerRequest }
+  | { type: 'UPDATE_CUSTOMER_REQUEST'; payload: CustomerRequest }
 
 export const initialState: DemoState = {
   couples: initialCouples,
@@ -108,6 +124,10 @@ export const initialState: DemoState = {
   vendorReviews: initialVendorReviews,
   orderApprovals: initialOrderApprovals,
   favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
+  referenceBoards: initialReferenceBoards,
+  uploadedReferences: [],
+  customerReferenceSubmissions: [],
+  customerRequests: initialCustomerRequests,
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -205,6 +225,20 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'rejected', rejectionReason: action.payload.reason, respondedAt: action.payload.respondedAt, confirmedAt: undefined } : item) }
     case 'RETRY_ORDER':
       return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'pending', requestedAt: action.payload.requestedAt, approvalDeadline: action.payload.approvalDeadline, viewedAt: action.payload.viewedAt, rejectionReason: undefined, confirmedAt: undefined, respondedAt: undefined } : item) }
+    case 'SAVE_REFERENCE_BOARD': {
+      const exists = state.referenceBoards.some((item) => item.id === action.payload.id)
+      return { ...state, referenceBoards: exists ? state.referenceBoards.map((item) => item.id === action.payload.id ? action.payload : item) : [...state.referenceBoards, action.payload] }
+    }
+    case 'ADD_UPLOADED_REFERENCE':
+      return { ...state, uploadedReferences: [action.payload, ...state.uploadedReferences] }
+    case 'SAVE_CUSTOMER_REFERENCE_SUBMISSION': {
+      const exists = state.customerReferenceSubmissions.some((item) => item.coupleId === action.payload.coupleId)
+      return { ...state, customerReferenceSubmissions: exists ? state.customerReferenceSubmissions.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [action.payload, ...state.customerReferenceSubmissions] }
+    }
+    case 'ADD_CUSTOMER_REQUEST':
+      return { ...state, customerRequests: [action.payload, ...state.customerRequests] }
+    case 'UPDATE_CUSTOMER_REQUEST':
+      return { ...state, customerRequests: state.customerRequests.map((item) => item.id === action.payload.id ? action.payload : item) }
     default:
       return state
   }
@@ -243,6 +277,12 @@ interface DemoContextValue extends DemoState {
   approveOrder: (id: string) => void
   rejectOrder: (id: string, reason: OrderRejectionReason) => void
   retryOrder: (id: string) => void
+  saveReferenceBoard: (board: ReferenceBoard) => void
+  addUploadedReference: (reference: Omit<WeddingReference, 'id'>) => void
+  saveCustomerReferenceSubmission: (submission: CustomerReferenceSubmission) => void
+  addCustomerRequest: (request: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => void
+  updateCustomerRequest: (id: string, update: Partial<Pick<CustomerRequest, 'status' | 'resultNote'>>) => void
+  setCustomerRequestStatus: (id: string, status: CustomerRequestStatus) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
@@ -306,6 +346,18 @@ export function DemoProvider({ children }: PropsWithChildren) {
     approveOrder: (id) => dispatch({ type: 'APPROVE_ORDER', payload: { id, confirmedAt: DEMO_NOW, respondedAt: DEMO_NOW } }),
     rejectOrder: (id, reason) => dispatch({ type: 'REJECT_ORDER', payload: { id, reason, respondedAt: DEMO_NOW } }),
     retryOrder: (id) => dispatch({ type: 'RETRY_ORDER', payload: { id, requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), viewedAt: '2026-08-05T10:42:18+09:00' } }),
+    saveReferenceBoard: (board) => dispatch({ type: 'SAVE_REFERENCE_BOARD', payload: board }),
+    addUploadedReference: (reference) => dispatch({ type: 'ADD_UPLOADED_REFERENCE', payload: { ...reference, id: makeId('ref-upload') } }),
+    saveCustomerReferenceSubmission: (submission) => dispatch({ type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION', payload: submission }),
+    addCustomerRequest: (request) => dispatch({ type: 'ADD_CUSTOMER_REQUEST', payload: { ...request, id: makeId('request'), status: 'requested', createdAt: DEMO_NOW, updatedAt: DEMO_NOW } }),
+    updateCustomerRequest: (id, update) => {
+      const current = state.customerRequests.find((item) => item.id === id)
+      if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, ...update, updatedAt: DEMO_NOW } })
+    },
+    setCustomerRequestStatus: (id, status) => {
+      const current = state.customerRequests.find((item) => item.id === id)
+      if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, status, updatedAt: DEMO_NOW } })
+    },
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>
