@@ -57,3 +57,15 @@ export interface ReferenceSearchResult {
   groups: FacetGroup[]
   categories: CategoryCount[]
 }
+
+/** 업체 목록 한 줄. 인스타 조회 없이 labels.jsonl 만으로 만들 수 있는 정보다. */
+export interface VendorSummary {
+  account: string
+  name: string
+  category: string
+  /** 라벨링을 마친 사진 수. 0 이면 아직 수집 전이다. */
+  labelledCount: number
+  /** 대표컷. 라벨링된 사진이 없으면 빈 배열이다. */
+  covers: string[]
+  instagramUrl: string
+}

@@ -7,7 +7,8 @@ import { PublicError } from '../lib/errors.js'
 const querySchema = z.object({
   category: z.string().min(1).default('드레스'),
   q: z.string().max(120).default(''),
-  limit: z.coerce.number().int().min(1).max(200).default(60),
+  // 업체 단위로 묶어 보는 화면은 사진이 잘리면 업체가 통째로 빠진다. 전량을 받을 수 있게 열어둔다.
+  limit: z.coerce.number().int().min(1).max(1000).default(60),
   offset: z.coerce.number().int().min(0).max(5000).default(0),
 })
 
@@ -64,6 +65,11 @@ export function createReferencesRouter(store: ReferenceStore, dataDir: string): 
     } catch (error: unknown) {
       next(error)
     }
+  })
+
+  // 등록된 업체 전체 목록. 인스타를 타지 않으므로 Graph 호출 한도와 무관하게 항상 뜬다.
+  router.get('/references/vendors', (_req, res) => {
+    res.json({ success: true, data: { vendors: store.vendors() } })
   })
 
   // 업체 사진은 저장소 안 파일이라 그대로 정적으로 내보낸다. 노출 범위를

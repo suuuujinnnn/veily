@@ -246,16 +246,28 @@ CDN URL의 **만료 시간(TTL)은 공식 문서에 수치가 없다.** "2일" �
 
 ---
 
-## 기존 `docs/instagram-api.md` 수정 항목
+## 서버는 실제로 이렇게 붙어 있다
 
-| 위치 | 현재 | 수정 |
-|---|---|---|
-| 동기화 흐름 3 | "캐러셀은 `children`의 미디어 ID를 **추가 조회**" | **작동 안 함.** `children{}` 중첩 확장으로 첫 호출에 포함 |
-| 대표 권한 | 인사이트 시 `instagram_manage_insights` 추가 | `business_discovery`가 **필수로 요구**. 선택 아님 |
-| 가져올 범위 | 릴스 `thumbnail_url` 중심 | VIDEO는 `media_url`도 온다. `thumbnail_url`은 폴백 |
-| (누락) | — | **스토리·하이라이트 불가** 명시 |
-| (누락) | — | `business_discovery`가 **Facebook Login 전용** |
-| (누락) | — | 미디어 재호스팅 **약관 리스크** |
+토큰을 브라우저에 둘 수 없어서 서버를 한 겹 세웠다. 프론트는 Vite 프록시를 거쳐 `/api`로만 말한다.
+
+```text
+브라우저 → Vite 프록시(/api) → server/ → graph.facebook.com → 인스타
+```
+
+| 라우트 | 하는 일 |
+|---|---|
+| `GET /api/vendors/:account/instagram` | `business_discovery`로 업체 포트폴리오 조회. 10분 캐시 |
+| `GET /api/auth/instagram/status` | 토큰 종류·남은 일수 확인 (토큰 값은 안 나온다) |
+| `GET /api/auth/instagram/start` | 브라우저로 열면 로그인 → 콜백 → 저장까지 자동 |
+| `POST /api/auth/instagram/token` | Explorer에서 받은 토큰을 붙여넣는 우회로 |
+| `POST /api/vendors/:account/classify` | 사진을 내려받아 분류하고 `labels.jsonl`에 붙인다 |
+| `GET /api/references/search` | 라벨 검색. 인스타를 타지 않아 토큰 없이도 뜬다 |
+
+설계 단계의 `POST /api/vendors/:vendorId/instagram/sync`는 만들지 않았다. 화면 진입 시 조회에 캐시를 붙이는 쪽이 단순했다. 주기 갱신(크론)은 아직 없다.
+
+캐러셀은 `children{}` 중첩 확장으로 첫 호출에 다 받는다. 미디어 ID를 다시 조회하는 설계였다면 STEP 7 ①에 걸려 전부 실패했을 것이다.
+
+프론트의 `InstagramPortfolio`는 이 응답 계약을 목업으로 먼저 표현해 둔 것이다. 서버가 `source: 'instagram-api'`와 실제 `media` 배열을 주면 화면 컴포넌트는 그대로 재사용된다. 서버가 죽었거나 조회에 실패하면 목업으로 폴백하고 "데모 데이터" 뱃지가 뜬다.
 
 ---
 

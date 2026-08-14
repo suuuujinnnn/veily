@@ -43,6 +43,16 @@ export interface ReferenceSearchResult {
   categories: CategoryCount[]
 }
 
+export interface VendorSummary {
+  account: string
+  name: string
+  category: string
+  /** 라벨링을 마친 사진 수. 0 이면 아직 수집 전이다. */
+  labelledCount: number
+  covers: string[]
+  instagramUrl: string
+}
+
 export class ReferenceApiError extends Error {
   readonly code: string
 
@@ -94,4 +104,28 @@ export async function searchReferences({
     throw new ReferenceApiError(body.code ?? 'UNKNOWN', body.error)
   }
   return body.data
+}
+
+/**
+ * 등록된 제휴 업체 전체. 인스타 Graph 를 타지 않아서 API 호출 한도와 무관하게 뜬다.
+ * 아직 사진을 안 받은 업체도 labelledCount 0 으로 함께 내려온다.
+ */
+export async function fetchVendors(signal?: AbortSignal): Promise<VendorSummary[]> {
+  const response = await fetch('/api/references/vendors', {
+    headers: { Accept: 'application/json' },
+    ...(signal ? { signal } : {}),
+  })
+
+  const body = (await response.json().catch(() => null)) as
+    | { success: true; data: { vendors: VendorSummary[] } }
+    | { success: false; code?: string; error: string }
+    | null
+
+  if (!body) {
+    throw new ReferenceApiError('NETWORK', '서버 응답을 읽지 못했습니다. server/ 가 떠 있는지 확인해 주세요.')
+  }
+  if (!body.success) {
+    throw new ReferenceApiError(body.code ?? 'UNKNOWN', body.error)
+  }
+  return body.data.vendors
 }

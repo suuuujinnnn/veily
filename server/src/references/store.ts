@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ROLLUP_AXIS, categoryFacets, vendorDirectory, type RollupDefinition } from './facets.js'
 import { findDataDir } from './paths.js'
-import { labelRecordSchema, type CategoryCount, type FacetGroup, type LabelRecord, type ReferenceItem, type ReferenceSearchResult } from './types.js'
+import { labelRecordSchema, type CategoryCount, type FacetGroup, type LabelRecord, type ReferenceItem, type ReferenceSearchResult, type VendorSummary } from './types.js'
 
 const MEDIA_PREFIX = '/api/references/media'
 const VENDOR_PATH_PREFIX = 'data/vendors/'
@@ -55,6 +55,34 @@ export class ReferenceStore {
     this.records.push(indexed)
     this.paths.add(record.path)
     return true
+  }
+
+  /**
+   * 등록된 업체 전부와, 각 업체의 라벨링 현황.
+   *
+   * 인스타를 타지 않는다 — Graph 앱 호출 한도가 시간당으로 걸려 있어서 업체 목록을
+   * 띄우는 것만으로 한도를 태울 수 없다. 프로필 사진 대신 그 업체의 라벨링된 사진을
+   * 대표컷으로 쓴다.
+   */
+  vendors(): VendorSummary[] {
+    const byAccount = new Map<string, ReferenceItem[]>()
+    for (const entry of this.records) {
+      const bucket = byAccount.get(entry.item.vendor)
+      if (bucket) bucket.push(entry.item)
+      else byAccount.set(entry.item.vendor, [entry.item])
+    }
+
+    return Object.entries(vendorDirectory).map(([account, info]) => {
+      const items = byAccount.get(account) ?? []
+      return {
+        account,
+        name: info.name,
+        category: info.type,
+        labelledCount: items.length,
+        covers: items.slice(0, 4).map((item) => item.imageUrl),
+        instagramUrl: `https://www.instagram.com/${account}/`,
+      }
+    })
   }
 
   categories(): CategoryCount[] {

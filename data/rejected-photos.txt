@@ -1,0 +1,5 @@
+# 라벨을 달 수 없다고 판정한 사진. 브랜드 카드·감성 그래픽처럼 제품이 안 보이는 컷이다.
+# 수집기가 이 목록을 보고 다시 내려받지 않는다. 저장소 상대 경로 한 줄에 하나.
+data/vendors/dressshop/atelier_ohwa/ig_18003215672976262.jpg
+data/vendors/dressshop/atelier_ohwa/ig_18091164668547345_1.jpg
+data/vendors/dressshop/atelier_ohwa/ig_18106613024131032.jpg

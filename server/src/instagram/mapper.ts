@@ -6,18 +6,24 @@ import type {
   InstagramProfile,
 } from './types.js'
 
+/** 캐러셀 자식 중 첫 이미지. 영상 자식의 media_url 은 mp4 라 건너뛴다. */
+function firstImageChild(media: GraphMedia): string | undefined {
+  return media.children?.data.find((child) => child.media_type !== 'VIDEO' && child.media_url)?.media_url
+}
+
 /**
  * 이미지 URL 폴백.
+ *
+ * 영상·릴스의 media_url 은 mp4 다. 화면은 이걸 <img> 에 꽂으므로 반드시 깨진다.
+ * 표지인 thumbnail_url 을 먼저 쓴다 — 문서상 VIDEO 에만 오는 필드다.
  *
  * media_url 누락은 예외가 아니라 정상 경로다. 저작권 플래그된 미디어는 응답에서
  * 필드가 통째로 빠지며, 공식 문서가 드는 대표 사례가 릴스 배경 음원이다.
  * 캐러셀 최상위 media_url 도 문서상 보장되지 않으므로 자식으로 폴백한다.
  */
 function resolveImageUrl(media: GraphMedia): string | undefined {
-  if (media.media_url) return media.media_url
-  const firstChild = media.children?.data.find((child) => child.media_url)
-  if (firstChild?.media_url) return firstChild.media_url
-  return media.thumbnail_url
+  if (media.media_type === 'VIDEO') return media.thumbnail_url ?? firstImageChild(media)
+  return media.media_url ?? firstImageChild(media) ?? media.thumbnail_url
 }
 
 function toMediaItem(media: GraphMedia): InstagramMediaItem | null {
@@ -25,7 +31,11 @@ function toMediaItem(media: GraphMedia): InstagramMediaItem | null {
   // 표시할 이미지가 없는 항목은 빈 카드로 남기지 않고 제외한다.
   if (!imageUrl || !media.timestamp) return null
 
-  const children = media.children?.data.flatMap((child) => (child.media_url ? [child.media_url] : []))
+  // 영상 자식은 뺀다. 화면도 수집기도 이 배열을 이미지로 다루기 때문에
+  // mp4 가 섞이면 깨진 칸이 되거나 내려받기가 실패한다.
+  const children = media.children?.data.flatMap((child) =>
+    child.media_url && child.media_type !== 'VIDEO' ? [child.media_url] : [],
+  )
 
   return {
     id: media.id,

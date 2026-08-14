@@ -4,6 +4,14 @@ import { ReferenceApiError, searchReferences, type ReferenceSearchResult } from 
 const PAGE_SIZE = 60
 const QUERY_DEBOUNCE_MS = 250
 
+export interface ReferenceSearchOptions {
+  /**
+   * 한 번에 받아올 사진 수. 업체 단위로 묶어 보여주는 화면은 사진이 잘리면
+   * 업체가 통째로 빠지므로 더 크게 잡는다.
+   */
+  pageSize?: number
+}
+
 export interface ReferenceSearchState {
   category: string
   filters: Record<string, string[]>
@@ -25,7 +33,8 @@ export interface ReferenceSearchState {
  * 조건을 바꿀 때마다 서버에 다시 묻는다. 라벨 148장은 전부 내려받아도 되는 양이지만,
  * 사진이 늘면 그대로 무너지는 방식이라 처음부터 서버 검색으로 둔다.
  */
-export function useReferenceSearch(initialCategory = '드레스'): ReferenceSearchState {
+export function useReferenceSearch(initialCategory = '드레스', options: ReferenceSearchOptions = {}): ReferenceSearchState {
+  const pageSize = options.pageSize ?? PAGE_SIZE
   const [category, setCategoryState] = useState(initialCategory)
   const [filters, setFilters] = useState<Record<string, string[]>>({})
   const [query, setQuery] = useState('')
@@ -48,7 +57,7 @@ export function useReferenceSearch(initialCategory = '드레스'): ReferenceSear
     requestId.current = id
     setLoading(true)
 
-    searchReferences({ category, filters, q: debouncedQuery, limit: PAGE_SIZE, signal: controller.signal })
+    searchReferences({ category, filters, q: debouncedQuery, limit: pageSize, signal: controller.signal })
       .then((data) => {
         if (requestId.current !== id) return
         setResult(data)
@@ -63,7 +72,7 @@ export function useReferenceSearch(initialCategory = '드레스'): ReferenceSear
       })
 
     return () => controller.abort()
-  }, [category, filters, debouncedQuery, reloadToken])
+  }, [category, filters, debouncedQuery, pageSize, reloadToken])
 
   const setCategory = useCallback((next: string) => {
     setCategoryState(next)

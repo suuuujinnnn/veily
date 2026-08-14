@@ -4,3 +4,6 @@ dist/
 vite.config.js
 vite.config.d.ts
 .codex/
+.gstack/
+collect-manifest*.json
+collect-manifest*.jsonl
