@@ -16,6 +16,8 @@ import './styles/confirmed-requirements.css'
 import './styles/client-taste.css'
 import './styles/workspace-updates.css'
 import './styles/venue-search.css'
+import './styles/community-board.css'
+import './styles/reference-board.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

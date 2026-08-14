@@ -187,17 +187,20 @@ export interface MakeupVendorOperationalDetails {
 
 export type VendorOperationalDetails = StudioVendorOperationalDetails | DressVendorOperationalDetails | MakeupVendorOperationalDetails
 
-export interface VendorReview {
+export type VendorInsightCategory = '업체별 최근 경험' | '담당자 성향' | '담당자 이직·퇴사' | '업체 변경사항' | '실제 진행 후기' | '업체별 유의사항'
+
+export interface VendorInsight {
   id: string
   vendorId: string
-  overallRating: number
-  responseRating: number
-  expertiseRating: number
-  punctualityRating: number
-  strengths: string
-  considerations: string
+  category: VendorInsightCategory
+  title: string
   experienceContext: string
+  staffName?: string
+  highlights: string
+  considerations: string
+  tags: string[]
   createdAt: string
+  helpfulCount: number
   authorLabel: '인증 플래너'
   experienceBand: string
 }
@@ -452,4 +455,5 @@ export interface CommunityPost {
   helpful: number
   verified: boolean
   tags: string[]
+  vendorId?: string
 }

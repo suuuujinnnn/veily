@@ -12,7 +12,7 @@ import {
   initialPayments,
   initialPortalSettings,
   initialRecommendations,
-  initialVendorReviews,
+  initialVendorInsights,
   initialVendorSelections,
   vendors as initialVendors,
 } from '../data/mockData'
@@ -33,7 +33,7 @@ import type {
   Recommendation,
   RecommendationStatus,
   Vendor,
-  VendorReview,
+  VendorInsight,
   VendorSelection,
   WeddingEvent,
   ReferenceBoard,
@@ -58,7 +58,7 @@ export interface DemoState {
   portalSettings: PortalSettings[]
   availability: Record<string, string[]>
   vendorSelections: VendorSelection[]
-  vendorReviews: VendorReview[]
+  vendorInsights: VendorInsight[]
   orderApprovals: OrderApproval[]
   favoriteVendorIds: string[]
   referenceBoards: ReferenceBoard[]
@@ -95,7 +95,7 @@ export type DemoAction =
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
-  | { type: 'ADD_VENDOR_REVIEW'; payload: VendorReview }
+  | { type: 'ADD_VENDOR_INSIGHT'; payload: VendorInsight }
   | { type: 'REQUEST_ORDER_APPROVAL'; payload: OrderApproval }
   | { type: 'UPDATE_ORDER_APPROVAL'; payload: OrderApproval }
   | { type: 'APPROVE_ORDER'; payload: { id: string; confirmedAt: string; respondedAt: string } }
@@ -122,7 +122,7 @@ export const initialState: DemoState = {
   portalSettings: initialPortalSettings,
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
-  vendorReviews: initialVendorReviews,
+  vendorInsights: initialVendorInsights,
   orderApprovals: initialOrderApprovals,
   favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
   referenceBoards: initialReferenceBoards,
@@ -208,8 +208,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const others = state.vendorSelections.filter((selection) => !(selection.coupleId === action.payload.coupleId && selection.vendorId === action.payload.vendorId))
       return { ...state, vendorSelections: [...others, action.payload] }
     }
-    case 'ADD_VENDOR_REVIEW':
-      return { ...state, vendorReviews: [action.payload, ...state.vendorReviews] }
+    case 'ADD_VENDOR_INSIGHT':
+      return { ...state, vendorInsights: [action.payload, ...state.vendorInsights] }
     case 'REQUEST_ORDER_APPROVAL':
       return { ...state, orderApprovals: [action.payload, ...state.orderApprovals] }
     case 'UPDATE_ORDER_APPROVAL':
@@ -275,7 +275,7 @@ interface DemoContextValue extends DemoState {
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
   toggleAvailability: (eventId: string, slot: string) => void
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
-  addVendorReview: (review: Omit<VendorReview, 'id' | 'createdAt'>) => void
+  addVendorInsight: (insight: Omit<VendorInsight, 'id' | 'createdAt'>) => void
   requestOrderApproval: (order: Omit<OrderApproval, 'id' | 'requestedAt' | 'approvalDeadline' | 'reviewerName' | 'reviewerRole' | 'reviewerTeam' | 'viewedAt' | 'status' | 'confirmedAt' | 'respondedAt'>) => void
   updateOrderApproval: (id: string, update: Partial<Pick<OrderApproval, 'status' | 'memo' | 'confirmedAt' | 'respondedAt'>>) => void
   approveOrder: (id: string) => void
@@ -342,9 +342,9 @@ export function DemoProvider({ children }: PropsWithChildren) {
     setRecommendation: (coupleId, vendorId, status) => dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
     toggleAvailability: (eventId, slot) => dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
     selectVendorSlot: (coupleId, vendorId, slotId) => dispatch({ type: 'SELECT_VENDOR_SLOT', payload: { coupleId, vendorId, slotId } }),
-    addVendorReview: (review) => dispatch({
-      type: 'ADD_VENDOR_REVIEW',
-      payload: { ...review, id: makeId('vr'), createdAt: new Date().toISOString() },
+    addVendorInsight: (insight) => dispatch({
+      type: 'ADD_VENDOR_INSIGHT',
+      payload: { ...insight, id: makeId('vi'), createdAt: new Date().toISOString() },
     }),
     requestOrderApproval: (order) => dispatch({ type: 'REQUEST_ORDER_APPROVAL', payload: { ...order, id: makeId('oa'), requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), reviewerName: '정하린', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-08-05T10:42:18+09:00', status: 'reverse-pending' } }),
     updateOrderApproval: (id, update) => {

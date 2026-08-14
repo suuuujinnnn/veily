@@ -4,7 +4,7 @@ import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card } from '../../components/ui'
 import { VendorScheduleBoard } from './VendorScheduleBoard'
 import { InstagramPortfolio } from './InstagramPortfolio'
-import { VendorReviewsPanel } from '../reviews/VendorReviewsPanel'
+import { VendorInsightsPanel } from '../reviews/VendorInsightsPanel'
 import { VendorDetailFacts } from './VendorDetailFacts'
 
 export function VendorDetailPage() {
@@ -52,7 +52,7 @@ export function VendorDetailPage() {
 
       <InstagramPortfolio key={vendor.id} vendor={vendor} />
 
-      <VendorReviewsPanel availableVendors={vendors} vendorId={vendor.id} canWrite title={`${vendor.name} 리뷰`} description="인증 플래너가 실제 진행 경험을 바탕으로 남긴 공개 리뷰입니다. 고객 포털에도 동일하게 공유됩니다." />
+      <VendorInsightsPanel availableVendors={vendors} vendorId={vendor.id} canWrite title={`${vendor.name} 실무 정보`} description="인증 플래너가 현장에서 확인한 특장점과 유의할 점입니다. 고객 포털에도 동일하게 공유됩니다." />
 
       <VendorScheduleBoard vendor={vendor} />
     </div>
