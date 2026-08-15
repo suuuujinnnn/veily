@@ -793,6 +793,235 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "본식",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_17934560292358324.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물 중심",
+      "일상",
+      "감성",
+      "고채도",
+      "도시",
+      "도로",
+      "밤",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18014956067922693.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물 중심",
+      "장난스러운",
+      "러블리",
+      "선명한",
+      "고채도",
+      "심플 배경",
+      "클로즈업",
+      "타이트",
+      "콘셉트 소품",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18083237261269413.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물+배경",
+      "내추럴",
+      "로맨틱",
+      "자연광",
+      "초록",
+      "싱그러운",
+      "정원",
+      "아치",
+      "자연",
+      "낮",
+      "전신",
+      "생화 부케",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_17905636596308188.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물+배경",
+      "고급스러운",
+      "드라마틱",
+      "화이트톤",
+      "실내 세트",
+      "전신",
+      "콘셉트 소품"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18088237343183494.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물 중심",
+      "화보",
+      "성숙한",
+      "화이트톤",
+      "실내 세트",
+      "독사진",
+      "타이트",
+      "콘셉트 소품",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18611678398025805.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물 중심",
+      "청순한",
+      "몽환적인",
+      "화이트톤",
+      "밝은",
+      "심플 배경",
+      "클로즈업",
+      "독사진",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-7",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18121889161864101.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물+배경",
+      "단아한",
+      "깔끔",
+      "자연광",
+      "밝은",
+      "루프탑",
+      "도시",
+      "심플 배경",
+      "낮",
+      "전신",
+      "생화 부케",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-8",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18120893731886491.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "배경 중심",
+      "드라마틱",
+      "감성",
+      "자연광",
+      "루프탑",
+      "도시",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-9",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_17947553136249494.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물 중심",
+      "싱그러운",
+      "내추럴",
+      "자연광",
+      "선명한",
+      "밝은",
+      "자연",
+      "낮",
+      "독사진",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-gueonstudioofficial-10",
+    "category": "스튜디오",
+    "image": "/vendors/studio/gue_on.studio.official/ig_18335625370281674.jpg",
+    "vendorId": "ig-gueonstudioofficial",
+    "vendorName": "그온스튜디오",
+    "account": "gue_on.studio.official",
+    "tags": [
+      "인물 중심",
+      "단아한",
+      "고급스러운",
+      "자연광",
+      "화이트톤",
+      "밝은",
+      "실내 세트",
+      "심플 배경",
+      "낮",
+      "독사진",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -924,6 +1153,39 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/laforet___official/ig_18102471344228824.jpg"
     ],
     "website": "https://linktr.ee/laforet__withyou",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-gueonstudioofficial",
+    "name": "그온스튜디오",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "생화 부케",
+      "인물 중심",
+      "낮",
+      "자연광",
+      "전신"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/gue_on.studio.official/ig_17934560292358324.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/gue_on.studio.official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/gue_on.studio.official/ig_17934560292358324.jpg",
+      "/vendors/studio/gue_on.studio.official/ig_18014956067922693.jpg",
+      "/vendors/studio/gue_on.studio.official/ig_18083237261269413.jpg",
+      "/vendors/studio/gue_on.studio.official/ig_17905636596308188.jpg",
+      "/vendors/studio/gue_on.studio.official/ig_18088237343183494.jpg",
+      "/vendors/studio/gue_on.studio.official/ig_18611678398025805.jpg"
+    ],
+    "website": "https://booking.naver.com/booking/6/bizes/1688786",
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
   }
