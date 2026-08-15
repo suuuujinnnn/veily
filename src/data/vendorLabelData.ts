@@ -1670,6 +1670,255 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18047483054799347_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18047483054799347_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "반묶음",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18105675376895020_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "세미 매트",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18105675376895020_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "단발",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18463079473113052_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-6",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18051420428556126_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-7",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18051420428556126_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-8",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18101099075229265_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "세미 매트",
+      "음영"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-9",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18101099075229265_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-10",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18089216699545684_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-11",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18097965629204959_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "세미 매트"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-12",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18097965629204959_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-13",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18131115910628692_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "하이 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-14",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18131115910628692_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "세미 매트",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-15",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_17960559672168805.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-16",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18108623380968821_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "세미 매트",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-kimchungkyunghairface-17",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18108623380968821_0.jpg",
+    "vendorId": "ig-kimchungkyunghairface",
+    "vendorName": "김청경헤어페이스",
+    "account": "kimchungkyung_hairface",
+    "tags": [
+      "로우 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -1932,6 +2181,38 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/archive_boda/ig_18362681137240189.jpg"
     ],
     "website": "http://pf.kakao.com/_CbHfs",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-kimchungkyunghairface",
+    "name": "김청경헤어페이스",
+    "category": "메이크업",
+    "summary": "인스타 게시물 17장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "깔끔",
+      "생머리",
+      "세미 매트",
+      "물광",
+      "과즙"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/kimchungkyung_hairface/ig_18047483054799347_0.jpg",
+    "location": "강남구",
+    "address": "도산대로 75",
+    "hours": "",
+    "phone": "010 5641 6799",
+    "instagram": "https://instagram.com/kimchungkyung_hairface",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/kimchungkyung_hairface/ig_18047483054799347_0.jpg",
+      "/vendors/makeupshop/kimchungkyung_hairface/ig_18047483054799347_0.jpg",
+      "/vendors/makeupshop/kimchungkyung_hairface/ig_18105675376895020_0.jpg",
+      "/vendors/makeupshop/kimchungkyung_hairface/ig_18105675376895020_0.jpg",
+      "/vendors/makeupshop/kimchungkyung_hairface/ig_18463079473113052_0.jpg",
+      "/vendors/makeupshop/kimchungkyung_hairface/ig_18051420428556126_0.jpg"
+    ],
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
   }
