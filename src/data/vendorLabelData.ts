@@ -1919,6 +1919,1028 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_18112742279058915_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "단아한",
+      "고급스러운",
+      "자연광",
+      "화이트톤",
+      "실내 세트",
+      "정원",
+      "낮",
+      "독사진",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_17947640130251052_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "내추럴",
+      "화보",
+      "자연광",
+      "싱그러운",
+      "초록",
+      "정원",
+      "자연",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_17921971860184187_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "드라마틱",
+      "성숙한",
+      "실내 세트",
+      "전신",
+      "타이트",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_18019349456879492_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "배경 중심",
+      "감성",
+      "흑백",
+      "심플 배경",
+      "흑백 씬",
+      "클로즈업",
+      "타이트",
+      "콘셉트 소품"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_18089789915208816_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "로맨틱",
+      "화보",
+      "자연광",
+      "루프탑",
+      "도시"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_18192697621375837_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "일상",
+      "내추럴",
+      "자연광",
+      "실내 세트",
+      "정원",
+      "낮",
+      "전신",
+      "콘셉트 소품",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-7",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_18358685764213297_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "단아한",
+      "고급스러운",
+      "자연광",
+      "화이트톤",
+      "밝은",
+      "실내 세트",
+      "도시",
+      "낮",
+      "독사진",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-atesoofficial-8",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ateso_official/ig_17931169389123305_0.jpg",
+    "vendorId": "ig-atesoofficial",
+    "vendorName": "아테소",
+    "account": "ateso_official",
+    "tags": [
+      "인물+배경",
+      "드라마틱",
+      "몽환적인",
+      "정원",
+      "자연",
+      "밤",
+      "전신",
+      "콘셉트 소품"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-1",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18384835726200955_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "일자탑",
+      "튤",
+      "화려한 비즈",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-2",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_17983003350105164_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "홀터넥",
+      "오간자 실크",
+      "장식 없음",
+      "벨라인",
+      "오픈백",
+      "레이어드 스커트",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-3",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18083257802288692_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "일자탑",
+      "타프타",
+      "장식 없음",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-4",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18090345803536899_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "홀터넥",
+      "기타 레이스",
+      "장식 없음",
+      "오픈백",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-5",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18050367518571613_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "일자탑",
+      "오간자 실크",
+      "장식 없음",
+      "벨라인",
+      "레이어드 스커트",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-6",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18088149392556045_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "일자탑",
+      "장식 없음",
+      "오픈백"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-7",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18610042423055406_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "일자탑",
+      "튤",
+      "아플리케 레이스",
+      "글리터·펄",
+      "A라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-8",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18003317657949413_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "홀터넥",
+      "미카도 실크",
+      "장식 없음",
+      "A라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-creedjofficial-9",
+    "category": "드레스",
+    "image": "/vendors/dressshop/creedj_official/ig_18130704250620495_0.jpg",
+    "vendorId": "ig-creedjofficial",
+    "vendorName": "크리드제이",
+    "account": "creedj_official",
+    "tags": [
+      "라운드넥",
+      "튤",
+      "아플리케 레이스",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18118335811910786_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물+배경",
+      "내추럴",
+      "일상",
+      "자연광",
+      "초록",
+      "실내 세트",
+      "자연",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_17984462823013915_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물 중심",
+      "일상",
+      "장난스러운",
+      "화이트톤",
+      "밝은",
+      "클로즈업",
+      "독사진",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_17939084031341910_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물 중심",
+      "단아한",
+      "청순한",
+      "자연광",
+      "화이트톤",
+      "실내 세트",
+      "낮",
+      "독사진",
+      "타이트"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18100569160973155_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물+배경",
+      "깔끔",
+      "모던",
+      "화이트톤",
+      "밝은",
+      "실내 세트",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18097426814622920_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물 중심",
+      "내추럴",
+      "따뜻한",
+      "자연광",
+      "싱그러운",
+      "초록",
+      "자연",
+      "낮",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18159743053471507_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물+배경",
+      "단아한",
+      "감성",
+      "화이트톤",
+      "밝은",
+      "심플 배경",
+      "실내 세트",
+      "독사진",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-7",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18121471360879532_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물+배경",
+      "도시적인",
+      "성숙한",
+      "자연광",
+      "초록",
+      "도시",
+      "자연",
+      "낮",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-8",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18120016354861898_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물 중심",
+      "청순한",
+      "감성",
+      "화이트톤",
+      "심플 배경",
+      "독사진",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-9",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18082031804690624_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물+배경",
+      "몽환적인",
+      "고급스러운",
+      "자연광",
+      "초록",
+      "자연",
+      "정원",
+      "낮",
+      "독사진",
+      "전신",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-clevestudio-10",
+    "category": "스튜디오",
+    "image": "/vendors/studio/cleve_studio/ig_18016158203870951_0.jpg",
+    "vendorId": "ig-clevestudio",
+    "vendorName": "클레브스튜디오",
+    "account": "cleve_studio",
+    "tags": [
+      "인물+배경",
+      "클래식",
+      "단아한",
+      "자연광",
+      "정원",
+      "자연",
+      "낮",
+      "독사진",
+      "전신",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-1",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18103605676904048_0.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "오프숄더",
+      "타프타",
+      "장식 없음",
+      "벨라인",
+      "트임 드레스",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-2",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_17903865687525916_0.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "일자탑",
+      "미카도 실크",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-3",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18090234374430546.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "하트탑",
+      "화려한 비즈",
+      "글리터·펄",
+      "그린"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-4",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18112841536949316_0.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "오프숄더",
+      "아플리케 레이스",
+      "튤",
+      "글리터·펄",
+      "벨라인"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-5",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18123915487786324_0.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "상체 디테일탑",
+      "장식 없음",
+      "블랙"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-6",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18079455560693797_0.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "홀터넥",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-7",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18124695721753940.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "하트탑",
+      "튤",
+      "오간자 실크",
+      "아플리케 레이스",
+      "장식 없음",
+      "벨라인",
+      "레이어드 스커트",
+      "딥 브이",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-8",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18044190356603018_0.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "일자탑",
+      "아플리케 레이스",
+      "튤",
+      "글리터·펄",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-9",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18023045654890824.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "일자탑",
+      "튤",
+      "글리터·펄",
+      "A라인",
+      "블루"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-esmeraldasposaofficial-10",
+    "category": "드레스",
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_17904413631461627.jpg",
+    "vendorId": "ig-esmeraldasposaofficial",
+    "vendorName": "에스메랄다",
+    "account": "esmeralda_sposa_official",
+    "tags": [
+      "스퀘어넥",
+      "기타 레이스",
+      "튤",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18051142925617274_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18051142925617274_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_17956923555194579_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_17956923555194579_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18110649517790938_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-6",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_17936918079316355_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-7",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_17936918079316355_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-8",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18435106870124077_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-9",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18435106870124077_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-10",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18115202987503704.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "물광",
+      "강한"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-11",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18115202987503704.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "단발",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-12",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_17906135712282021_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "세미 매트",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-13",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_17906135712282021_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "단발",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-14",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18185195014389619_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-15",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18185195014389619_0.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-16",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18083101232156168.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-17",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18083101232156168.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "로우 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-18",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18163552912438387.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-meparerwedding-19",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18163552912438387.jpg",
+    "vendorId": "ig-meparerwedding",
+    "vendorName": "미파레",
+    "account": "me.parer_wedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -2212,6 +3234,170 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/kimchungkyung_hairface/ig_18105675376895020_0.jpg",
       "/vendors/makeupshop/kimchungkyung_hairface/ig_18463079473113052_0.jpg",
       "/vendors/makeupshop/kimchungkyung_hairface/ig_18051420428556126_0.jpg"
+    ],
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-atesoofficial",
+    "name": "아테소",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 8장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "인물+배경",
+      "전신",
+      "생화 부케",
+      "자연광",
+      "낮"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/ateso_official/ig_18112742279058915_0.jpg",
+    "location": "강남구",
+    "address": "",
+    "hours": "10:30-19:30",
+    "phone": "",
+    "instagram": "https://instagram.com/ateso_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/ateso_official/ig_18112742279058915_0.jpg",
+      "/vendors/studio/ateso_official/ig_17947640130251052_0.jpg",
+      "/vendors/studio/ateso_official/ig_17921971860184187_0.jpg",
+      "/vendors/studio/ateso_official/ig_18019349456879492_0.jpg",
+      "/vendors/studio/ateso_official/ig_18089789915208816_0.jpg",
+      "/vendors/studio/ateso_official/ig_18192697621375837_0.jpg"
+    ],
+    "website": "http://www.momentloves.com/",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-creedjofficial",
+    "name": "크리드제이",
+    "category": "드레스",
+    "summary": "인스타 게시물 9장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "화이트",
+      "장식 없음",
+      "일자탑",
+      "벨라인",
+      "오픈백"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/dressshop/creedj_official/ig_18384835726200955_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/creedj_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/dressshop/creedj_official/ig_18384835726200955_0.jpg",
+      "/vendors/dressshop/creedj_official/ig_17983003350105164_0.jpg",
+      "/vendors/dressshop/creedj_official/ig_18083257802288692_0.jpg",
+      "/vendors/dressshop/creedj_official/ig_18090345803536899_0.jpg",
+      "/vendors/dressshop/creedj_official/ig_18050367518571613_0.jpg",
+      "/vendors/dressshop/creedj_official/ig_18088149392556045_0.jpg"
+    ],
+    "website": "http://pf.kakao.com/_zWQJT",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-clevestudio",
+    "name": "클레브스튜디오",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "낮",
+      "독사진",
+      "생화 부케",
+      "인물+배경",
+      "자연광"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/cleve_studio/ig_18118335811910786_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/cleve_studio",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/cleve_studio/ig_18118335811910786_0.jpg",
+      "/vendors/studio/cleve_studio/ig_17984462823013915_0.jpg",
+      "/vendors/studio/cleve_studio/ig_17939084031341910_0.jpg",
+      "/vendors/studio/cleve_studio/ig_18100569160973155_0.jpg",
+      "/vendors/studio/cleve_studio/ig_18097426814622920_0.jpg",
+      "/vendors/studio/cleve_studio/ig_18159743053471507_0.jpg"
+    ],
+    "website": "http://pf.kakao.com/_faurn/chat",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-esmeraldasposaofficial",
+    "name": "에스메랄다",
+    "category": "드레스",
+    "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "장식 없음",
+      "화이트",
+      "튤",
+      "글리터·펄",
+      "벨라인"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/dressshop/esmeralda_sposa_official/ig_18103605676904048_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/esmeralda_sposa_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/dressshop/esmeralda_sposa_official/ig_18103605676904048_0.jpg",
+      "/vendors/dressshop/esmeralda_sposa_official/ig_17903865687525916_0.jpg",
+      "/vendors/dressshop/esmeralda_sposa_official/ig_18090234374430546.jpg",
+      "/vendors/dressshop/esmeralda_sposa_official/ig_18112841536949316_0.jpg",
+      "/vendors/dressshop/esmeralda_sposa_official/ig_18123915487786324_0.jpg",
+      "/vendors/dressshop/esmeralda_sposa_official/ig_18079455560693797_0.jpg"
+    ],
+    "website": "https://m.place.naver.com/place/11699744/home?entry=pll&fbclid=PARlRTSANQRTBleHRuA2FlbQIxMAABp7YD9saV5-IK98Zfd92_77ZvNCN3Iur0ZCz94IpnoNgqNTIIjfWYwJ83J2F4_aem_ncqIGZXgev55I5FPFZLsqg",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-meparerwedding",
+    "name": "미파레",
+    "category": "메이크업",
+    "summary": "인스타 게시물 19장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "깔끔",
+      "생머리",
+      "물광",
+      "투명",
+      "단발"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/me.parer_wedding/ig_18051142925617274_0.jpg",
+    "location": "강남구",
+    "address": "언주로 172",
+    "hours": "",
+    "phone": "02-6080-0110",
+    "instagram": "https://instagram.com/me.parer_wedding",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/me.parer_wedding/ig_18051142925617274_0.jpg",
+      "/vendors/makeupshop/me.parer_wedding/ig_18051142925617274_0.jpg",
+      "/vendors/makeupshop/me.parer_wedding/ig_17956923555194579_0.jpg",
+      "/vendors/makeupshop/me.parer_wedding/ig_17956923555194579_0.jpg",
+      "/vendors/makeupshop/me.parer_wedding/ig_18110649517790938_0.jpg",
+      "/vendors/makeupshop/me.parer_wedding/ig_17936918079316355_0.jpg"
     ],
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
