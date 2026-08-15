@@ -1,4 +1,5 @@
 import type { ReferenceBoard, ReferenceCategory, WeddingReference } from '../types'
+import { labeledReferences } from './vendorLabelData'
 import { vendorStyleProfiles } from './vendorStyleData'
 import { venueReferences } from './weddingVenueData'
 
@@ -45,6 +46,9 @@ function referencesForProfile(category: ReferenceCategory, profileId: string) {
 }
 
 export const weddingReferences: WeddingReference[] = [
+  // 실제 인스타 사진에서 판정한 라벨이 먼저 온다. 아래 vp-* 는 아직 인식하지
+  // 않은 카테고리를 메우는 기존 목업이고, 인식이 끝나는 대로 걷어낸다.
+  ...labeledReferences,
   ...['vp-d1', 'vp-d2', 'vp-d3', 'vp-d4', 'vp-d5'].flatMap((id) => referencesForProfile('드레스', id)),
   ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('헤어', id)),
   ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('메이크업', id)),

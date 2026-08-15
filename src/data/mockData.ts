@@ -18,6 +18,7 @@ import type {
   VendorSelection,
   WeddingEvent,
 } from '../types'
+import { labeledVendors } from './vendorLabelData'
 import { vendorStyleProfiles } from './vendorStyleData'
 import { venueVendors } from './weddingVenueData'
 
@@ -141,6 +142,8 @@ export const initialBudgetItems: BudgetItem[] = [
 const verified = <T,>(value: T, verifiedAt: string) => ({ value, verifiedAt })
 
 export const vendors: Vendor[] = [
+  // 인스타에서 수집해 사진을 판정한 실제 업체. reference.vendorId 가 이걸 가리킨다.
+  ...labeledVendors,
   ...vendorStyleProfiles.map(({ vendor }, index) => ({
     ...vendor,
     updatedAt: index === 0 ? '2025-06-18' : index % 5 === 0 ? '2024-12-01' : '2026-07-14',
