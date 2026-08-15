@@ -245,7 +245,7 @@ export const initialPortalSettings: PortalSettings[] = couples.map((couple) => (
   coupleId: couple.id,
   showSchedule: true,
   showFullEstimate: true,
-  messagingEnabled: true,
+  receiveRequests: true,
   showChecklist: true,
 }))
 

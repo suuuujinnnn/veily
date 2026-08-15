@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import {
   CalendarDays,
-  ClipboardCheck,
   LayoutDashboard,
   MessageCircleMore,
   Search,
@@ -10,23 +9,19 @@ import {
   UserRound,
   UsersRound,
 } from 'lucide-react'
-import { useDemoStore } from '../../app/store'
 import { Button, Modal } from '../ui'
 
 const navItems = [
   { to: '/', label: '홈', icon: LayoutDashboard, end: true },
   { to: '/couples', label: '커플 관리', icon: UsersRound },
-  { to: '/requests', label: '고객 메시지', icon: ClipboardCheck },
   { to: '/calendar', label: '일정', icon: CalendarDays },
   { to: '/vendors', label: '레퍼런스 · 업체 찾기', icon: Search },
   { to: '/community', label: '플래너 라운지', icon: MessageCircleMore },
 ]
 
 export function PlannerLayout() {
-  const { customerRequests } = useDemoStore()
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | null>(null)
-  const unreadRequests = customerRequests.filter((message) => message.sender === 'customer' && !message.readByPlannerAt)
   const openUtility = (modal: 'profile' | 'notifications') => {
     setUtilityModal(modal)
     setProfileMenuOpen(false)
@@ -39,7 +34,7 @@ export function PlannerLayout() {
           <p className="nav-label">Workspace</p>
           {navItems.map(({ to, label, icon: Icon, end }) => (
             <NavLink key={to} to={to} end={end} className={({ isActive }) => `nav-item ${isActive ? 'nav-item--active' : ''}`}>
-              <Icon size={18} strokeWidth={1.8} /><span>{label}</span>{label === '고객 메시지' && unreadRequests.length > 0 ? <em>{unreadRequests.length}</em> : label === '플래너 라운지' ? <em>4</em> : null}
+              <Icon size={18} strokeWidth={1.8} /><span>{label}</span>{label === '플래너 라운지' ? <em>4</em> : null}
             </NavLink>
           ))}
         </nav>

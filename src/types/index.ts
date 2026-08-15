@@ -83,21 +83,20 @@ export interface CustomerMessageAttachment {
   size?: number
 }
 
-export interface CustomerMessage {
+export type CustomerRequestStatus = 'requested' | 'confirmed' | 'completed'
+
+export interface CustomerRequest {
   id: string
   coupleId: string
   category: '레퍼런스' | '업체 문의' | '일정' | '계약·견적' | '기타'
   originalText: string
+  status: CustomerRequestStatus
   createdAt: string
   updatedAt: string
-  sender: 'customer' | 'planner'
-  readByPlannerAt?: string
-  readByCustomerAt?: string
-  attachments: CustomerMessageAttachment[]
+  resultNote?: string
+  sender?: 'customer' | 'planner'
+  attachments?: CustomerMessageAttachment[]
 }
-
-/** @deprecated Use CustomerMessage. Kept as a compatibility alias for mock data imports. */
-export type CustomerRequest = CustomerMessage
 
 export type BudgetCategory =
   | '웨딩홀·식대'
@@ -447,7 +446,7 @@ export interface PortalSettings {
   coupleId: string
   showSchedule: boolean
   showFullEstimate: boolean
-  messagingEnabled: boolean
+  receiveRequests: boolean
   showChecklist: boolean
 }
 

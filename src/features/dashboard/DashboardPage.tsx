@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, CalendarDays, Check, ChevronRight, Clock3, FolderHeart, MapPin, MessageCircle, PackageCheck, Plus } from 'lucide-react'
+import { AlertTriangle, CalendarDays, Check, ChevronRight, Clock3, FolderHeart, Inbox, MapPin, MessageCircle, PackageCheck, Plus } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Modal } from '../../components/ui'
 import { formatChecklistDate } from '../checklist/checklistUtils'
@@ -12,6 +12,7 @@ const typeTone: Record<string, 'rose' | 'sage' | 'amber' | 'neutral'> = {
 }
 const reminderIcon: Record<DashboardReminderKind, typeof AlertTriangle> = {
   order: PackageCheck,
+  'customer-request': Inbox,
   'reference-undecided': FolderHeart,
   'taste-unsubmitted': FolderHeart,
   'overdue-task': AlertTriangle,
@@ -22,14 +23,14 @@ const dDayTone = (days: number) => days < 0 ? 'over' : days <= 3 ? 'critical' : 
 const addDays = (date: string, days: number) => { const next = new Date(`${date}T12:00:00`); next.setDate(next.getDate() + days); return next.toISOString().slice(0, 10) }
 
 export function DashboardPage() {
-  const { couples, events, checklist, orderReminders, vendors, customerReferenceSubmissions, addVendor, addOrderReminder, completeOrderReminder } = useDemoStore()
+  const { couples, events, checklist, orderReminders, vendors, customerRequests, customerReferenceSubmissions, addVendor, addOrderReminder, completeOrderReminder } = useDemoStore()
   const [orderModalOpen, setOrderModalOpen] = useState(false)
   const [orderDraft, setOrderDraft] = useState({ coupleId: couples[0]?.id ?? '', vendorId: '', title: '', orderDate: TODAY, reminderDate: addDays(TODAY, 7) })
   const [vendorQuery, setVendorQuery] = useState('')
   const [vendorPickerOpen, setVendorPickerOpen] = useState(false)
   const matchedVendors = vendors.filter((vendor) => `${vendor.name} ${vendor.category} ${vendor.location}`.toLowerCase().includes(vendorQuery.trim().toLowerCase())).slice(0, 6)
   const todayEvents = events.filter((event) => event.date === TODAY).sort((a, b) => a.time.localeCompare(b.time))
-  const reminders = buildDashboardReminders({ couples, checklist, orderReminders, vendors, customerReferenceSubmissions }, TODAY)
+  const reminders = buildDashboardReminders({ couples, checklist, orderReminders, vendors, customerRequests, customerReferenceSubmissions }, TODAY)
   const deadlines = checklist
     .filter((item) => item.status !== 'completed' && item.dueDate >= TODAY)
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate))

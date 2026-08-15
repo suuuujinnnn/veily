@@ -1,4 +1,4 @@
-import type { ChecklistItem, Couple, CustomerReferenceSubmission, OrderReminder, Recommendation, ReminderItem, Vendor, WeddingEvent } from '../../types'
+import type { ChecklistItem, Couple, CustomerReferenceSubmission, CustomerRequest, OrderReminder, Recommendation, ReminderItem, Vendor, WeddingEvent } from '../../types'
 import { taskUrgency } from '../checklist/checklistUtils'
 
 const dayDifference = (date: string, today: string) => Math.round((new Date(`${date.slice(0, 10)}T12:00:00`).getTime() - new Date(`${today.slice(0, 10)}T12:00:00`).getTime()) / 86_400_000)
@@ -69,7 +69,7 @@ export function buildReminders(source: ReminderSource, audience: ReminderItem['a
   return reminders.sort((a, b) => (a.urgency === b.urgency ? a.dueAt.localeCompare(b.dueAt) : ['overdue', 'soon', 'normal'].indexOf(a.urgency) - ['overdue', 'soon', 'normal'].indexOf(b.urgency)))
 }
 
-export type DashboardReminderKind = 'order' | 'reference-undecided' | 'taste-unsubmitted' | 'overdue-task'
+export type DashboardReminderKind = 'order' | 'customer-request' | 'reference-undecided' | 'taste-unsubmitted' | 'overdue-task'
 
 export interface DashboardReminder {
   id: string
@@ -88,6 +88,7 @@ interface DashboardReminderSource {
   vendors: Vendor[]
   checklist: ChecklistItem[]
   orderReminders: OrderReminder[]
+  customerRequests: CustomerRequest[]
   customerReferenceSubmissions: CustomerReferenceSubmission[]
 }
 
@@ -111,6 +112,14 @@ export function buildDashboardReminders(source: DashboardReminderSource, today =
         sourceId: item.id,
       })
     })
+
+  source.customerRequests
+    .filter((item) => item.status === 'requested')
+    .forEach((item) => reminders.push({
+      id: `dashboard-request-${item.id}`, kind: 'customer-request', coupleId: item.coupleId,
+      title: '새 고객 메시지', message: `${couple(item.coupleId)?.partners ?? '고객'} · ${item.originalText}`,
+      days: dayDifference(item.createdAt, today), urgency: 'soon', href: `/couples/${item.coupleId}?tab=consultations`,
+    }))
 
   source.couples
     .filter((item) => item.status !== '확정')

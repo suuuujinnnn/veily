@@ -41,6 +41,7 @@ import type {
   WeddingReference,
   CustomerReferenceSubmission,
   CustomerRequest,
+  CustomerRequestStatus,
 } from '../types'
 
 export interface DemoState {
@@ -106,8 +107,8 @@ export type DemoAction =
   | { type: 'SAVE_REFERENCE_BOARD'; payload: ReferenceBoard }
   | { type: 'ADD_UPLOADED_REFERENCE'; payload: WeddingReference }
   | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
-  | { type: 'SEND_CUSTOMER_MESSAGE'; payload: CustomerRequest }
-  | { type: 'MARK_CONVERSATION_READ'; payload: { coupleId: string; viewer: 'customer' | 'planner'; readAt: string } }
+  | { type: 'ADD_CUSTOMER_REQUEST'; payload: CustomerRequest }
+  | { type: 'UPDATE_CUSTOMER_REQUEST'; payload: CustomerRequest }
   | { type: 'COMPLETE_PORTAL_ONBOARDING'; payload: PortalOnboardingState }
   | { type: 'ADD_ORDER_REMINDER'; payload: OrderReminder }
   | { type: 'COMPLETE_ORDER_REMINDER'; payload: { id: string; completedAt: string } }
@@ -258,18 +259,10 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const exists = state.customerReferenceSubmissions.some((item) => item.coupleId === action.payload.coupleId)
       return { ...state, customerReferenceSubmissions: exists ? state.customerReferenceSubmissions.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [action.payload, ...state.customerReferenceSubmissions] }
     }
-    case 'SEND_CUSTOMER_MESSAGE':
+    case 'ADD_CUSTOMER_REQUEST':
       return { ...state, customerRequests: [action.payload, ...state.customerRequests] }
-    case 'MARK_CONVERSATION_READ':
-      return {
-        ...state,
-        customerRequests: state.customerRequests.map((item) => {
-          if (item.coupleId !== action.payload.coupleId || item.sender === action.payload.viewer) return item
-          return action.payload.viewer === 'planner'
-            ? { ...item, readByPlannerAt: item.readByPlannerAt ?? action.payload.readAt, updatedAt: action.payload.readAt }
-            : { ...item, readByCustomerAt: item.readByCustomerAt ?? action.payload.readAt, updatedAt: action.payload.readAt }
-        }),
-      }
+    case 'UPDATE_CUSTOMER_REQUEST':
+      return { ...state, customerRequests: state.customerRequests.map((item) => item.id === action.payload.id ? action.payload : item) }
     case 'COMPLETE_PORTAL_ONBOARDING': {
       const exists = state.portalOnboardingStates.some((item) => item.coupleId === action.payload.coupleId)
       return { ...state, portalOnboardingStates: exists ? state.portalOnboardingStates.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.portalOnboardingStates, action.payload] }
@@ -320,8 +313,9 @@ interface DemoContextValue extends DemoState {
   saveReferenceBoard: (board: ReferenceBoard) => void
   addUploadedReference: (reference: Omit<WeddingReference, 'id'>) => void
   saveCustomerReferenceSubmission: (submission: CustomerReferenceSubmission) => void
-  sendCustomerMessage: (message: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'readByPlannerAt' | 'readByCustomerAt'>) => void
-  markConversationRead: (coupleId: string, viewer: 'customer' | 'planner') => void
+  addCustomerRequest: (request: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => void
+  updateCustomerRequest: (id: string, update: Partial<Pick<CustomerRequest, 'status' | 'resultNote'>>) => void
+  setCustomerRequestStatus: (id: string, status: CustomerRequestStatus) => void
   completePortalOnboarding: (state: PortalOnboardingState) => void
   addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'completedAt'>) => void
   completeOrderReminder: (id: string) => void
@@ -390,17 +384,15 @@ export function DemoProvider({ children }: PropsWithChildren) {
     saveReferenceBoard: (board) => dispatch({ type: 'SAVE_REFERENCE_BOARD', payload: board }),
     addUploadedReference: (reference) => dispatch({ type: 'ADD_UPLOADED_REFERENCE', payload: { ...reference, id: makeId('ref-upload') } }),
     saveCustomerReferenceSubmission: (submission) => dispatch({ type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION', payload: submission }),
-    sendCustomerMessage: (message) => dispatch({
-      type: 'SEND_CUSTOMER_MESSAGE',
-      payload: {
-        ...message,
-        id: makeId('message'),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        ...(message.sender === 'planner' ? { readByPlannerAt: new Date().toISOString() } : { readByCustomerAt: new Date().toISOString() }),
-      },
-    }),
-    markConversationRead: (coupleId, viewer) => dispatch({ type: 'MARK_CONVERSATION_READ', payload: { coupleId, viewer, readAt: new Date().toISOString() } }),
+    addCustomerRequest: (request) => dispatch({ type: 'ADD_CUSTOMER_REQUEST', payload: { ...request, id: makeId('message'), status: request.sender === 'planner' ? 'confirmed' : 'requested', sender: request.sender ?? 'customer', createdAt: DEMO_NOW, updatedAt: DEMO_NOW } }),
+    updateCustomerRequest: (id, update) => {
+      const current = state.customerRequests.find((item) => item.id === id)
+      if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, ...update, updatedAt: DEMO_NOW } })
+    },
+    setCustomerRequestStatus: (id, status) => {
+      const current = state.customerRequests.find((item) => item.id === id)
+      if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, status, updatedAt: DEMO_NOW } })
+    },
     completePortalOnboarding: (onboardingState) => dispatch({ type: 'COMPLETE_PORTAL_ONBOARDING', payload: onboardingState }),
     addOrderReminder: (reminder) => dispatch({ type: 'ADD_ORDER_REMINDER', payload: { ...reminder, id: makeId('or'), status: 'pending' } }),
     completeOrderReminder: (id) => dispatch({ type: 'COMPLETE_ORDER_REMINDER', payload: { id, completedAt: DEMO_NOW } }),
