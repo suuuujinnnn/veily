@@ -19,6 +19,7 @@ import type {
   WeddingEvent,
 } from '../types'
 import { labeledVendors } from './vendorLabelData'
+import { mockOnly, withoutMockVendors } from './mockGate'
 import { vendorStyleProfiles } from './vendorStyleData'
 import { venueVendors } from './weddingVenueData'
 
@@ -89,7 +90,7 @@ export const couples: Couple[] = [
   },
 ]
 
-export const initialEvents: WeddingEvent[] = [
+export const initialEvents: WeddingEvent[] = withoutMockVendors([
   { id: 'e1', coupleId: 'c1', title: '루이즈블랑 드레스 2차 피팅', date: '2026-08-05', time: '10:30', endTime: '12:00', type: '드레스', location: '루이즈블랑, 논현동', travelMinutes: 35, visibility: 'couple-shared' },
   { id: 'e2', coupleId: 'c2', title: '클레브 스튜디오 컨셉 미팅', date: '2026-08-05', time: '14:00', endTime: '15:30', type: '스튜디오', location: '클레브 스튜디오, 성수동', travelMinutes: 42, visibility: 'couple-shared' },
   { id: 'e3', coupleId: 'c4', title: '본식 최종 체크', date: '2026-08-05', time: '17:00', endTime: '18:00', type: '미팅', location: '온라인 미팅', visibility: 'couple-shared' },
@@ -100,7 +101,7 @@ export const initialEvents: WeddingEvent[] = [
   { id: 'e7', coupleId: 'c1', title: '예물 계약', date: '2026-08-22', time: '13:30', endTime: '15:00', type: '계약', location: '아크레도 청담', visibility: 'couple-shared' },
   { id: 'e8', coupleId: 'c4', title: '본식', date: '2026-09-05', time: '11:30', endTime: '14:30', type: '본식', location: '아펠가모 반포', approvalStatus: 'confirmed', visibility: 'couple-shared', reminderOffsets: [21, 7, 1] },
   { id: 'e-private-1', title: '치과 예약', date: '2026-08-05', time: '15:20', endTime: '16:10', type: '미팅', location: '한남동', visibility: 'planner-private', memo: '플래너 개인 일정' },
-]
+])
 
 export const initialChecklist: ChecklistItem[] = [
   { id: 't1', coupleId: 'c1', title: '예식장 계약금 납부', dueDate: '2026-06-18', category: '웨딩홀', kind: 'preparation', status: 'completed', owner: '함께', isTemplate: true },
@@ -144,7 +145,9 @@ const verified = <T,>(value: T, verifiedAt: string) => ({ value, verifiedAt })
 export const vendors: Vendor[] = [
   // 인스타에서 수집해 사진을 판정한 실제 업체. reference.vendorId 가 이걸 가리킨다.
   ...labeledVendors,
-  ...vendorStyleProfiles.map(({ vendor }, index) => ({
+  // 목업 업체. 실존 업체 이름에 지어낸 가격·이미지가 붙어 있어 백엔드가
+  // 떠 있으면 화면에서 뺀다.
+  ...mockOnly(vendorStyleProfiles.map(({ vendor }, index) => ({
     ...vendor,
     updatedAt: index === 0 ? '2025-06-18' : index % 5 === 0 ? '2024-12-01' : '2026-07-14',
     operationalDetails: vendor.category === '스튜디오'
@@ -154,7 +157,7 @@ export const vendors: Vendor[] = [
         : vendor.category === '메이크업'
           ? { kind: 'makeup' as const, earlyStartFee: verified('시간당 5만원', '2026-07-20'), directorRequestAvailable: verified(true, '2026-07-20'), hairpieces: verified('기본 2종 포함 · 추가 대여 가능', '2026-07-20'), parentMakeup: verified('양가 혼주 패키지 상담 가능', '2026-07-20'), parking: verified(index % 2 === 0, '2026-07-20') }
           : undefined,
-  })),
+  }))),
   ...venueVendors,
 ]
 
@@ -181,11 +184,11 @@ export const vendorScheduleSlots: VendorScheduleSlot[] = [
   { id: 'vs20', vendorId: 'schedule-template', date: '2026-08-22', time: '10:30', status: 'available' },
 ]
 
-export const initialVendorSelections: VendorSelection[] = [
+export const initialVendorSelections: VendorSelection[] = withoutMockVendors([
   { coupleId: 'c1', vendorId: 'vp-d4', slotId: 'vp-d4-vs4' },
-]
+])
 
-export const initialRecommendations: Recommendation[] = [
+export const initialRecommendations: Recommendation[] = withoutMockVendors([
   { id: 'r1', coupleId: 'c1', vendorId: 'vp-d4', status: 'liked', proposedAt: '2026-07-28', selectionDeadline: '2026-08-04' },
   { id: 'r2', coupleId: 'c1', vendorId: 'vp-s1', status: 'pending', proposedAt: '2026-08-01', selectionDeadline: '2026-08-08' },
   { id: 'r3', coupleId: 'c1', vendorId: 'vp-m3', status: 'hold', proposedAt: '2026-08-02', selectionDeadline: '2026-08-09' },
@@ -198,22 +201,22 @@ export const initialRecommendations: Recommendation[] = [
   { id: 'r10', coupleId: 'c4', vendorId: 'vp-d3', status: 'liked', proposedAt: '2026-07-31', selectionDeadline: '2026-08-07' },
   { id: 'r11', coupleId: 'c4', vendorId: 'vp-s2', status: 'pending', proposedAt: '2026-07-25', selectionDeadline: '2026-08-01' },
   { id: 'r12', coupleId: 'c4', vendorId: 'vp-m1', status: 'pending', proposedAt: '2026-08-04', selectionDeadline: '2026-08-11' },
-]
+])
 
-export const initialOrderApprovals: OrderApproval[] = [
+export const initialOrderApprovals: OrderApproval[] = withoutMockVendors([
   { id: 'oa1', coupleId: 'c1', vendorId: 'vp-m3', recommendationId: 'r3', productName: '신부 메이크업 테스트', relatedEventId: 'e4', requestedAt: '2026-07-29T10:14:32+09:00', approvalDeadline: '2026-08-05T10:14:32+09:00', reviewerName: '박수진', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-07-29T10:22:08+09:00', status: 'approved', confirmedAt: '2026-08-01T14:05:19+09:00', respondedAt: '2026-08-01T14:05:19+09:00', memo: '메이크업 테스트 일정까지 최종 확정' },
   { id: 'oa2', coupleId: 'c2', vendorId: 'vp-s4', recommendationId: 'r5', productName: '스튜디오 촬영 패키지', relatedEventId: 'e6', requestedAt: '2026-08-02T09:30:12+09:00', approvalDeadline: '2026-08-09T09:30:12+09:00', reviewerName: '김태훈', reviewerRole: '팀장', reviewerTeam: '촬영운영팀', viewedAt: '2026-08-02T11:42:51+09:00', status: 'reverse-pending', memo: '앨범 2권 포함 여부 함께 확인 요청' },
   { id: 'oa3', coupleId: 'c3', vendorId: 'vp-d5', recommendationId: 'r7', productName: '본식 드레스 피팅', requestedAt: '2026-08-01T15:08:44+09:00', approvalDeadline: '2026-08-08T15:08:44+09:00', reviewerName: '이현정', reviewerRole: '수석실장', reviewerTeam: '피팅팀', viewedAt: '2026-08-01T15:37:20+09:00', status: 'ordered', memo: '업체 전달 완료, 역발주 요청 전 내용 검수 중' },
   { id: 'oa4', coupleId: 'c4', vendorId: 'vp-s2', recommendationId: 'r11', productName: '본식 스냅 촬영', requestedAt: '2026-07-20T13:21:09+09:00', approvalDeadline: '2026-07-27T13:21:09+09:00', reviewerName: '최민석', reviewerRole: '팀장', reviewerTeam: '스냅1팀', viewedAt: '2026-07-20T17:05:33+09:00', status: 'reverse-pending', memo: '장기 미승인 건 · 업체 재확인 필요' },
   { id: 'oa5', coupleId: 'c2', vendorId: 'vp-m2', recommendationId: 'r6', productName: '본식 메이크업 패키지', requestedAt: '2026-08-05T10:30:00+09:00', approvalDeadline: '2026-08-12T10:30:00+09:00', reviewerName: '정하린', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-08-05T10:30:00+09:00', status: 'draft', memo: '희망 시작 시간 확인 후 발주 예정' },
-]
+])
 
-export const contracts: Contract[] = [
+export const contracts: Contract[] = withoutMockVendors([
   { id: 'ct1', coupleId: 'c1', vendorName: '남산 라루체', category: '웨딩홀', contractDate: '', productName: '', packageDetails: '보증인원 250명 · 식대 82,000원 · 가든홀', paymentMethod: '카드', vatType: '포함', totalPrice: 18500000, commission: 0, deposit: 18500000, paymentDate: '', status: '서명완료', contractFile: '', memo: '', budgetItemId: 'bi1' },
   { id: 'ct2', coupleId: 'c1', vendorId: 'vp-d5', vendorName: '르블랑 브라이드', category: '드레스', contractDate: '', productName: '', packageDetails: '본식 1벌 · 촬영 3벌 · 2차 피팅 포함', paymentMethod: '계좌이체', vatType: '별도', totalPrice: 3200000, commission: 0, deposit: 3200000, paymentDate: '', status: '확인필요', contractFile: '', memo: '', budgetItemId: 'bi2' },
   { id: 'ct3', coupleId: 'c2', vendorId: 'vp-s1', vendorName: '클레브 스튜디오', category: '스튜디오', contractDate: '2026-07-02', productName: '스튜디오 촬영 패키지', packageDetails: '원본 전체 · 수정본 20P · 앨범 2권', paymentMethod: '카드', vatType: '포함', totalPrice: 2150000, commission: 215000, deposit: 500000, paymentDate: '2026-07-02', status: '결제대기', contractFile: '', memo: '촬영일 잔금 결제' },
   { id: 'ct4', coupleId: 'c4', vendorName: '아펠가모 반포', category: '웨딩홀', contractDate: '2026-03-05', productName: '채플홀 본식', packageDetails: '보증인원 280명 · 채플홀 · 생화 장식', paymentMethod: '현금', vatType: '포함', totalPrice: 21800000, commission: 872000, deposit: 4000000, paymentDate: '2026-03-05', status: '서명완료', contractFile: '아펠가모_계약서.pdf', memo: '최종 인원 D-14 확정' },
-]
+])
 
 export const initialPayments: Payment[] = [
   { id: 'pay1', coupleId: 'c1', paymentDate: '', type: '계약금', account: '국민 000-00-0000', amount: 18500000, status: '입금완료', memo: '계약금 입금' },
@@ -261,7 +264,7 @@ export const initialPortalSettings: PortalSettings[] = couples.map((couple) => (
   showChecklist: true,
 }))
 
-export const communityPosts: CommunityPost[] = [
+export const communityPosts: CommunityPost[] = withoutMockVendors([
   { id: 'p1', category: '질문·답변', vendorId: 'vp-d1', title: '아뜰리에 로제 담당자 지정 가능한가요?', excerpt: '다음 달 투어 예정인데 주말에도 담당 실장 지정이 가능한지 최근 정보가 궁금해요.', author: '익명 플래너 28', time: '18분 전', replies: 12, helpful: 24, verified: true, tags: ['드레스', '담당자'] },
   { id: 'p2', category: '담당자 소식', vendorId: 'vp-s2', title: '9월 촬영 담당 작가 배정 변경 안내', excerpt: '기존 지정 건은 대체 작가 포트폴리오를 먼저 확인한 뒤 고객 동의를 받는 방식이라고 합니다.', author: '익명 플래너 07', time: '42분 전', replies: 8, helpful: 41, verified: true, tags: ['스튜디오', '담당자변경'] },
   { id: 'p3', category: '견적·계약', title: '호텔 예식 플라워 추가 견적 최근 범위 공유해요', excerpt: '기본 생화에서 버진로드 장식을 추가한 최근 진행 건의 항목별 범위를 정리했습니다.', author: '익명 플래너 19', time: '1시간 전', replies: 17, helpful: 35, verified: true, tags: ['웨딩홀', '견적'] },
@@ -272,16 +275,16 @@ export const communityPosts: CommunityPost[] = [
   { id: 'p8', category: '견적·계약', title: '스튜디오 원본·수정본 추가금 표기 팁', excerpt: '고객 견적서에서 오해가 잦은 원본 구매와 페이지 추가 비용 표기 예시입니다.', author: '익명 플래너 22', time: '어제', replies: 5, helpful: 39, verified: true, tags: ['스튜디오', '추가금'] },
   { id: 'p9', category: '담당자 소식', vendorId: 'vp-d4', title: '최종 가봉 담당 실장 스케줄 변경', excerpt: '8월 말부터 화요일 휴무로 변경되어 기존 예약 건은 시간 재확인이 필요합니다.', author: '익명 플래너 16', time: '2일 전', replies: 4, helpful: 28, verified: true, tags: ['드레스', '스케줄변경'] },
   { id: 'p10', category: '자유게시판', title: '요즘 고객 상담 전에 어떤 자료 먼저 보내세요?', excerpt: '레퍼런스 보드와 체크리스트 중 무엇을 먼저 전달하는지 서로의 루틴이 궁금해요.', author: '익명 플래너 38', time: '2일 전', replies: 33, helpful: 44, verified: true, tags: ['일상', '상담루틴'] },
-]
+])
 
-export const initialOrderReminders: OrderReminder[] = [
+export const initialOrderReminders: OrderReminder[] = withoutMockVendors([
   { id: 'or1', coupleId: 'c1', vendorId: 'vp-m3', title: '메이크업 테스트 발주 확인', orderDate: '2026-08-01', status: 'approved', approvedAt: '2026-08-03T14:05:00+09:00', memo: '일정 확정 완료' },
   { id: 'or2', coupleId: 'c2', vendorId: 'vp-s4', title: '스튜디오 촬영 패키지 발주', orderDate: '2026-08-02', status: 'pending', memo: '앨범 2권 포함 여부 확인' },
   { id: 'or3', coupleId: 'c3', vendorId: 'vp-d5', title: '본식 드레스 피팅 발주', orderDate: '2026-08-01', status: 'pending', memo: '희망 피팅 시간 확인 필요' },
   { id: 'or4', coupleId: 'c4', vendorId: 'vp-s2', title: '본식 스냅 촬영 발주', orderDate: '2026-07-20', status: 'pending', memo: '장기 미확인 건' },
-]
+])
 
-export const initialVendorInsights: VendorInsight[] = [
+export const initialVendorInsights: VendorInsight[] = withoutMockVendors([
   {
     id: 'vi1', vendorId: 'v1', category: '실제 진행 후기', title: '현장 진행 경험 공유', tags: ['실제진행', '플래너정보'], helpfulCount: 10,
     experienceContext: '2026년 6월 본식 · 키가 작은 실크 선호 신부와 최종 피팅 동행',
@@ -464,4 +467,4 @@ export const initialVendorInsights: VendorInsight[] = [
     considerations: '주말 마지막 타임은 피팅 가능한 벌 수가 달라질 수 있어 예약 전에 후보 수와 종료 시간을 확인하는 편이 좋습니다.',
     createdAt: '2026-08-14T10:00:00+09:00', authorLabel: '인증 플래너', experienceBand: '경력 3–5년',
   },
-]
+])
