@@ -11,7 +11,7 @@
  * 표지 한 장으로 대표시키면 안 된다.
  *
  * 인스타 CDN URL은 서명이 붙어 며칠이면 만료되므로 반드시 파일로 받는다.
- * 저장 위치는 public/vendors/<분야디렉터리>/<계정>/ 이고 gitignore 된다.
+ * 저장 위치는 media/vendors/<분야디렉터리>/<계정>/ 이고 gitignore 된다.
  */
 
 import fs from 'node:fs'
@@ -134,7 +134,7 @@ async function run() {
   const manifest = []
   for (const vendor of targets) {
     const dir = catalog.categories[vendor.category].dir
-    const outDir = path.join(ROOT, 'public', 'vendors', dir, vendor.account)
+    const outDir = path.join(ROOT, 'media', 'vendors', dir, vendor.account)
     fs.mkdirSync(outDir, { recursive: true })
 
     let saved = 0
@@ -157,7 +157,7 @@ async function run() {
             const result = await download(image.url, destination)
             result === 'saved' ? (saved += 1) : (skipped += 1)
             manifest.push({
-              path: `public/vendors/${dir}/${vendor.account}/${file}`,
+              path: `media/vendors/${dir}/${vendor.account}/${file}`,
               vendor: vendor.account,
               vendorName: vendor.name,
               category: vendor.category,
