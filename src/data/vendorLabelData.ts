@@ -1595,6 +1595,7 @@ export const labeledReferences: WeddingReference[] = [
       "초록",
       "실내 세트",
       "온실",
+      "통창",
       "낮",
       "독사진",
       "전신"
@@ -2200,6 +2201,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "creedj_official",
     "tags": [
       "일자탑",
+      "새틴",
       "장식 없음",
       "오픈백"
     ],
@@ -2277,6 +2279,7 @@ export const labeledReferences: WeddingReference[] = [
       "초록",
       "실내 세트",
       "자연",
+      "통창",
       "낮",
       "전신",
       "생화 부케"
@@ -2532,6 +2535,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "esmeralda_sposa_official",
     "tags": [
       "하트탑",
+      "튤",
       "화려한 비즈",
       "글리터·펄",
       "그린"
@@ -2583,6 +2587,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "esmeralda_sposa_official",
     "tags": [
       "홀터넥",
+      "새틴",
       "장식 없음",
       "화이트"
     ],
@@ -2970,6 +2975,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "czacc_official",
     "tags": [
       "일자탑",
+      "미카도 실크",
       "장식 없음",
       "화이트"
     ],
@@ -2986,6 +2992,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "czacc_official",
     "tags": [
       "홀터넥",
+      "크레이프",
       "장식 없음",
       "화이트"
     ],
@@ -3002,6 +3009,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "czacc_official",
     "tags": [
       "일자탑",
+      "새틴",
       "장식 없음",
       "화이트"
     ],
@@ -3018,6 +3026,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "czacc_official",
     "tags": [
       "홀터넥",
+      "새틴",
       "장식 없음"
     ],
     "purpose": "본식",
@@ -3051,6 +3060,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "choijaehoon.official",
     "tags": [
       "일자탑",
+      "크레이프",
       "장식 없음",
       "화이트"
     ],
@@ -3067,6 +3077,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "choijaehoon.official",
     "tags": [
       "일자탑",
+      "크레이프",
       "장식 없음",
       "화이트"
     ],
@@ -3101,6 +3112,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "choijaehoon.official",
     "tags": [
       "홀터넥",
+      "오간자 실크",
       "장식 없음",
       "화이트"
     ],
@@ -3265,6 +3277,7 @@ export const labeledReferences: WeddingReference[] = [
       "고급스러운",
       "자연광",
       "실내 세트",
+      "통창",
       "낮",
       "타이트"
     ],
@@ -3285,6 +3298,7 @@ export const labeledReferences: WeddingReference[] = [
       "자연광",
       "화이트톤",
       "실내 세트",
+      "통창",
       "낮",
       "클로즈업",
       "타이트",
@@ -3349,6 +3363,7 @@ export const labeledReferences: WeddingReference[] = [
       "자연광",
       "화이트톤",
       "실내 세트",
+      "통창",
       "낮",
       "전신"
     ],
@@ -3508,6 +3523,7 @@ export const labeledReferences: WeddingReference[] = [
       "흑백",
       "실내 세트",
       "자연",
+      "통창",
       "낮"
     ],
     "purpose": "상담 레퍼런스",
@@ -3628,6 +3644,7 @@ export const labeledReferences: WeddingReference[] = [
       "초록",
       "실내 세트",
       "정원",
+      "통창",
       "낮",
       "전신",
       "베일"
@@ -4486,6 +4503,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비바탐탐",
     "account": "vivatamtam",
     "tags": [
+      "새틴",
       "장식 없음",
       "화이트"
     ],
@@ -4534,6 +4552,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "vivatamtam",
     "tags": [
       "홀터넥",
+      "새틴",
       "장식 없음",
       "머메이드라인",
       "화이트"
@@ -4551,6 +4570,7 @@ export const labeledReferences: WeddingReference[] = [
     "account": "vivatamtam",
     "tags": [
       "홀터넥",
+      "새틴",
       "장식 없음",
       "화이트"
     ],
@@ -4977,8 +4997,8 @@ export const labeledVendors: Vendor[] = [
     "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
     "tags": [
       "장식 없음",
-      "화이트",
       "튤",
+      "화이트",
       "글리터·펄",
       "벨라인"
     ],
@@ -5044,8 +5064,8 @@ export const labeledVendors: Vendor[] = [
       "화이트",
       "장식 없음",
       "일자탑",
-      "튤",
-      "홀터넥"
+      "새틴",
+      "튤"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5077,8 +5097,8 @@ export const labeledVendors: Vendor[] = [
       "장식 없음",
       "화이트",
       "일자탑",
-      "튤",
-      "글리터·펄"
+      "크레이프",
+      "튤"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5467,9 +5487,9 @@ export const labeledVendors: Vendor[] = [
     "tags": [
       "장식 없음",
       "화이트",
+      "새틴",
       "튤",
-      "타프타",
-      "홀터넥"
+      "타프타"
     ],
     "priceRange": "문의",
     "match": 0,
