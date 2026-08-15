@@ -2,17 +2,13 @@ import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   Bell,
-  Building2,
   ArrowUpRight,
   CalendarDays,
   Check,
   ClipboardList,
-  ChevronRight,
-  HeartHandshake,
   Inbox,
   LayoutDashboard,
   MessageCircleMore,
-  PackageCheck,
   Search,
   SendHorizontal,
   Settings,
@@ -29,21 +25,19 @@ const navItems = [
   { to: '/', label: '홈', icon: LayoutDashboard, end: true },
   { to: '/couples', label: '커플 관리', icon: UsersRound },
   { to: '/calendar', label: '일정', icon: CalendarDays },
-  { to: '/vendors', label: '레퍼런스 보드', icon: Search },
-  { to: '/vendor-database', label: '업체 DB', icon: Building2 },
-  { to: '/orders', label: '발주 관리', icon: PackageCheck },
+  { to: '/vendors', label: '레퍼런스·업체', icon: Search },
   { to: '/community', label: '플래너 라운지', icon: MessageCircleMore },
 ]
 
 const pageTitles: Record<string, string> = {
-  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '레퍼런스 보드', '/vendor-database': '업체 DB', '/orders': '발주 관리', '/community': '플래너 라운지',
+  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '레퍼런스·업체', '/vendor-database': '레퍼런스·업체', '/community': '플래너 라운지',
 }
 
 export function PlannerLayout() {
   const location = useLocation()
   const store = useDemoStore()
-  const { couples, checklist, addChecklist, events, recommendations, orderApprovals, vendors, favoriteVendorIds, customerRequests, updateCustomerRequest, setCustomerRequestStatus } = store
-  const reminders = buildReminders({ couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds }, 'planner')
+  const { couples, checklist, addChecklist, events, recommendations, vendors, favoriteVendorIds, customerRequests, updateCustomerRequest, setCustomerRequestStatus } = store
+  const reminders = buildReminders({ couples, events, checklist, recommendations, orderApprovals: [], vendors, favoriteVendorIds }, 'planner')
   const currentCoupleId = location.pathname.match(/^\/couples\/([^/]+)/)?.[1]
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | 'guide' | null>(null)
@@ -81,12 +75,6 @@ export function PlannerLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="sidebar__insight">
-          <HeartHandshake size={21} />
-          <strong>이번 주 웨딩 리포트</strong>
-          <p>4개 일정과 7개의 할 일이 남아 있어요.</p>
-          <span>리포트 보기 <ChevronRight size={13} /></span>
-        </div>
         <div className="planner-profile">
           <span className="avatar">YJ</span>
           <div><strong>이지윤 플래너</strong><small>VEILY Partner</small></div>

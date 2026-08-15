@@ -9,6 +9,7 @@ import {
   initialConsultations,
   initialEvents,
   initialOrderApprovals,
+  initialOrderReminders,
   initialPayments,
   initialPortalSettings,
   initialRecommendations,
@@ -27,12 +28,15 @@ import type {
   Contract,
   Couple,
   OrderApproval,
+  OrderReminder,
   OrderRejectionReason,
   Payment,
   PortalSettings,
+  PortalOnboardingState,
   Recommendation,
   RecommendationStatus,
   Vendor,
+  VendorCatalogGroup,
   VendorInsight,
   VendorSelection,
   WeddingEvent,
@@ -60,7 +64,10 @@ export interface DemoState {
   vendorSelections: VendorSelection[]
   vendorInsights: VendorInsight[]
   orderApprovals: OrderApproval[]
+  orderReminders: OrderReminder[]
+  portalOnboardingStates: PortalOnboardingState[]
   favoriteVendorIds: string[]
+  vendorCatalogGroups: VendorCatalogGroup[]
   referenceBoards: ReferenceBoard[]
   uploadedReferences: WeddingReference[]
   customerReferenceSubmissions: CustomerReferenceSubmission[]
@@ -91,8 +98,13 @@ export type DemoAction =
   | { type: 'ADD_VENDOR'; payload: Vendor }
   | { type: 'UPDATE_VENDOR'; payload: Vendor }
   | { type: 'TOGGLE_FAVORITE_VENDOR'; payload: string }
+  | { type: 'ADD_VENDOR_CATALOG_GROUP'; payload: VendorCatalogGroup }
+  | { type: 'RENAME_VENDOR_CATALOG_GROUP'; payload: { id: string; name: string } }
+  | { type: 'TOGGLE_VENDOR_CATALOG_ITEM'; payload: { groupId: string; vendorId: string } }
   | { type: 'UPDATE_PORTAL_SETTINGS'; payload: PortalSettings }
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
+  | { type: 'SEND_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; sourceReferenceId?: string } }
+  | { type: 'REMOVE_RECOMMENDATION'; payload: { coupleId: string; vendorId: string } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
   | { type: 'ADD_VENDOR_INSIGHT'; payload: VendorInsight }
@@ -106,6 +118,9 @@ export type DemoAction =
   | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
   | { type: 'ADD_CUSTOMER_REQUEST'; payload: CustomerRequest }
   | { type: 'UPDATE_CUSTOMER_REQUEST'; payload: CustomerRequest }
+  | { type: 'COMPLETE_PORTAL_ONBOARDING'; payload: PortalOnboardingState }
+  | { type: 'ADD_ORDER_REMINDER'; payload: OrderReminder }
+  | { type: 'APPROVE_ORDER_REMINDER'; payload: { id: string; approvedAt: string } }
 
 export const initialState: DemoState = {
   couples: initialCouples,
@@ -124,7 +139,13 @@ export const initialState: DemoState = {
   vendorSelections: initialVendorSelections,
   vendorInsights: initialVendorInsights,
   orderApprovals: initialOrderApprovals,
+  orderReminders: initialOrderReminders,
+  portalOnboardingStates: [],
   favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
+  vendorCatalogGroups: [
+    { id: 'catalog-dress-tour', name: '드레스 투어 후보', vendorIds: ['vp-d1', 'vp-d4'] },
+    { id: 'catalog-studio', name: '자연광 스튜디오', vendorIds: ['vp-s1'] },
+  ],
   referenceBoards: initialReferenceBoards,
   uploadedReferences: [],
   customerReferenceSubmissions: [],
@@ -188,6 +209,12 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, vendors: state.vendors.map((item) => item.id === action.payload.id ? action.payload : item) }
     case 'TOGGLE_FAVORITE_VENDOR':
       return { ...state, favoriteVendorIds: state.favoriteVendorIds.includes(action.payload) ? state.favoriteVendorIds.filter((id) => id !== action.payload) : [...state.favoriteVendorIds, action.payload] }
+    case 'ADD_VENDOR_CATALOG_GROUP':
+      return { ...state, vendorCatalogGroups: [...state.vendorCatalogGroups, action.payload] }
+    case 'RENAME_VENDOR_CATALOG_GROUP':
+      return { ...state, vendorCatalogGroups: state.vendorCatalogGroups.map((group) => group.id === action.payload.id ? { ...group, name: action.payload.name } : group) }
+    case 'TOGGLE_VENDOR_CATALOG_ITEM':
+      return { ...state, vendorCatalogGroups: state.vendorCatalogGroups.map((group) => group.id === action.payload.groupId ? { ...group, vendorIds: group.vendorIds.includes(action.payload.vendorId) ? group.vendorIds.filter((id) => id !== action.payload.vendorId) : [...group.vendorIds, action.payload.vendorId] } : group) }
     case 'UPDATE_PORTAL_SETTINGS':
       return { ...state, portalSettings: state.portalSettings.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) }
     case 'SET_RECOMMENDATION': {
@@ -199,6 +226,17 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
           : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload, proposedAt: DEMO_TODAY, selectionDeadline: addDays(DEMO_TODAY, 7) }],
       }
     }
+    case 'SEND_RECOMMENDATION': {
+      const existing = state.recommendations.find((item) => item.coupleId === action.payload.coupleId && item.vendorId === action.payload.vendorId)
+      return {
+        ...state,
+        recommendations: existing
+          ? state.recommendations.map((item) => item.id === existing.id ? { ...item, sourceReferenceId: action.payload.sourceReferenceId ?? item.sourceReferenceId } : item)
+          : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload, status: 'pending', proposedAt: DEMO_TODAY, selectionDeadline: addDays(DEMO_TODAY, 7) }],
+      }
+    }
+    case 'REMOVE_RECOMMENDATION':
+      return { ...state, recommendations: state.recommendations.filter((item) => item.coupleId !== action.payload.coupleId || item.vendorId !== action.payload.vendorId) }
     case 'TOGGLE_AVAILABILITY': {
       const current = state.availability[action.payload.eventId] ?? []
       const next = current.includes(action.payload.slot) ? current.filter((slot) => slot !== action.payload.slot) : [...current, action.payload.slot]
@@ -242,6 +280,14 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, customerRequests: [action.payload, ...state.customerRequests] }
     case 'UPDATE_CUSTOMER_REQUEST':
       return { ...state, customerRequests: state.customerRequests.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'COMPLETE_PORTAL_ONBOARDING': {
+      const exists = state.portalOnboardingStates.some((item) => item.coupleId === action.payload.coupleId)
+      return { ...state, portalOnboardingStates: exists ? state.portalOnboardingStates.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.portalOnboardingStates, action.payload] }
+    }
+    case 'ADD_ORDER_REMINDER':
+      return { ...state, orderReminders: [action.payload, ...state.orderReminders] }
+    case 'APPROVE_ORDER_REMINDER':
+      return { ...state, orderReminders: state.orderReminders.map((item) => item.id === action.payload.id ? { ...item, status: 'approved', approvedAt: action.payload.approvedAt } : item) }
     default:
       return state
   }
@@ -271,8 +317,13 @@ interface DemoContextValue extends DemoState {
   addVendor: (item: Omit<Vendor, 'id'>) => void
   updateVendor: (item: Vendor) => void
   toggleFavoriteVendor: (id: string) => void
+  addVendorCatalogGroup: (name: string) => void
+  renameVendorCatalogGroup: (id: string, name: string) => void
+  toggleVendorCatalogItem: (groupId: string, vendorId: string) => void
   updatePortalSettings: (settings: PortalSettings) => void
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
+  sendRecommendation: (coupleId: string, vendorId: string, sourceReferenceId?: string) => void
+  removeRecommendation: (coupleId: string, vendorId: string) => void
   toggleAvailability: (eventId: string, slot: string) => void
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
   addVendorInsight: (insight: Omit<VendorInsight, 'id' | 'createdAt'>) => void
@@ -287,6 +338,9 @@ interface DemoContextValue extends DemoState {
   addCustomerRequest: (request: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => void
   updateCustomerRequest: (id: string, update: Partial<Pick<CustomerRequest, 'status' | 'resultNote'>>) => void
   setCustomerRequestStatus: (id: string, status: CustomerRequestStatus) => void
+  completePortalOnboarding: (state: PortalOnboardingState) => void
+  addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'approvedAt'>) => void
+  approveOrderReminder: (id: string) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
@@ -338,8 +392,13 @@ export function DemoProvider({ children }: PropsWithChildren) {
     addVendor: (item) => dispatch({ type: 'ADD_VENDOR', payload: { ...item, id: makeId('v') } }),
     updateVendor: (item) => dispatch({ type: 'UPDATE_VENDOR', payload: item }),
     toggleFavoriteVendor: (id) => dispatch({ type: 'TOGGLE_FAVORITE_VENDOR', payload: id }),
+    addVendorCatalogGroup: (name) => dispatch({ type: 'ADD_VENDOR_CATALOG_GROUP', payload: { id: makeId('catalog'), name, vendorIds: [] } }),
+    renameVendorCatalogGroup: (id, name) => dispatch({ type: 'RENAME_VENDOR_CATALOG_GROUP', payload: { id, name } }),
+    toggleVendorCatalogItem: (groupId, vendorId) => dispatch({ type: 'TOGGLE_VENDOR_CATALOG_ITEM', payload: { groupId, vendorId } }),
     updatePortalSettings: (settings) => dispatch({ type: 'UPDATE_PORTAL_SETTINGS', payload: settings }),
     setRecommendation: (coupleId, vendorId, status) => dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
+    sendRecommendation: (coupleId, vendorId, sourceReferenceId) => dispatch({ type: 'SEND_RECOMMENDATION', payload: { coupleId, vendorId, sourceReferenceId } }),
+    removeRecommendation: (coupleId, vendorId) => dispatch({ type: 'REMOVE_RECOMMENDATION', payload: { coupleId, vendorId } }),
     toggleAvailability: (eventId, slot) => dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
     selectVendorSlot: (coupleId, vendorId, slotId) => dispatch({ type: 'SELECT_VENDOR_SLOT', payload: { coupleId, vendorId, slotId } }),
     addVendorInsight: (insight) => dispatch({
@@ -366,6 +425,9 @@ export function DemoProvider({ children }: PropsWithChildren) {
       const current = state.customerRequests.find((item) => item.id === id)
       if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, status, updatedAt: DEMO_NOW } })
     },
+    completePortalOnboarding: (onboardingState) => dispatch({ type: 'COMPLETE_PORTAL_ONBOARDING', payload: onboardingState }),
+    addOrderReminder: (reminder) => dispatch({ type: 'ADD_ORDER_REMINDER', payload: { ...reminder, id: makeId('or'), status: 'pending' } }),
+    approveOrderReminder: (id) => dispatch({ type: 'APPROVE_ORDER_REMINDER', payload: { id, approvedAt: DEMO_NOW } }),
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>

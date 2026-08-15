@@ -45,7 +45,7 @@ export function CommunityPage() {
   }
 
   return <div className="page-stack community-page community-board-page">
-    <section className="community-hero community-hero--board"><div><p className="eyebrow">Planner lounge</p><h1>플래너 라운지</h1><p>현장 정보부터 일상 대화까지, 인증 플래너들이 함께 만드는 커뮤니티입니다.</p></div><Button icon={<PenLine size={16} />} onClick={openComposer}>새 글 쓰기</Button><div className="community-hero__seal"><ShieldCheck size={22} /><span>VERIFIED<br />PLANNERS</span></div></section>
+    <section className="community-hero community-hero--board"><div><p className="eyebrow">Planner lounge</p><h1>플래너 라운지</h1><p>현장 정보부터 일상 대화까지, 인증 플래너들이 함께 만드는 커뮤니티입니다.</p></div><div className="community-hero__seal"><ShieldCheck size={22} /><span>VERIFIED<br />PLANNERS</span></div></section>
 
     <div className="community-board-layout">
       <aside className="board-directory"><header><strong>게시판</strong><span>{boards.length - 1}</span></header><nav>{boards.map(({ id, label, description, icon: Icon }) => <button className={board === id ? 'active' : ''} onClick={() => openBoard(id)} key={id}><Icon size={16} /><span><strong>{label}</strong><small>{description}</small></span>{id !== 'home' && id !== 'insights' && <em>{posts.filter((post) => post.category === id).length}</em>}</button>)}</nav><div><BadgeCheck size={16} /><p><strong>인증 플래너 커뮤니티</strong><span>작성자 실명과 소속은 공개하지 않습니다.</span></p></div></aside>

@@ -18,6 +18,15 @@ import './styles/workspace-updates.css'
 import './styles/venue-search.css'
 import './styles/community-board.css'
 import './styles/reference-board.css'
+import './styles/dashboard-focus.css'
+import './styles/couple-profile-refresh.css'
+import './styles/calendar-simple.css'
+import './styles/onboarding-reference-orders.css'
+import './styles/couple-vendor-kakao.css'
+import './styles/vendor-detail-unified.css'
+import './styles/home-redesign.css'
+import './styles/home-redesign-v2.css'
+import './styles/couples-compact.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

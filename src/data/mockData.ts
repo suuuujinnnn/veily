@@ -8,6 +8,7 @@ import type {
   Contract,
   Couple,
   OrderApproval,
+  OrderReminder,
   Payment,
   PortalSettings,
   Recommendation,
@@ -18,6 +19,7 @@ import type {
   WeddingEvent,
 } from '../types'
 import { vendorStyleProfiles } from './vendorStyleData'
+import { venueVendors } from './weddingVenueData'
 
 export const couples: Couple[] = [
   {
@@ -31,7 +33,8 @@ export const couples: Couple[] = [
     concept: '절제된 클래식, 내추럴 가든',
     tone: 'rose',
     brideName: '김서윤', groomName: '이도현', bridePhone: '010-2451-7820', groomPhone: '010-7382-4410',
-    brideEmail: 'seoyun.kim@example.com', groomEmail: 'dohyun.lee@example.com', address: '서울 성동구 서울숲길 24',
+    brideEmail: 'seoyun.kim@example.com', groomEmail: 'dohyun.lee@example.com', brideOccupation: '브랜드 마케터', groomOccupation: 'IT 서비스 기획자', address: '서울 성동구 서울숲길 24',
+    acquisitionChannel: '지인 추천', referrerName: '최유진 고객', preferredContactMethod: '카카오톡', preferredContactTime: '평일 18:00 이후 · 주말 오후',
     contractType: '프리미엄 동행', contractDate: '2026-04-12', ceremonyDate: '2026-10-17', ceremonyPlace: '남산 라루체 가든홀',
     note: '자연광과 실크 소재를 선호하며 주말 오후 연락을 선호합니다.',
   },
@@ -46,7 +49,8 @@ export const couples: Couple[] = [
     concept: '화려한 호텔, 모던 로맨틱',
     tone: 'sage',
     brideName: '박민지', groomName: '최현우', bridePhone: '010-3901-2284', groomPhone: '010-8824-9103',
-    brideEmail: 'minji.park@example.com', groomEmail: 'hyunwoo.choi@example.com', address: '서울 송파구 올림픽로 300',
+    brideEmail: 'minji.park@example.com', groomEmail: 'hyunwoo.choi@example.com', brideOccupation: '회계사', groomOccupation: '건축 설계사', address: '서울 송파구 올림픽로 300',
+    acquisitionChannel: '인스타그램', referrerName: '없음', preferredContactMethod: '문자', preferredContactTime: '평일 점심시간',
     contractType: '베이직 관리', contractDate: '2026-06-08', ceremonyDate: '2026-12-12', ceremonyPlace: '그랜드 인터컨티넨탈',
     note: '호텔 예식 동선과 하객 숙박 안내를 함께 정리합니다.',
   },
@@ -61,7 +65,8 @@ export const couples: Couple[] = [
     concept: '시크 미니멀, 모노톤',
     tone: 'sand',
     brideName: '정하은', groomName: '오지훈', bridePhone: '010-5502-4120', groomPhone: '010-6044-3328',
-    brideEmail: 'haeun.jung@example.com', groomEmail: 'jihoon.oh@example.com', address: '경기 성남시 분당구 판교역로 15',
+    brideEmail: 'haeun.jung@example.com', groomEmail: 'jihoon.oh@example.com', brideOccupation: '제품 디자이너', groomOccupation: '개발자', address: '경기 성남시 분당구 판교역로 15',
+    acquisitionChannel: '웨딩 박람회', referrerName: '박람회 상담 부스', preferredContactMethod: '카카오톡', preferredContactTime: '평일 19:00 이후',
     contractType: '부분 동행', contractDate: '2026-07-16', ceremonyDate: '2027-02-20', ceremonyPlace: '빌라드지디 청담',
     note: '평일 저녁 상담 가능. 흑백 레퍼런스를 선호합니다.',
   },
@@ -76,7 +81,8 @@ export const couples: Couple[] = [
     concept: '따뜻한 채플, 프렌치 클래식',
     tone: 'rose',
     brideName: '윤다솜', groomName: '한재민', bridePhone: '010-7420-1852', groomPhone: '010-9921-6604',
-    brideEmail: 'dasom.yoon@example.com', groomEmail: 'jaemin.han@example.com', address: '서울 서초구 반포대로 122',
+    brideEmail: 'dasom.yoon@example.com', groomEmail: 'jaemin.han@example.com', brideOccupation: '교사', groomOccupation: '금융 컨설턴트', address: '서울 서초구 반포대로 122',
+    acquisitionChannel: '기존 고객 추천', referrerName: '김하늘 고객', preferredContactMethod: '전화', preferredContactTime: '평일 17:00–19:00',
     contractType: '프리미엄 동행', contractDate: '2026-02-21', ceremonyDate: '2026-09-05', ceremonyPlace: '아펠가모 반포',
     note: '본식 직전 최종 확인 단계입니다.',
   },
@@ -146,6 +152,7 @@ export const vendors: Vendor[] = [
           ? { kind: 'makeup' as const, earlyStartFee: verified('시간당 5만원', '2026-07-20'), directorRequestAvailable: verified(true, '2026-07-20'), hairpieces: verified('기본 2종 포함 · 추가 대여 가능', '2026-07-20'), parentMakeup: verified('양가 혼주 패키지 상담 가능', '2026-07-20'), parking: verified(index % 2 === 0, '2026-07-20') }
           : undefined,
   })),
+  ...venueVendors,
 ]
 
 export const vendorScheduleSlots: VendorScheduleSlot[] = [
@@ -262,6 +269,13 @@ export const communityPosts: CommunityPost[] = [
   { id: 'p8', category: '견적·계약', title: '스튜디오 원본·수정본 추가금 표기 팁', excerpt: '고객 견적서에서 오해가 잦은 원본 구매와 페이지 추가 비용 표기 예시입니다.', author: '익명 플래너 22', time: '어제', replies: 5, helpful: 39, verified: true, tags: ['스튜디오', '추가금'] },
   { id: 'p9', category: '담당자 소식', vendorId: 'vp-d4', title: '최종 가봉 담당 실장 스케줄 변경', excerpt: '8월 말부터 화요일 휴무로 변경되어 기존 예약 건은 시간 재확인이 필요합니다.', author: '익명 플래너 16', time: '2일 전', replies: 4, helpful: 28, verified: true, tags: ['드레스', '스케줄변경'] },
   { id: 'p10', category: '자유게시판', title: '요즘 고객 상담 전에 어떤 자료 먼저 보내세요?', excerpt: '레퍼런스 보드와 체크리스트 중 무엇을 먼저 전달하는지 서로의 루틴이 궁금해요.', author: '익명 플래너 38', time: '2일 전', replies: 33, helpful: 44, verified: true, tags: ['일상', '상담루틴'] },
+]
+
+export const initialOrderReminders: OrderReminder[] = [
+  { id: 'or1', coupleId: 'c1', vendorId: 'vp-m3', title: '메이크업 테스트 발주 확인', orderDate: '2026-08-01', status: 'approved', approvedAt: '2026-08-03T14:05:00+09:00', memo: '일정 확정 완료' },
+  { id: 'or2', coupleId: 'c2', vendorId: 'vp-s4', title: '스튜디오 촬영 패키지 발주', orderDate: '2026-08-02', status: 'pending', memo: '앨범 2권 포함 여부 확인' },
+  { id: 'or3', coupleId: 'c3', vendorId: 'vp-d5', title: '본식 드레스 피팅 발주', orderDate: '2026-08-01', status: 'pending', memo: '희망 피팅 시간 확인 필요' },
+  { id: 'or4', coupleId: 'c4', vendorId: 'vp-s2', title: '본식 스냅 촬영 발주', orderDate: '2026-07-20', status: 'pending', memo: '장기 미확인 건' },
 ]
 
 export const initialVendorInsights: VendorInsight[] = [

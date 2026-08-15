@@ -1,5 +1,5 @@
 import { imageAssets } from '../assets/images'
-import type { ReferenceCategory, VenueAccessKind, VenueAccessOption, VenueFilterState, VenueMealType, VenueRegionGroup, VenueType, VenueWish, WeddingReference, WeddingVenue } from '../types'
+import type { ReferenceCategory, Vendor, VenueAccessKind, VenueAccessOption, VenueFilterState, VenueMealType, VenueRegionGroup, VenueType, VenueWish, WeddingReference, WeddingVenue } from '../types'
 
 export const venueLocations: Record<VenueRegionGroup, string[]> = {
   서울: ['종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '마포구', '양천구', '강서구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강남구', '송파구', '강동구'],
@@ -16,7 +16,7 @@ export const emptyVenueFilterState: VenueFilterState = {
   regionGroup: '', localities: [], accessKinds: [], accessPointIds: [], accessOptions: [], mealTypes: [], venueTypes: [], wishes: [], query: '',
 }
 
-type VenueSeed = Omit<WeddingVenue, 'referenceImageIds'> & { images: string[] }
+type VenueSeed = Omit<WeddingVenue, 'vendorId' | 'referenceImageIds'> & { images: string[] }
 const g = imageAssets.weddingGarden
 const s = imageAssets.vendorStudioGallery
 const d = imageAssets.vendorDressGallery
@@ -43,13 +43,35 @@ const seeds: VenueSeed[] = [
   { id: 'venue-ilsan', name: '일산 레이크 스몰웨딩', regionGroup: '경기·인천', locality: '고양·일산', address: '경기 고양시 일산동구 호수로 320', mealTypes: ['양식', '기타'], mealDetail: '양식 코스와 브런치 메뉴', venueType: '스몰웨딩(100명 이하)', wishes: ['밝은 홀', '원형 테이블', '단독건물'], accessPoints: [{ id: 'daehwa-st', name: '대화역', kind: '지하철역', mode: '차량', minutes: 8, tagLabel: '대화역접근성' }, { id: 'ilsan-terminal', name: '고양종합터미널', kind: '터미널', mode: '차량', minutes: 12, tagLabel: '고양종합터미널접근성' }], accessOptions: ['셔틀 운행'], shuttleNote: '대화역 예약 셔틀', parkingNote: '하객 150대 주차 가능', summary: '호수공원 인근에서 여유롭게 진행하는 소규모 웨딩', images: [g, a, m] },
 ]
 
-export const weddingVenues: WeddingVenue[] = seeds.map(({ images, ...venue }) => ({ ...venue, referenceImageIds: images.map((_, index) => `ref-웨딩홀-${venue.id}-${index + 1}`) }))
+export const weddingVenues: WeddingVenue[] = seeds.map(({ images, ...venue }) => ({ ...venue, vendorId: `vendor-${venue.id}`, referenceImageIds: images.map((_, index) => `ref-웨딩홀-${venue.id}-${index + 1}`) }))
+
+export const venueVendors: Vendor[] = seeds.map((venue) => ({
+  id: `vendor-${venue.id}`,
+  name: venue.name,
+  category: '웨딩홀',
+  summary: venue.summary,
+  tags: [venue.locality, ...venue.mealTypes, venue.venueType, ...venue.wishes.slice(0, 3)],
+  priceRange: '상담 후 안내',
+  match: 0,
+  image: venue.images[0],
+  gallery: venue.images,
+  location: venue.locality,
+  address: venue.address,
+  hours: '상담 예약제',
+  phone: '02-0000-0000',
+  instagram: '',
+  website: '',
+  activeEvent: '',
+  updatedAt: '2026-08-05',
+  memo: `${venue.mealDetail} · ${venue.parkingNote}`,
+}))
 
 export const venueReferences: WeddingReference[] = seeds.flatMap((venue) => venue.images.map((image, index) => ({
   id: `ref-웨딩홀-${venue.id}-${index + 1}`,
   category: '웨딩홀' as ReferenceCategory,
   image,
   venueId: venue.id,
+  vendorId: `vendor-${venue.id}`,
   vendorName: venue.name,
   account: 'VEILY 목업 데이터',
   tags: [venue.locality, ...venue.mealTypes, venue.accessPoints[0].tagLabel, venue.venueType, ...venue.wishes],

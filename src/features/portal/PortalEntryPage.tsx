@@ -1,12 +1,17 @@
-import { ArrowRight, CalendarDays, CheckCircle2, Heart, LayoutDashboard, LockKeyhole, UserRound } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { ArrowRight, CalendarDays, CheckCircle2, ClipboardPenLine, Heart, LayoutDashboard, LockKeyhole, UserRound } from 'lucide-react'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
+import { PortalOnboardingModal } from './PortalOnboardingModal'
 
 export function PortalEntryPage() {
   const { coupleId = 'c1' } = useParams()
-  const { couples, portalSettings } = useDemoStore()
+  const navigate = useNavigate()
+  const { couples, portalSettings, portalOnboardingStates } = useDemoStore()
+  const [onboardingOpen, setOnboardingOpen] = useState(false)
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
   const settings = portalSettings.find((item) => item.coupleId === couple.id)
+  if (portalOnboardingStates.some((item) => item.coupleId === couple.id)) return <Navigate to={`/portal/${couple.id}`} replace />
 
   return (
     <main className="portal-entry">
@@ -22,6 +27,11 @@ export function PortalEntryPage() {
       <section className="portal-entry__choices">
         <header><p>ACCESS OPTIONS</p><h2>고객 화면 선택</h2><span>플래너 관리 화면과 분리된 전용 링크입니다.</span></header>
         <div className="portal-entry__choice-list">
+          <button className="portal-entry__onboarding" onClick={() => setOnboardingOpen(true)}>
+            <span className="portal-entry__choice-icon"><ClipboardPenLine size={22} /></span>
+            <div><small>처음 준비하기</small><h3>준비 정보 입력 시작</h3><p>고객 정보, 취향과 예상 예산을 단계별로 정리해 플래너에게 전달해요.</p></div>
+            <ArrowRight size={18} />
+          </button>
           <Link to={`/portal/${couple.id}`}>
             <span className="portal-entry__choice-icon"><LayoutDashboard size={22} /></span>
             <div><small>전체 포털</small><h3>준비 현황 전체 보기</h3><p>일정, 할 일, 추천 업체와 진행률을 한 번에 확인합니다.</p></div>
@@ -40,6 +50,7 @@ export function PortalEntryPage() {
         </div>
         <div className="portal-entry__notice"><CheckCircle2 size={16} /><span>선택한 변경 사항은 담당 플래너 화면에 즉시 반영됩니다.</span></div>
       </section>
+      <PortalOnboardingModal open={onboardingOpen} coupleId={couple.id} onClose={() => setOnboardingOpen(false)} onComplete={() => navigate(`/portal/${couple.id}`)} />
     </main>
   )
 }

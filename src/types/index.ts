@@ -22,7 +22,13 @@ export interface Couple {
   groomPhone: string
   brideEmail: string
   groomEmail: string
+  brideOccupation: string
+  groomOccupation: string
   address: string
+  acquisitionChannel: string
+  referrerName: string
+  preferredContactMethod: '카카오톡' | '문자' | '전화' | '이메일'
+  preferredContactTime: string
   contractType: string
   contractDate: string
   ceremonyDate: string
@@ -205,6 +211,12 @@ export interface VendorInsight {
   experienceBand: string
 }
 
+export interface VendorCatalogGroup {
+  id: string
+  name: string
+  vendorIds: string[]
+}
+
 export interface VendorScheduleSlot {
   id: string
   vendorId: string
@@ -219,7 +231,7 @@ export interface VendorSelection {
   slotId: string
 }
 
-export type RecommendationStatus = 'pending' | 'liked' | 'hold'
+export type RecommendationStatus = 'pending' | 'liked' | 'confirmed' | 'hold'
 
 export interface Recommendation {
   id: string
@@ -228,6 +240,24 @@ export interface Recommendation {
   status: RecommendationStatus
   proposedAt: string
   selectionDeadline: string
+  sourceReferenceId?: string
+}
+
+export interface PortalOnboardingState {
+  coupleId: string
+  completedAt: string
+  skippedSteps: Array<'profile' | 'taste' | 'budget'>
+}
+
+export interface OrderReminder {
+  id: string
+  coupleId: string
+  vendorId?: string
+  title: string
+  orderDate: string
+  status: 'pending' | 'approved'
+  approvedAt?: string
+  memo: string
 }
 
 export type ReferenceCategory = '드레스' | '헤어' | '메이크업' | '스튜디오' | '웨딩홀'
@@ -258,6 +288,7 @@ export interface VenueAccessPoint {
 
 export interface WeddingVenue {
   id: string
+  vendorId: string
   name: string
   regionGroup: VenueRegionGroup
   locality: string

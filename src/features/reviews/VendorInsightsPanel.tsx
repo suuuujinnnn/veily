@@ -15,6 +15,7 @@ interface VendorInsightsPanelProps {
   featuredVendorIds?: string[]
   title?: string
   description?: string
+  embedded?: boolean
 }
 
 export const vendorInsightCategories: VendorInsightCategory[] = ['업체별 최근 경험', '담당자 성향', '담당자 이직·퇴사', '업체 변경사항', '실제 진행 후기', '업체별 유의사항']
@@ -73,7 +74,7 @@ function InsightComposer({ open, onClose, onReward, vendors, initialVendorId }: 
   </Modal>
 }
 
-export function VendorInsightsPanel({ availableVendors, vendorId, canWrite = false, showFilters = false, featuredVendorIds = [], title = '업체 실무 정보', description = '인증 플래너가 실제 진행 과정에서 확인한 정보를 공유합니다.' }: VendorInsightsPanelProps) {
+export function VendorInsightsPanel({ availableVendors, vendorId, canWrite = false, showFilters = false, featuredVendorIds = [], title = '업체 실무 정보', description = '인증 플래너가 실제 진행 과정에서 확인한 정보를 공유합니다.', embedded = false }: VendorInsightsPanelProps) {
   const { vendorInsights } = useDemoStore()
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<InsightSort>('latest')
@@ -104,7 +105,7 @@ export function VendorInsightsPanel({ availableVendors, vendorId, canWrite = fal
   const connectedVendorCount = new Set(relevant.map((insight) => insight.vendorId)).size
   const latest = [...relevant].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
 
-  return <section className="vendor-insights-panel">
+  return <section className={`vendor-insights-panel ${embedded ? 'vendor-insights-panel--embedded' : ''}`}>
     <header className="vendor-insights-heading"><div><p className="eyebrow">Verified partner information</p><h2>{title}</h2><p>{description}</p></div>{canWrite && <Button icon={<PenLine size={15} />} onClick={() => setComposeOpen(true)}>업체 정보 공유</Button>}</header>
     <div className="insight-summary"><div><CalendarClock size={18} /><span>최근 업데이트</span><strong>{latest ? new Intl.DateTimeFormat('ko-KR', { month: 'short', day: 'numeric' }).format(new Date(latest.createdAt)) : '—'}</strong></div><div><UsersRound size={18} /><span>연결 업체</span><strong>{connectedVendorCount}곳</strong></div><div><MessageSquareText size={18} /><span>등록 정보</span><strong>{relevant.length}건</strong></div><div><BadgeCheck size={18} /><span>작성 기준</span><strong>인증 플래너</strong></div></div>
     {showFilters && <div className="insight-search"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="업체, 담당자, 제목, 태그 검색" /></div>}
