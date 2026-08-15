@@ -1022,6 +1022,241 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18071151143328653_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18071151143328653_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "로우 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18083788780850776_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "물광"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18083788780850776_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-6",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "로우 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-7",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17878429884263567_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-8",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18090606277633642.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-9",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18090606277633642.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-10",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17900334441234591.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "물광",
+      "음영"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-11",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17890385394166761.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-12",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17890385394166761.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-13",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18395139103142010_0.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-14",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18517408303021719.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-15",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17891746404270407.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lamaisonbride-16",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lamaison_bride/ig_17891746404270407.jpg",
+    "vendorId": "ig-lamaisonbride",
+    "vendorName": "라메종뷰티",
+    "account": "lamaison_bride",
+    "tags": [
+      "로우 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -1186,6 +1421,38 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/gue_on.studio.official/ig_18611678398025805.jpg"
     ],
     "website": "https://booking.naver.com/booking/6/bizes/1688786",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-lamaisonbride",
+    "name": "라메종뷰티",
+    "category": "메이크업",
+    "summary": "인스타 게시물 16장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "생머리",
+      "물광",
+      "과즙",
+      "깔끔",
+      "투명"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/lamaison_bride/ig_18071151143328653_0.jpg",
+    "location": "청담",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/lamaison_bride",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/lamaison_bride/ig_18071151143328653_0.jpg",
+      "/vendors/makeupshop/lamaison_bride/ig_18071151143328653_0.jpg",
+      "/vendors/makeupshop/lamaison_bride/ig_18083788780850776_0.jpg",
+      "/vendors/makeupshop/lamaison_bride/ig_18083788780850776_0.jpg",
+      "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg",
+      "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg"
+    ],
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
   }
