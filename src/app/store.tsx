@@ -8,7 +8,6 @@ import {
   initialConsultationCards,
   initialConsultations,
   initialEvents,
-  initialOrderApprovals,
   initialOrderReminders,
   initialPayments,
   initialPortalSettings,
@@ -27,9 +26,7 @@ import type {
   ConsultationCard,
   Contract,
   Couple,
-  OrderApproval,
   OrderReminder,
-  OrderRejectionReason,
   Payment,
   PortalSettings,
   PortalOnboardingState,
@@ -44,7 +41,6 @@ import type {
   WeddingReference,
   CustomerReferenceSubmission,
   CustomerRequest,
-  CustomerRequestStatus,
 } from '../types'
 
 export interface DemoState {
@@ -63,7 +59,6 @@ export interface DemoState {
   availability: Record<string, string[]>
   vendorSelections: VendorSelection[]
   vendorInsights: VendorInsight[]
-  orderApprovals: OrderApproval[]
   orderReminders: OrderReminder[]
   portalOnboardingStates: PortalOnboardingState[]
   favoriteVendorIds: string[]
@@ -108,19 +103,14 @@ export type DemoAction =
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
   | { type: 'ADD_VENDOR_INSIGHT'; payload: VendorInsight }
-  | { type: 'REQUEST_ORDER_APPROVAL'; payload: OrderApproval }
-  | { type: 'UPDATE_ORDER_APPROVAL'; payload: OrderApproval }
-  | { type: 'APPROVE_ORDER'; payload: { id: string; confirmedAt: string; respondedAt: string } }
-  | { type: 'REJECT_ORDER'; payload: { id: string; reason: OrderRejectionReason; respondedAt: string } }
-  | { type: 'RETRY_ORDER'; payload: { id: string; requestedAt: string; approvalDeadline: string; viewedAt: string } }
   | { type: 'SAVE_REFERENCE_BOARD'; payload: ReferenceBoard }
   | { type: 'ADD_UPLOADED_REFERENCE'; payload: WeddingReference }
   | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
-  | { type: 'ADD_CUSTOMER_REQUEST'; payload: CustomerRequest }
-  | { type: 'UPDATE_CUSTOMER_REQUEST'; payload: CustomerRequest }
+  | { type: 'SEND_CUSTOMER_MESSAGE'; payload: CustomerRequest }
+  | { type: 'MARK_CONVERSATION_READ'; payload: { coupleId: string; viewer: 'customer' | 'planner'; readAt: string } }
   | { type: 'COMPLETE_PORTAL_ONBOARDING'; payload: PortalOnboardingState }
   | { type: 'ADD_ORDER_REMINDER'; payload: OrderReminder }
-  | { type: 'APPROVE_ORDER_REMINDER'; payload: { id: string; approvedAt: string } }
+  | { type: 'COMPLETE_ORDER_REMINDER'; payload: { id: string; completedAt: string } }
 
 export const initialState: DemoState = {
   couples: initialCouples,
@@ -138,7 +128,6 @@ export const initialState: DemoState = {
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
   vendorInsights: initialVendorInsights,
-  orderApprovals: initialOrderApprovals,
   orderReminders: initialOrderReminders,
   portalOnboardingStates: [],
   favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
@@ -259,24 +248,6 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
     }
     case 'ADD_VENDOR_INSIGHT':
       return { ...state, vendorInsights: [action.payload, ...state.vendorInsights] }
-    case 'REQUEST_ORDER_APPROVAL':
-      return { ...state, orderApprovals: [action.payload, ...state.orderApprovals] }
-    case 'UPDATE_ORDER_APPROVAL':
-      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? action.payload : item) }
-    case 'APPROVE_ORDER': {
-      const order = state.orderApprovals.find((item) => item.id === action.payload.id)
-      return {
-        ...state,
-        orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'approved', confirmedAt: action.payload.confirmedAt, respondedAt: action.payload.respondedAt, rejectionReason: undefined } : item),
-        events: order?.relatedEventId
-          ? state.events.map((event) => event.id === order.relatedEventId ? { ...event, approvalStatus: 'confirmed' } : event)
-          : state.events,
-      }
-    }
-    case 'REJECT_ORDER':
-      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'rejected', rejectionReason: action.payload.reason, respondedAt: action.payload.respondedAt, confirmedAt: undefined } : item) }
-    case 'RETRY_ORDER':
-      return { ...state, orderApprovals: state.orderApprovals.map((item) => item.id === action.payload.id ? { ...item, status: 'reverse-pending', requestedAt: action.payload.requestedAt, approvalDeadline: action.payload.approvalDeadline, viewedAt: action.payload.viewedAt, rejectionReason: undefined, confirmedAt: undefined, respondedAt: undefined } : item) }
     case 'SAVE_REFERENCE_BOARD': {
       const exists = state.referenceBoards.some((item) => item.id === action.payload.id)
       return { ...state, referenceBoards: exists ? state.referenceBoards.map((item) => item.id === action.payload.id ? action.payload : item) : [...state.referenceBoards, action.payload] }
@@ -287,18 +258,26 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const exists = state.customerReferenceSubmissions.some((item) => item.coupleId === action.payload.coupleId)
       return { ...state, customerReferenceSubmissions: exists ? state.customerReferenceSubmissions.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [action.payload, ...state.customerReferenceSubmissions] }
     }
-    case 'ADD_CUSTOMER_REQUEST':
+    case 'SEND_CUSTOMER_MESSAGE':
       return { ...state, customerRequests: [action.payload, ...state.customerRequests] }
-    case 'UPDATE_CUSTOMER_REQUEST':
-      return { ...state, customerRequests: state.customerRequests.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'MARK_CONVERSATION_READ':
+      return {
+        ...state,
+        customerRequests: state.customerRequests.map((item) => {
+          if (item.coupleId !== action.payload.coupleId || item.sender === action.payload.viewer) return item
+          return action.payload.viewer === 'planner'
+            ? { ...item, readByPlannerAt: item.readByPlannerAt ?? action.payload.readAt, updatedAt: action.payload.readAt }
+            : { ...item, readByCustomerAt: item.readByCustomerAt ?? action.payload.readAt, updatedAt: action.payload.readAt }
+        }),
+      }
     case 'COMPLETE_PORTAL_ONBOARDING': {
       const exists = state.portalOnboardingStates.some((item) => item.coupleId === action.payload.coupleId)
       return { ...state, portalOnboardingStates: exists ? state.portalOnboardingStates.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.portalOnboardingStates, action.payload] }
     }
     case 'ADD_ORDER_REMINDER':
       return { ...state, orderReminders: [action.payload, ...state.orderReminders] }
-    case 'APPROVE_ORDER_REMINDER':
-      return { ...state, orderReminders: state.orderReminders.map((item) => item.id === action.payload.id ? { ...item, status: 'approved', approvedAt: action.payload.approvedAt } : item) }
+    case 'COMPLETE_ORDER_REMINDER':
+      return { ...state, orderReminders: state.orderReminders.map((item) => item.id === action.payload.id ? { ...item, status: 'completed', completedAt: action.payload.completedAt } : item) }
     default:
       return state
   }
@@ -325,7 +304,7 @@ interface DemoContextValue extends DemoState {
   addBudgetItem: (item: Omit<BudgetItem, 'id'>) => void
   updateBudgetItem: (item: BudgetItem) => void
   deleteBudgetItem: (id: string) => void
-  addVendor: (item: Omit<Vendor, 'id'>) => void
+  addVendor: (item: Omit<Vendor, 'id'>) => string
   updateVendor: (item: Vendor) => void
   toggleFavoriteVendor: (id: string) => void
   addVendorCatalogGroup: (name: string) => void
@@ -338,20 +317,14 @@ interface DemoContextValue extends DemoState {
   toggleAvailability: (eventId: string, slot: string) => void
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
   addVendorInsight: (insight: Omit<VendorInsight, 'id' | 'createdAt'>) => void
-  requestOrderApproval: (order: Omit<OrderApproval, 'id' | 'requestedAt' | 'approvalDeadline' | 'reviewerName' | 'reviewerRole' | 'reviewerTeam' | 'viewedAt' | 'status' | 'confirmedAt' | 'respondedAt'>) => void
-  updateOrderApproval: (id: string, update: Partial<Pick<OrderApproval, 'status' | 'memo' | 'confirmedAt' | 'respondedAt'>>) => void
-  approveOrder: (id: string) => void
-  rejectOrder: (id: string, reason: OrderRejectionReason) => void
-  retryOrder: (id: string) => void
   saveReferenceBoard: (board: ReferenceBoard) => void
   addUploadedReference: (reference: Omit<WeddingReference, 'id'>) => void
   saveCustomerReferenceSubmission: (submission: CustomerReferenceSubmission) => void
-  addCustomerRequest: (request: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => void
-  updateCustomerRequest: (id: string, update: Partial<Pick<CustomerRequest, 'status' | 'resultNote'>>) => void
-  setCustomerRequestStatus: (id: string, status: CustomerRequestStatus) => void
+  sendCustomerMessage: (message: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'readByPlannerAt' | 'readByCustomerAt'>) => void
+  markConversationRead: (coupleId: string, viewer: 'customer' | 'planner') => void
   completePortalOnboarding: (state: PortalOnboardingState) => void
-  addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'approvedAt'>) => void
-  approveOrderReminder: (id: string) => void
+  addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'completedAt'>) => void
+  completeOrderReminder: (id: string) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
@@ -363,12 +336,6 @@ const addDays = (date: string, days: number) => {
   next.setDate(next.getDate() + days)
   return next.toISOString().slice(0, 10)
 }
-const addDaysTimestamp = (value: string, days: number) => {
-  const next = new Date(value)
-  next.setDate(next.getDate() + days)
-  return next.toISOString()
-}
-
 export function DemoProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(demoReducer, initialState)
   const value = useMemo<DemoContextValue>(() => ({
@@ -400,7 +367,11 @@ export function DemoProvider({ children }: PropsWithChildren) {
     addBudgetItem: (item) => dispatch({ type: 'ADD_BUDGET_ITEM', payload: { ...item, id: makeId('bi') } }),
     updateBudgetItem: (item) => dispatch({ type: 'UPDATE_BUDGET_ITEM', payload: item }),
     deleteBudgetItem: (id) => dispatch({ type: 'DELETE_BUDGET_ITEM', payload: id }),
-    addVendor: (item) => dispatch({ type: 'ADD_VENDOR', payload: { ...item, id: makeId('v') } }),
+    addVendor: (item) => {
+      const id = makeId('v')
+      dispatch({ type: 'ADD_VENDOR', payload: { ...item, id } })
+      return id
+    },
     updateVendor: (item) => dispatch({ type: 'UPDATE_VENDOR', payload: item }),
     toggleFavoriteVendor: (id) => dispatch({ type: 'TOGGLE_FAVORITE_VENDOR', payload: id }),
     addVendorCatalogGroup: (name) => dispatch({ type: 'ADD_VENDOR_CATALOG_GROUP', payload: { id: makeId('catalog'), name, vendorIds: [] } }),
@@ -416,29 +387,23 @@ export function DemoProvider({ children }: PropsWithChildren) {
       type: 'ADD_VENDOR_INSIGHT',
       payload: { ...insight, id: makeId('vi'), createdAt: new Date().toISOString() },
     }),
-    requestOrderApproval: (order) => dispatch({ type: 'REQUEST_ORDER_APPROVAL', payload: { ...order, id: makeId('oa'), requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), reviewerName: '정하린', reviewerRole: '실장', reviewerTeam: '예약관리팀', viewedAt: '2026-08-05T10:42:18+09:00', status: 'reverse-pending' } }),
-    updateOrderApproval: (id, update) => {
-      const current = state.orderApprovals.find((item) => item.id === id)
-      if (current) dispatch({ type: 'UPDATE_ORDER_APPROVAL', payload: { ...current, ...update } })
-    },
-    approveOrder: (id) => dispatch({ type: 'APPROVE_ORDER', payload: { id, confirmedAt: DEMO_NOW, respondedAt: DEMO_NOW } }),
-    rejectOrder: (id, reason) => dispatch({ type: 'REJECT_ORDER', payload: { id, reason, respondedAt: DEMO_NOW } }),
-    retryOrder: (id) => dispatch({ type: 'RETRY_ORDER', payload: { id, requestedAt: DEMO_NOW, approvalDeadline: addDaysTimestamp(DEMO_NOW, 7), viewedAt: '2026-08-05T10:42:18+09:00' } }),
     saveReferenceBoard: (board) => dispatch({ type: 'SAVE_REFERENCE_BOARD', payload: board }),
     addUploadedReference: (reference) => dispatch({ type: 'ADD_UPLOADED_REFERENCE', payload: { ...reference, id: makeId('ref-upload') } }),
     saveCustomerReferenceSubmission: (submission) => dispatch({ type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION', payload: submission }),
-    addCustomerRequest: (request) => dispatch({ type: 'ADD_CUSTOMER_REQUEST', payload: { ...request, id: makeId('request'), status: 'requested', createdAt: DEMO_NOW, updatedAt: DEMO_NOW } }),
-    updateCustomerRequest: (id, update) => {
-      const current = state.customerRequests.find((item) => item.id === id)
-      if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, ...update, updatedAt: DEMO_NOW } })
-    },
-    setCustomerRequestStatus: (id, status) => {
-      const current = state.customerRequests.find((item) => item.id === id)
-      if (current) dispatch({ type: 'UPDATE_CUSTOMER_REQUEST', payload: { ...current, status, updatedAt: DEMO_NOW } })
-    },
+    sendCustomerMessage: (message) => dispatch({
+      type: 'SEND_CUSTOMER_MESSAGE',
+      payload: {
+        ...message,
+        id: makeId('message'),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        ...(message.sender === 'planner' ? { readByPlannerAt: new Date().toISOString() } : { readByCustomerAt: new Date().toISOString() }),
+      },
+    }),
+    markConversationRead: (coupleId, viewer) => dispatch({ type: 'MARK_CONVERSATION_READ', payload: { coupleId, viewer, readAt: new Date().toISOString() } }),
     completePortalOnboarding: (onboardingState) => dispatch({ type: 'COMPLETE_PORTAL_ONBOARDING', payload: onboardingState }),
     addOrderReminder: (reminder) => dispatch({ type: 'ADD_ORDER_REMINDER', payload: { ...reminder, id: makeId('or'), status: 'pending' } }),
-    approveOrderReminder: (id) => dispatch({ type: 'APPROVE_ORDER_REMINDER', payload: { id, approvedAt: DEMO_NOW } }),
+    completeOrderReminder: (id) => dispatch({ type: 'COMPLETE_ORDER_REMINDER', payload: { id, completedAt: DEMO_NOW } }),
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>

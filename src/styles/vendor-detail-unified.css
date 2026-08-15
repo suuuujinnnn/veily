@@ -40,3 +40,31 @@
 .vendor-hero-insight p svg { flex: none; margin-top: 1px; color: #8fc2dd; }
 .vendor-hero-insight p span { display: grid; grid-template-columns: 48px 1fr; gap: 3px; }
 .vendor-hero-insight p b { color: #eef6f9; }
+
+.vendor-detail-operational {
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.vendor-detail-page .vendor-detail-hero { min-height: 500px; }
+.vendor-detail-operational > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; }
+.vendor-detail-operational > header h2 { margin: 4px 0 0; font-size: 18px; }
+.vendor-detail-operational > header button { padding: 0; display: inline-flex; align-items: center; gap: 3px; border: 0; background: none; color: var(--blue-700); font-size: 8px; font-weight: 750; cursor: pointer; }
+.vendor-detail-operational > dl { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.vendor-detail-operational > dl > div { min-width: 0; padding: 12px; display: grid; gap: 5px; border: 1px solid #e3e9ed; border-radius: 10px; background: #f8fafb; }
+.vendor-detail-operational dt { color: var(--muted); font-size: 8px; }
+.vendor-detail-operational dd { margin: 0; color: var(--ink); font-size: 10px; font-weight: 750; overflow-wrap: anywhere; }
+.vendor-detail-operational dl small { color: #87949c; font-size: 7px; }
+.vendor-detail-operational__insight { padding: 14px 16px; display: grid; grid-template-columns: minmax(190px, .65fr) 1fr 1fr; gap: 16px; align-items: start; border-radius: 11px; background: #f0f6f9; }
+.vendor-detail-operational__insight > div { display: grid; gap: 5px; }
+.vendor-detail-operational__insight strong { font-size: 10px; }
+.vendor-detail-operational__insight small { color: var(--muted); font-size: 7px; }
+.vendor-detail-operational__insight p { margin: 0; display: flex; gap: 7px; color: #536a77; font-size: 8px; line-height: 1.5; }
+.vendor-detail-operational__insight p svg { flex: none; color: var(--blue-600); }
+.vendor-detail-operational__insight p span { display: grid; gap: 3px; }
+@media(max-width:900px){.vendor-detail-operational>dl{grid-template-columns:repeat(2,minmax(0,1fr))}.vendor-detail-operational__insight{grid-template-columns:1fr}}
+@media(max-width:620px){.vendor-detail-operational{padding:17px}.vendor-detail-operational>header{align-items:flex-start;flex-direction:column}.vendor-detail-operational>dl{grid-template-columns:1fr}}

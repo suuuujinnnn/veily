@@ -2,7 +2,6 @@ export type EventType = '미팅' | '드레스' | '스튜디오' | '메이크업'
 export type EventApprovalStatus = 'planner-proposed' | 'client-ok' | 'confirmed'
 export type ScheduleVisibility = 'couple-shared' | 'planner-private'
 
-export type TravelMode = 'bus' | 'subway' | 'car'
 export type VendorCategory = '드레스' | '메이크업' | '스튜디오' | '웨딩홀' | '예물' | '기타'
 export type AnalyzedVendorCategory = Extract<VendorCategory, '드레스' | '메이크업' | '스튜디오'>
 
@@ -46,10 +45,8 @@ export interface WeddingEvent {
   endTime: string
   type: EventType
   location: string
-  travelMinutes?: number
   workflowType?: string
   durationMinutes?: number
-  travelMode?: TravelMode
   memo?: string
   approvalStatus?: EventApprovalStatus
   visibility: ScheduleVisibility
@@ -76,33 +73,31 @@ export interface ChecklistItem {
   kind: 'preparation' | 'decision'
   status: 'pending' | 'in-progress' | 'completed'
   owner: '플래너' | '신랑·신부' | '함께'
-  isTemplate?: boolean
-  templateId?: string
 }
 
-export type CustomerRequestStatus = 'requested' | 'confirmed' | 'in-progress' | 'completed'
+export interface CustomerMessageAttachment {
+  id: string
+  type: 'image' | 'file' | 'link'
+  name: string
+  url: string
+  size?: number
+}
 
-export interface CustomerRequest {
+export interface CustomerMessage {
   id: string
   coupleId: string
   category: '레퍼런스' | '업체 문의' | '일정' | '계약·견적' | '기타'
   originalText: string
-  status: CustomerRequestStatus
   createdAt: string
   updatedAt: string
-  resultNote?: string
+  sender: 'customer' | 'planner'
+  readByPlannerAt?: string
+  readByCustomerAt?: string
+  attachments: CustomerMessageAttachment[]
 }
 
-export interface WeddingWorkflowTemplate {
-  id: string
-  title: string
-  category: ChecklistCategory
-  offsetDays: number
-  defaultOwner: ChecklistItem['owner']
-  summary: string
-  checkpoints: string[]
-  optional: boolean
-}
+/** @deprecated Use CustomerMessage. Kept as a compatibility alias for mock data imports. */
+export type CustomerRequest = CustomerMessage
 
 export type BudgetCategory =
   | '웨딩홀·식대'
@@ -255,13 +250,14 @@ export interface OrderReminder {
   vendorId?: string
   title: string
   orderDate: string
-  status: 'pending' | 'approved'
-  approvedAt?: string
+  reminderDate: string
+  status: 'pending' | 'completed'
+  completedAt?: string
   memo: string
 }
 
 export type ReferenceCategory = '드레스' | '헤어' | '메이크업' | '스튜디오' | '웨딩홀'
-export type ReferenceSource = '검수 아카이브' | '플래너 업로드'
+export type ReferenceSource = '검수 아카이브' | '플래너 업로드' | '고객 업로드'
 
 export type VenueRegionGroup = '서울' | '경기·인천'
 export type VenueMealType = '뷔페' | '한식' | '양식' | '기타'
@@ -276,6 +272,7 @@ export type VenueType =
 export type VenueWish = '밝은 홀' | '어두운 홀' | '높은 천고' | '원형 테이블' | '화려한 꽃 장식' | '단독홀' | '단독건물'
 export type VenueAccessKind = '지하철역' | '기차역' | '터미널'
 export type VenueAccessOption = '도보 10분 이내' | '셔틀 운행' | '대형 주차'
+export type VenueMealPriceRange = '7만원 이하' | '7~8만원' | '8~9만원' | '9만원 이상'
 
 export interface VenueAccessPoint {
   id: string
@@ -295,6 +292,7 @@ export interface WeddingVenue {
   address: string
   mealTypes: VenueMealType[]
   mealDetail: string
+  mealPrice: number
   venueType: VenueType
   wishes: VenueWish[]
   accessPoints: VenueAccessPoint[]
@@ -312,6 +310,7 @@ export interface VenueFilterState {
   accessPointIds: string[]
   accessOptions: VenueAccessOption[]
   mealTypes: VenueMealType[]
+  mealPriceRanges: VenueMealPriceRange[]
   venueTypes: VenueType[]
   wishes: VenueWish[]
   query: string
@@ -362,30 +361,7 @@ export interface CustomerReferenceSubmission {
   status: '작성 중' | '전송완료' | '재전송됨'
 }
 
-export type OrderApprovalStatus = 'draft' | 'ordered' | 'reverse-pending' | 'approved' | 'rejected' | 'expired'
-export type OrderRejectionReason = 'schedule-unavailable' | 'product-unavailable' | 'other'
-
-export interface OrderApproval {
-  id: string
-  coupleId: string
-  vendorId: string
-  recommendationId?: string
-  productName: string
-  relatedEventId?: string
-  requestedAt: string
-  approvalDeadline: string
-  reviewerName: string
-  reviewerRole: string
-  reviewerTeam: string
-  viewedAt: string
-  status: OrderApprovalStatus
-  rejectionReason?: OrderRejectionReason
-  confirmedAt?: string
-  respondedAt?: string
-  memo?: string
-}
-
-export type ReminderKind = 'selection-deadline' | 'order-approval-deadline' | 'confirmed-schedule' | 'task-deadline' | 'vendor-stale'
+export type ReminderKind = 'selection-deadline' | 'confirmed-schedule' | 'task-deadline' | 'vendor-stale'
 
 export interface ReminderItem {
   id: string
@@ -471,7 +447,7 @@ export interface PortalSettings {
   coupleId: string
   showSchedule: boolean
   showFullEstimate: boolean
-  receiveMessages: boolean
+  messagingEnabled: boolean
   showChecklist: boolean
 }
 

@@ -1,16 +1,20 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Building2, Check, ChevronDown, ChevronUp, ExternalLink, Heart, ImagePlus, RotateCcw, Search, Send, UploadCloud, X } from 'lucide-react'
+import { Building2, Check, ExternalLink, Heart, ImagePlus, Search, Send, UploadCloud, X } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card } from '../../components/ui'
 import { VenueCard } from '../../components/venues/VenueCard'
 import { VenueFilterPanel } from '../../components/venues/VenueFilterPanel'
+import { ReferenceImageAnalyzerModal } from '../../components/references/ReferenceImageAnalyzerModal'
+import { ReferenceCarouselModal } from '../../components/references/ReferenceCarouselModal'
+import { VendorDiscoveryFilterDock } from '../../components/vendors/VendorDiscoveryFilterDock'
 import { getReferenceCategory, referenceCategories, type ReferenceCategory } from '../../data/referenceKeywordData'
 import { weddingReferences } from '../../data/weddingReferenceData'
 import { emptyVenueFilterState, filterWeddingVenues, getVenuePrimaryReference } from '../../data/weddingVenueData'
-import type { VenueFilterState } from '../../types'
+import type { VenueFilterState, WeddingReference } from '../../types'
 import { ReferenceSearchPanel } from './ReferenceSearchPanel'
 import { VendorDatabase } from './VendorDatabase'
+import { vendorOperationalText } from './vendorInfoUtils'
 
 function matchesSelectedGroups(category: ReferenceCategory, tags: string[], selected: string[]) {
   if (!selected.length) return true
@@ -26,14 +30,17 @@ export function VendorsPage() {
   const [query, setQuery] = useState('')
   const [venueFilters, setVenueFilters] = useState<VenueFilterState>(emptyVenueFilterState)
   const [coupleId, setCoupleId] = useState(() => searchParams.get('coupleId') ?? 'c1')
-  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(true)
   const [toast, setToast] = useState('')
   const [undoVendorId, setUndoVendorId] = useState<string | null>(null)
-  const fileRef = useRef<HTMLInputElement>(null)
+  const [previewReferences, setPreviewReferences] = useState<WeddingReference[]>([])
+  const [previewIndex, setPreviewIndex] = useState(0)
+  const [uploadOpen, setUploadOpen] = useState(false)
   const couple = store.couples.find((item) => item.id === coupleId) ?? store.couples[0]
   const library = useMemo(() => [...store.uploadedReferences, ...weddingReferences], [store.uploadedReferences])
   const customerSubmission = store.customerReferenceSubmissions.find((item) => item.coupleId === coupleId)
   const customerTasteReferences = useMemo(() => (customerSubmission?.selections ?? []).map((selection) => ({ selection, reference: library.find((item) => item.id === selection.referenceId) })).filter((item) => item.reference), [customerSubmission, library])
+  const customerTastePreviewReferences = useMemo(() => customerTasteReferences.map((item) => item.reference).filter((reference): reference is WeddingReference => Boolean(reference)), [customerTasteReferences])
   const customerTasteTags = useMemo(() => {
     if (category === '웨딩홀') return []
     const available = new Set(getReferenceCategory(category).groups.flatMap((group) => group.keywords))
@@ -44,8 +51,18 @@ export function VendorsPage() {
     return library.filter((reference) => reference.category === category).filter((reference) => matchesSelectedGroups(category, reference.tags, selectedKeywords)).filter((reference) => !tokens.length || tokens.every((token) => [reference.vendorName, reference.account, ...reference.tags].join(' ').toLocaleLowerCase('ko').includes(token)))
   }, [category, library, query, selectedKeywords])
   const venueResults = useMemo(() => filterWeddingVenues(venueFilters), [venueFilters])
+  const filteredDatabaseVendors = useMemo(() => {
+    const tokens = query.trim().toLocaleLowerCase('ko').split(/\s+/).filter(Boolean)
+    const venueVendorIds = new Set(venueResults.map((venue) => venue.vendorId))
+    return store.vendors.filter((vendor) => {
+      const categoryMatches = category === '헤어' ? vendor.category === '메이크업' : vendor.category === category
+      const keywordMatches = category === '웨딩홀' ? venueVendorIds.has(vendor.id) : matchesSelectedGroups(category, vendor.tags, selectedKeywords)
+      const haystack = [vendor.name, vendor.instagram, vendor.address, vendor.summary, vendorOperationalText(vendor), ...vendor.tags].join(' ').toLocaleLowerCase('ko')
+      return categoryMatches && keywordMatches && (!tokens.length || tokens.every((token) => haystack.includes(token)))
+    })
+  }, [category, query, selectedKeywords, store.vendors, venueResults])
+  const uploadedVenueReferences = filteredReferences.filter((item) => item.category === '웨딩홀' && item.source !== '검수 아카이브')
   const resultCount = category === '웨딩홀' ? venueResults.length : filteredReferences.length
-  const activeLabels = category === '웨딩홀' ? [...venueFilters.localities, ...venueFilters.mealTypes, ...venueFilters.venueTypes, ...venueFilters.wishes] : selectedKeywords
 
   const applyCustomerTaste = () => {
     if (category !== '웨딩홀') setSelectedKeywords(customerTasteTags)
@@ -70,37 +87,41 @@ export function VendorsPage() {
     window.setTimeout(() => { setToast(''); setUndoVendorId(null) }, 4000)
   }
   const undo = () => { if (undoVendorId) store.removeRecommendation(coupleId, undoVendorId); setToast('추천 전송을 취소했어요.'); setUndoVendorId(null); window.setTimeout(() => setToast(''), 1800) }
-  const upload = (file?: File) => {
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => { store.addUploadedReference({ category, image: String(reader.result), vendorName: '플래너 개인 자료', account: '직접 업로드', tags: selectedKeywords, purpose: '상담 레퍼런스', source: '플래너 업로드', reviewStatus: '확인필요' }); setToast('개인 레퍼런스를 추가했어요.'); window.setTimeout(() => setToast(''), 2000) }
-    reader.readAsDataURL(file)
+  const addAnalyzedReference = (reference: Omit<WeddingReference, 'id'>) => {
+    store.addUploadedReference(reference)
+    setCategory(reference.category)
+    setSelectedKeywords(reference.tags)
+    setQuery('')
+    setToast(`${reference.category} · ${reference.tags.length}개 태그로 개인 자료를 추가했어요.`)
+    window.setTimeout(() => setToast(''), 2500)
+  }
+  const openPreview = (references: WeddingReference[], referenceId: string) => {
+    setPreviewReferences(references)
+    setPreviewIndex(Math.max(0, references.findIndex((reference) => reference.id === referenceId)))
   }
 
   return <div className="page-stack vendors-page reference-hub-page">
-    <section className="page-intro"><div><p className="eyebrow">Reference & partner workspace</p><h1>레퍼런스·업체</h1><p>고객 취향에 맞는 자료를 찾고 업체 정보까지 같은 화면에서 확인하세요.</p></div><Badge tone="sage">등록 업체 {store.vendors.length}곳</Badge></section>
+    <section className="page-intro"><div><p className="eyebrow">Vendor discovery</p><h1>레퍼런스 · 업체 찾기</h1><p>레퍼런스 이미지와 업체 정보를 한 작업 공간에서 탐색하고 추천하세요.</p></div><Badge tone="sage">등록 업체 {store.vendors.length}곳</Badge></section>
     <nav className="reference-hub-tabs" aria-label="레퍼런스와 업체 DB"><button className={view === 'references' ? 'active' : ''} onClick={() => setView('references')}><Search size={16} /><span>레퍼런스 보드<small>이미지·웨딩홀 탐색과 추천</small></span></button><button className={view === 'database' ? 'active' : ''} onClick={() => setView('database')}><Building2 size={16} /><span>업체 DB<small>업체 상세 정보와 운영 조건</small></span></button></nav>
 
-    {view === 'database' ? <VendorDatabase /> : <>
-      <section className="reference-customer-bar"><label><span>추천 대상 고객</span><select value={coupleId} onChange={(event) => setCoupleId(event.target.value)}>{store.couples.map((item) => <option value={item.id} key={item.id}>{item.partners}</option>)}</select></label><div><strong>선택한 고객에게 즉시 전송됩니다.</strong><span>같은 업체는 중복 등록되지 않아요.</span></div><Button variant="secondary" icon={<UploadCloud size={14} />} onClick={() => fileRef.current?.click()}>개인 자료 추가</Button><input ref={fileRef} hidden type="file" accept="image/*" onChange={(event) => upload(event.target.files?.[0])} /></section>
+    <VendorDiscoveryFilterDock query={query} onQueryChange={setQuery} resultCount={view === 'database' ? filteredDatabaseVendors.length : resultCount} resultUnit={view === 'database' || category === '웨딩홀' ? '곳' : '장'} filtersOpen={filtersOpen} onToggleFilters={() => setFiltersOpen((open) => !open)} onReset={resetFilters} ariaLabel="업체명·스타일·실무정보 검색" title={category === '웨딩홀' ? '웨딩홀 조건 필터' : undefined}>
+      <nav className="reference-category-tabs" aria-label="검색 분야">{referenceCategories.map((item) => <button key={item.label} className={category === item.label ? 'active' : ''} onClick={() => changeCategory(item.label)}>{item.label}</button>)}</nav><ReferenceSearchPanel category={category} selectedKeywords={selectedKeywords} onKeywordToggle={(keyword) => setSelectedKeywords((current) => current.includes(keyword) ? current.filter((item) => item !== keyword) : [...current, keyword])} />{category === '웨딩홀' && <VenueFilterPanel audience="planner" value={venueFilters} resultCount={venueResults.length} onChange={setVenueFilters} />}
+    </VendorDiscoveryFilterDock>
 
-      <section className={`customer-taste-brief ${customerSubmission ? '' : 'is-empty'}`}>
-        <div className="customer-taste-brief__images">{customerTasteReferences.slice(0, 3).map(({ reference }) => reference && <img src={reference.image} style={{ objectPosition: reference.imagePosition }} alt={`${couple.brideName} 고객 취향`} key={reference.id} />)}{!customerTasteReferences.length && <span><Heart size={16} /></span>}</div>
-        <div className="customer-taste-brief__copy"><div><Badge tone={customerSubmission ? 'rose' : 'neutral'}>{customerSubmission?.status ?? '미제출'}</Badge><strong>{couple.brideName}님이 보낸 취향</strong>{customerSubmission && <small>{customerSubmission.submittedAt.slice(0, 10).replaceAll('-', '.')} 전송</small>}</div>{customerSubmission ? <p>{customerTasteTags.length ? customerTasteTags.map((tag) => <span key={tag}>#{tag}</span>) : `${category} 분야에서 선택한 태그가 아직 없어요.`}</p> : <p>고객이 내 취향 찾기에서 자료를 보내면 이곳에 자동으로 표시됩니다.</p>}</div>
-        {customerSubmission && category !== '웨딩홀' && <Button size="sm" variant="secondary" icon={<Check size={13} />} onClick={applyCustomerTaste}>필터에 적용</Button>}
-      </section>
-
-      <section className={`reference-filter-dock ${filtersOpen ? 'open' : ''}`}>
-        <header><div className="reference-filter-dock__identity"><span><Search size={15} /></span><label><small>분야</small><select value={category} onChange={(event) => changeCategory(event.target.value as ReferenceCategory)}>{referenceCategories.map((item) => <option key={item.label}>{item.label}</option>)}</select></label></div><div className="reference-filter-dock__chips">{activeLabels.slice(0, 5).map((label) => <span key={label}>#{label}</span>)}{activeLabels.length > 5 && <em>+{activeLabels.length - 5}</em>}{!activeLabels.length && <small>선택한 조건 없음</small>}</div><div className="reference-filter-dock__actions"><strong>{resultCount}<small>{category === '웨딩홀' ? '곳' : '장'}</small></strong><button onClick={resetFilters} aria-label="필터 초기화"><RotateCcw size={14} /></button><Button size="sm" variant="secondary" icon={filtersOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />} onClick={() => setFiltersOpen((open) => !open)}>{filtersOpen ? '필터 접기' : '필터 펼치기'}</Button></div></header>
-        {filtersOpen && <div className="reference-filter-dock__body"><ReferenceSearchPanel category={category} query={query} selectedKeywords={selectedKeywords} resultCount={resultCount} onCategoryChange={changeCategory} onQueryChange={setQuery} onKeywordToggle={(keyword) => setSelectedKeywords((current) => current.includes(keyword) ? current.filter((item) => item !== keyword) : [...current, keyword])} onReset={resetFilters} />{category === '웨딩홀' && <VenueFilterPanel audience="planner" value={venueFilters} resultCount={venueResults.length} onChange={setVenueFilters} />}</div>}
+    {view === 'database' ? <VendorDatabase vendorIds={filteredDatabaseVendors.map((vendor) => vendor.id)} /> : <>
+      <section className={`reference-customer-context ${customerSubmission ? '' : 'is-empty'}`}>
+        <header><label className="reference-customer-context__target"><span>추천 대상</span><select value={coupleId} onChange={(event) => setCoupleId(event.target.value)}>{store.couples.map((item) => <option value={item.id} key={item.id}>{item.partners}</option>)}</select></label><small>선택한 고객에게 추천이 전송됩니다.</small></header>
+        <div className="reference-customer-context__taste"><div className="customer-taste-brief__images">{customerTastePreviewReferences.slice(0, 3).map((reference) => <button type="button" onClick={() => openPreview(customerTastePreviewReferences, reference.id)} aria-label={`${reference.vendorName} 레퍼런스 크게 보기`} key={reference.id}><img src={reference.image} style={{ objectPosition: reference.imagePosition }} alt={`${couple.brideName} 고객 취향`} /></button>)}{!customerTastePreviewReferences.length && <span><Heart size={16} /></span>}</div><div className="customer-taste-brief__copy"><div><Badge tone={customerSubmission ? 'rose' : 'neutral'}>{customerSubmission?.status ?? '미제출'}</Badge><strong>{couple.brideName}님이 보낸 레퍼런스</strong></div><p>{customerSubmission ? `${customerTasteReferences.length}장 · ${customerSubmission.submittedAt.slice(0, 10).replaceAll('-', '.')} 전송 · 현재 분야 필터에 자동 반영` : '고객이 보낸 자료가 아직 없습니다.'}</p></div><Button size="sm" variant="secondary" icon={<UploadCloud size={14} />} onClick={() => setUploadOpen(true)}>개인 자료 추가</Button></div>
       </section>
 
       <section className="reference-gallery-section reference-gallery-section--full"><header><div><p className="eyebrow">Search results</p><h2>{category === '웨딩홀' ? `웨딩홀 ${venueResults.length}곳` : `${category} 화보 ${filteredReferences.length}장`}</h2><p>마음에 맞는 결과에서 고객에게 업체를 바로 추천할 수 있습니다.</p></div><Badge tone="neutral">{category === '웨딩홀' ? '웨딩홀 단위' : '이미지 단위'}</Badge></header>
-        {category === '웨딩홀' ? <div className="venue-result-grid">{venueResults.map((venue) => { const reference = getVenuePrimaryReference(venue); const sent = store.recommendations.some((item) => item.coupleId === coupleId && item.vendorId === venue.vendorId); return <VenueCard key={venue.id} venue={venue} audience="planner" selected={sent} onToggle={() => recommend(venue.vendorId, reference.id)} /> })}</div> : <div className="reference-image-grid">{filteredReferences.map((reference) => { const sent = Boolean(reference.vendorId && store.recommendations.some((item) => item.coupleId === coupleId && item.vendorId === reference.vendorId)); return <article className={`reference-image-card ${sent ? 'selected' : ''}`} key={reference.id}><div className="reference-image-card__visual"><img src={reference.image} style={{ objectPosition: reference.imagePosition }} alt={`${reference.vendorName} ${reference.category} 레퍼런스`} />{sent && <span className="reference-selected"><Check size={12} /> 추천 전송됨</span>}</div><div className="reference-image-card__body"><div className="reference-image-card__vendor"><div><strong>{reference.vendorName}</strong><span>@{reference.account}</span></div>{reference.vendorId && <Link to={`/vendors/${reference.vendorId}`}><ExternalLink size={14} /></Link>}</div><div className="reference-card-keywords">{reference.tags.slice(0, 6).map((tag) => <span className={selectedKeywords.includes(tag) ? 'matched' : ''} key={tag}>#{tag}</span>)}</div><Button size="sm" variant={sent ? 'secondary' : 'primary'} icon={sent ? <Check size={13} /> : <Send size={13} />} disabled={!reference.vendorId || sent} onClick={() => reference.vendorId && recommend(reference.vendorId, reference.id)}>{sent ? '추천 전송됨' : '고객에게 업체 추천'}</Button></div></article> })}</div>}
+        {category === '웨딩홀' ? <>{uploadedVenueReferences.length > 0 && <div className="reference-image-grid reference-uploaded-venue-grid">{uploadedVenueReferences.map((reference) => <article className="reference-image-card" key={reference.id}><button type="button" className="reference-image-card__visual" onClick={() => openPreview(uploadedVenueReferences, reference.id)} aria-label="업로드한 웨딩홀 레퍼런스 크게 보기"><img src={reference.image} alt="업로드한 웨딩홀 레퍼런스" /></button><div className="reference-image-card__body"><div className="reference-image-card__vendor"><div><strong>{reference.vendorName}</strong><span>@{reference.account}</span></div></div><div className="reference-card-keywords">{reference.tags.slice(0, 6).map((tag) => <span key={tag}>#{tag}</span>)}</div><Button size="sm" variant="secondary" disabled>업체 연결 없음</Button></div></article>)}</div>}<div className="venue-result-grid">{venueResults.map((venue) => { const reference = getVenuePrimaryReference(venue); const sent = store.recommendations.some((item) => item.coupleId === coupleId && item.vendorId === venue.vendorId); return <VenueCard key={venue.id} venue={venue} audience="planner" selected={sent} onToggle={() => recommend(venue.vendorId, reference.id)} /> })}</div></> : <div className="reference-image-grid">{filteredReferences.map((reference) => { const sent = Boolean(reference.vendorId && store.recommendations.some((item) => item.coupleId === coupleId && item.vendorId === reference.vendorId)); return <article className={`reference-image-card ${sent ? 'selected' : ''}`} key={reference.id}><button type="button" className="reference-image-card__visual" onClick={() => openPreview(filteredReferences, reference.id)} aria-label={`${reference.vendorName} 레퍼런스 크게 보기`}><img src={reference.image} style={{ objectPosition: reference.imagePosition }} alt={`${reference.vendorName} ${reference.category} 레퍼런스`} />{sent && <span className="reference-selected"><Check size={12} /> 추천 전송됨</span>}</button><div className="reference-image-card__body"><div className="reference-image-card__vendor"><div><strong>{reference.vendorName}</strong><span>@{reference.account}</span></div>{reference.vendorId && <Link to={`/vendors/${reference.vendorId}`}><ExternalLink size={14} /></Link>}</div><div className="reference-card-keywords">{reference.tags.slice(0, 6).map((tag) => <span className={selectedKeywords.includes(tag) ? 'matched' : ''} key={tag}>#{tag}</span>)}</div><Button size="sm" variant={sent ? 'secondary' : 'primary'} icon={sent ? <Check size={13} /> : <Send size={13} />} disabled={!reference.vendorId || sent} onClick={() => reference.vendorId && recommend(reference.vendorId, reference.id)}>{!reference.vendorId ? '업체 연결 없음' : sent ? '추천 전송됨' : '고객에게 업체 추천'}</Button></div></article> })}</div>}
         {category === '웨딩홀' && !venueFilters.localities.length && <Card className="style-results-empty"><Search size={22} /><strong>필터를 펼쳐 지역을 선택해 주세요.</strong><p>지역 선택 후 접근성, 식사와 유형 조건을 조합할 수 있습니다.</p></Card>}
         {resultCount === 0 && (category !== '웨딩홀' || venueFilters.localities.length > 0) && <Card className="style-results-empty"><ImagePlus size={22} /><strong>현재 조건에 맞는 결과가 없습니다.</strong><p>조건을 하나 줄이거나 필터를 초기화해 보세요.</p></Card>}
       </section>
     </>}
     {toast && <div className="toast vendor-proposal-toast"><span>{undoVendorId ? <Send size={15} /> : <Check size={15} />}</span><div><strong>{toast}</strong></div>{undoVendorId && <button onClick={undo}>실행취소</button>}<button onClick={() => setToast('')} aria-label="알림 닫기"><X size={14} /></button></div>}
+    <ReferenceCarouselModal references={previewReferences} index={previewIndex} onIndexChange={setPreviewIndex} onClose={() => setPreviewReferences([])} />
+    <ReferenceImageAnalyzerModal open={uploadOpen} source="플래너 업로드" preferredCategory={category} onClose={() => setUploadOpen(false)} onComplete={addAnalyzedReference} />
   </div>
 }
