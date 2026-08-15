@@ -4,3 +4,6 @@ dist/
 vite.config.js
 vite.config.d.ts
 .codex/
+
+# 수집한 업체 사진 (재수집 스크립트로 복원)
+public/vendors/
