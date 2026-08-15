@@ -1448,6 +1448,228 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "본식",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18124598140772391.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물+배경",
+      "감성",
+      "일상",
+      "자연광",
+      "초록",
+      "자연",
+      "도로",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18117068119722889.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "배경 중심",
+      "일상",
+      "장난스러운",
+      "자연광",
+      "초록",
+      "자연",
+      "정원",
+      "낮",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18005279762770117.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물 중심",
+      "감성",
+      "성숙한",
+      "자연광",
+      "자연",
+      "낮",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18124068781838504.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물 중심",
+      "몽환적인",
+      "고급스러운",
+      "화이트톤",
+      "밝은",
+      "실내 세트",
+      "심플 배경",
+      "독사진",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18078804290320226.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물 중심",
+      "장난스러운",
+      "빈티지",
+      "따뜻한",
+      "실내 세트",
+      "타이트",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18362681137240189.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물 중심",
+      "화보",
+      "클래식",
+      "화이트톤",
+      "밝은",
+      "심플 배경",
+      "전신",
+      "생화 부케",
+      "콘셉트 소품"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-7",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18102091889610772.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물+배경",
+      "단아한",
+      "고급스러운",
+      "자연광",
+      "화이트톤",
+      "초록",
+      "실내 세트",
+      "온실",
+      "낮",
+      "독사진",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-8",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18422734342149149.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물 중심",
+      "단아한",
+      "청순한",
+      "자연광",
+      "밝은",
+      "초록",
+      "루프탑",
+      "자연",
+      "낮",
+      "독사진",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-9",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_18062869289759260.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "인물+배경",
+      "몽환적인",
+      "단아한",
+      "화이트톤",
+      "밝은",
+      "실내 세트",
+      "심플 배경",
+      "독사진",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-archiveboda-10",
+    "category": "스튜디오",
+    "image": "/vendors/studio/archive_boda/ig_17902296171513065.jpg",
+    "vendorId": "ig-archiveboda",
+    "vendorName": "아카이브비",
+    "account": "archive_boda",
+    "tags": [
+      "배경 중심",
+      "감성",
+      "드라마틱",
+      "자연",
+      "도로",
+      "도시",
+      "밤",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -1677,6 +1899,39 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/lydiabride_official/ig_17893568223599000.jpg"
     ],
     "website": "http://pf.kakao.com/_xeHAws",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-archiveboda",
+    "name": "아카이브비",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "전신",
+      "낮",
+      "생화 부케",
+      "인물 중심",
+      "자연"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/archive_boda/ig_18124598140772391.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "02-512-3512",
+    "instagram": "https://instagram.com/archive_boda",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/archive_boda/ig_18124598140772391.jpg",
+      "/vendors/studio/archive_boda/ig_18117068119722889.jpg",
+      "/vendors/studio/archive_boda/ig_18005279762770117.jpg",
+      "/vendors/studio/archive_boda/ig_18124068781838504.jpg",
+      "/vendors/studio/archive_boda/ig_18078804290320226.jpg",
+      "/vendors/studio/archive_boda/ig_18362681137240189.jpg"
+    ],
+    "website": "http://pf.kakao.com/_CbHfs",
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
   }
