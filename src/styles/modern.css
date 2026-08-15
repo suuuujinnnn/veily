@@ -179,6 +179,7 @@ em,
 
 .nav-item em {
   background: var(--blue-600);
+  color: #fff;
 }
 
 .sidebar__insight {

@@ -1,0 +1,42 @@
+.vendor-hero-facts > div > button {
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  background: none;
+  color: #91adbd;
+  font-size: 7px;
+  cursor: pointer;
+}
+
+.vendor-hero-facts > div > button:hover { color: #fff; }
+
+.vendor-hero-insight {
+  margin-top: 8px;
+  padding: 10px 11px;
+  border-radius: 9px;
+  background: rgba(96, 156, 191, .13);
+}
+
+.vendor-hero-insight > div {
+  display: flex !important;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.vendor-hero-insight > div strong { color: #fff; font-size: 8px; }
+.vendor-hero-insight > div small { color: #7793a5; font-size: 6px; }
+
+.vendor-hero-insight p {
+  margin: 7px 0 0 !important;
+  display: flex;
+  gap: 7px;
+  color: #c4d5df !important;
+  font-size: 7px !important;
+  line-height: 1.45 !important;
+}
+
+.vendor-hero-insight p svg { flex: none; margin-top: 1px; color: #8fc2dd; }
+.vendor-hero-insight p span { display: grid; grid-template-columns: 48px 1fr; gap: 3px; }
+.vendor-hero-insight p b { color: #eef6f9; }

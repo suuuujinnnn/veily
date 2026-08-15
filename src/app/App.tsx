@@ -26,6 +26,9 @@ export function App() {
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
             <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
+            <Route path="vendor-database" element={<Navigate to="/vendors?view=database" replace />} />
+            <Route path="vendor-database/:vendorId" element={<VendorDetailPage />} />
+            <Route path="orders" element={<Navigate to="/" replace />} />
             <Route path="contracts" element={<Navigate to="/couples/c1?tab=finance" replace />} />
             <Route path="community" element={<CommunityPage />} />
           </Route>

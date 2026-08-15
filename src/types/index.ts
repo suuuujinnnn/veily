@@ -22,7 +22,13 @@ export interface Couple {
   groomPhone: string
   brideEmail: string
   groomEmail: string
+  brideOccupation: string
+  groomOccupation: string
   address: string
+  acquisitionChannel: string
+  referrerName: string
+  preferredContactMethod: '카카오톡' | '문자' | '전화' | '이메일'
+  preferredContactTime: string
   contractType: string
   contractDate: string
   ceremonyDate: string
@@ -72,6 +78,19 @@ export interface ChecklistItem {
   owner: '플래너' | '신랑·신부' | '함께'
   isTemplate?: boolean
   templateId?: string
+}
+
+export type CustomerRequestStatus = 'requested' | 'confirmed' | 'in-progress' | 'completed'
+
+export interface CustomerRequest {
+  id: string
+  coupleId: string
+  category: '레퍼런스' | '업체 문의' | '일정' | '계약·견적' | '기타'
+  originalText: string
+  status: CustomerRequestStatus
+  createdAt: string
+  updatedAt: string
+  resultNote?: string
 }
 
 export interface WeddingWorkflowTemplate {
@@ -174,19 +193,28 @@ export interface MakeupVendorOperationalDetails {
 
 export type VendorOperationalDetails = StudioVendorOperationalDetails | DressVendorOperationalDetails | MakeupVendorOperationalDetails
 
-export interface VendorReview {
+export type VendorInsightCategory = '업체별 최근 경험' | '담당자 성향' | '담당자 이직·퇴사' | '업체 변경사항' | '실제 진행 후기' | '업체별 유의사항'
+
+export interface VendorInsight {
   id: string
   vendorId: string
-  overallRating: number
-  responseRating: number
-  expertiseRating: number
-  punctualityRating: number
-  strengths: string
-  considerations: string
+  category: VendorInsightCategory
+  title: string
   experienceContext: string
+  staffName?: string
+  highlights: string
+  considerations: string
+  tags: string[]
   createdAt: string
+  helpfulCount: number
   authorLabel: '인증 플래너'
   experienceBand: string
+}
+
+export interface VendorCatalogGroup {
+  id: string
+  name: string
+  vendorIds: string[]
 }
 
 export interface VendorScheduleSlot {
@@ -203,7 +231,7 @@ export interface VendorSelection {
   slotId: string
 }
 
-export type RecommendationStatus = 'pending' | 'liked' | 'hold'
+export type RecommendationStatus = 'pending' | 'liked' | 'confirmed' | 'hold'
 
 export interface Recommendation {
   id: string
@@ -212,9 +240,129 @@ export interface Recommendation {
   status: RecommendationStatus
   proposedAt: string
   selectionDeadline: string
+  sourceReferenceId?: string
 }
 
-export type OrderApprovalStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'expired'
+export interface PortalOnboardingState {
+  coupleId: string
+  completedAt: string
+  skippedSteps: Array<'profile' | 'taste' | 'budget'>
+}
+
+export interface OrderReminder {
+  id: string
+  coupleId: string
+  vendorId?: string
+  title: string
+  orderDate: string
+  status: 'pending' | 'approved'
+  approvedAt?: string
+  memo: string
+}
+
+export type ReferenceCategory = '드레스' | '헤어' | '메이크업' | '스튜디오' | '웨딩홀'
+export type ReferenceSource = '검수 아카이브' | '플래너 업로드'
+
+export type VenueRegionGroup = '서울' | '경기·인천'
+export type VenueMealType = '뷔페' | '한식' | '양식' | '기타'
+export type VenueType =
+  | '일반·컨벤션예식장(어두운 홀)'
+  | '호텔예식'
+  | '채플홀'
+  | '하우스웨딩(밝은 홀)'
+  | '스몰웨딩(100명 이하)'
+  | '야외웨딩'
+  | '한옥웨딩'
+export type VenueWish = '밝은 홀' | '어두운 홀' | '높은 천고' | '원형 테이블' | '화려한 꽃 장식' | '단독홀' | '단독건물'
+export type VenueAccessKind = '지하철역' | '기차역' | '터미널'
+export type VenueAccessOption = '도보 10분 이내' | '셔틀 운행' | '대형 주차'
+
+export interface VenueAccessPoint {
+  id: string
+  name: string
+  kind: VenueAccessKind
+  mode: '도보' | '차량' | '셔틀'
+  minutes: number
+  tagLabel: string
+}
+
+export interface WeddingVenue {
+  id: string
+  vendorId: string
+  name: string
+  regionGroup: VenueRegionGroup
+  locality: string
+  address: string
+  mealTypes: VenueMealType[]
+  mealDetail: string
+  venueType: VenueType
+  wishes: VenueWish[]
+  accessPoints: VenueAccessPoint[]
+  accessOptions: VenueAccessOption[]
+  shuttleNote: string
+  parkingNote: string
+  summary: string
+  referenceImageIds: string[]
+}
+
+export interface VenueFilterState {
+  regionGroup: VenueRegionGroup | ''
+  localities: string[]
+  accessKinds: VenueAccessKind[]
+  accessPointIds: string[]
+  accessOptions: VenueAccessOption[]
+  mealTypes: VenueMealType[]
+  venueTypes: VenueType[]
+  wishes: VenueWish[]
+  query: string
+}
+
+export interface WeddingReference {
+  id: string
+  category: ReferenceCategory
+  image: string
+  vendorId?: string
+  venueId?: string
+  vendorName: string
+  account: string
+  tags: string[]
+  purpose: string
+  source: ReferenceSource
+  reviewStatus: '검수완료' | '확인필요'
+  imagePosition?: string
+}
+
+export interface ReferenceBoardItem {
+  referenceId: string
+  comment: string
+}
+
+export interface ReferenceBoard {
+  id: string
+  coupleId: string
+  title: string
+  memo: string
+  items: ReferenceBoardItem[]
+  status: '작성 중' | '공유됨'
+  updatedAt: string
+}
+
+export interface CustomerReferenceSelection {
+  referenceId: string
+  note: string
+}
+
+export interface CustomerReferenceSubmission {
+  id: string
+  coupleId: string
+  selections: CustomerReferenceSelection[]
+  preferredTags: string[]
+  categoryCounts: Partial<Record<ReferenceCategory, number>>
+  submittedAt: string
+  status: '작성 중' | '전송완료' | '재전송됨'
+}
+
+export type OrderApprovalStatus = 'draft' | 'ordered' | 'reverse-pending' | 'approved' | 'rejected' | 'expired'
 export type OrderRejectionReason = 'schedule-unavailable' | 'product-unavailable' | 'other'
 
 export interface OrderApproval {
@@ -234,6 +382,7 @@ export interface OrderApproval {
   rejectionReason?: OrderRejectionReason
   confirmedAt?: string
   respondedAt?: string
+  memo?: string
 }
 
 export type ReminderKind = 'selection-deadline' | 'order-approval-deadline' | 'confirmed-schedule' | 'task-deadline' | 'vendor-stale'
@@ -337,4 +486,5 @@ export interface CommunityPost {
   helpful: number
   verified: boolean
   tags: string[]
+  vendorId?: string
 }

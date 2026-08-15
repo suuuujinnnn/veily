@@ -1,92 +1,66 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Activity, AlertTriangle, ArrowUpRight, CalendarDays, CalendarPlus, CheckCircle2, ChevronRight, Clock3, MapPin, MessageSquareText, TrendingUp } from 'lucide-react'
+import { AlertTriangle, CalendarDays, Check, ChevronRight, Clock3, FolderHeart, Inbox, MapPin, PackageCheck, Plus } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
+import { Badge, Button, Card, Modal } from '../../components/ui'
 import { formatChecklistDate } from '../checklist/checklistUtils'
-import { Badge, Button, Card, Progress } from '../../components/ui'
-import { ReminderListItem } from '../../components/reminders/ReminderListItem'
-import { buildReminders } from '../reminders/reminderUtils'
+import { buildDashboardReminders, type DashboardReminderKind } from '../reminders/reminderUtils'
 
+const TODAY = '2026-08-05'
 const typeTone: Record<string, 'rose' | 'sage' | 'amber' | 'neutral'> = {
   드레스: 'rose', 스튜디오: 'sage', 미팅: 'amber', 메이크업: 'rose', 계약: 'neutral', 본식: 'rose',
 }
+const reminderIcon: Record<DashboardReminderKind, typeof AlertTriangle> = {
+  order: PackageCheck,
+  'customer-request': Inbox,
+  'vendor-undecided': FolderHeart,
+  'taste-unsubmitted': FolderHeart,
+  'overdue-task': AlertTriangle,
+}
 
 export function DashboardPage() {
-  const { couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds } = useDemoStore()
-  const reminders = buildReminders({ couples, events, checklist, recommendations, orderApprovals, vendors, favoriteVendorIds }, 'planner')
-  const todayEvents = events.filter((event) => event.date === '2026-08-05')
-  const remainingTasks = checklist.filter((item) => item.status !== 'completed').length
-  const waitingResponses = recommendations.filter((item) => item.status === 'pending').length
-  const activeCouples = couples.filter((couple) => couple.status !== '확정')
+  const { couples, events, checklist, recommendations, orderReminders, vendors, customerRequests, customerReferenceSubmissions, addOrderReminder, approveOrderReminder } = useDemoStore()
+  const [orderModalOpen, setOrderModalOpen] = useState(false)
+  const [orderDraft, setOrderDraft] = useState({ coupleId: couples[0]?.id ?? '', vendorId: '', title: '', orderDate: TODAY, memo: '' })
+  const todayEvents = events.filter((event) => event.date === TODAY).sort((a, b) => a.time.localeCompare(b.time))
+  const reminders = buildDashboardReminders({ couples, checklist, recommendations, orderReminders, vendors, customerRequests, customerReferenceSubmissions }, TODAY)
+  const deadlines = checklist
+    .filter((item) => item.status !== 'completed' && item.dueDate >= TODAY)
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
+    .slice(0, 6)
+  const submitOrderReminder = () => {
+    if (!orderDraft.coupleId || !orderDraft.title.trim()) return
+    addOrderReminder({ ...orderDraft, vendorId: orderDraft.vendorId || undefined, memo: orderDraft.memo.trim() })
+    setOrderDraft({ coupleId: orderDraft.coupleId, vendorId: '', title: '', orderDate: TODAY, memo: '' })
+    setOrderModalOpen(false)
+  }
 
-  return (
-    <div className="dashboard-page page-stack">
-      <section className="dashboard-command">
-        <div className="dashboard-command__top">
-          <div><p className="eyebrow">PLANNER WORKSPACE · 2026.08.05</p><h1>운영 대시보드</h1><p>오늘 일정과 고객 응답, 마감 업무를 기준으로 정리했습니다.</p></div>
-          <div className="dashboard-command__actions"><span><i /> 모든 데이터 동기화됨</span><Link to="/calendar"><Button icon={<CalendarPlus size={16} />}>일정 등록</Button></Link></div>
-        </div>
-        <div className="dashboard-metrics">
-          <article><span className="metric-icon"><CalendarDays size={18} /></span><div><small>오늘 일정</small><strong>{todayEvents.length}<em>건</em></strong><p>다음 일정 10:30</p></div></article>
-          <article><span className="metric-icon"><AlertTriangle size={18} /></span><div><small>확인 필요</small><strong>{reminders.length}<em>건</em></strong><p>발주·선택 기한 중심</p></div></article>
-          <article><span className="metric-icon"><MessageSquareText size={18} /></span><div><small>고객 응답 대기</small><strong>{waitingResponses + 2}<em>건</em></strong><p>어제보다 2건 감소</p></div></article>
-          <article><span className="metric-icon"><CheckCircle2 size={18} /></span><div><small>이번 주 완료</small><strong>18<em>건</em></strong><p><TrendingUp size={11} /> 완료율 81%</p></div></article>
-        </div>
-      </section>
+  return <div className="dashboard-page dashboard-page--focused">
+    <header className="dashboard-welcome">
+      <div className="dashboard-welcome__date"><strong>05</strong><span>AUG<br />WED</span></div>
+      <div className="dashboard-welcome__copy"><p>2026년 8월 5일 수요일</p><h1>좋은 아침이에요, 이지윤 플래너님.</h1><span>오늘 처리할 흐름을 우선순위대로 정리했습니다.</span></div>
+      <div className="dashboard-welcome__counts"><span><i>{todayEvents.length}</i> 오늘 일정</span><span><i>{reminders.length}</i> 확인 필요</span><span><i>{deadlines.length}</i> 다가오는 마감</span></div>
+    </header>
 
-      <section className="dashboard-primary">
-        <div className="dashboard-primary__heading"><div><p className="eyebrow">Today · August 05</p><h2>오늘 일정</h2></div><Link to="/calendar">전체 일정 <ChevronRight size={15} /></Link></div>
-        <div className="dashboard-primary-grid">
-          <Card className="timeline-card" padding="none">
-            {todayEvents.map((event, index) => {
-              const couple = couples.find((item) => item.id === event.coupleId)
-              return (
-                <div className="timeline-row" key={event.id}>
-                  <div className="timeline-time"><strong>{event.time}</strong><span>{event.endTime}</span></div>
-                  <span className={`timeline-dot timeline-dot--${index + 1}`} />
-                  <div className="timeline-info"><div><Badge tone={typeTone[event.type]}>{event.type}</Badge><span className="muted">{couple?.partners}</span></div><h3>{event.title}</h3><p><MapPin size={13} /> {event.location}</p></div>
-                  {event.travelMinutes && <div className="travel-chip"><Clock3 size={14} /><span>이동 {event.travelMinutes}분</span></div>}
-                </div>
-              )
-            })}
-          </Card>
-          <Card className="dashboard-todo">
-            <div className="dashboard-card-heading"><div><p className="eyebrow">TODO</p><h2>오늘 할 일</h2></div><Badge tone="amber">{reminders.length}건</Badge></div>
-            <div className="dashboard-todo-list">
-              {reminders.slice(0, 3).map((reminder) => <ReminderListItem key={reminder.id} reminder={reminder} compact />)}
-              {!reminders.length && <p className="dashboard-todo-empty">지금 처리할 알림이 없습니다.</p>}
-            </div>
-            <Link className="dashboard-todo__all" to="/couples">고객별 업무 보기 <ArrowUpRight size={14} /></Link>
-          </Card>
-        </div>
-      </section>
+    <section className="dashboard-focus-grid">
+      <Card padding="none" className="dashboard-focus dashboard-focus--schedule">
+        <header><div><p className="eyebrow">Today's schedule</p><h2>오늘 일정</h2></div><Link to="/calendar">전체 캘린더 <ChevronRight size={14} /></Link></header>
+        <div className="dashboard-today-list">{todayEvents.length ? todayEvents.map((event) => {
+          const couple = couples.find((item) => item.id === event.coupleId)
+          return <Link to="/calendar" className="dashboard-today-row" key={event.id}><time><Clock3 size={12} /><strong>{event.time}</strong><span>{event.endTime}</span></time><div><div><Badge tone={typeTone[event.type] ?? 'neutral'}>{event.type}</Badge><span>{couple?.partners ?? '개인 일정'}</span></div><h3>{event.title}</h3><p><MapPin size={12} /> {event.location}</p></div><ChevronRight size={15} /></Link>
+        }) : <div className="dashboard-focus-empty"><CalendarDays size={20} /><span>오늘 등록된 일정이 없습니다.</span></div>}</div>
+      </Card>
 
-      <section className="section-block">
-        <div className="section-heading"><div><p className="eyebrow">Active clients</p><h2>진행 중인 담당 커플</h2></div><Link to="/couples">전체 커플 <ChevronRight size={15} /></Link></div>
-        <div className="couple-grid couple-grid--dashboard">
-          {activeCouples.map((couple) => (
-            <Link key={couple.id} to={`/couples/${couple.id}`} className={`couple-card couple-card--${couple.tone}`}>
-              <div className="couple-card__top"><span className="monogram">{couple.initials}</span><Badge tone={couple.status === '집중관리' ? 'rose' : couple.status === '확정' ? 'sage' : 'neutral'}>{couple.status}</Badge></div>
-              <h3>{couple.partners}</h3><p>{couple.venue}</p><div className="couple-card__date"><span>WEDDING DAY</span><strong>{couple.weddingDate.replaceAll('-', '. ')}</strong></div>
-              <Progress value={couple.progress} label={`${couple.progress}%`} />
-            </Link>
-          ))}
-        </div>
-      </section>
+      <Card padding="none" className="dashboard-focus dashboard-focus--reminder">
+        <header><div><p className="eyebrow">Priority inbox</p><h2>REMINDER</h2></div><div className="dashboard-reminder-actions"><Badge tone="rose">{reminders.length}건</Badge><Button size="sm" variant="secondary" icon={<Plus size={13} />} onClick={() => setOrderModalOpen(true)}>발주 추가</Button></div></header>
+        <div className="dashboard-reminder-list">{reminders.length ? reminders.slice(0, 8).map((reminder) => { const Icon = reminderIcon[reminder.kind]; return reminder.kind === 'order' ? <div className={`dashboard-reminder-row dashboard-reminder-row--order is-${reminder.urgency}`} key={reminder.id}><span><Icon size={15} /></span><div><strong>{reminder.title}</strong><p>{reminder.message}</p></div><em>{reminder.meta}</em><button className="order-reminder-approve" onClick={() => reminder.sourceId && approveOrderReminder(reminder.sourceId)}><Check size={13} /> 승인</button></div> : <Link className={`dashboard-reminder-row is-${reminder.urgency}`} to={reminder.href} key={reminder.id}><span><Icon size={15} /></span><div><strong>{reminder.title}</strong><p>{reminder.message}</p></div><em>{reminder.meta}</em></Link> }) : <div className="dashboard-focus-empty"><span>처리할 리마인더가 없습니다.</span></div>}</div>
+      </Card>
 
-      <section className="dashboard-secondary-grid">
-        <Card className="dashboard-workload">
-          <div className="dashboard-card-heading"><div><p className="eyebrow">Weekly capacity</p><h2>이번 주 업무량</h2></div><span className="workload-total">32 / 40h</span></div>
-          <div className="workload-chart">
-            {[['월',62],['화',84],['수',78],['목',46],['금',70],['토',35]].map(([day, value]) => <div key={day}><span><i style={{ height: `${value}%` }} /></span><small>{day}</small></div>)}
-          </div>
-          <div className="workload-footer"><Activity size={15} /><div><strong>수요일 14:00–18:00 집중 구간</strong><span>이동 포함 3개 일정이 연속되어 있습니다.</span></div></div>
-        </Card>
-        <Card className="dashboard-deadlines">
-          <div className="dashboard-card-heading"><div><p className="eyebrow">Deadlines</p><h2>다가오는 마감</h2></div><span>{remainingTasks}개 남음</span></div>
-          {checklist.filter((item) => item.status !== 'completed').slice(0, 4).map((task) => <div className="deadline-row" key={task.id}><span>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</span><div><strong>{task.title}</strong><small>{task.kind === 'decision' ? '결정 필요' : task.category} · {task.owner}</small></div></div>)}
-          <Link to="/couples/c1">체크리스트 관리 <ArrowUpRight size={14} /></Link>
-        </Card>
-      </section>
-    </div>
-  )
+      <Card padding="none" className="dashboard-focus dashboard-focus--deadline">
+        <header><div><p className="eyebrow">Upcoming deadlines</p><h2>다가오는 마감</h2></div><Badge tone="neutral">{deadlines.length}개</Badge></header>
+        <div className="dashboard-deadline-list">{deadlines.map((task) => <Link to={`/couples/${task.coupleId}?tab=timeline`} key={task.id}><time>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</time><div><strong>{task.title}</strong><span>{couples.find((item) => item.id === task.coupleId)?.partners} · {task.kind === 'decision' ? '결정 필요' : task.category}</span></div><ChevronRight size={14} /></Link>)}</div>
+      </Card>
+    </section>
+    <Modal open={orderModalOpen} onClose={() => setOrderModalOpen(false)} eyebrow="Manual reminder" title="발주 리마인더 추가" footer={<><Button variant="ghost" onClick={() => setOrderModalOpen(false)}>취소</Button><Button icon={<Check size={14} />} onClick={submitOrderReminder}>미승인으로 등록</Button></>}><div className="order-reminder-form"><div className="order-reminder-form__notice"><PackageCheck size={18} /><div><strong>실제 전산 발주가 아닌 내부 확인용 리마인더예요.</strong><span>등록 후 홈에서 직접 승인 처리할 수 있습니다.</span></div></div><label><span>커플 *</span><select value={orderDraft.coupleId} onChange={(event) => setOrderDraft({ ...orderDraft, coupleId: event.target.value })}>{couples.map((couple) => <option value={couple.id} key={couple.id}>{couple.partners}</option>)}</select></label><label><span>업체 · 선택</span><select value={orderDraft.vendorId} onChange={(event) => setOrderDraft({ ...orderDraft, vendorId: event.target.value })}><option value="">업체 미지정</option>{vendors.map((vendor) => <option value={vendor.id} key={vendor.id}>{vendor.name} · {vendor.category}</option>)}</select></label><label><span>발주·확인 항목 *</span><input value={orderDraft.title} onChange={(event) => setOrderDraft({ ...orderDraft, title: event.target.value })} placeholder="예: 본식 드레스 피팅 발주" /></label><label><span>발주일</span><input type="date" value={orderDraft.orderDate} onChange={(event) => setOrderDraft({ ...orderDraft, orderDate: event.target.value })} /></label><label className="wide"><span>메모</span><textarea rows={3} value={orderDraft.memo} onChange={(event) => setOrderDraft({ ...orderDraft, memo: event.target.value })} placeholder="확인할 구성이나 일정 등을 적어주세요." /></label></div></Modal>
+  </div>
 }

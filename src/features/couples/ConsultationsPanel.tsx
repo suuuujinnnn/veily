@@ -1,18 +1,22 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
-import { CalendarDays, CalendarPlus, CheckCircle2, ChevronRight, Heart, MessageCircle, MessageSquareText, Plus, Sparkles, Target, WalletCards } from 'lucide-react'
+import { CalendarDays, CalendarPlus, CheckCircle2, ChevronRight, Heart, Images, MessageCircle, MessageSquareText, Plus, Sparkles, Target, WalletCards } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Modal } from '../../components/ui'
 import type { Consultation } from '../../types'
+import { weddingReferences } from '../../data/weddingReferenceData'
 
 const toList = (value: string) => value.split(/\n|,/).map((item) => item.trim()).filter(Boolean)
 const filled = (value: string) => value || '아직 작성하지 않음'
 
-export function ConsultationsPanel({ coupleId }: { coupleId: string }) {
-  const { couples, consultations, consultationCards, addConsultation, addEvent } = useDemoStore()
+export function ConsultationsPanel({ coupleId, embedded = false }: { coupleId: string; embedded?: boolean }) {
+  const { couples, consultations, consultationCards, customerReferenceSubmissions, uploadedReferences, addConsultation, addEvent } = useDemoStore()
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
   const preferenceCard = consultationCards.find((item) => item.coupleId === coupleId)
   const items = consultations.filter((item) => item.coupleId === coupleId)
+  const customerSubmission = customerReferenceSubmissions.find((item) => item.coupleId === coupleId)
+  const referenceLibrary = [...uploadedReferences, ...weddingReferences]
+  const customerReferences = customerSubmission?.selections.map((selection) => ({ selection, reference: referenceLibrary.find((item) => item.id === selection.referenceId) })).filter((item) => item.reference) ?? []
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState('2026-08-10T19:00')
   const [originalText, setOriginalText] = useState('')
@@ -37,8 +41,15 @@ export function ConsultationsPanel({ coupleId }: { coupleId: string }) {
 
   const tasteTags = preferenceCard ? [preferenceCard.studioMood, preferenceCard.dressMood, preferenceCard.makeupMood].filter(Boolean) : []
 
-  return <div className="consultation-workspace">
+  return <div className={`consultation-workspace ${embedded ? 'consultation-workspace--embedded' : ''}`}>
     <div className="feature-panel-heading"><div><p className="eyebrow">Consultation workspace</p><h2>상담</h2><p>고객 취향 카드와 상담 기록을 한곳에서 이어서 관리합니다.</p></div><div className="heading-actions"><Link to={`/consultation/${coupleId}`}><Button variant="secondary" icon={<Heart size={16} />}>{preferenceCard ? '취향 카드 수정' : '취향 찾기 시작'}</Button></Link><Button icon={<Plus size={16} />} onClick={() => setOpen(true)}>상담 추가</Button></div></div>
+
+    {customerSubmission && <Card padding="none" className="customer-taste-inbox">
+      <header><div><span><Images size={18} /></span><div><p className="eyebrow">Customer taste references</p><h3>고객이 보낸 취향 레퍼런스</h3><small>{new Date(customerSubmission.submittedAt).toLocaleString('ko-KR', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} 수신</small></div></div><Badge tone="sage">{customerSubmission.status}</Badge></header>
+      <div className="customer-taste-inbox__summary"><div><span>자주 고른 취향</span><p>{customerSubmission.preferredTags.map((tag) => <em key={tag}>#{tag}</em>)}</p></div><div><span>분야별 선택</span><p>{Object.entries(customerSubmission.categoryCounts).map(([categoryName, count]) => <em key={categoryName}>{categoryName} {count}장</em>)}</p></div></div>
+      <div className="customer-taste-inbox__grid">{customerReferences.map(({ selection, reference }) => reference && <article key={reference.id}><img src={reference.image} style={{ objectPosition: reference.imagePosition }} alt="" /><div><span>{reference.category} · {reference.purpose}</span><h4>{reference.vendorName}</h4><small>@{reference.account}</small><p>{reference.tags.slice(0, 3).map((tag) => `#${tag}`).join(' ')}</p>{selection.note && <blockquote>“{selection.note}”</blockquote>}</div></article>)}</div>
+      <footer><span><CheckCircle2 size={14} /> 이 자료를 다음 상담과 업체 추천에 활용하세요.</span><Link to={`/vendors?coupleId=${coupleId}`}>레퍼런스 탐색 열기 <ChevronRight size={13} /></Link></footer>
+    </Card>}
 
     {preferenceCard ? <Card padding="none" className="couple-consultation-card">
       <header className="couple-consultation-card__header">
