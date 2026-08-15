@@ -21,7 +21,7 @@ const reminderIcon: Record<DashboardReminderKind, typeof AlertTriangle> = {
 export function DashboardPage() {
   const { couples, events, checklist, recommendations, orderReminders, vendors, customerRequests, customerReferenceSubmissions, addOrderReminder, approveOrderReminder } = useDemoStore()
   const [orderModalOpen, setOrderModalOpen] = useState(false)
-  const [orderDraft, setOrderDraft] = useState({ coupleId: couples[0]?.id ?? '', vendorId: '', title: '', orderDate: TODAY, memo: '' })
+  const [orderDraft, setOrderDraft] = useState({ coupleId: couples[0]?.id ?? '', orderDate: TODAY, memo: '' })
   const todayEvents = events.filter((event) => event.date === TODAY).sort((a, b) => a.time.localeCompare(b.time))
   const reminders = buildDashboardReminders({ couples, checklist, recommendations, orderReminders, vendors, customerRequests, customerReferenceSubmissions }, TODAY)
   const deadlines = checklist
@@ -29,9 +29,9 @@ export function DashboardPage() {
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
     .slice(0, 6)
   const submitOrderReminder = () => {
-    if (!orderDraft.coupleId || !orderDraft.title.trim()) return
-    addOrderReminder({ ...orderDraft, vendorId: orderDraft.vendorId || undefined, memo: orderDraft.memo.trim() })
-    setOrderDraft({ coupleId: orderDraft.coupleId, vendorId: '', title: '', orderDate: TODAY, memo: '' })
+    if (!orderDraft.coupleId) return
+    addOrderReminder({ ...orderDraft, vendorId: undefined, title: '발주 승인 확인', memo: orderDraft.memo.trim() })
+    setOrderDraft({ coupleId: orderDraft.coupleId, orderDate: TODAY, memo: '' })
     setOrderModalOpen(false)
   }
 
@@ -61,6 +61,6 @@ export function DashboardPage() {
         <div className="dashboard-deadline-list">{deadlines.map((task) => <Link to={`/couples/${task.coupleId}?tab=timeline`} key={task.id}><time>{formatChecklistDate(task.dueDate).replace('월 ', '/').replace('일', '')}</time><div><strong>{task.title}</strong><span>{couples.find((item) => item.id === task.coupleId)?.partners} · {task.kind === 'decision' ? '결정 필요' : task.category}</span></div><ChevronRight size={14} /></Link>)}</div>
       </Card>
     </section>
-    <Modal open={orderModalOpen} onClose={() => setOrderModalOpen(false)} eyebrow="Manual reminder" title="발주 리마인더 추가" footer={<><Button variant="ghost" onClick={() => setOrderModalOpen(false)}>취소</Button><Button icon={<Check size={14} />} onClick={submitOrderReminder}>미승인으로 등록</Button></>}><div className="order-reminder-form"><div className="order-reminder-form__notice"><PackageCheck size={18} /><div><strong>실제 전산 발주가 아닌 내부 확인용 리마인더예요.</strong><span>등록 후 홈에서 직접 승인 처리할 수 있습니다.</span></div></div><label><span>커플 *</span><select value={orderDraft.coupleId} onChange={(event) => setOrderDraft({ ...orderDraft, coupleId: event.target.value })}>{couples.map((couple) => <option value={couple.id} key={couple.id}>{couple.partners}</option>)}</select></label><label><span>업체 · 선택</span><select value={orderDraft.vendorId} onChange={(event) => setOrderDraft({ ...orderDraft, vendorId: event.target.value })}><option value="">업체 미지정</option>{vendors.map((vendor) => <option value={vendor.id} key={vendor.id}>{vendor.name} · {vendor.category}</option>)}</select></label><label><span>발주·확인 항목 *</span><input value={orderDraft.title} onChange={(event) => setOrderDraft({ ...orderDraft, title: event.target.value })} placeholder="예: 본식 드레스 피팅 발주" /></label><label><span>발주일</span><input type="date" value={orderDraft.orderDate} onChange={(event) => setOrderDraft({ ...orderDraft, orderDate: event.target.value })} /></label><label className="wide"><span>메모</span><textarea rows={3} value={orderDraft.memo} onChange={(event) => setOrderDraft({ ...orderDraft, memo: event.target.value })} placeholder="확인할 구성이나 일정 등을 적어주세요." /></label></div></Modal>
+    <Modal open={orderModalOpen} onClose={() => setOrderModalOpen(false)} eyebrow="Manual reminder" title="발주 리마인더 추가" footer={<><Button variant="ghost" onClick={() => setOrderModalOpen(false)}>취소</Button><Button icon={<Check size={14} />} onClick={submitOrderReminder}>미승인으로 등록</Button></>}><div className="order-reminder-form order-reminder-form--simple"><div className="order-reminder-form__notice"><PackageCheck size={18} /><div><strong>등록 즉시 미승인 상태로 표시됩니다.</strong><span>발주 확인이 끝나면 홈 목록에서 승인 버튼을 눌러 완료하세요.</span></div></div><label><span>커플</span><select value={orderDraft.coupleId} onChange={(event) => setOrderDraft({ ...orderDraft, coupleId: event.target.value })}>{couples.map((couple) => <option value={couple.id} key={couple.id}>{couple.partners}</option>)}</select></label><label><span>발주일</span><input type="date" value={orderDraft.orderDate} onChange={(event) => setOrderDraft({ ...orderDraft, orderDate: event.target.value })} /></label><label className="wide"><span>기타 · 메모</span><textarea rows={4} value={orderDraft.memo} onChange={(event) => setOrderDraft({ ...orderDraft, memo: event.target.value })} placeholder="추가로 기억할 내용을 적어주세요." /></label></div></Modal>
   </div>
 }

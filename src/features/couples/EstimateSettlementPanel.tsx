@@ -1,7 +1,8 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
-import { AlertTriangle, FileText, Landmark, Pencil, Plus, ReceiptText, Target, Trash2, TrendingDown, TrendingUp, WalletCards } from 'lucide-react'
+import { AlertTriangle, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Badge, Button, Card, Modal } from '../../components/ui'
+import { Badge, Button, Modal } from '../../components/ui'
+import { BudgetPlanSection } from '../../components/budget/BudgetPlanSection'
 import type { BudgetCategory, BudgetItem, Contract, Payment } from '../../types'
 
 const won = (value: number) => `${value.toLocaleString('ko-KR')}원`
@@ -15,8 +16,6 @@ export function EstimateSettlementPanel({ coupleId }: { coupleId: string }) {
   const coupleContracts = store.contracts.filter((item) => item.coupleId === coupleId)
   const couplePayments = store.payments.filter((item) => item.coupleId === coupleId)
   const budgetItems = store.budgetItems.filter((item) => item.coupleId === coupleId)
-  const target = store.budgetPlans.find((item) => item.coupleId === coupleId)?.targetAmount ?? 0
-  const planned = budgetItems.reduce((sum, item) => sum + item.plannedAmount, 0)
   const contracted = coupleContracts.reduce((sum, item) => sum + item.totalPrice, 0)
   const paid = couplePayments.reduce((sum, item) => sum + (item.type === '환불' ? -item.amount : item.amount), 0)
   const commission = coupleContracts.reduce((sum, item) => sum + item.commission, 0)
@@ -38,23 +37,7 @@ export function EstimateSettlementPanel({ coupleId }: { coupleId: string }) {
   return <>
     <div className="feature-panel-heading"><div><p className="eyebrow">Budget, estimate & settlement</p><h2>예산·견적·정산</h2><p>처음 세운 계획부터 계약과 실제 입금까지 한 흐름으로 관리합니다.</p></div><div className="heading-actions"><Button variant="secondary" icon={<Plus size={16} />} onClick={() => editPayment()}>입금 추가</Button><Button icon={<Plus size={16} />} onClick={() => editContract()}>계약 추가</Button></div></div>
 
-    <section className="budget-planner" aria-labelledby="budget-plan-title">
-      <div className="budget-planner__head"><div><p className="eyebrow">Planning budget</p><h2 id="budget-plan-title">계획 예산</h2><p>국내 웨딩 항목별 계획 금액과 연결된 계약 금액을 비교합니다.</p></div><label className="target-budget"><span><Target size={15} /> 목표 예산</span><div><input type="number" min="0" step="100000" value={target} onChange={(event) => store.updateBudgetPlan({ coupleId, targetAmount: Number(event.target.value) })} /><em>원</em></div></label></div>
-      <div className="finance-metrics finance-metrics--six">
-        <Metric icon={<Target />} label="목표 예산" value={won(target)} />
-        <Metric icon={<FileText />} label="항목별 계획" value={won(planned)} />
-        <Metric icon={<ReceiptText />} label="계약 합계" value={won(contracted)} />
-        <Metric icon={contracted > planned ? <TrendingUp /> : <TrendingDown />} label="계획 대비" value={`${contracted > planned ? '+' : ''}${won(contracted - planned)}`} tone={contracted > planned ? 'danger' : 'safe'} />
-        <Metric icon={<WalletCards />} label="입금" value={won(paid)} />
-        <Metric icon={<Landmark />} label="남은 계약 잔금" value={won(Math.max(0, contracted - paid))} />
-      </div>
-      <div className="budget-table-wrap"><table className="budget-table"><thead><tr><th>분야·품목</th><th>계획 금액</th><th>계약 금액</th><th>차이</th><th>메모</th><th>관리</th></tr></thead><tbody>{budgetItems.map((item) => {
-        const actual = coupleContracts.filter((contract) => contract.budgetItemId === item.id).reduce((sum, contract) => sum + contract.totalPrice, 0)
-        const difference = item.plannedAmount - actual
-        return <tr key={item.id}><td><Badge tone="neutral">{item.category}</Badge><strong>{item.title}</strong></td><td>{won(item.plannedAmount)}</td><td><strong>{won(actual)}</strong></td><td><span className={difference < 0 ? 'budget-over' : 'budget-safe'}>{difference < 0 ? `${won(Math.abs(difference))} 초과` : `${won(difference)} 여유`}</span></td><td>{item.memo || '—'}</td><td><RowActions onEdit={() => editBudget(item)} onDelete={() => { if (window.confirm('이 예산 항목을 삭제할까요? 연결된 계약은 미분류로 전환됩니다.')) store.deleteBudgetItem(item.id) }} /></td></tr>
-      })}{!budgetItems.length && <tr><td colSpan={6} className="table-empty">첫 예산 항목을 추가해 계획을 시작하세요.</td></tr>}</tbody></table></div>
-      <Button size="sm" variant="secondary" icon={<Plus size={15} />} onClick={() => editBudget()}>예산 항목 추가</Button>
-    </section>
+    <BudgetPlanSection coupleId={coupleId} onAdd={() => editBudget()} onEdit={editBudget} onDelete={(item) => { if (window.confirm('이 예산 항목을 삭제할까요? 연결된 계약은 미분류로 전환됩니다.')) store.deleteBudgetItem(item.id) }} />
 
     {unclassified.length > 0 && <div className="unclassified-alert" role="status"><AlertTriangle size={18} /><div><strong>미분류 계약 {unclassified.length}건</strong><span>계약 수정에서 예산 항목을 연결하면 분야별 실제 비용에 반영됩니다. 계약 합계에는 이미 포함되어 있습니다.</span></div></div>}
     <FinanceTable
@@ -77,7 +60,6 @@ export function EstimateSettlementPanel({ coupleId }: { coupleId: string }) {
   </>
 }
 
-function Metric({ icon, label, value, tone }: { icon: ReactNode; label: string; value: string; tone?: 'danger' | 'safe' }) { return <Card className={tone ? `metric-${tone}` : ''}>{icon}<span>{label}</span><strong>{value}</strong></Card> }
 function FinanceTable({ title, label, headings, rows, summary }: { title: string; label: string; headings: string[]; rows: ReactNode; summary?: ReactNode }) { return <section className="finance-section"><div className="section-heading section-heading--compact"><div><p className="eyebrow">{label}</p><h2>{title}</h2></div></div><div className="table-scroll"><table className="data-table finance-table"><thead><tr>{headings.map((heading) => <th key={heading}>{heading}</th>)}</tr></thead><tbody>{rows}</tbody></table></div>{summary}</section> }
 function RowActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) { return <div className="row-actions"><button onClick={onEdit} aria-label="수정"><Pencil size={15} /></button><button onClick={onDelete} aria-label="삭제"><Trash2 size={15} /></button></div> }
 

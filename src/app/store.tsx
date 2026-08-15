@@ -148,7 +148,18 @@ export const initialState: DemoState = {
   ],
   referenceBoards: initialReferenceBoards,
   uploadedReferences: [],
-  customerReferenceSubmissions: [],
+  customerReferenceSubmissions: [{
+    id: 'customer-ref-c1',
+    coupleId: 'c1',
+    selections: [
+      { referenceId: 'ref-드레스-vp-d4-1', note: '깨끗한 실크와 단정한 탑이 좋아요.' },
+      { referenceId: 'ref-드레스-vp-d2-1', note: '풍성한 실루엣도 함께 보고 싶어요.' },
+    ],
+    preferredTags: ['미카도 실크', '일자탑', 'A라인'],
+    categoryCounts: { 드레스: 2 },
+    submittedAt: '2026-08-05T10:30:00+09:00',
+    status: '전송완료',
+  }],
   customerRequests: initialCustomerRequests,
 }
 

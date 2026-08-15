@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { ArrowDown, ArrowLeft, ArrowUp, Check, Heart, ImagePlus, MapPin, Search, Send, Sparkles, Trash2, UploadCloud, WandSparkles } from 'lucide-react'
+import { ArrowDown, ArrowUp, Check, Heart, ImagePlus, MapPin, Search, Send, Trash2, UploadCloud, WandSparkles } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Toast } from '../../components/ui'
 import { getReferenceCategory, referenceCategories } from '../../data/referenceKeywordData'
@@ -8,8 +8,6 @@ import { emptyVenueFilterState, filterWeddingVenues, getVenuePrimaryReference } 
 import { VenueCard } from '../../components/venues/VenueCard'
 import { VenueFilterPanel } from '../../components/venues/VenueFilterPanel'
 import type { CustomerReferenceSelection, ReferenceCategory, VenueFilterState, WeddingReference } from '../../types'
-
-type StartMode = 'intro' | 'inspire' | 'search'
 
 function matchesGroups(category: ReferenceCategory, tags: string[], selected: string[]) {
   if (!selected.length) return true
@@ -22,7 +20,6 @@ function matchesGroups(category: ReferenceCategory, tags: string[], selected: st
 export function ClientTasteDiscovery({ coupleId }: { coupleId: string }) {
   const { uploadedReferences, customerReferenceSubmissions, saveCustomerReferenceSubmission } = useDemoStore()
   const existing = customerReferenceSubmissions.find((item) => item.coupleId === coupleId)
-  const [mode, setMode] = useState<StartMode>(existing ? 'inspire' : 'intro')
   const [category, setCategory] = useState<ReferenceCategory>('드레스')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [query, setQuery] = useState('')
@@ -37,9 +34,9 @@ export function ClientTasteDiscovery({ coupleId }: { coupleId: string }) {
     const tokens = query.trim().toLocaleLowerCase('ko').split(/\s+/).filter(Boolean)
     return library
       .filter((item) => item.category === category)
-      .filter((item) => mode === 'inspire' || matchesGroups(category, item.tags, selectedTags))
+      .filter((item) => matchesGroups(category, item.tags, selectedTags))
       .filter((item) => !tokens.length || tokens.every((token) => [item.vendorName, ...item.tags].join(' ').toLocaleLowerCase('ko').includes(token)))
-  }, [category, library, mode, query, selectedTags])
+  }, [category, library, query, selectedTags])
   const venueResults = useMemo(() => filterWeddingVenues(venueFilters), [venueFilters])
   const selectedReferences = selections
     .map((selection) => ({ selection, reference: library.find((item) => item.id === selection.referenceId) }))
@@ -85,20 +82,12 @@ export function ClientTasteDiscovery({ coupleId }: { coupleId: string }) {
     reader.readAsDataURL(file)
   }
 
-  if (mode === 'intro') return <section className="portal-subpage portal-taste-page">
-    <div className="portal-subpage__intro taste-page-intro"><Badge tone="rose">MY TASTE</Badge><h2>마음에 드는 장면부터 골라보세요</h2><p>정확한 이름을 몰라도 괜찮아요. 선택한 이미지의 공통점을 플래너에게 전달해 드려요.</p></div>
-    <div className="taste-start-grid">
-      <Card padding="lg"><span className="taste-option-icon"><Sparkles size={21} /></span><Badge tone="neutral">가볍게 시작</Badge><h3>이미지를 보며 발견할래요</h3><p>필터 없이 사진을 둘러보고 마음이 가는 장면을 선택합니다.</p><Button icon={<Heart size={15} />} onClick={() => setMode('inspire')}>이미지 둘러보기</Button></Card>
-      <Card padding="lg"><span className="taste-option-icon"><Search size={21} /></span><Badge tone="neutral">조건이 있다면</Badge><h3>원하는 조건으로 찾을래요</h3><p>소재, 공간, 분위기 같은 조건을 조합해 결과를 좁힙니다.</p><Button variant="secondary" icon={<Search size={15} />} onClick={() => setMode('search')}>조건으로 찾기</Button></Card>
-    </div>
-  </section>
-
   return <section className="portal-subpage portal-taste-page">
-    <header className="taste-workspace-header"><div><Button size="sm" variant="ghost" icon={<ArrowLeft size={14} />} onClick={() => setMode('intro')}>처음으로</Button><p className="eyebrow">My wedding taste</p><h2>{mode === 'inspire' ? '마음이 가는 레퍼런스' : '조건으로 찾는 레퍼런스'}</h2><span>{mode === 'inspire' ? '좋아 보이는 이미지를 편하게 골라보세요.' : '여러 조건을 조합해 원하는 분위기를 찾아보세요.'}</span></div><div className="taste-mode-switch"><Button size="sm" variant={mode === 'inspire' ? 'primary' : 'ghost'} icon={<Sparkles size={14} />} onClick={() => setMode('inspire')}>둘러보기</Button><Button size="sm" variant={mode === 'search' ? 'primary' : 'ghost'} icon={<Search size={14} />} onClick={() => setMode('search')}>조건 찾기</Button></div></header>
+    <header className="taste-workspace-header"><div><p className="eyebrow">My wedding taste</p><h2>내 취향 찾기</h2><span>분야와 조건을 선택하고 마음에 드는 레퍼런스를 골라보세요.</span></div></header>
 
     <Card padding="none" className="taste-filter-card">
       <nav className="taste-category-tabs" aria-label="레퍼런스 분야">{referenceCategories.map((item) => <button className={category === item.label ? 'active' : ''} onClick={() => { setCategory(item.label); setSelectedTags([]); setQuery('') }} key={item.label}><span>{item.englishLabel}</span><strong>{item.label}</strong></button>)}</nav>
-      {category !== '웨딩홀' && mode === 'search' && <div className="taste-search-tools"><label className="taste-search-input"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`${category} 업체명·조건 검색`} />{(query || selectedTags.length > 0) && <button onClick={() => { setQuery(''); setSelectedTags([]) }}>초기화</button>}</label><div className="taste-filter-groups">{getReferenceCategory(category).groups.map((group) => <div key={group.label}><span>{group.label}</span><div>{group.keywords.map((tag) => <button className={selectedTags.includes(tag) ? 'active' : ''} onClick={() => setSelectedTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag])} key={tag}>{selectedTags.includes(tag) && <Check size={11} />}{tag}</button>)}</div></div>)}</div><div className="taste-upload"><div>{uploadedPreview ? <img src={uploadedPreview} alt="분석한 레퍼런스" /> : <UploadCloud size={19} />}<span><strong>가지고 있는 사진으로 찾기</strong><small>사진에서 후보 키워드를 추출합니다.</small></span></div><Button size="sm" variant="secondary" icon={<ImagePlus size={14} />} onClick={() => fileRef.current?.click()}>이미지 선택</Button><input ref={fileRef} hidden type="file" accept="image/*" onChange={(event) => analyzeUpload(event.target.files?.[0])} /></div></div>}
+      {category !== '웨딩홀' && <div className="taste-search-tools"><label className="taste-search-input"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`${category} 업체명·조건 검색`} />{(query || selectedTags.length > 0) && <button onClick={() => { setQuery(''); setSelectedTags([]) }}>초기화</button>}</label><div className="taste-filter-groups">{getReferenceCategory(category).groups.map((group) => <div key={group.label}><span>{group.label}</span><div>{group.keywords.map((tag) => <button className={selectedTags.includes(tag) ? 'active' : ''} onClick={() => setSelectedTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag])} key={tag}>{selectedTags.includes(tag) && <Check size={11} />}{tag}</button>)}</div></div>)}</div><div className="taste-upload"><div>{uploadedPreview ? <img src={uploadedPreview} alt="분석한 레퍼런스" /> : <UploadCloud size={19} />}<span><strong>가지고 있는 사진으로 찾기</strong><small>사진에서 후보 키워드를 추출합니다.</small></span></div><Button size="sm" variant="secondary" icon={<ImagePlus size={14} />} onClick={() => fileRef.current?.click()}>이미지 선택</Button><input ref={fileRef} hidden type="file" accept="image/*" onChange={(event) => analyzeUpload(event.target.files?.[0])} /></div></div>}
     </Card>
     {category === '웨딩홀' && <VenueFilterPanel audience="client" value={venueFilters} resultCount={venueResults.length} onChange={setVenueFilters} />}
 

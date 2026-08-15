@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Building2, Check, ChevronDown, ChevronUp, ExternalLink, ImagePlus, RotateCcw, Search, Send, UploadCloud, X } from 'lucide-react'
+import { Building2, Check, ChevronDown, ChevronUp, ExternalLink, Heart, ImagePlus, RotateCcw, Search, Send, UploadCloud, X } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card } from '../../components/ui'
 import { VenueCard } from '../../components/venues/VenueCard'
@@ -22,7 +22,7 @@ export function VendorsPage() {
   const store = useDemoStore()
   const view = searchParams.get('view') === 'database' ? 'database' : 'references'
   const [category, setCategory] = useState<ReferenceCategory>('드레스')
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(['미카도 실크', '일자탑'])
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [query, setQuery] = useState('')
   const [venueFilters, setVenueFilters] = useState<VenueFilterState>(emptyVenueFilterState)
   const [coupleId, setCoupleId] = useState(() => searchParams.get('coupleId') ?? 'c1')
@@ -32,6 +32,13 @@ export function VendorsPage() {
   const fileRef = useRef<HTMLInputElement>(null)
   const couple = store.couples.find((item) => item.id === coupleId) ?? store.couples[0]
   const library = useMemo(() => [...store.uploadedReferences, ...weddingReferences], [store.uploadedReferences])
+  const customerSubmission = store.customerReferenceSubmissions.find((item) => item.coupleId === coupleId)
+  const customerTasteReferences = useMemo(() => (customerSubmission?.selections ?? []).map((selection) => ({ selection, reference: library.find((item) => item.id === selection.referenceId) })).filter((item) => item.reference), [customerSubmission, library])
+  const customerTasteTags = useMemo(() => {
+    if (category === '웨딩홀') return []
+    const available = new Set(getReferenceCategory(category).groups.flatMap((group) => group.keywords))
+    return [...new Set([...customerTasteReferences.filter((item) => item.reference?.category === category).flatMap((item) => item.reference?.tags ?? []), ...(customerSubmission?.preferredTags ?? [])])].filter((tag) => available.has(tag))
+  }, [category, customerSubmission?.preferredTags, customerTasteReferences])
   const filteredReferences = useMemo(() => {
     const tokens = query.trim().toLocaleLowerCase('ko').split(/\s+/).filter(Boolean)
     return library.filter((reference) => reference.category === category).filter((reference) => matchesSelectedGroups(category, reference.tags, selectedKeywords)).filter((reference) => !tokens.length || tokens.every((token) => [reference.vendorName, reference.account, ...reference.tags].join(' ').toLocaleLowerCase('ko').includes(token)))
@@ -39,6 +46,16 @@ export function VendorsPage() {
   const venueResults = useMemo(() => filterWeddingVenues(venueFilters), [venueFilters])
   const resultCount = category === '웨딩홀' ? venueResults.length : filteredReferences.length
   const activeLabels = category === '웨딩홀' ? [...venueFilters.localities, ...venueFilters.mealTypes, ...venueFilters.venueTypes, ...venueFilters.wishes] : selectedKeywords
+
+  const applyCustomerTaste = () => {
+    if (category !== '웨딩홀') setSelectedKeywords(customerTasteTags)
+    setQuery('')
+  }
+  useEffect(() => {
+    if (customerSubmission) applyCustomerTaste()
+  // Apply the selected customer's latest submission whenever the customer or category changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, coupleId, customerSubmission?.submittedAt])
 
   const setView = (next: 'references' | 'database') => {
     const params = new URLSearchParams(searchParams); params.set('view', next); if (coupleId) params.set('coupleId', coupleId); setSearchParams(params)
@@ -66,6 +83,12 @@ export function VendorsPage() {
 
     {view === 'database' ? <VendorDatabase /> : <>
       <section className="reference-customer-bar"><label><span>추천 대상 고객</span><select value={coupleId} onChange={(event) => setCoupleId(event.target.value)}>{store.couples.map((item) => <option value={item.id} key={item.id}>{item.partners}</option>)}</select></label><div><strong>선택한 고객에게 즉시 전송됩니다.</strong><span>같은 업체는 중복 등록되지 않아요.</span></div><Button variant="secondary" icon={<UploadCloud size={14} />} onClick={() => fileRef.current?.click()}>개인 자료 추가</Button><input ref={fileRef} hidden type="file" accept="image/*" onChange={(event) => upload(event.target.files?.[0])} /></section>
+
+      <section className={`customer-taste-brief ${customerSubmission ? '' : 'is-empty'}`}>
+        <div className="customer-taste-brief__images">{customerTasteReferences.slice(0, 3).map(({ reference }) => reference && <img src={reference.image} style={{ objectPosition: reference.imagePosition }} alt={`${couple.brideName} 고객 취향`} key={reference.id} />)}{!customerTasteReferences.length && <span><Heart size={16} /></span>}</div>
+        <div className="customer-taste-brief__copy"><div><Badge tone={customerSubmission ? 'rose' : 'neutral'}>{customerSubmission?.status ?? '미제출'}</Badge><strong>{couple.brideName}님이 보낸 취향</strong>{customerSubmission && <small>{customerSubmission.submittedAt.slice(0, 10).replaceAll('-', '.')} 전송</small>}</div>{customerSubmission ? <p>{customerTasteTags.length ? customerTasteTags.map((tag) => <span key={tag}>#{tag}</span>) : `${category} 분야에서 선택한 태그가 아직 없어요.`}</p> : <p>고객이 내 취향 찾기에서 자료를 보내면 이곳에 자동으로 표시됩니다.</p>}</div>
+        {customerSubmission && category !== '웨딩홀' && <Button size="sm" variant="secondary" icon={<Check size={13} />} onClick={applyCustomerTaste}>필터에 적용</Button>}
+      </section>
 
       <section className={`reference-filter-dock ${filtersOpen ? 'open' : ''}`}>
         <header><div className="reference-filter-dock__identity"><span><Search size={15} /></span><label><small>분야</small><select value={category} onChange={(event) => changeCategory(event.target.value as ReferenceCategory)}>{referenceCategories.map((item) => <option key={item.label}>{item.label}</option>)}</select></label></div><div className="reference-filter-dock__chips">{activeLabels.slice(0, 5).map((label) => <span key={label}>#{label}</span>)}{activeLabels.length > 5 && <em>+{activeLabels.length - 5}</em>}{!activeLabels.length && <small>선택한 조건 없음</small>}</div><div className="reference-filter-dock__actions"><strong>{resultCount}<small>{category === '웨딩홀' ? '곳' : '장'}</small></strong><button onClick={resetFilters} aria-label="필터 초기화"><RotateCcw size={14} /></button><Button size="sm" variant="secondary" icon={filtersOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />} onClick={() => setFiltersOpen((open) => !open)}>{filtersOpen ? '필터 접기' : '필터 펼치기'}</Button></div></header>

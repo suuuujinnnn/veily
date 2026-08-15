@@ -1,0 +1,45 @@
+.customer-taste-brief {
+  min-height: 72px;
+  padding: 10px 13px;
+  display: grid;
+  grid-template-columns: 106px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #e0dfe3;
+  border-radius: 12px;
+  background: linear-gradient(100deg, #fcf8f7, #fff 58%);
+}
+
+.customer-taste-brief__images {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+}
+
+.customer-taste-brief__images img,
+.customer-taste-brief__images > span {
+  width: 40px;
+  height: 50px;
+  margin-left: -5px;
+  object-fit: cover;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background: #f0e8e6;
+  box-shadow: 0 3px 9px rgba(69, 50, 47, .1);
+}
+
+.customer-taste-brief__images > span { display: grid; place-items: center; color: #9a7377; }
+.customer-taste-brief__copy { min-width: 0; display: grid; gap: 7px; }
+.customer-taste-brief__copy > div { display: flex; align-items: center; gap: 8px; }
+.customer-taste-brief__copy strong { color: #384952; font-size: 9px; }
+.customer-taste-brief__copy small { color: #939ca1; font-size: 7px; }
+.customer-taste-brief__copy p { margin: 0; display: flex; flex-wrap: wrap; gap: 5px; color: #7e8a90; font-size: 7px; }
+.customer-taste-brief__copy p span { padding: 4px 7px; border-radius: 99px; background: #f2e9e8; color: #8a5f65; }
+.customer-taste-brief.is-empty { background: #fafbfb; }
+
+@media (max-width: 760px) {
+  .customer-taste-brief { grid-template-columns: 88px minmax(0, 1fr); }
+  .customer-taste-brief > .button { grid-column: 2; justify-self: start; }
+  .customer-taste-brief__copy > div { align-items: flex-start; flex-wrap: wrap; }
+}
