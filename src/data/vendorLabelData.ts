@@ -1257,6 +1257,197 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-1",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_18110223815100396.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "일자탑",
+      "튤",
+      "화려한 비즈",
+      "글리터·펄",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-2",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_18410066413158064.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "오프숄더",
+      "반팔소매",
+      "튤",
+      "화려한 비즈",
+      "글리터·펄",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-3",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_17941931988330265.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "하트탑",
+      "반팔소매",
+      "튤",
+      "아플리케 레이스",
+      "화려한 비즈",
+      "글리터·펄",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-4",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_18131852077625250.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "오프숄더",
+      "반팔소매",
+      "오간자 실크",
+      "아플리케 레이스",
+      "맑은 비즈",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-5",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_18133273846654585.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "일자탑",
+      "미카도 실크",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-6",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_17893568223599000.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "홀터넥",
+      "미카도 실크",
+      "장식 없음",
+      "A라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-7",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_18100930982621380.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "오프숄더",
+      "반팔소매",
+      "튤",
+      "아플리케 레이스",
+      "맑은 비즈",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-8",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_17979078453114094.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "하트탑",
+      "오간자 실크",
+      "아플리케 레이스",
+      "맑은 비즈",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-9",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_18151407661491519.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "오프숄더",
+      "반팔소매",
+      "미카도 실크",
+      "장식 없음",
+      "벨라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lydiabrideofficial-10",
+    "category": "드레스",
+    "image": "/vendors/dressshop/lydiabride_official/ig_17926457238381880.jpg",
+    "vendorId": "ig-lydiabrideofficial",
+    "vendorName": "리디아브라이드",
+    "account": "lydiabride_official",
+    "tags": [
+      "상체 디테일탑",
+      "미카도 실크",
+      "장식 없음",
+      "벨라인",
+      "레이어드 스커트",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -1453,6 +1644,39 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg",
       "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg"
     ],
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-lydiabrideofficial",
+    "name": "리디아브라이드",
+    "category": "드레스",
+    "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "화이트",
+      "벨라인",
+      "반팔소매",
+      "미카도 실크",
+      "아플리케 레이스"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/dressshop/lydiabride_official/ig_18110223815100396.jpg",
+    "location": "강남구",
+    "address": "선릉로129",
+    "hours": "10:00~7:00",
+    "phone": "02 518 1136",
+    "instagram": "https://instagram.com/lydiabride_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/dressshop/lydiabride_official/ig_18110223815100396.jpg",
+      "/vendors/dressshop/lydiabride_official/ig_18410066413158064.jpg",
+      "/vendors/dressshop/lydiabride_official/ig_17941931988330265.jpg",
+      "/vendors/dressshop/lydiabride_official/ig_18131852077625250.jpg",
+      "/vendors/dressshop/lydiabride_official/ig_18133273846654585.jpg",
+      "/vendors/dressshop/lydiabride_official/ig_17893568223599000.jpg"
+    ],
+    "website": "http://pf.kakao.com/_xeHAws",
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
   }
