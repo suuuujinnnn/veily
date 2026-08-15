@@ -2941,6 +2941,1639 @@ export const labeledReferences: WeddingReference[] = [
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-czaccofficial-1",
+    "category": "드레스",
+    "image": "/vendors/dressshop/czacc_official/ig_17863109253661077_0.jpg",
+    "vendorId": "ig-czaccofficial",
+    "vendorName": "시작바이이명순",
+    "account": "czacc_official",
+    "tags": [
+      "일자탑",
+      "튤",
+      "깃털",
+      "글리터·펄",
+      "A라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-czaccofficial-2",
+    "category": "드레스",
+    "image": "/vendors/dressshop/czacc_official/ig_18091826024103337_0.jpg",
+    "vendorId": "ig-czaccofficial",
+    "vendorName": "시작바이이명순",
+    "account": "czacc_official",
+    "tags": [
+      "일자탑",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-czaccofficial-3",
+    "category": "드레스",
+    "image": "/vendors/dressshop/czacc_official/ig_18176717362420992_0.jpg",
+    "vendorId": "ig-czaccofficial",
+    "vendorName": "시작바이이명순",
+    "account": "czacc_official",
+    "tags": [
+      "홀터넥",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-czaccofficial-4",
+    "category": "드레스",
+    "image": "/vendors/dressshop/czacc_official/ig_18464419135119347.jpg",
+    "vendorId": "ig-czaccofficial",
+    "vendorName": "시작바이이명순",
+    "account": "czacc_official",
+    "tags": [
+      "일자탑",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-czaccofficial-5",
+    "category": "드레스",
+    "image": "/vendors/dressshop/czacc_official/ig_17979888291070222_0.jpg",
+    "vendorId": "ig-czaccofficial",
+    "vendorName": "시작바이이명순",
+    "account": "czacc_official",
+    "tags": [
+      "홀터넥",
+      "장식 없음"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-czaccofficial-6",
+    "category": "드레스",
+    "image": "/vendors/dressshop/czacc_official/ig_18074216567386017_0.jpg",
+    "vendorId": "ig-czaccofficial",
+    "vendorName": "시작바이이명순",
+    "account": "czacc_official",
+    "tags": [
+      "브이넥",
+      "튤",
+      "아플리케 레이스",
+      "맑은 비즈",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-choijaehoonofficial-1",
+    "category": "드레스",
+    "image": "/vendors/dressshop/choijaehoon.official/ig_18124029208694497_0.jpg",
+    "vendorId": "ig-choijaehoonofficial",
+    "vendorName": "엔조최재훈",
+    "account": "choijaehoon.official",
+    "tags": [
+      "일자탑",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-choijaehoonofficial-2",
+    "category": "드레스",
+    "image": "/vendors/dressshop/choijaehoon.official/ig_18023901716903620_0.jpg",
+    "vendorId": "ig-choijaehoonofficial",
+    "vendorName": "엔조최재훈",
+    "account": "choijaehoon.official",
+    "tags": [
+      "일자탑",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-choijaehoonofficial-3",
+    "category": "드레스",
+    "image": "/vendors/dressshop/choijaehoon.official/ig_18024773255852086_0.jpg",
+    "vendorId": "ig-choijaehoonofficial",
+    "vendorName": "엔조최재훈",
+    "account": "choijaehoon.official",
+    "tags": [
+      "스퀘어넥",
+      "튤",
+      "화려한 비즈",
+      "글리터·펄",
+      "벨라인"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-choijaehoonofficial-4",
+    "category": "드레스",
+    "image": "/vendors/dressshop/choijaehoon.official/ig_18099421622198087_0.jpg",
+    "vendorId": "ig-choijaehoonofficial",
+    "vendorName": "엔조최재훈",
+    "account": "choijaehoon.official",
+    "tags": [
+      "홀터넥",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-choijaehoonofficial-5",
+    "category": "드레스",
+    "image": "/vendors/dressshop/choijaehoon.official/ig_17911718601450082_0.jpg",
+    "vendorId": "ig-choijaehoonofficial",
+    "vendorName": "엔조최재훈",
+    "account": "choijaehoon.official",
+    "tags": [
+      "튤",
+      "아플리케 레이스",
+      "장식 없음",
+      "오픈백",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiogoyou-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studio.goyou/ig_18261780559306396_0.jpg",
+    "vendorId": "ig-studiogoyou",
+    "vendorName": "스튜디오고유",
+    "account": "studio.goyou",
+    "tags": [
+      "인물+배경",
+      "몽환적인",
+      "자연광",
+      "화이트톤",
+      "실내 세트",
+      "낮",
+      "독사진",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiogoyou-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studio.goyou/ig_17888537460610239_0.jpg",
+    "vendorId": "ig-studiogoyou",
+    "vendorName": "스튜디오고유",
+    "account": "studio.goyou",
+    "tags": [
+      "인물 중심",
+      "드라마틱",
+      "자연광",
+      "실내 세트",
+      "낮",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiogoyou-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studio.goyou/ig_18121612468885377_0.jpg",
+    "vendorId": "ig-studiogoyou",
+    "vendorName": "스튜디오고유",
+    "account": "studio.goyou",
+    "tags": [
+      "인물+배경",
+      "빈티지",
+      "흑백",
+      "자연",
+      "흑백 씬",
+      "독사진",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiogoyou-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studio.goyou/ig_18145425982544281_0.jpg",
+    "vendorId": "ig-studiogoyou",
+    "vendorName": "스튜디오고유",
+    "account": "studio.goyou",
+    "tags": [
+      "인물+배경",
+      "내추럴",
+      "자연광",
+      "초록",
+      "자연",
+      "낮",
+      "전신",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiogoyou-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studio.goyou/ig_18158735620468905.jpg",
+    "vendorId": "ig-studiogoyou",
+    "vendorName": "스튜디오고유",
+    "account": "studio.goyou",
+    "tags": [
+      "배경 중심",
+      "몽환적인",
+      "흑백",
+      "자연",
+      "흑백 씬",
+      "전신",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiogoyou-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studio.goyou/ig_18175629841407199_0.jpg",
+    "vendorId": "ig-studiogoyou",
+    "vendorName": "스튜디오고유",
+    "account": "studio.goyou",
+    "tags": [
+      "인물+배경",
+      "장난스러운",
+      "자연광",
+      "초록",
+      "도로",
+      "낮",
+      "전신",
+      "콘셉트 소품",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-yuhahaus-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/yuha_haus/ig_18111698927103228_0.jpg",
+    "vendorId": "ig-yuhahaus",
+    "vendorName": "유하하우스",
+    "account": "yuha_haus",
+    "tags": [
+      "인물+배경",
+      "고급스러운",
+      "자연광",
+      "실내 세트",
+      "낮",
+      "타이트"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-yuhahaus-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/yuha_haus/ig_18067366955725301_0.jpg",
+    "vendorId": "ig-yuhahaus",
+    "vendorName": "유하하우스",
+    "account": "yuha_haus",
+    "tags": [
+      "인물 중심",
+      "단아한",
+      "자연광",
+      "화이트톤",
+      "실내 세트",
+      "낮",
+      "클로즈업",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-yuhahaus-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/yuha_haus/ig_18596321146038900_0.jpg",
+    "vendorId": "ig-yuhahaus",
+    "vendorName": "유하하우스",
+    "account": "yuha_haus",
+    "tags": [
+      "인물+배경",
+      "화보",
+      "흑백",
+      "실내 세트",
+      "흑백 씬",
+      "낮",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-yuhahaus-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/yuha_haus/ig_18013408850714066_0.jpg",
+    "vendorId": "ig-yuhahaus",
+    "vendorName": "유하하우스",
+    "account": "yuha_haus",
+    "tags": [
+      "인물 중심",
+      "로맨틱",
+      "자연광",
+      "초록",
+      "정원",
+      "낮",
+      "전신",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-yuhahaus-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/yuha_haus/ig_17881894734435838_0.jpg",
+    "vendorId": "ig-yuhahaus",
+    "vendorName": "유하하우스",
+    "account": "yuha_haus",
+    "tags": [
+      "인물+배경",
+      "깔끔",
+      "자연광",
+      "화이트톤",
+      "실내 세트",
+      "낮",
+      "전신"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-moninstudio-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/moninstudio/ig_18406186042081249_0.jpg",
+    "vendorId": "ig-moninstudio",
+    "vendorName": "모닌스튜디오",
+    "account": "moninstudio",
+    "tags": [
+      "인물 중심",
+      "클래식",
+      "흑백",
+      "심플 배경",
+      "흑백 씬",
+      "타이트",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-moninstudio-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/moninstudio/ig_18336923005170896_0.jpg",
+    "vendorId": "ig-moninstudio",
+    "vendorName": "모닌스튜디오",
+    "account": "moninstudio",
+    "tags": [
+      "인물 중심",
+      "청순한",
+      "밝은",
+      "심플 배경",
+      "독사진",
+      "타이트"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-moninstudio-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/moninstudio/ig_17886251040466430_0.jpg",
+    "vendorId": "ig-moninstudio",
+    "vendorName": "모닌스튜디오",
+    "account": "moninstudio",
+    "tags": [
+      "인물+배경",
+      "도시적인",
+      "흑백",
+      "실내 세트",
+      "도시",
+      "흑백 씬",
+      "낮",
+      "독사진"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-moninstudio-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/moninstudio/ig_18088942529157091_0.jpg",
+    "vendorId": "ig-moninstudio",
+    "vendorName": "모닌스튜디오",
+    "account": "moninstudio",
+    "tags": [
+      "배경 중심",
+      "일상",
+      "자연광",
+      "실내 세트",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-moninstudio-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/moninstudio/ig_18055904969380403_0.jpg",
+    "vendorId": "ig-moninstudio",
+    "vendorName": "모닌스튜디오",
+    "account": "moninstudio",
+    "tags": [
+      "인물 중심",
+      "빈티지",
+      "실내 세트",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-moninstudio-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/moninstudio/ig_17890130709285595_0.jpg",
+    "vendorId": "ig-moninstudio",
+    "vendorName": "모닌스튜디오",
+    "account": "moninstudio",
+    "tags": [
+      "인물 중심",
+      "장난스러운",
+      "화이트톤",
+      "밝은",
+      "심플 배경",
+      "전신",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-ccomostudioofficial-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ccomostudio_official/ig_18088787042109439_0.jpg",
+    "vendorId": "ig-ccomostudioofficial",
+    "vendorName": "꼬모스튜디오",
+    "account": "ccomostudio_official",
+    "tags": [
+      "인물 중심",
+      "모던",
+      "흑백",
+      "흑백 씬",
+      "클로즈업",
+      "타이트"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-ccomostudioofficial-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ccomostudio_official/ig_17967301614021224_0.jpg",
+    "vendorId": "ig-ccomostudioofficial",
+    "vendorName": "꼬모스튜디오",
+    "account": "ccomostudio_official",
+    "tags": [
+      "인물+배경",
+      "로맨틱",
+      "흑백",
+      "실내 세트",
+      "자연",
+      "낮"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-ccomostudioofficial-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ccomostudio_official/ig_18076722533356984_0.jpg",
+    "vendorId": "ig-ccomostudioofficial",
+    "vendorName": "꼬모스튜디오",
+    "account": "ccomostudio_official",
+    "tags": [
+      "인물 중심",
+      "장난스러운",
+      "실내 세트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-ccomostudioofficial-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ccomostudio_official/ig_17900655687342845_0.jpg",
+    "vendorId": "ig-ccomostudioofficial",
+    "vendorName": "꼬모스튜디오",
+    "account": "ccomostudio_official",
+    "tags": [
+      "인물+배경",
+      "장난스러운",
+      "화이트톤",
+      "실내 세트",
+      "전신",
+      "계란후라이",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-ccomostudioofficial-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ccomostudio_official/ig_18043947299693509_0.jpg",
+    "vendorId": "ig-ccomostudioofficial",
+    "vendorName": "꼬모스튜디오",
+    "account": "ccomostudio_official",
+    "tags": [
+      "인물+배경",
+      "내추럴",
+      "자연광",
+      "싱그러운",
+      "초록",
+      "루프탑",
+      "낮",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-ccomostudioofficial-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/ccomostudio_official/ig_18076153862058072_0.jpg",
+    "vendorId": "ig-ccomostudioofficial",
+    "vendorName": "꼬모스튜디오",
+    "account": "ccomostudio_official",
+    "tags": [
+      "배경 중심",
+      "내추럴",
+      "자연광",
+      "밝은",
+      "낮",
+      "콘셉트 소품"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-bemystudio-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/_bemy_studio/ig_18001353788986959_0.jpg",
+    "vendorId": "ig-bemystudio",
+    "vendorName": "비마이스튜디오",
+    "account": "_bemy_studio",
+    "tags": [
+      "인물 중심",
+      "청순한",
+      "자연광",
+      "싱그러운",
+      "초록",
+      "정원",
+      "낮",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-bemystudio-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/_bemy_studio/ig_17914461333425695.jpg",
+    "vendorId": "ig-bemystudio",
+    "vendorName": "비마이스튜디오",
+    "account": "_bemy_studio",
+    "tags": [
+      "인물+배경",
+      "단아한",
+      "자연광",
+      "초록",
+      "실내 세트",
+      "정원",
+      "낮",
+      "전신",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-bemystudio-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/_bemy_studio/ig_17900404695507693_0.jpg",
+    "vendorId": "ig-bemystudio",
+    "vendorName": "비마이스튜디오",
+    "account": "_bemy_studio",
+    "tags": [
+      "인물+배경",
+      "감성",
+      "흑백",
+      "흑백 씬",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-bemystudio-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/_bemy_studio/ig_18470335516109374.jpg",
+    "vendorId": "ig-bemystudio",
+    "vendorName": "비마이스튜디오",
+    "account": "_bemy_studio",
+    "tags": [
+      "인물 중심",
+      "몽환적인",
+      "흑백",
+      "흑백 씬",
+      "클로즈업",
+      "독사진",
+      "생화 부케",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-bemystudio-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/_bemy_studio/ig_18136391368565540.jpg",
+    "vendorId": "ig-bemystudio",
+    "vendorName": "비마이스튜디오",
+    "account": "_bemy_studio",
+    "tags": [
+      "인물 중심",
+      "깔끔",
+      "화이트톤",
+      "밝은",
+      "심플 배경",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-bemystudio-6",
+    "category": "스튜디오",
+    "image": "/vendors/studio/_bemy_studio/ig_17974562408905312.jpg",
+    "vendorId": "ig-bemystudio",
+    "vendorName": "비마이스튜디오",
+    "account": "_bemy_studio",
+    "tags": [
+      "인물 중심",
+      "내추럴",
+      "클로즈업",
+      "타이트",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiowonkyu-1",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studiowonkyu/ig_18608411905028379_0.jpg",
+    "vendorId": "ig-studiowonkyu",
+    "vendorName": "원규스튜디오",
+    "account": "studiowonkyu",
+    "tags": [
+      "인물+배경",
+      "빈티지",
+      "장난스러운",
+      "실내 세트",
+      "밤",
+      "콘셉트 소품"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiowonkyu-2",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studiowonkyu/ig_17935688448345677_0.jpg",
+    "vendorId": "ig-studiowonkyu",
+    "vendorName": "원규스튜디오",
+    "account": "studiowonkyu",
+    "tags": [
+      "인물+배경",
+      "클래식",
+      "한옥",
+      "실내 세트",
+      "전신",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiowonkyu-3",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studiowonkyu/ig_17983955619042309_0.jpg",
+    "vendorId": "ig-studiowonkyu",
+    "vendorName": "원규스튜디오",
+    "account": "studiowonkyu",
+    "tags": [
+      "인물+배경",
+      "장난스러운",
+      "한옥",
+      "실내 세트",
+      "전신",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiowonkyu-4",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studiowonkyu/ig_18423864838177485_0.jpg",
+    "vendorId": "ig-studiowonkyu",
+    "vendorName": "원규스튜디오",
+    "account": "studiowonkyu",
+    "tags": [
+      "인물 중심",
+      "고급스러운",
+      "자연광",
+      "자연",
+      "낮",
+      "독사진",
+      "생화 부케",
+      "베일"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-studiowonkyu-5",
+    "category": "스튜디오",
+    "image": "/vendors/studio/studiowonkyu/ig_18147870400519077_0.jpg",
+    "vendorId": "ig-studiowonkyu",
+    "vendorName": "원규스튜디오",
+    "account": "studiowonkyu",
+    "tags": [
+      "인물 중심",
+      "단아한",
+      "한옥",
+      "클로즈업",
+      "베일",
+      "생화 부케"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18404699944089182_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18404699944089182_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18122629901503897_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18122629901503897_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18083746442688138_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "세미 매트",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-6",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18083746442688138_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-7",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18055428704784111.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-8",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18055428704784111.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-9",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18210426034338351_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-10",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18210426034338351_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-11",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18030898838638516_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-jungnamwedding-12",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18030898838638516_0.jpg",
+    "vendorId": "ig-jungnamwedding",
+    "vendorName": "정남",
+    "account": "jungnam_wedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-seouiofficial-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/seoui_official/ig_17925947094014866_0.jpg",
+    "vendorId": "ig-seouiofficial",
+    "vendorName": "서의",
+    "account": "seoui_official",
+    "tags": [
+      "세미 매트",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-seouiofficial-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/seoui_official/ig_17925947094014866_0.jpg",
+    "vendorId": "ig-seouiofficial",
+    "vendorName": "서의",
+    "account": "seoui_official",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-seouiofficial-3",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/seoui_official/ig_18114803605553931_0.jpg",
+    "vendorId": "ig-seouiofficial",
+    "vendorName": "서의",
+    "account": "seoui_official",
+    "tags": [
+      "로우 번"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-seouiofficial-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/seoui_official/ig_17843519796587083.jpg",
+    "vendorId": "ig-seouiofficial",
+    "vendorName": "서의",
+    "account": "seoui_official",
+    "tags": [
+      "로우 번"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-seouiofficial-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/seoui_official/ig_18058307708416888.jpg",
+    "vendorId": "ig-seouiofficial",
+    "vendorName": "서의",
+    "account": "seoui_official",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-seouiofficial-6",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/seoui_official/ig_18058307708416888.jpg",
+    "vendorId": "ig-seouiofficial",
+    "vendorName": "서의",
+    "account": "seoui_official",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18116411299919109_0.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18116411299919109_0.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18008286284879662.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18008286284879662.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_17912092671409261.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-6",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_17912092671409261.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "로우 번",
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-7",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18118469521709126.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-8",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18118469521709126.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-9",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_17997943565748486_0.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "세미 매트"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-10",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18072240257143512.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-lkmforetwedding-11",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18072240257143512.jpg",
+    "vendorId": "ig-lkmforetwedding",
+    "vendorName": "이경민포레청담",
+    "account": "lkmforetwedding",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18202993702367052.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18202993702367052.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18100590101615245_0.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18100590101615245_0.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18072943232387900_0.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-6",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18072943232387900_0.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-7",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18099545831353413_0.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "물광",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-hinafwedding-8",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18099545831353413_0.jpg",
+    "vendorId": "ig-hinafwedding",
+    "vendorName": "히나프",
+    "account": "hinaf_wedding",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-1",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/abybom__official/ig_18071364071361437.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-2",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/abybom__official/ig_18071364071361437.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "단발",
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-3",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/abybom__official/ig_18144398029519704.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-4",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/abybom__official/ig_18144398029519704.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "단발",
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-5",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/abybom__official/ig_18107547157889581.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "투명",
+      "깔끔"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-6",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/abybom__official/ig_18107547157889581.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-7",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/abybom__official/ig_18401606614147975.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-8",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/abybom__official/ig_18401606614147975.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "웨이브"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-9",
+    "category": "메이크업",
+    "image": "/vendors/makeupshop/abybom__official/ig_18079494263420199.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "물광",
+      "과즙"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-abybomofficial-10",
+    "category": "헤어",
+    "image": "/vendors/makeupshop/abybom__official/ig_18079494263420199.jpg",
+    "vendorId": "ig-abybomofficial",
+    "vendorName": "에이바이봄",
+    "account": "abybom__official",
+    "tags": [
+      "생머리"
+    ],
+    "purpose": "상담 레퍼런스",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-vivatamtam-1",
+    "category": "드레스",
+    "image": "/vendors/dressshop/vivatamtam/ig_18527422300076805_0.jpg",
+    "vendorId": "ig-vivatamtam",
+    "vendorName": "비바탐탐",
+    "account": "vivatamtam",
+    "tags": [
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-vivatamtam-2",
+    "category": "드레스",
+    "image": "/vendors/dressshop/vivatamtam/ig_18137541364541937_0.jpg",
+    "vendorId": "ig-vivatamtam",
+    "vendorName": "비바탐탐",
+    "account": "vivatamtam",
+    "tags": [
+      "튤",
+      "타프타",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-vivatamtam-3",
+    "category": "드레스",
+    "image": "/vendors/dressshop/vivatamtam/ig_18089360141345974_0.jpg",
+    "vendorId": "ig-vivatamtam",
+    "vendorName": "비바탐탐",
+    "account": "vivatamtam",
+    "tags": [
+      "튤",
+      "장식 없음"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-vivatamtam-4",
+    "category": "드레스",
+    "image": "/vendors/dressshop/vivatamtam/ig_18100259758844651_0.jpg",
+    "vendorId": "ig-vivatamtam",
+    "vendorName": "비바탐탐",
+    "account": "vivatamtam",
+    "tags": [
+      "홀터넥",
+      "장식 없음",
+      "머메이드라인",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-vivatamtam-5",
+    "category": "드레스",
+    "image": "/vendors/dressshop/vivatamtam/ig_18527422300076805_1.jpg",
+    "vendorId": "ig-vivatamtam",
+    "vendorName": "비바탐탐",
+    "account": "vivatamtam",
+    "tags": [
+      "홀터넥",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
+  },
+  {
+    "id": "ref-ig-vivatamtam-6",
+    "category": "드레스",
+    "image": "/vendors/dressshop/vivatamtam/ig_18137541364541937_1.jpg",
+    "vendorId": "ig-vivatamtam",
+    "vendorName": "비바탐탐",
+    "account": "vivatamtam",
+    "tags": [
+      "튤",
+      "타프타",
+      "장식 없음",
+      "화이트"
+    ],
+    "purpose": "본식",
+    "source": "검수 아카이브",
+    "reviewStatus": "검수완료"
   }
 ]
 
@@ -3399,6 +5032,463 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/me.parer_wedding/ig_18110649517790938_0.jpg",
       "/vendors/makeupshop/me.parer_wedding/ig_17936918079316355_0.jpg"
     ],
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-czaccofficial",
+    "name": "시작바이이명순",
+    "category": "드레스",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "화이트",
+      "장식 없음",
+      "일자탑",
+      "튤",
+      "홀터넥"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/dressshop/czacc_official/ig_17863109253661077_0.jpg",
+    "location": "강남구",
+    "address": "",
+    "hours": "",
+    "phone": "02-511-1011",
+    "instagram": "https://instagram.com/czacc_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/dressshop/czacc_official/ig_17863109253661077_0.jpg",
+      "/vendors/dressshop/czacc_official/ig_18091826024103337_0.jpg",
+      "/vendors/dressshop/czacc_official/ig_18176717362420992_0.jpg",
+      "/vendors/dressshop/czacc_official/ig_18464419135119347.jpg",
+      "/vendors/dressshop/czacc_official/ig_17979888291070222_0.jpg",
+      "/vendors/dressshop/czacc_official/ig_18074216567386017_0.jpg"
+    ],
+    "website": "http://czacc.co.kr/",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-choijaehoonofficial",
+    "name": "엔조최재훈",
+    "category": "드레스",
+    "summary": "인스타 게시물 5장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "장식 없음",
+      "화이트",
+      "일자탑",
+      "튤",
+      "글리터·펄"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/dressshop/choijaehoon.official/ig_18124029208694497_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/choijaehoon.official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/dressshop/choijaehoon.official/ig_18124029208694497_0.jpg",
+      "/vendors/dressshop/choijaehoon.official/ig_18023901716903620_0.jpg",
+      "/vendors/dressshop/choijaehoon.official/ig_18024773255852086_0.jpg",
+      "/vendors/dressshop/choijaehoon.official/ig_18099421622198087_0.jpg",
+      "/vendors/dressshop/choijaehoon.official/ig_17911718601450082_0.jpg"
+    ],
+    "website": "http://m.booking.naver.com/booking/13/bizes/843776/items/4862856",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-studiogoyou",
+    "name": "스튜디오고유",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "생화 부케",
+      "전신",
+      "낮",
+      "인물+배경",
+      "자연광"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/studio.goyou/ig_18261780559306396_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "010.8859.7353",
+    "instagram": "https://instagram.com/studio.goyou",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/studio.goyou/ig_18261780559306396_0.jpg",
+      "/vendors/studio/studio.goyou/ig_17888537460610239_0.jpg",
+      "/vendors/studio/studio.goyou/ig_18121612468885377_0.jpg",
+      "/vendors/studio/studio.goyou/ig_18145425982544281_0.jpg",
+      "/vendors/studio/studio.goyou/ig_18158735620468905.jpg",
+      "/vendors/studio/studio.goyou/ig_18175629841407199_0.jpg"
+    ],
+    "website": "https://open.kakao.com/o/s7IainBi",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-yuhahaus",
+    "name": "유하하우스",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 5장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "낮",
+      "실내 세트",
+      "자연광",
+      "인물+배경",
+      "전신"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/yuha_haus/ig_18111698927103228_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "",
+    "instagram": "https://instagram.com/yuha_haus",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/yuha_haus/ig_18111698927103228_0.jpg",
+      "/vendors/studio/yuha_haus/ig_18067366955725301_0.jpg",
+      "/vendors/studio/yuha_haus/ig_18596321146038900_0.jpg",
+      "/vendors/studio/yuha_haus/ig_18013408850714066_0.jpg",
+      "/vendors/studio/yuha_haus/ig_17881894734435838_0.jpg"
+    ],
+    "website": "https://open.kakao.com/o/siGrHKZg",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-moninstudio",
+    "name": "모닌스튜디오",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "생화 부케",
+      "인물 중심",
+      "실내 세트",
+      "심플 배경",
+      "타이트"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/moninstudio/ig_18406186042081249_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "10:00~19:00",
+    "phone": "02-2088-2897",
+    "instagram": "https://instagram.com/moninstudio",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/moninstudio/ig_18406186042081249_0.jpg",
+      "/vendors/studio/moninstudio/ig_18336923005170896_0.jpg",
+      "/vendors/studio/moninstudio/ig_17886251040466430_0.jpg",
+      "/vendors/studio/moninstudio/ig_18088942529157091_0.jpg",
+      "/vendors/studio/moninstudio/ig_18055904969380403_0.jpg",
+      "/vendors/studio/moninstudio/ig_17890130709285595_0.jpg"
+    ],
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-ccomostudioofficial",
+    "name": "꼬모스튜디오",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "낮",
+      "생화 부케",
+      "실내 세트",
+      "인물+배경",
+      "내추럴"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/ccomostudio_official/ig_18088787042109439_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "10:00~19:00",
+    "phone": "02-2088-2897",
+    "instagram": "https://instagram.com/ccomostudio_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/ccomostudio_official/ig_18088787042109439_0.jpg",
+      "/vendors/studio/ccomostudio_official/ig_17967301614021224_0.jpg",
+      "/vendors/studio/ccomostudio_official/ig_18076722533356984_0.jpg",
+      "/vendors/studio/ccomostudio_official/ig_17900655687342845_0.jpg",
+      "/vendors/studio/ccomostudio_official/ig_18043947299693509_0.jpg",
+      "/vendors/studio/ccomostudio_official/ig_18076153862058072_0.jpg"
+    ],
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-bemystudio",
+    "name": "비마이스튜디오",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "생화 부케",
+      "인물 중심",
+      "베일",
+      "전신",
+      "낮"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/_bemy_studio/ig_18001353788986959_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "10:00-19:00",
+    "phone": "02-562-7710",
+    "instagram": "https://instagram.com/_bemy_studio",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/_bemy_studio/ig_18001353788986959_0.jpg",
+      "/vendors/studio/_bemy_studio/ig_17914461333425695.jpg",
+      "/vendors/studio/_bemy_studio/ig_17900404695507693_0.jpg",
+      "/vendors/studio/_bemy_studio/ig_18470335516109374.jpg",
+      "/vendors/studio/_bemy_studio/ig_18136391368565540.jpg",
+      "/vendors/studio/_bemy_studio/ig_17974562408905312.jpg"
+    ],
+    "website": "http://pf.kakao.com/_NZzxjxj",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-studiowonkyu",
+    "name": "원규스튜디오",
+    "category": "스튜디오",
+    "summary": "인스타 게시물 5장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "생화 부케",
+      "베일",
+      "실내 세트",
+      "인물+배경",
+      "한옥"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/studio/studiowonkyu/ig_18608411905028379_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "02-518-6232",
+    "instagram": "https://instagram.com/studiowonkyu",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/studio/studiowonkyu/ig_18608411905028379_0.jpg",
+      "/vendors/studio/studiowonkyu/ig_17935688448345677_0.jpg",
+      "/vendors/studio/studiowonkyu/ig_17983955619042309_0.jpg",
+      "/vendors/studio/studiowonkyu/ig_18423864838177485_0.jpg",
+      "/vendors/studio/studiowonkyu/ig_18147870400519077_0.jpg"
+    ],
+    "website": "https://wonkyustudio.pages.dev/",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-jungnamwedding",
+    "name": "정남",
+    "category": "메이크업",
+    "summary": "인스타 게시물 12장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "깔끔",
+      "물광",
+      "과즙",
+      "생머리",
+      "세미 매트"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/jungnam_wedding/ig_18404699944089182_0.jpg",
+    "location": "도산대로",
+    "address": "도산대로 451 1F",
+    "hours": "",
+    "phone": "02-516-0976",
+    "instagram": "https://instagram.com/jungnam_wedding",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/jungnam_wedding/ig_18404699944089182_0.jpg",
+      "/vendors/makeupshop/jungnam_wedding/ig_18404699944089182_0.jpg",
+      "/vendors/makeupshop/jungnam_wedding/ig_18122629901503897_0.jpg",
+      "/vendors/makeupshop/jungnam_wedding/ig_18122629901503897_0.jpg",
+      "/vendors/makeupshop/jungnam_wedding/ig_18083746442688138_0.jpg",
+      "/vendors/makeupshop/jungnam_wedding/ig_18083746442688138_0.jpg"
+    ],
+    "website": "https://forms.gle/GYfhX52FgYFZdJfK6",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-seouiofficial",
+    "name": "서의",
+    "category": "메이크업",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "과즙",
+      "로우 번",
+      "물광",
+      "생머리",
+      "세미 매트"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/seoui_official/ig_17925947094014866_0.jpg",
+    "location": "강남구",
+    "address": "도산대로24",
+    "hours": "",
+    "phone": "070.7755.2423",
+    "instagram": "https://instagram.com/seoui_official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/seoui_official/ig_17925947094014866_0.jpg",
+      "/vendors/makeupshop/seoui_official/ig_17925947094014866_0.jpg",
+      "/vendors/makeupshop/seoui_official/ig_18114803605553931_0.jpg",
+      "/vendors/makeupshop/seoui_official/ig_17843519796587083.jpg",
+      "/vendors/makeupshop/seoui_official/ig_18058307708416888.jpg",
+      "/vendors/makeupshop/seoui_official/ig_18058307708416888.jpg"
+    ],
+    "website": "http://pf.kakao.com/_ejkxgG",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-lkmforetwedding",
+    "name": "이경민포레청담",
+    "category": "메이크업",
+    "summary": "인스타 게시물 11장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "물광",
+      "깔끔",
+      "과즙",
+      "생머리",
+      "로우 번"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/lkmforetwedding/ig_18116411299919109_0.jpg",
+    "location": "강남구",
+    "address": "",
+    "hours": "",
+    "phone": "02-549-7772",
+    "instagram": "https://instagram.com/lkmforetwedding",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/lkmforetwedding/ig_18116411299919109_0.jpg",
+      "/vendors/makeupshop/lkmforetwedding/ig_18116411299919109_0.jpg",
+      "/vendors/makeupshop/lkmforetwedding/ig_18008286284879662.jpg",
+      "/vendors/makeupshop/lkmforetwedding/ig_18008286284879662.jpg",
+      "/vendors/makeupshop/lkmforetwedding/ig_17912092671409261.jpg",
+      "/vendors/makeupshop/lkmforetwedding/ig_17912092671409261.jpg"
+    ],
+    "website": "http://pf.kakao.com/_xiRxkXj",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-hinafwedding",
+    "name": "히나프",
+    "category": "메이크업",
+    "summary": "인스타 게시물 8장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "깔끔",
+      "물광",
+      "웨이브",
+      "과즙",
+      "생머리"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/hinaf_wedding/ig_18202993702367052.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "010-7619-0991",
+    "instagram": "https://instagram.com/hinaf_wedding",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/hinaf_wedding/ig_18202993702367052.jpg",
+      "/vendors/makeupshop/hinaf_wedding/ig_18202993702367052.jpg",
+      "/vendors/makeupshop/hinaf_wedding/ig_18100590101615245_0.jpg",
+      "/vendors/makeupshop/hinaf_wedding/ig_18100590101615245_0.jpg",
+      "/vendors/makeupshop/hinaf_wedding/ig_18072943232387900_0.jpg",
+      "/vendors/makeupshop/hinaf_wedding/ig_18072943232387900_0.jpg"
+    ],
+    "website": "https://m.blog.naver.com/hinaf",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-abybomofficial",
+    "name": "에이바이봄",
+    "category": "메이크업",
+    "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "웨이브",
+      "과즙",
+      "물광",
+      "깔끔",
+      "단발"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/makeupshop/abybom__official/ig_18071364071361437.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "",
+    "phone": "02-516-8765",
+    "instagram": "https://instagram.com/abybom__official",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/makeupshop/abybom__official/ig_18071364071361437.jpg",
+      "/vendors/makeupshop/abybom__official/ig_18071364071361437.jpg",
+      "/vendors/makeupshop/abybom__official/ig_18144398029519704.jpg",
+      "/vendors/makeupshop/abybom__official/ig_18144398029519704.jpg",
+      "/vendors/makeupshop/abybom__official/ig_18107547157889581.jpg",
+      "/vendors/makeupshop/abybom__official/ig_18107547157889581.jpg"
+    ],
+    "website": "https://m.place.naver.com/hairshop/93777020/home?entry=pll",
+    "updatedAt": "2026-08-15",
+    "evidenceSource": "analyzed"
+  },
+  {
+    "id": "ig-vivatamtam",
+    "name": "비바탐탐",
+    "category": "드레스",
+    "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
+    "tags": [
+      "장식 없음",
+      "화이트",
+      "튤",
+      "타프타",
+      "홀터넥"
+    ],
+    "priceRange": "문의",
+    "match": 0,
+    "image": "/vendors/dressshop/vivatamtam/ig_18527422300076805_0.jpg",
+    "location": "확인 필요",
+    "address": "",
+    "hours": "10:30~19:00",
+    "phone": "",
+    "instagram": "https://instagram.com/vivatamtam",
+    "activeEvent": "",
+    "gallery": [
+      "/vendors/dressshop/vivatamtam/ig_18527422300076805_0.jpg",
+      "/vendors/dressshop/vivatamtam/ig_18137541364541937_0.jpg",
+      "/vendors/dressshop/vivatamtam/ig_18089360141345974_0.jpg",
+      "/vendors/dressshop/vivatamtam/ig_18100259758844651_0.jpg",
+      "/vendors/dressshop/vivatamtam/ig_18527422300076805_1.jpg",
+      "/vendors/dressshop/vivatamtam/ig_18137541364541937_1.jpg"
+    ],
+    "website": "http://linktr.ee/vivatamtam",
     "updatedAt": "2026-08-15",
     "evidenceSource": "analyzed"
   }
