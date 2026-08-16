@@ -1,5 +1,5 @@
 import { imageAssets } from '../assets/images'
-import type { ReferenceCategory, Vendor, VenueAccessKind, VenueAccessOption, VenueFilterState, VenueMealType, VenueRegionGroup, VenueType, VenueWish, WeddingReference, WeddingVenue } from '../types'
+import type { ReferenceCategory, Vendor, VenueAccessKind, VenueAccessOption, VenueFilterState, VenueMealPriceRange, VenueMealType, VenueRegionGroup, VenueType, VenueWish, WeddingReference, WeddingVenue } from '../types'
 
 export const venueLocations: Record<VenueRegionGroup, string[]> = {
   서울: ['종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '마포구', '양천구', '강서구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강남구', '송파구', '강동구'],
@@ -7,13 +7,21 @@ export const venueLocations: Record<VenueRegionGroup, string[]> = {
 }
 
 export const venueMealTypes: VenueMealType[] = ['뷔페', '한식', '양식', '기타']
+export const venueMealPriceRanges: VenueMealPriceRange[] = ['7만원 이하', '7~8만원', '8~9만원', '9만원 이상']
 export const venueTypes: VenueType[] = ['일반·컨벤션예식장(어두운 홀)', '호텔예식', '채플홀', '하우스웨딩(밝은 홀)', '스몰웨딩(100명 이하)', '야외웨딩', '한옥웨딩']
 export const venueWishes: VenueWish[] = ['밝은 홀', '어두운 홀', '높은 천고', '원형 테이블', '화려한 꽃 장식', '단독홀', '단독건물']
 export const venueAccessKinds: VenueAccessKind[] = ['지하철역', '기차역', '터미널']
 export const venueAccessOptions: VenueAccessOption[] = ['도보 10분 이내', '셔틀 운행', '대형 주차']
 
 export const emptyVenueFilterState: VenueFilterState = {
-  regionGroup: '', localities: [], accessKinds: [], accessPointIds: [], accessOptions: [], mealTypes: [], venueTypes: [], wishes: [], query: '',
+  regionGroup: '', localities: [], accessKinds: [], accessPointIds: [], accessOptions: [], mealTypes: [], mealPriceRanges: [], venueTypes: [], wishes: [], query: '',
+}
+
+const matchesMealPriceRange = (price: number, range: VenueMealPriceRange) => {
+  if (range === '7만원 이하') return price <= 70_000
+  if (range === '7~8만원') return price > 70_000 && price <= 80_000
+  if (range === '8~9만원') return price > 80_000 && price < 90_000
+  return price >= 90_000
 }
 
 type VenueSeed = Omit<WeddingVenue, 'vendorId' | 'referenceImageIds'> & { images: string[] }
@@ -23,7 +31,7 @@ const d = imageAssets.vendorDressGallery
 const m = imageAssets.vendorMakeupGallery
 const a = imageAssets.atelierDress
 
-const seeds: VenueSeed[] = [
+const seedsWithoutMealPrice: Omit<VenueSeed, 'mealPrice'>[] = [
   { id: 'venue-gangnam', name: '베일리 강남 컨벤션', regionGroup: '서울', locality: '강남구', address: '서울 강남구 테헤란로 120', mealTypes: ['뷔페'], mealDetail: '프리미엄 인터내셔널 뷔페', venueType: '일반·컨벤션예식장(어두운 홀)', wishes: ['어두운 홀', '높은 천고', '화려한 꽃 장식', '단독홀'], accessPoints: [{ id: 'gangnam-st', name: '강남역', kind: '지하철역', mode: '도보', minutes: 6, tagLabel: '강남역도보접근성' }, { id: 'suseo-srt', name: '수서역 SRT', kind: '기차역', mode: '차량', minutes: 15, tagLabel: '수서역접근성' }], accessOptions: ['도보 10분 이내', '대형 주차'], shuttleNote: '셔틀 미운행', parkingNote: '하객 500대 주차 가능', summary: '높은 천고와 선명한 조명이 돋보이는 도심 컨벤션홀', images: [s, d, a] },
   { id: 'venue-seocho', name: '센트럴 서초 채플', regionGroup: '서울', locality: '서초구', address: '서울 서초구 반포대로 88', mealTypes: ['뷔페'], mealDetail: '한식 중심 프리미엄 뷔페', venueType: '채플홀', wishes: ['밝은 홀', '높은 천고', '단독홀'], accessPoints: [{ id: 'banpo-terminal', name: '반포고속버스터미널', kind: '터미널', mode: '도보', minutes: 8, tagLabel: '반포고속버스터미널접근성' }, { id: 'express-bus-st', name: '고속터미널역', kind: '지하철역', mode: '도보', minutes: 7, tagLabel: '고속터미널역도보접근성' }], accessOptions: ['도보 10분 이내', '대형 주차'], shuttleNote: '셔틀 미운행', parkingNote: '하객 420대 주차 가능', summary: '터미널 접근성과 자연광 예배당 분위기를 함께 갖춘 채플홀', images: [g, a, s] },
   { id: 'venue-songpa', name: '루미에르 송파 호텔', regionGroup: '서울', locality: '송파구', address: '서울 송파구 올림픽로 240', mealTypes: ['양식', '한식'], mealDetail: '양식 또는 한식 코스', venueType: '호텔예식', wishes: ['밝은 홀', '원형 테이블', '화려한 꽃 장식'], accessPoints: [{ id: 'jamsil-st', name: '잠실역', kind: '지하철역', mode: '도보', minutes: 5, tagLabel: '잠실역도보접근성' }], accessOptions: ['도보 10분 이내', '대형 주차'], shuttleNote: '예약 셔틀 협의', parkingNote: '호텔 주차 600대', summary: '호수 전망과 원형 테이블 연출이 특징인 호텔 웨딩', images: [a, g, m] },
@@ -43,6 +51,9 @@ const seeds: VenueSeed[] = [
   { id: 'venue-ilsan', name: '일산 레이크 스몰웨딩', regionGroup: '경기·인천', locality: '고양·일산', address: '경기 고양시 일산동구 호수로 320', mealTypes: ['양식', '기타'], mealDetail: '양식 코스와 브런치 메뉴', venueType: '스몰웨딩(100명 이하)', wishes: ['밝은 홀', '원형 테이블', '단독건물'], accessPoints: [{ id: 'daehwa-st', name: '대화역', kind: '지하철역', mode: '차량', minutes: 8, tagLabel: '대화역접근성' }, { id: 'ilsan-terminal', name: '고양종합터미널', kind: '터미널', mode: '차량', minutes: 12, tagLabel: '고양종합터미널접근성' }], accessOptions: ['셔틀 운행'], shuttleNote: '대화역 예약 셔틀', parkingNote: '하객 150대 주차 가능', summary: '호수공원 인근에서 여유롭게 진행하는 소규모 웨딩', images: [g, a, m] },
 ]
 
+const mealPrices = [88_000, 82_000, 125_000, 78_000, 98_000, 79_000, 68_000, 75_000, 92_000, 73_000, 76_000, 110_000, 72_000, 77_000, 85_000, 74_000, 89_000]
+const seeds: VenueSeed[] = seedsWithoutMealPrice.map((venue, index) => ({ ...venue, mealPrice: mealPrices[index] }))
+
 export const weddingVenues: WeddingVenue[] = seeds.map(({ images, ...venue }) => ({ ...venue, vendorId: `vendor-${venue.id}`, referenceImageIds: images.map((_, index) => `ref-웨딩홀-${venue.id}-${index + 1}`) }))
 
 export const venueVendors: Vendor[] = seeds.map((venue) => ({
@@ -51,7 +62,7 @@ export const venueVendors: Vendor[] = seeds.map((venue) => ({
   category: '웨딩홀',
   summary: venue.summary,
   tags: [venue.locality, ...venue.mealTypes, venue.venueType, ...venue.wishes.slice(0, 3)],
-  priceRange: '상담 후 안내',
+  priceRange: `1인 식대 ${venue.mealPrice.toLocaleString('ko-KR')}원`,
   match: 0,
   image: venue.images[0],
   gallery: venue.images,
@@ -93,6 +104,7 @@ export function filterWeddingVenues(filters: VenueFilterState) {
     .filter((venue) => !filters.accessPointIds.length || venue.accessPoints.some((point) => filters.accessPointIds.includes(point.id)))
     .filter((venue) => !filters.accessOptions.length || filters.accessOptions.some((option) => venue.accessOptions.includes(option)))
     .filter((venue) => !filters.mealTypes.length || filters.mealTypes.some((meal) => venue.mealTypes.includes(meal)))
+    .filter((venue) => !filters.mealPriceRanges.length || filters.mealPriceRanges.some((range) => matchesMealPriceRange(venue.mealPrice, range)))
     .filter((venue) => !filters.venueTypes.length || filters.venueTypes.includes(venue.venueType))
     .filter((venue) => !filters.wishes.length || filters.wishes.some((wish) => venue.wishes.includes(wish)))
     .filter((venue) => !tokens.length || tokens.every((token) => [venue.name, venue.locality, venue.address, venue.mealDetail, venue.venueType, ...venue.wishes, ...venue.accessPoints.flatMap((point) => [point.name, point.tagLabel])].join(' ').toLocaleLowerCase('ko').includes(token)))
