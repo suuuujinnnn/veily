@@ -1,4 +1,6 @@
 import type { ReferenceBoard, ReferenceCategory, WeddingReference } from '../types'
+import { mockOnly } from './mockGate'
+import { labeledReferences } from './vendorLabelData'
 import { vendorStyleProfiles } from './vendorStyleData'
 import { venueReferences } from './weddingVenueData'
 
@@ -45,10 +47,15 @@ function referencesForProfile(category: ReferenceCategory, profileId: string) {
 }
 
 export const weddingReferences: WeddingReference[] = [
-  ...['vp-d1', 'vp-d2', 'vp-d3', 'vp-d4', 'vp-d5'].flatMap((id) => referencesForProfile('드레스', id)),
-  ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('헤어', id)),
-  ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('메이크업', id)),
-  ...['vp-s1', 'vp-s2', 'vp-s3', 'vp-s4', 'vp-s5'].flatMap((id) => referencesForProfile('스튜디오', id)),
+  // 인스타에서 수집해 사진을 직접 판정한 실데이터.
+  ...labeledReferences,
+  // 아래 vp-* 는 목업이다. 백엔드가 떠 있으면 화면에서 빠진다(mockGate).
+  ...mockOnly([
+    ...['vp-d1', 'vp-d2', 'vp-d3', 'vp-d4', 'vp-d5'].flatMap((id) => referencesForProfile('드레스', id)),
+    ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('헤어', id)),
+    ...['vp-m1', 'vp-m2', 'vp-m3', 'vp-m4', 'vp-m5'].flatMap((id) => referencesForProfile('메이크업', id)),
+    ...['vp-s1', 'vp-s2', 'vp-s3', 'vp-s4', 'vp-s5'].flatMap((id) => referencesForProfile('스튜디오', id)),
+  ]),
   ...venueReferences,
 ]
 

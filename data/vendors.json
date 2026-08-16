@@ -1,0 +1,45 @@
+{
+  "source": "베리굿웨딩(verygoodwedding.co.kr) 제휴 업체 목록",
+  "collectedAt": "2026-08-15",
+  "note": "account는 전부 Graph API business_discovery 조회 성공을 확인한 값이다. name은 제휴 목록의 표기를 그대로 쓴다.",
+  "categories": {
+    "드레스": { "dir": "dressshop", "partnerCode": 71, "partnerCount": 125 },
+    "스튜디오": { "dir": "studio", "partnerCode": 72, "partnerCount": 168 },
+    "헤어메이크업": { "dir": "makeupshop", "partnerCode": 73, "partnerCount": 90 },
+    "웨딩홀": { "dir": "weddinghall", "partnerCode": null, "partnerCount": null }
+  },
+  "vendors": [
+    { "name": "이룬", "account": "eloon_official", "category": "드레스", "followers": 1649, "mediaCount": 282 },
+    { "name": "아뜰리에오화", "account": "atelier_ohwa", "category": "드레스", "followers": 3830, "mediaCount": 130 },
+    { "name": "크리드제이", "account": "creedj_official", "category": "드레스", "followers": 15918, "mediaCount": 2144 },
+    { "name": "루이즈블랑", "account": "louisblanc_official", "category": "드레스", "followers": 1718, "mediaCount": 636 },
+    { "name": "라포레", "account": "laforet___official", "category": "드레스", "followers": 23626, "mediaCount": 1351 },
+    { "name": "시작바이이명순", "account": "czacc_official", "category": "드레스", "followers": 41103, "mediaCount": 5215 },
+    { "name": "엔조최재훈", "account": "choijaehoon.official", "category": "드레스", "followers": 109982, "mediaCount": 4927 },
+    { "name": "비바탐탐", "account": "vivatamtam", "category": "드레스", "followers": 19040, "mediaCount": 375 },
+    { "name": "에스메랄다", "account": "esmeralda_sposa_official", "category": "드레스", "followers": 25549, "mediaCount": 4288 },
+    { "name": "리디아브라이드", "account": "lydiabride_official", "category": "드레스", "followers": 4095, "mediaCount": 671 },
+
+    { "name": "그온스튜디오", "account": "gue_on.studio.official", "category": "스튜디오", "followers": 275, "mediaCount": 93 },
+    { "name": "아테소", "account": "ateso_official", "category": "스튜디오", "followers": 23720, "mediaCount": 2762 },
+    { "name": "아카이브비", "account": "archive_boda", "category": "스튜디오", "followers": 214, "mediaCount": 60 },
+    { "name": "클레브스튜디오", "account": "cleve_studio", "category": "스튜디오", "followers": 7964, "mediaCount": 220 },
+    { "name": "스튜디오고유", "account": "studio.goyou", "category": "스튜디오", "followers": 10912, "mediaCount": 1805 },
+    { "name": "유하하우스", "account": "yuha_haus", "category": "스튜디오", "followers": 4597, "mediaCount": 403 },
+    { "name": "모닌스튜디오", "account": "moninstudio", "category": "스튜디오", "followers": 8059, "mediaCount": 973 },
+    { "name": "꼬모스튜디오", "account": "ccomostudio_official", "category": "스튜디오", "followers": 5234, "mediaCount": 385 },
+    { "name": "비마이스튜디오", "account": "_bemy_studio", "category": "스튜디오", "followers": 8099, "mediaCount": 948 },
+    { "name": "원규스튜디오", "account": "studiowonkyu", "category": "스튜디오", "followers": 35371, "mediaCount": 3469 },
+
+    { "name": "정샘물인스피레이션", "account": "jsminspiration", "category": "헤어메이크업", "followers": 1023, "mediaCount": 197 },
+    { "name": "김청경헤어페이스", "account": "kimchungkyung_hairface", "category": "헤어메이크업", "followers": 20595, "mediaCount": 2653 },
+    { "name": "미파레", "account": "me.parer_wedding", "category": "헤어메이크업", "followers": 194, "mediaCount": 38 },
+    { "name": "라메종뷰티", "account": "lamaison_bride", "category": "헤어메이크업", "followers": 3037, "mediaCount": 551 },
+    { "name": "이경민포레청담", "account": "lkmforetwedding", "category": "헤어메이크업", "followers": 13159, "mediaCount": 2359 },
+    { "name": "히나프", "account": "hinaf_wedding", "category": "헤어메이크업", "followers": 2568, "mediaCount": 576 },
+    { "name": "에이바이봄", "account": "abybom__official", "category": "헤어메이크업", "followers": 41199, "mediaCount": 3316 },
+    { "name": "정남", "account": "jungnam_wedding", "category": "헤어메이크업", "followers": 4638, "mediaCount": 405 },
+    { "name": "서의", "account": "seoui_official", "category": "헤어메이크업", "followers": 846, "mediaCount": 22 },
+    { "name": "요닝", "account": "yoning_official", "category": "헤어메이크업", "followers": 44524, "mediaCount": 5085 }
+  ]
+}
