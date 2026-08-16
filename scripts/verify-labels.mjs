@@ -5,7 +5,8 @@
  *   node scripts/verify-labels.mjs [기준브랜치]
  *
  * 1. UI 파일(.tsx/.css)이 허용된 범위 밖으로 바뀌지 않았는가
- * 2. 기존 키워드 값이 지워지지 않았는가 (그룹 이름 변경과 값 추가는 허용)
+ * 2. 기존 키워드 값이 허락 없이 지워지지 않았는가
+ *    (그룹 이름 변경과 값 추가는 허용. 의도적으로 뺀 값은 아래 목록에 등록한다)
  *
  * 이번 작업의 핵심 제약이라 눈으로 보지 않고 매번 돌린다.
  */
@@ -36,7 +37,26 @@ const after = parseGroups(fs.readFileSync(FILE, 'utf8'))
 const values = (groups) => new Set([...groups.values()].flat())
 const oldValues = values(before)
 const newValues = values(after)
-const removed = [...oldValues].filter((v) => !newValues.has(v))
+/**
+ * 플래너 피드백으로 일부러 걷어낸 값들. 각각 이유가 있다.
+ *
+ * 헤어 운영 조건(단독룸·담당자 지정·얼리스타트·발렛·헤어피스·컷트)은
+ * "사실상 모든 샵이 다 된다"고 확인받아 변별력이 없다. 헤어 액세서리는
+ * 헤어샵이 아니라 드레스샵에서 나온다.
+ *
+ * 헤어·메이크업 디자인 값은 시안 찾기용 새 키워드로 대체됐다.
+ */
+const INTENTIONALLY_REMOVED = new Set([
+  '단독룸', '반독립석', '오픈형',
+  '원장 지정 가능', '실장 지정 가능', '담당자 지정 없음', '1:1 진행', '동시 진행',
+  '얼리 스타트 가능', '레이트 스타트 가능', '휴무일 진행 가능', '주차·발렛', '출장 가능',
+  '본식 헤어피스', '촬영 헤어피스', '혼주 헤어·메이크업', '커트 가능', '헤어 액세서리',
+  '웨이브', '단발', '로우 번', '미들 번', '땋은 머리',
+  '물광', '세미 매트', '투명', '누드', '과즙', '음영', '글램', '강한', '깔끔',
+])
+
+const removed = [...oldValues].filter((v) => !newValues.has(v) && !INTENTIONALLY_REMOVED.has(v))
+const removedOnPurpose = [...oldValues].filter((v) => !newValues.has(v) && INTENTIONALLY_REMOVED.has(v))
 const added = [...newValues].filter((v) => !oldValues.has(v))
 
 const renamedFrom = [...before.keys()].filter((g) => !after.has(g))
@@ -65,6 +85,7 @@ console.log(`기준 브랜치: ${BASE}\n`)
 console.log(`키워드 값   ${oldValues.size}개 → ${newValues.size}개`)
 console.log(`  지워진 값  ${removed.length ? '❌ ' + removed.join(', ') : '없음 ✅'}`)
 console.log(`  추가된 값  ${added.length ? added.join(', ') : '없음'}`)
+console.log(`  일부러 뺀 값  ${removedOnPurpose.length}개`)
 console.log(`\n그룹        ${before.size}개 → ${after.size}개`)
 if (renamedFrom.length || renamedTo.length) {
   console.log(`  이름 변경  ${renamedFrom.join(', ')}  →  ${renamedTo.join(', ')}`)

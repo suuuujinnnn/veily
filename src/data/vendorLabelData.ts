@@ -1008,8 +1008,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1022,10 +1021,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lamaisonbride",
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
-    "tags": [
-      "로우 번",
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1037,9 +1033,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lamaisonbride",
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
-    "tags": [
-      "물광"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1066,8 +1060,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1080,10 +1073,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lamaisonbride",
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
-    "tags": [
-      "로우 번",
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1096,8 +1086,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1111,8 +1100,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1125,9 +1113,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lamaisonbride",
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1140,8 +1126,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "물광",
-      "음영"
+      "세련·음영·펄감"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1155,8 +1140,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1169,9 +1153,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lamaisonbride",
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1184,7 +1166,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1198,8 +1180,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1213,8 +1194,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1227,10 +1207,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lamaisonbride",
     "vendorName": "라메종뷰티",
     "account": "lamaison_bride",
-    "tags": [
-      "로우 번",
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1653,8 +1630,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1668,8 +1644,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "반묶음",
-      "생머리"
+      "반묶음"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1683,8 +1658,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "세미 매트",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1698,8 +1672,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "단발",
-      "생머리"
+      "단발 생머리"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1713,7 +1686,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1727,8 +1700,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1741,9 +1713,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-kimchungkyunghairface",
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1756,8 +1726,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "세미 매트",
-      "음영"
+      "깔끔·은은한 음영"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1770,9 +1739,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-kimchungkyunghairface",
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1785,8 +1752,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1799,9 +1765,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-kimchungkyunghairface",
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
-    "tags": [
-      "세미 매트"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1813,9 +1777,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-kimchungkyunghairface",
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -1828,8 +1790,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "하이 번",
-      "생머리"
+      "하이 번"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1843,8 +1804,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "세미 매트",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1858,7 +1818,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1872,8 +1832,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
     "tags": [
-      "세미 매트",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -1886,10 +1845,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-kimchungkyunghairface",
     "vendorName": "김청경헤어페이스",
     "account": "kimchungkyung_hairface",
-    "tags": [
-      "로우 번",
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -2637,8 +2593,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2666,7 +2621,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2679,9 +2634,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-meparerwedding",
     "vendorName": "미파레",
     "account": "me.parer_wedding",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -2694,8 +2647,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2709,8 +2661,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2723,9 +2674,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-meparerwedding",
     "vendorName": "미파레",
     "account": "me.parer_wedding",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -2738,7 +2687,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2751,9 +2700,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-meparerwedding",
     "vendorName": "미파레",
     "account": "me.parer_wedding",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -2766,8 +2713,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "물광",
-      "강한"
+      "세련·음영·펄감"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2781,8 +2727,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "단발",
-      "생머리"
+      "단발 생머리"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2796,8 +2741,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "세미 매트",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2811,8 +2755,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "단발",
-      "생머리"
+      "단발 생머리"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2826,8 +2769,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2840,9 +2782,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-meparerwedding",
     "vendorName": "미파레",
     "account": "me.parer_wedding",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -2855,7 +2795,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2868,10 +2808,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-meparerwedding",
     "vendorName": "미파레",
     "account": "me.parer_wedding",
-    "tags": [
-      "로우 번",
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -2884,8 +2821,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "미파레",
     "account": "me.parer_wedding",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -2898,9 +2834,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-meparerwedding",
     "vendorName": "미파레",
     "account": "me.parer_wedding",
-    "tags": [
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -3781,8 +3715,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "정남",
     "account": "jungnam_wedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3808,8 +3741,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "정남",
     "account": "jungnam_wedding",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3837,8 +3769,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "정남",
     "account": "jungnam_wedding",
     "tags": [
-      "세미 매트",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3864,8 +3795,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "정남",
     "account": "jungnam_wedding",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3878,9 +3808,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-jungnamwedding",
     "vendorName": "정남",
     "account": "jungnam_wedding",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -3893,8 +3821,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "정남",
     "account": "jungnam_wedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3920,7 +3847,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "정남",
     "account": "jungnam_wedding",
     "tags": [
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3946,8 +3873,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "서의",
     "account": "seoui_official",
     "tags": [
-      "세미 매트",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -3974,9 +3900,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-seouiofficial",
     "vendorName": "서의",
     "account": "seoui_official",
-    "tags": [
-      "로우 번"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -3988,9 +3912,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-seouiofficial",
     "vendorName": "서의",
     "account": "seoui_official",
-    "tags": [
-      "로우 번"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4003,8 +3925,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "서의",
     "account": "seoui_official",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4030,8 +3951,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4057,8 +3977,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4086,8 +4005,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4100,10 +4018,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lkmforetwedding",
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
-    "tags": [
-      "로우 번",
-      "생머리"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4116,8 +4031,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4142,9 +4056,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lkmforetwedding",
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
-    "tags": [
-      "세미 매트"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4157,8 +4069,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4171,9 +4082,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-lkmforetwedding",
     "vendorName": "이경민포레청담",
     "account": "lkmforetwedding",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4186,8 +4095,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "히나프",
     "account": "hinaf_wedding",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4213,8 +4121,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "히나프",
     "account": "hinaf_wedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4242,8 +4149,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "히나프",
     "account": "hinaf_wedding",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4256,9 +4162,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-hinafwedding",
     "vendorName": "히나프",
     "account": "hinaf_wedding",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4271,8 +4175,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "히나프",
     "account": "hinaf_wedding",
     "tags": [
-      "물광",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4285,9 +4188,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-hinafwedding",
     "vendorName": "히나프",
     "account": "hinaf_wedding",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4300,8 +4201,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4315,8 +4215,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "단발",
-      "웨이브"
+      "단발 웨이브"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4330,8 +4229,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4345,8 +4243,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "단발",
-      "웨이브"
+      "단발 웨이브"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4360,8 +4257,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "투명",
-      "깔끔"
+      "깔끔·단아·청순"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4374,9 +4270,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-abybomofficial",
     "vendorName": "에이바이봄",
     "account": "abybom__official",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4389,8 +4283,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4403,9 +4296,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorId": "ig-abybomofficial",
     "vendorName": "에이바이봄",
     "account": "abybom__official",
-    "tags": [
-      "웨이브"
-    ],
+    "tags": [],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
     "reviewStatus": "검수완료"
@@ -4418,8 +4309,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "에이바이봄",
     "account": "abybom__official",
     "tags": [
-      "물광",
-      "과즙"
+      "뽀용 과즙"
     ],
     "purpose": "상담 레퍼런스",
     "source": "검수 아카이브",
@@ -4702,11 +4592,10 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 16장을 판정해 태그를 붙였습니다.",
     "tags": [
+      "깔끔·단아·청순",
+      "뽀용 과즙",
       "생머리",
-      "물광",
-      "과즙",
-      "깔끔",
-      "투명"
+      "세련·음영·펄감"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -4800,11 +4689,11 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 17장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "깔끔",
-      "생머리",
-      "세미 매트",
-      "물광",
-      "과즙"
+      "깔끔·단아·청순",
+      "뽀용 과즙",
+      "깔끔·은은한 음영",
+      "단발 생머리",
+      "반묶음"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -4964,11 +4853,11 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 19장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "깔끔",
+      "깔끔·단아·청순",
+      "단발 생머리",
+      "뽀용 과즙",
       "생머리",
-      "물광",
-      "투명",
-      "단발"
+      "세련·음영·펄감"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5255,11 +5144,9 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 12장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "깔끔",
-      "물광",
-      "과즙",
-      "생머리",
-      "세미 매트"
+      "깔끔·단아·청순",
+      "뽀용 과즙",
+      "생머리"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5288,11 +5175,8 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "과즙",
-      "로우 번",
-      "물광",
-      "생머리",
-      "세미 매트"
+      "뽀용 과즙",
+      "생머리"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5321,11 +5205,9 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 11장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "물광",
-      "깔끔",
-      "과즙",
-      "생머리",
-      "로우 번"
+      "깔끔·단아·청순",
+      "뽀용 과즙",
+      "생머리"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5354,10 +5236,8 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 8장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "깔끔",
-      "물광",
-      "웨이브",
-      "과즙",
+      "깔끔·단아·청순",
+      "뽀용 과즙",
       "생머리"
     ],
     "priceRange": "문의",
@@ -5387,11 +5267,10 @@ export const labeledVendors: Vendor[] = [
     "category": "헤어&메이크업",
     "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "웨이브",
-      "과즙",
-      "물광",
-      "깔끔",
-      "단발"
+      "뽀용 과즙",
+      "깔끔·단아·청순",
+      "단발 웨이브",
+      "생머리"
     ],
     "priceRange": "문의",
     "match": 0,

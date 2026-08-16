@@ -19,30 +19,43 @@ const OUT = 'src/data/vendorLabelData.ts'
 const PASS_THROUGH = {
   드레스: ['넥라인', '소매', '소재', '장식', '스커트라인', '특별디자인', '색상'],
   헤어: [],
-  메이크업: ['피부표현', '무드컬러'],
+  메이크업: [],
   스튜디오: ['화면구성', '무드', '빛컬러', '공간장면', '시간구도', '소품'],
   웨딩홀: [],
 }
 
-const 업스타일 = ['로우 번', '미들 번', '하이 번', '로우 포니테일', '하이 포니테일']
-
+/** labelMapping.ts 의 hairTags 와 같은 규칙. 둘이 어긋나면 화면 태그가 조용히 빠진다. */
 function hairTags(l0) {
   const tags = []
+  if (l0.길이?.[0] === '단발') {
+    if (l0.텍스처?.[0] === '생머리') tags.push('단발 생머리')
+    if (l0.텍스처?.[0] === '웨이브') tags.push('단발 웨이브')
+    if (l0.반묶음?.[0] === '반묶음') tags.push('단발 반묶음')
+    return [...new Set(tags)]
+  }
   const position = l0.묶음위치?.[0]
   const shape = l0.묶음형태?.[0]
-  if (shape === '땋음') tags.push('땋은 머리')
-  else if (position && shape) {
-    const candidate = `${position} ${shape}`
-    if (업스타일.includes(candidate)) tags.push(candidate)
-  }
+  if (position === '하이' && shape === '번') tags.push('하이 번')
+  if (shape === '포니테일' && (position === '로우' || position === '하이')) tags.push(`${position} 포니테일`)
   if (l0.반묶음?.[0] === '반묶음') tags.push('반묶음')
-  if (l0.길이?.[0] === '단발') tags.push('단발')
-  if (l0.텍스처?.[0]) tags.push(l0.텍스처[0])
-  return tags
+  if (l0.반묶음?.[0] === '내림' && l0.텍스처?.[0] === '생머리') tags.push('생머리')
+  return [...new Set(tags)]
+}
+
+/** 피부표현과 무드컬러를 합쳐 스타일 하나로 넘긴다. */
+function makeupTags(l0) {
+  const skin = l0.피부표현?.[0]
+  const mood = l0.무드컬러?.[0]
+  if (mood === '과즙') return ['뽀용 과즙']
+  if (mood === '강한') return ['세련·음영·펄감']
+  if (mood === '음영') return skin === '물광' ? ['세련·음영·펄감'] : ['깔끔·은은한 음영']
+  if (mood === '깔끔') return ['깔끔·단아·청순']
+  return []
 }
 
 function toReferenceTags(category, l0) {
-  if (category === '헤어') return [...new Set(hairTags(l0))]
+  if (category === '헤어') return hairTags(l0)
+  if (category === '메이크업') return makeupTags(l0)
   return [...new Set((PASS_THROUGH[category] ?? []).flatMap((axis) => l0[axis] ?? []))]
 }
 

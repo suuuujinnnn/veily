@@ -32,7 +32,7 @@ export interface LabelRecord {
 const PASS_THROUGH: Record<ReferenceCategory, string[]> = {
   드레스: ['넥라인', '소매', '소재', '장식', '스커트라인', '특별디자인', '색상'],
   헤어: [],
-  메이크업: ['피부표현', '무드컬러'],
+  메이크업: [],
   스튜디오: ['화면구성', '무드', '빛컬러', '공간장면', '시간구도', '소품'],
   웨딩홀: [],
 }
@@ -40,37 +40,55 @@ const PASS_THROUGH: Record<ReferenceCategory, string[]> = {
 /** 화면에 안 나가는 축. 게이팅·보정 전용이다. */
 const INTERNAL_ONLY = new Set(['프레이밍', '오버레이', '조명조건', '샷타입', '기립', '각도'])
 
-const 묶음위치 = { 로우: '로우', 미들: '미들', 하이: '하이' } as const
-const 묶음형태 = { 번: '번', 포니테일: '포니테일' } as const
-
 /**
- * 헤어만 조합 규칙이 필요하다. UI 키워드가 '로우 번'처럼 위치와 형태를 붙여 쓰는데
- * L0는 두 축으로 나눠 판정하기 때문이다. 둘 중 하나라도 비면 키워드를 만들지 않는다.
- * 반쪽짜리 추정으로 '하이 번'을 붙이면 검색이 조용히 틀린다.
+ * 헤어는 시안 찾기 카테고리로 바뀌었다. 지금 L0 로는 채울 수 없는 값이 많다.
+ * 번의 종류(클래식·내추럴·가시·슬립), 펌의 종류(물결·s컬·히피), 땋기 방식,
+ * 베일 위치는 판정한 적이 없어 비워 둔다. 재판정 때 채운다.
+ * 억지로 로우 번을 클래식 로우번으로 넘기면 없는 사실을 만드는 셈이다.
  */
 function hairTags(l0: AtomicLabels): string[] {
   const tags: string[] = []
-  const position = l0.묶음위치?.[0]
-  const shape = l0.묶음형태?.[0]
+  const 단발 = l0.길이?.[0] === '단발'
 
-  if (shape === '땋음') tags.push('땋은 머리')
-  else if (position && shape && position in 묶음위치 && shape in 묶음형태) {
-    // 로우/미들/하이 번은 셋 다 있지만 포니테일은 로우·하이만 UI에 있다.
-    const candidate = `${position} ${shape}`
-    const 업스타일 = ['로우 번', '미들 번', '하이 번', '로우 포니테일', '하이 포니테일']
-    if (업스타일.includes(candidate)) tags.push(candidate)
+  if (단발) {
+    // 단발은 별도 그룹이라 접두어를 붙인 값으로 넘긴다.
+    if (l0.텍스처?.[0] === '생머리') tags.push('단발 생머리')
+    if (l0.텍스처?.[0] === '웨이브') tags.push('단발 웨이브')
+    if (l0.반묶음?.[0] === '반묶음') tags.push('단발 반묶음')
+    return [...new Set(tags)]
   }
 
+  const position = l0.묶음위치?.[0]
+  const shape = l0.묶음형태?.[0]
+  if (position === '하이' && shape === '번') tags.push('하이 번')
+  if (shape === '포니테일' && (position === '로우' || position === '하이')) tags.push(`${position} 포니테일`)
   if (l0.반묶음?.[0] === '반묶음') tags.push('반묶음')
-  if (l0.길이?.[0] === '단발') tags.push('단발')
-  if (l0.텍스처?.[0]) tags.push(l0.텍스처[0])
+  if (l0.반묶음?.[0] === '내림' && l0.텍스처?.[0] === '생머리') tags.push('생머리')
 
-  return tags
+  return [...new Set(tags)]
 }
 
+
 /** L0 라벨 한 벌을 화면이 읽는 태그 배열로 바꾼다. */
+/**
+ * 메이크업은 피부표현과 무드컬러를 조합해 스타일 하나로 넘긴다.
+ * 화면 키워드가 '깔끔+단아+청순' 처럼 합쳐진 표현이라 축을 그대로 못 넘긴다.
+ * 단독룸·담당자 베이스는 사진으로 알 수 없어 L2 에서 채워야 한다.
+ */
+function makeupTags(l0: AtomicLabels): string[] {
+  const skin = l0.피부표현?.[0]
+  const mood = l0.무드컬러?.[0]
+
+  if (mood === '과즙') return ['뽀용 과즙']
+  if (mood === '강한') return ['세련·음영·펄감']
+  if (mood === '음영') return skin === '물광' ? ['세련·음영·펄감'] : ['깔끔·은은한 음영']
+  if (mood === '깔끔') return skin === '물광' ? ['깔끔·단아·청순'] : ['깔끔·단아·청순']
+  return []
+}
+
 export function toReferenceTags(category: ReferenceCategory, l0: AtomicLabels): string[] {
-  if (category === '헤어') return [...new Set(hairTags(l0))]
+  if (category === '헤어') return hairTags(l0)
+  if (category === '메이크업') return makeupTags(l0)
 
   const axes = PASS_THROUGH[category]
   const tags = axes
