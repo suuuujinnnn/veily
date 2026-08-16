@@ -8,14 +8,14 @@ const dateLabel = (value: string) => new Intl.DateTimeFormat('ko-KR', { year: 'n
 const timeLabel = (value: string) => new Intl.DateTimeFormat('ko-KR', { hour: '2-digit', minute: '2-digit' }).format(new Date(value))
 const fileSize = (size?: number) => size ? `${Math.max(1, Math.round(size / 1024))}KB` : '첨부 파일'
 
-function MessageText({ text }: { text: string }) {
+export function MessageText({ text }: { text: string }) {
   const parts = text.split(/(https?:\/\/[^\s]+)/g)
   return <p>{parts.map((part, index): ReactNode => part.startsWith('http')
     ? <a href={part} target="_blank" rel="noreferrer" key={`${part}-${index}`}>{part}<ExternalLink size={11} /></a>
     : part)}</p>
 }
 
-function MessageAttachments({ attachments, onImageOpen }: { attachments: CustomerMessageAttachment[]; onImageOpen: (attachment: CustomerMessageAttachment) => void }) {
+export function MessageAttachments({ attachments, onImageOpen }: { attachments: CustomerMessageAttachment[]; onImageOpen: (attachment: CustomerMessageAttachment) => void }) {
   if (!attachments.length) return null
   return <div className="customer-message-attachments">{attachments.map((attachment) => attachment.type === 'image'
     ? <button type="button" className="customer-message-image" onClick={() => onImageOpen(attachment)} key={attachment.id}><img src={attachment.url} alt={attachment.name} /><span><Image size={12} />{attachment.name}</span></button>

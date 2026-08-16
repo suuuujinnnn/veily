@@ -2,14 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { ExternalLink, MessageCircleMore, Paperclip, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useDemoStore } from '../../app/store'
-import { ConversationThread } from '../../components/messages/ConversationThread'
+import { QuestionAnswerThread } from '../../components/messages/QuestionAnswerThread'
 import { MessageComposer } from '../../components/messages/MessageComposer'
 import { Badge } from '../../components/ui'
 
 const timeLabel = (value: string) => new Intl.DateTimeFormat('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value))
 
 export function CustomerRequestsPage() {
-  const { couples, customerRequests, sendCustomerMessage, markConversationRead } = useDemoStore()
+  const { couples, customerRequests, sendCustomerMessage, setCustomerMessageStatus, markConversationRead } = useDemoStore()
   const [activeCoupleId, setActiveCoupleId] = useState(customerRequests[0]?.coupleId ?? couples[0]?.id ?? '')
   const [query, setQuery] = useState('')
 
@@ -39,9 +39,9 @@ export function CustomerRequestsPage() {
       </aside>
       <section className="customer-chat-panel">
         {activeConversation ? <>
-          <header><div><span className="customer-request-avatar">{activeConversation.couple.initials}</span><div><strong>{activeConversation.couple.partners}</strong><small>{activeConversation.messages.length}개의 메시지 · 파일과 링크 보관 중</small></div></div><Link to={`/couples/${activeConversation.couple.id}?tab=info`}>고객 상세 <ExternalLink size={13} /></Link></header>
-          <ConversationThread messages={activeConversation.messages} viewer="planner" />
-          <MessageComposer placeholder={`${activeConversation.couple.brideName} 고객에게 메시지 보내기`} onSend={(originalText, attachments) => sendCustomerMessage({ coupleId: activeConversation.couple.id, category: '기타', originalText, sender: 'planner', attachments })} />
+          <header><div><span className="customer-request-avatar">{activeConversation.couple.initials}</span><div><strong>{activeConversation.couple.partners}</strong><small>{activeConversation.messages.filter((message) => message.sender === 'customer').length}개의 질문 · 답변 상태를 관리합니다</small></div></div><Link to={`/couples/${activeConversation.couple.id}?tab=info`}>고객 상세 <ExternalLink size={13} /></Link></header>
+          <QuestionAnswerThread messages={activeConversation.messages} viewer="planner" canToggleStatus onStatusChange={setCustomerMessageStatus} emptyMessage="고객이 남긴 질문과 참고 자료가 여기에 표시됩니다." />
+          <MessageComposer placeholder={`${activeConversation.couple.brideName} 고객의 질문에 답변하기`} onSend={(originalText, attachments) => sendCustomerMessage({ coupleId: activeConversation.couple.id, category: '기타', originalText, sender: 'planner', attachments })} />
         </> : <div className="customer-chat-empty"><MessageCircleMore size={28} /><strong>대화를 선택하세요</strong><p>고객과 주고받은 메시지가 여기에 표시됩니다.</p></div>}
       </section>
     </section>
