@@ -107,6 +107,7 @@ export type DemoAction =
   | { type: 'ADD_UPLOADED_REFERENCE'; payload: WeddingReference }
   | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
   | { type: 'SEND_CUSTOMER_MESSAGE'; payload: CustomerRequest }
+  | { type: 'SET_CUSTOMER_MESSAGE_STATUS'; payload: { id: string; answerStatus: CustomerRequest['answerStatus']; updatedAt: string } }
   | { type: 'MARK_CONVERSATION_READ'; payload: { coupleId: string; viewer: 'customer' | 'planner'; readAt: string } }
   | { type: 'COMPLETE_PORTAL_ONBOARDING'; payload: PortalOnboardingState }
   | { type: 'ADD_ORDER_REMINDER'; payload: OrderReminder }
@@ -260,6 +261,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
     }
     case 'SEND_CUSTOMER_MESSAGE':
       return { ...state, customerRequests: [action.payload, ...state.customerRequests] }
+    case 'SET_CUSTOMER_MESSAGE_STATUS':
+      return { ...state, customerRequests: state.customerRequests.map((item) => item.id === action.payload.id ? { ...item, answerStatus: action.payload.answerStatus, updatedAt: action.payload.updatedAt } : item) }
     case 'MARK_CONVERSATION_READ':
       return {
         ...state,
@@ -321,6 +324,7 @@ interface DemoContextValue extends DemoState {
   addUploadedReference: (reference: Omit<WeddingReference, 'id'>) => void
   saveCustomerReferenceSubmission: (submission: CustomerReferenceSubmission) => void
   sendCustomerMessage: (message: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'readByPlannerAt' | 'readByCustomerAt'>) => void
+  setCustomerMessageStatus: (id: string, answerStatus: CustomerRequest['answerStatus']) => void
   markConversationRead: (coupleId: string, viewer: 'customer' | 'planner') => void
   completePortalOnboarding: (state: PortalOnboardingState) => void
   addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'completedAt'>) => void
@@ -400,6 +404,7 @@ export function DemoProvider({ children }: PropsWithChildren) {
         ...(message.sender === 'planner' ? { readByPlannerAt: new Date().toISOString() } : { readByCustomerAt: new Date().toISOString() }),
       },
     }),
+    setCustomerMessageStatus: (id, answerStatus) => dispatch({ type: 'SET_CUSTOMER_MESSAGE_STATUS', payload: { id, answerStatus, updatedAt: new Date().toISOString() } }),
     markConversationRead: (coupleId, viewer) => dispatch({ type: 'MARK_CONVERSATION_READ', payload: { coupleId, viewer, readAt: new Date().toISOString() } }),
     completePortalOnboarding: (onboardingState) => dispatch({ type: 'COMPLETE_PORTAL_ONBOARDING', payload: onboardingState }),
     addOrderReminder: (reminder) => dispatch({ type: 'ADD_ORDER_REMINDER', payload: { ...reminder, id: makeId('or'), status: 'pending' } }),
