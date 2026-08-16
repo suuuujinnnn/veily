@@ -55,7 +55,8 @@ export function VendorsPage() {
     const tokens = query.trim().toLocaleLowerCase('ko').split(/\s+/).filter(Boolean)
     const venueVendorIds = new Set(venueResults.map((venue) => venue.vendorId))
     return store.vendors.filter((vendor) => {
-      const categoryMatches = category === '헤어' ? vendor.category === '메이크업' : vendor.category === category
+      // 레퍼런스 탭은 헤어·메이크업이 갈리지만 업체는 하나다. 둘 다 같은 업체로 잇는다.
+      const categoryMatches = category === '헤어' || category === '메이크업' ? vendor.category === '헤어&메이크업' : vendor.category === category
       const keywordMatches = category === '웨딩홀' ? venueVendorIds.has(vendor.id) : matchesSelectedGroups(category, vendor.tags, selectedKeywords)
       const haystack = [vendor.name, vendor.instagram, vendor.address, vendor.summary, vendorOperationalText(vendor), ...vendor.tags].join(' ').toLocaleLowerCase('ko')
       return categoryMatches && keywordMatches && (!tokens.length || tokens.every((token) => haystack.includes(token)))

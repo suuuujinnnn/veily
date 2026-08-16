@@ -79,8 +79,8 @@ for (const [account, rows] of labeledAccounts) {
   const fact = factByAccount.get(account) ?? {}
   const id = vendorId(account)
   const name = meta?.name ?? rows[0].vendorName
-  // 업체 카테고리는 인스타 수집 기준(헤어메이크업)이고, 화면 타입은 메이크업이다.
-  const category = meta?.category === '헤어메이크업' ? '메이크업' : (meta?.category ?? rows[0].category)
+  // 헤어와 메이크업은 같은 숍이라 업체는 하나로 센다. 수집 기준 이름만 화면 값에 맞춘다.
+  const category = meta?.category === '헤어메이크업' ? '헤어&메이크업' : (meta?.category ?? rows[0].category)
 
   rows.forEach((row, index) => {
     references.push({

@@ -2,8 +2,10 @@ export type EventType = '미팅' | '드레스' | '스튜디오' | '메이크업'
 export type EventApprovalStatus = 'planner-proposed' | 'client-ok' | 'confirmed'
 export type ScheduleVisibility = 'couple-shared' | 'planner-private'
 
-export type VendorCategory = '드레스' | '메이크업' | '스튜디오' | '웨딩홀' | '예물' | '기타'
-export type AnalyzedVendorCategory = Extract<VendorCategory, '드레스' | '메이크업' | '스튜디오'>
+// 헤어와 메이크업은 같은 숍이 함께 한다. 업체는 하나로 센다.
+// 레퍼런스 보드에서는 사진 성격이 달라 헤어·메이크업 탭을 따로 둔다(ReferenceCategory).
+export type VendorCategory = '드레스' | '헤어&메이크업' | '스튜디오' | '웨딩홀' | '예물' | '기타'
+export type AnalyzedVendorCategory = Extract<VendorCategory, '드레스' | '헤어&메이크업' | '스튜디오'>
 
 export interface Couple {
   id: string

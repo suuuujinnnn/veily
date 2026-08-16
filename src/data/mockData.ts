@@ -153,7 +153,7 @@ export const vendors: Vendor[] = [
       ? { kind: 'studio' as const, bouquetProvided: verified(index % 2 === 0, '2026-07-14'), propsProvided: verified(true, '2026-06-20'), veilProvided: verified(index % 3 !== 0, '2026-07-01'), backgrounds: verified(['자연광', index % 2 ? '클래식 세트' : '화이트 호리존'], '2026-07-14'), outdoorShooting: verified(index % 2 === 0, index === 0 ? '2025-06-18' : '2026-07-14'), parking: verified(true, '2026-06-20'), elevator: verified(index % 3 !== 0, '2026-06-20'), shootingDuration: verified('기본 5시간', '2026-07-14'), extensionAvailable: verified(index % 2 === 0, '2026-07-14'), surchargeConditions: verified('야외 이동·주말 촬영 추가금 별도', '2026-07-14') }
       : vendor.category === '드레스'
         ? { kind: 'dress' as const, fittingFee: verified(index % 2 ? '5만원' : '무료', '2026-07-02'), fittingCount: verified(index % 2 ? 4 : 3, '2026-07-02'), shootingAvailable: verified(true, '2026-07-02'), surchargeConditions: verified(index % 2 ? '수입 라인·프리미엄 소재 별도' : '지정 외 액세서리 추가 시 별도', '2026-07-02'), parking: verified(index % 2 === 0, '2026-07-02') }
-        : vendor.category === '메이크업'
+        : vendor.category === '헤어&메이크업'
           ? { kind: 'makeup' as const, earlyStartFee: verified('시간당 5만원', '2026-07-20'), directorRequestAvailable: verified(true, '2026-07-20'), hairpieces: verified('기본 2종 포함 · 추가 대여 가능', '2026-07-20'), parentMakeup: verified('양가 혼주 패키지 상담 가능', '2026-07-20'), parking: verified(index % 2 === 0, '2026-07-20') }
           : undefined,
   }))),

@@ -4627,7 +4627,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/eloon_official/ig_17967848478178126_0.jpg",
       "/vendors/dressshop/eloon_official/ig_17967848478178126_1.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4660,7 +4660,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/atelier_ohwa/ig_18028138181665444.jpg"
     ],
     "website": "https://naver.me/5t7ce27D",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4692,7 +4692,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/louisblanc_official/ig_18094215785624519.jpg",
       "/vendors/dressshop/louisblanc_official/ig_18107420540030806.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4725,7 +4725,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/laforet___official/ig_18102471344228824.jpg"
     ],
     "website": "https://linktr.ee/laforet__withyou",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4758,13 +4758,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/gue_on.studio.official/ig_18611678398025805.jpg"
     ],
     "website": "https://booking.naver.com/booking/6/bizes/1688786",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-lamaisonbride",
     "name": "라메종뷰티",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 16장을 판정해 태그를 붙였습니다.",
     "tags": [
       "생머리",
@@ -4790,7 +4790,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg",
       "/vendors/makeupshop/lamaison_bride/ig_17887204275199270_0.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4823,7 +4823,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/lydiabride_official/ig_17893568223599000.jpg"
     ],
     "website": "http://pf.kakao.com/_xeHAws",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4856,13 +4856,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/archive_boda/ig_18362681137240189.jpg"
     ],
     "website": "http://pf.kakao.com/_CbHfs",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-kimchungkyunghairface",
     "name": "김청경헤어페이스",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 17장을 판정해 태그를 붙였습니다.",
     "tags": [
       "깔끔",
@@ -4888,7 +4888,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/kimchungkyung_hairface/ig_18463079473113052_0.jpg",
       "/vendors/makeupshop/kimchungkyung_hairface/ig_18051420428556126_0.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4921,7 +4921,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/ateso_official/ig_18192697621375837_0.jpg"
     ],
     "website": "http://www.momentloves.com/",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4954,7 +4954,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/creedj_official/ig_18088149392556045_0.jpg"
     ],
     "website": "http://pf.kakao.com/_zWQJT",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -4987,7 +4987,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/cleve_studio/ig_18159743053471507_0.jpg"
     ],
     "website": "http://pf.kakao.com/_faurn/chat",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5020,13 +5020,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/esmeralda_sposa_official/ig_18079455560693797_0.jpg"
     ],
     "website": "https://m.place.naver.com/place/11699744/home?entry=pll&fbclid=PARlRTSANQRTBleHRuA2FlbQIxMAABp7YD9saV5-IK98Zfd92_77ZvNCN3Iur0ZCz94IpnoNgqNTIIjfWYwJ83J2F4_aem_ncqIGZXgev55I5FPFZLsqg",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-meparerwedding",
     "name": "미파레",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 19장을 판정해 태그를 붙였습니다.",
     "tags": [
       "깔끔",
@@ -5052,7 +5052,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/me.parer_wedding/ig_18110649517790938_0.jpg",
       "/vendors/makeupshop/me.parer_wedding/ig_17936918079316355_0.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5085,7 +5085,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/czacc_official/ig_18074216567386017_0.jpg"
     ],
     "website": "http://czacc.co.kr/",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5117,7 +5117,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/choijaehoon.official/ig_17911718601450082_0.jpg"
     ],
     "website": "http://m.booking.naver.com/booking/13/bizes/843776/items/4862856",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5150,7 +5150,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/studio.goyou/ig_18175629841407199_0.jpg"
     ],
     "website": "https://open.kakao.com/o/s7IainBi",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5182,7 +5182,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/yuha_haus/ig_17881894734435838_0.jpg"
     ],
     "website": "https://open.kakao.com/o/siGrHKZg",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5214,7 +5214,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/moninstudio/ig_18055904969380403_0.jpg",
       "/vendors/studio/moninstudio/ig_17890130709285595_0.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5246,7 +5246,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/ccomostudio_official/ig_18043947299693509_0.jpg",
       "/vendors/studio/ccomostudio_official/ig_18076153862058072_0.jpg"
     ],
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5279,7 +5279,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/_bemy_studio/ig_17974562408905312.jpg"
     ],
     "website": "http://pf.kakao.com/_NZzxjxj",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5311,13 +5311,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/studio/studiowonkyu/ig_18147870400519077_0.jpg"
     ],
     "website": "https://wonkyustudio.pages.dev/",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-jungnamwedding",
     "name": "정남",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 12장을 판정해 태그를 붙였습니다.",
     "tags": [
       "깔끔",
@@ -5344,13 +5344,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/jungnam_wedding/ig_18083746442688138_0.jpg"
     ],
     "website": "https://forms.gle/GYfhX52FgYFZdJfK6",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-seouiofficial",
     "name": "서의",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
     "tags": [
       "과즙",
@@ -5377,13 +5377,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/seoui_official/ig_18058307708416888.jpg"
     ],
     "website": "http://pf.kakao.com/_ejkxgG",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-lkmforetwedding",
     "name": "이경민포레청담",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 11장을 판정해 태그를 붙였습니다.",
     "tags": [
       "물광",
@@ -5410,13 +5410,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/lkmforetwedding/ig_17912092671409261.jpg"
     ],
     "website": "http://pf.kakao.com/_xiRxkXj",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-hinafwedding",
     "name": "히나프",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 8장을 판정해 태그를 붙였습니다.",
     "tags": [
       "깔끔",
@@ -5443,13 +5443,13 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/hinaf_wedding/ig_18072943232387900_0.jpg"
     ],
     "website": "https://m.blog.naver.com/hinaf",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
     "id": "ig-abybomofficial",
     "name": "에이바이봄",
-    "category": "메이크업",
+    "category": "헤어&메이크업",
     "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
     "tags": [
       "웨이브",
@@ -5476,7 +5476,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/makeupshop/abybom__official/ig_18107547157889581.jpg"
     ],
     "website": "https://m.place.naver.com/hairshop/93777020/home?entry=pll",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   },
   {
@@ -5509,7 +5509,7 @@ export const labeledVendors: Vendor[] = [
       "/vendors/dressshop/vivatamtam/ig_18137541364541937_1.jpg"
     ],
     "website": "http://linktr.ee/vivatamtam",
-    "updatedAt": "2026-08-15",
+    "updatedAt": "2026-08-16",
     "evidenceSource": "analyzed"
   }
 ]

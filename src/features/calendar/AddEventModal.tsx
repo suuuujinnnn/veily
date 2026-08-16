@@ -51,7 +51,7 @@ export function AddEventModal({ open, onClose, onAdded, initialDate, initialCoup
       selectWorkflow(workflowId)
     }
   }
-  const vendorCategory = type === '본식' ? '웨딩홀' : ['드레스', '스튜디오', '메이크업'].includes(type) ? type : null
+  const vendorCategory = type === '본식' ? '웨딩홀' : type === '메이크업' ? '헤어&메이크업' : ['드레스', '스튜디오'].includes(type) ? type : null
   const availableVendors = vendors.filter((vendor) => !vendorCategory || vendor.category === vendorCategory)
   const selectVendor = (nextId: string) => {
     setVendorId(nextId)

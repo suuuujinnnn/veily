@@ -8,11 +8,11 @@ import type { Vendor, VendorCategory } from '../../types'
 import { vendorStyleTaxonomy, type PartnerCategory } from '../../data/vendorStyleData'
 import { isVendorStale } from './vendorInfoUtils'
 
-const categories: ('전체' | VendorCategory)[] = ['전체', '드레스', '메이크업', '스튜디오', '웨딩홀', '예물', '기타']
-const analyzedCategories: VendorCategory[] = ['드레스', '메이크업', '스튜디오']
+const categories: ('전체' | VendorCategory)[] = ['전체', '드레스', '헤어&메이크업', '스튜디오', '웨딩홀', '예물', '기타']
+const analyzedCategories: VendorCategory[] = ['드레스', '헤어&메이크업', '스튜디오']
 const defaultImages: Record<VendorCategory, string> = {
   드레스: vendorReviewImages.laforet___official[0],
-  메이크업: vendorReviewImages.lkmforetwedding[0],
+  '헤어&메이크업': vendorReviewImages.lkmforetwedding[0],
   스튜디오: vendorReviewImages.cleve_studio[0],
   웨딩홀: vendorReviewImages['studio.goyou'][0],
   예물: vendorReviewImages.louisblanc_official[0],
