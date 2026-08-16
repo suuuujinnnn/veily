@@ -16,7 +16,6 @@ const emptyDraft = (coupleId: string, category: ChecklistCategory = '스튜디�
   kind: 'preparation',
   status: 'pending',
   owner: '함께',
-  isTemplate: false,
 })
 
 export function ChecklistEditorModal({
@@ -49,7 +48,6 @@ export function ChecklistEditorModal({
       kind: item.kind,
       status: item.status,
       owner: item.owner,
-      isTemplate: item.isTemplate,
     } : emptyDraft(coupleId, defaultCategory))
   }, [item, coupleId, defaultCategory, open])
 

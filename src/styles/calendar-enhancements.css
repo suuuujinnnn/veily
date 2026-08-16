@@ -34,6 +34,7 @@
 .calendar-cell__top .cell-conflict { display: inline-flex; align-items: center; gap: 2px; color: #bd6425; font-size: 7px !important; font-weight: 750; }
 .calendar-cell__top > span { font-family: var(--sans); font-weight: 700; }
 .calendar-event { min-height: 28px; padding: 6px 7px; align-items: center; border-left-width: 3px; border-radius: 6px; font-size: 9px; }
+.calendar-event__couple { margin-left: auto; flex: none; color: currentColor; font-size: 7px; font-weight: 700; opacity: .72; }
 .calendar-event > svg { flex: none; margin-left: auto; }
 .calendar-event--meeting { border-color: #c98b32; background: #fbf3e6; color: #8e601f; }
 .calendar-event--dress { border-color: #8464c3; background: #f0ebfb; color: #64479b; }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, MapPin, MessageCircle, Pause, Sparkles, ThumbsUp } from 'lucide-react'
+import { ArrowRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, MapPin, Pause, Sparkles } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Badge, Card, Progress } from '../../components/ui'
 import { imageAssets } from '../../assets/images'
@@ -13,26 +13,27 @@ import { formatDate } from '../reminders/reminderUtils'
 import { weddingReferences } from '../../data/weddingReferenceData'
 import { ClientTasteDiscovery } from './ClientTasteDiscovery'
 import { BudgetPlanSection } from '../../components/budget/BudgetPlanSection'
+import { PortalMessages } from './PortalMessages'
 
-type PortalTab = 'home' | 'calendar' | 'tasks' | 'discover' | 'vendors' | 'reviews' | 'estimate'
+type PortalTab = 'home' | 'messages' | 'calendar' | 'tasks' | 'discover' | 'vendors' | 'reviews' | 'estimate'
 
 export function PortalPage() {
   const { coupleId = 'c1', section } = useParams()
   const navigate = useNavigate()
-  const { couples, events, checklist, vendors, contracts, portalSettings, recommendations, uploadedReferences, setRecommendation } = useDemoStore()
+  const { couples, events, checklist, vendors, contracts, portalSettings, recommendations, uploadedReferences, customerRequests, setRecommendation } = useDemoStore()
   const couple = couples.find((item) => item.id === coupleId) ?? couples[0]
-  const settings = portalSettings.find((item) => item.coupleId === couple.id) ?? { coupleId: couple.id, showSchedule: true, showFullEstimate: true, receiveMessages: true, showChecklist: true }
-  const requestedTab = (['home', 'calendar', 'tasks', 'discover', 'vendors', 'reviews', 'estimate'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
-  const allowedRequestedTab = (requestedTab === 'calendar' && !settings.showSchedule) || (requestedTab === 'tasks' && !settings.showChecklist) ? 'home' : requestedTab
+  const settings = portalSettings.find((item) => item.coupleId === couple.id) ?? { coupleId: couple.id, showSchedule: true, showFullEstimate: true, messagingEnabled: true, showChecklist: true }
+  const requestedTab = (['home', 'messages', 'calendar', 'tasks', 'discover', 'vendors', 'reviews', 'estimate'] as PortalTab[]).includes(section as PortalTab) ? section as PortalTab : 'home'
+  const allowedRequestedTab = (requestedTab === 'messages' && !settings.messagingEnabled) || (requestedTab === 'calendar' && !settings.showSchedule) || (requestedTab === 'tasks' && !settings.showChecklist) ? 'home' : requestedTab
   const initialTab = allowedRequestedTab
   const [tab, setTab] = useState<PortalTab>(initialTab)
-  const [message, setMessage] = useState(false)
   const coupleEvents = events.filter((event) => event.coupleId === couple.id && event.visibility === 'couple-shared')
   const tasks = checklist.filter((item) => item.coupleId === couple.id && item.owner !== '플래너').sort((a, b) => a.dueDate.localeCompare(b.dueDate))
   const coupleContracts = contracts.filter((item) => item.coupleId === couple.id)
   const referenceLibrary = [...uploadedReferences, ...weddingReferences]
   const recs = recommendations.filter((item) => item.coupleId === couple.id).map((item) => ({ ...item, vendor: vendors.find((vendor) => vendor.id === item.vendorId), sourceReference: referenceLibrary.find((reference) => reference.id === item.sourceReferenceId) })).filter((item) => item.vendor)
   const completed = tasks.filter((task) => task.status === 'completed').length
+  const unreadMessages = customerRequests.filter((message) => message.coupleId === couple.id && message.sender === 'planner' && !message.readByCustomerAt).length
   const partnerGreeting = couple.partners
     .split(' & ')
     .map((name) => `${name.slice(1)}님`)
@@ -56,7 +57,7 @@ export function PortalPage() {
         <div className="d-day"><small>OUR DAY</small><strong>D—{dDay}</strong><span>함께 준비한 지 42일</span></div>
       </section>
       <div className="portal-context-strip"><span><strong>신랑·신부 전용 포털</strong> · 플래너 관리 화면과 분리되어 있습니다.</span><Link to={`/client/${couple.id}`}>접속 화면으로</Link></div>
-      <nav className="portal-nav"><div>{([['home','우리의 홈'], ...(settings.showSchedule ? [['calendar','공유 캘린더']] : []), ...(settings.showChecklist ? [['tasks','할 일']] : []), ['discover','내 취향 찾기'], ['vendors','추천 업체'], ['reviews','업체 정보'], ['estimate','견적']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'tasks' && <em>{tasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</div>{settings.receiveMessages && <button className="planner-message" onClick={() => { setMessage(true); window.setTimeout(() => setMessage(false), 1800) }}><MessageCircle size={15} /> 플래너에게 메시지</button>}</nav>
+      <nav className="portal-nav"><div>{([['home','우리의 홈'], ...(settings.messagingEnabled ? [['messages','메시지']] : []), ...(settings.showSchedule ? [['calendar','공유 캘린더']] : []), ...(settings.showChecklist ? [['tasks','할 일']] : []), ['discover','내 취향 찾기'], ['vendors','추천 업체'], ['reviews','업체 정보'], ['estimate','견적']] as [PortalTab,string][]).map(([key,label]) => <button className={tab === key ? 'active' : ''} onClick={() => openTab(key)} key={key}>{label}{key === 'messages' && unreadMessages > 0 && <em>{unreadMessages}</em>}{key === 'tasks' && <em>{tasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</div></nav>
 
       <main className="portal-content">
         {tab === 'home' && <>
@@ -67,6 +68,8 @@ export function PortalPage() {
           </section>
           <section className="portal-recommend-banner"><div><span><Sparkles size={18} /></span><div><p className="eyebrow">Planner selection</p><h2>분석 DB 추천 업체 {recs.length}곳이 등록되었습니다.</h2><p>검수된 포트폴리오 스타일 라벨과 두 분의 취향을 기준으로 정리했습니다.</p><button onClick={() => openTab('vendors')}>추천 목록 보기 <ArrowRight size={14} /></button></div></div><img src={recs[0]?.vendor?.image ?? imageAssets.vendorDressGallery} alt={recs[0]?.vendor ? `${recs[0].vendor.name} 포트폴리오` : '추천 웨딩 포트폴리오'} /></section>
         </>}
+
+        {tab === 'messages' && <PortalMessages coupleId={couple.id} />}
 
         {tab === 'calendar' && <PortalSharedCalendar coupleId={couple.id} />}
 
@@ -85,7 +88,6 @@ export function PortalPage() {
           {coupleContracts.length > 0 && <section className="portal-contracted-vendors"><div><p className="eyebrow">Contracted vendors</p><h3>계약한 업체</h3></div><div>{coupleContracts.map((contract) => <article key={contract.id}><Badge tone="neutral">{contract.category}</Badge><strong>{contract.vendorName}</strong></article>)}</div></section>}
         </section>}
       </main>
-      {message && <div className="portal-toast"><ThumbsUp size={17} /><div><strong>메시지 창을 준비했어요</strong><span>데모에서는 플래너에게 알림만 전송됩니다.</span></div></div>}
     </div>
   )
 }
