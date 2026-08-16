@@ -91,6 +91,7 @@ export interface CustomerMessage {
   createdAt: string
   updatedAt: string
   sender: 'customer' | 'planner'
+  answerStatus?: 'unanswered' | 'answered'
   readByPlannerAt?: string
   readByCustomerAt?: string
   attachments: CustomerMessageAttachment[]
