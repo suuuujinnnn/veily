@@ -53,10 +53,23 @@ function makeupTags(l0) {
   return []
 }
 
+/**
+ * 스튜디오는 화면 키워드가 L0 값과 이름이 다른 게 셋 있다.
+ * 나머지는 그대로 넘어간다.
+ */
+const STUDIO_RENAME = {
+  '인물 중심': '깔끔한 인물 중심',
+  '인물+배경': '인물+배경 적당히',
+  '배경 중심': '배경·컨셉 중심',
+}
+
 function toReferenceTags(category, l0) {
   if (category === '헤어') return hairTags(l0)
   if (category === '메이크업') return makeupTags(l0)
-  return [...new Set((PASS_THROUGH[category] ?? []).flatMap((axis) => l0[axis] ?? []))]
+  const tags = (PASS_THROUGH[category] ?? [])
+    .flatMap((axis) => l0[axis] ?? [])
+    .map((value) => (category === '스튜디오' ? (STUDIO_RENAME[value] ?? value) : value))
+  return [...new Set(tags)]
 }
 
 /** 인스타 계정명 → 화면에서 쓸 업체 id. 기존 vp-* 와 겹치지 않게 접두어를 둔다. */

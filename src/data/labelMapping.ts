@@ -86,6 +86,16 @@ function makeupTags(l0: AtomicLabels): string[] {
   return []
 }
 
+/**
+ * 스튜디오는 화면 키워드가 L0 값과 이름이 다른 게 셋 있다.
+ * 나머지는 그대로 넘어간다.
+ */
+const STUDIO_RENAME: Record<string, string> = {
+  '인물 중심': '깔끔한 인물 중심',
+  '인물+배경': '인물+배경 적당히',
+  '배경 중심': '배경·컨셉 중심',
+}
+
 export function toReferenceTags(category: ReferenceCategory, l0: AtomicLabels): string[] {
   if (category === '헤어') return hairTags(l0)
   if (category === '메이크업') return makeupTags(l0)
@@ -94,6 +104,7 @@ export function toReferenceTags(category: ReferenceCategory, l0: AtomicLabels): 
   const tags = axes
     .filter((axis) => !INTERNAL_ONLY.has(axis))
     .flatMap((axis) => l0[axis] ?? [])
+    .map((value) => (category === '스튜디오' ? (STUDIO_RENAME[value] ?? value) : value))
 
   return [...new Set(tags)]
 }

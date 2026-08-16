@@ -779,7 +779,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "일상",
       "감성",
       "고채도",
@@ -801,7 +801,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "장난스러운",
       "러블리",
       "선명한",
@@ -824,7 +824,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "내추럴",
       "로맨틱",
       "자연광",
@@ -850,7 +850,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "고급스러운",
       "드라마틱",
       "화이트톤",
@@ -870,7 +870,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "화보",
       "성숙한",
       "화이트톤",
@@ -892,7 +892,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "청순한",
       "몽환적인",
       "화이트톤",
@@ -914,7 +914,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "단아한",
       "깔끔",
       "자연광",
@@ -939,7 +939,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "드라마틱",
       "감성",
       "자연광",
@@ -961,7 +961,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "싱그러운",
       "내추럴",
       "자연광",
@@ -984,7 +984,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "그온스튜디오",
     "account": "gue_on.studio.official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "단아한",
       "고급스러운",
       "자연광",
@@ -1407,7 +1407,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "감성",
       "일상",
       "자연광",
@@ -1430,7 +1430,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "일상",
       "장난스러운",
       "자연광",
@@ -1452,7 +1452,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "감성",
       "성숙한",
       "자연광",
@@ -1473,7 +1473,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "몽환적인",
       "고급스러운",
       "화이트톤",
@@ -1495,7 +1495,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "장난스러운",
       "빈티지",
       "따뜻한",
@@ -1515,7 +1515,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "화보",
       "클래식",
       "화이트톤",
@@ -1537,7 +1537,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "단아한",
       "고급스러운",
       "자연광",
@@ -1562,7 +1562,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "단아한",
       "청순한",
       "자연광",
@@ -1586,7 +1586,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "몽환적인",
       "단아한",
       "화이트톤",
@@ -1609,7 +1609,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아카이브비",
     "account": "archive_boda",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "감성",
       "드라마틱",
       "자연",
@@ -1858,7 +1858,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "단아한",
       "고급스러운",
       "자연광",
@@ -1882,7 +1882,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "내추럴",
       "화보",
       "자연광",
@@ -1906,7 +1906,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "드라마틱",
       "성숙한",
       "실내 세트",
@@ -1927,7 +1927,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "감성",
       "흑백",
       "심플 배경",
@@ -1948,7 +1948,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "로맨틱",
       "화보",
       "자연광",
@@ -1967,7 +1967,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "일상",
       "내추럴",
       "자연광",
@@ -1990,7 +1990,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "단아한",
       "고급스러운",
       "자연광",
@@ -2015,7 +2015,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "아테소",
     "account": "ateso_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "드라마틱",
       "몽환적인",
       "정원",
@@ -2193,7 +2193,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "내추럴",
       "일상",
       "자연광",
@@ -2217,7 +2217,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "일상",
       "장난스러운",
       "화이트톤",
@@ -2239,7 +2239,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "단아한",
       "청순한",
       "자연광",
@@ -2261,7 +2261,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "깔끔",
       "모던",
       "화이트톤",
@@ -2283,7 +2283,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "내추럴",
       "따뜻한",
       "자연광",
@@ -2306,7 +2306,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "단아한",
       "감성",
       "화이트톤",
@@ -2328,7 +2328,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "도시적인",
       "성숙한",
       "자연광",
@@ -2350,7 +2350,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "청순한",
       "감성",
       "화이트톤",
@@ -2371,7 +2371,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "몽환적인",
       "고급스러운",
       "자연광",
@@ -2396,7 +2396,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "클레브스튜디오",
     "account": "cleve_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "클래식",
       "단아한",
       "자연광",
@@ -3024,7 +3024,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "스튜디오고유",
     "account": "studio.goyou",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "몽환적인",
       "자연광",
       "화이트톤",
@@ -3046,7 +3046,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "스튜디오고유",
     "account": "studio.goyou",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "드라마틱",
       "자연광",
       "실내 세트",
@@ -3065,7 +3065,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "스튜디오고유",
     "account": "studio.goyou",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "빈티지",
       "흑백",
       "자연",
@@ -3085,7 +3085,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "스튜디오고유",
     "account": "studio.goyou",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "내추럴",
       "자연광",
       "초록",
@@ -3107,7 +3107,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "스튜디오고유",
     "account": "studio.goyou",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "몽환적인",
       "흑백",
       "자연",
@@ -3128,7 +3128,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "스튜디오고유",
     "account": "studio.goyou",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "장난스러운",
       "자연광",
       "초록",
@@ -3151,7 +3151,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "유하하우스",
     "account": "yuha_haus",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "고급스러운",
       "자연광",
       "실내 세트",
@@ -3171,7 +3171,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "유하하우스",
     "account": "yuha_haus",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "단아한",
       "자연광",
       "화이트톤",
@@ -3194,7 +3194,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "유하하우스",
     "account": "yuha_haus",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "화보",
       "흑백",
       "실내 세트",
@@ -3214,7 +3214,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "유하하우스",
     "account": "yuha_haus",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "로맨틱",
       "자연광",
       "초록",
@@ -3236,7 +3236,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "유하하우스",
     "account": "yuha_haus",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "깔끔",
       "자연광",
       "화이트톤",
@@ -3257,7 +3257,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "모닌스튜디오",
     "account": "moninstudio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "클래식",
       "흑백",
       "심플 배경",
@@ -3278,7 +3278,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "모닌스튜디오",
     "account": "moninstudio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "청순한",
       "밝은",
       "심플 배경",
@@ -3297,7 +3297,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "모닌스튜디오",
     "account": "moninstudio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "도시적인",
       "흑백",
       "실내 세트",
@@ -3318,7 +3318,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "모닌스튜디오",
     "account": "moninstudio",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "일상",
       "자연광",
       "실내 세트",
@@ -3338,7 +3338,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "모닌스튜디오",
     "account": "moninstudio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "빈티지",
       "실내 세트",
       "타이트",
@@ -3356,7 +3356,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "모닌스튜디오",
     "account": "moninstudio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "장난스러운",
       "화이트톤",
       "밝은",
@@ -3377,7 +3377,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "꼬모스튜디오",
     "account": "ccomostudio_official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "모던",
       "흑백",
       "흑백 씬",
@@ -3396,7 +3396,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "꼬모스튜디오",
     "account": "ccomostudio_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "로맨틱",
       "흑백",
       "실내 세트",
@@ -3416,7 +3416,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "꼬모스튜디오",
     "account": "ccomostudio_official",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "장난스러운",
       "실내 세트",
       "생화 부케"
@@ -3433,7 +3433,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "꼬모스튜디오",
     "account": "ccomostudio_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "장난스러운",
       "화이트톤",
       "실내 세트",
@@ -3453,7 +3453,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "꼬모스튜디오",
     "account": "ccomostudio_official",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "내추럴",
       "자연광",
       "싱그러운",
@@ -3475,7 +3475,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "꼬모스튜디오",
     "account": "ccomostudio_official",
     "tags": [
-      "배경 중심",
+      "배경·컨셉 중심",
       "내추럴",
       "자연광",
       "밝은",
@@ -3494,7 +3494,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비마이스튜디오",
     "account": "_bemy_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "청순한",
       "자연광",
       "싱그러운",
@@ -3516,7 +3516,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비마이스튜디오",
     "account": "_bemy_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "단아한",
       "자연광",
       "초록",
@@ -3539,7 +3539,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비마이스튜디오",
     "account": "_bemy_studio",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "감성",
       "흑백",
       "흑백 씬",
@@ -3558,7 +3558,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비마이스튜디오",
     "account": "_bemy_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "몽환적인",
       "흑백",
       "흑백 씬",
@@ -3579,7 +3579,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비마이스튜디오",
     "account": "_bemy_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "깔끔",
       "화이트톤",
       "밝은",
@@ -3599,7 +3599,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "비마이스튜디오",
     "account": "_bemy_studio",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "내추럴",
       "클로즈업",
       "타이트",
@@ -3617,7 +3617,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "원규스튜디오",
     "account": "studiowonkyu",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "빈티지",
       "장난스러운",
       "실내 세트",
@@ -3636,7 +3636,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "원규스튜디오",
     "account": "studiowonkyu",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "클래식",
       "한옥",
       "실내 세트",
@@ -3655,7 +3655,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "원규스튜디오",
     "account": "studiowonkyu",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "장난스러운",
       "한옥",
       "실내 세트",
@@ -3675,7 +3675,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "원규스튜디오",
     "account": "studiowonkyu",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "고급스러운",
       "자연광",
       "자연",
@@ -3696,7 +3696,7 @@ export const labeledReferences: WeddingReference[] = [
     "vendorName": "원규스튜디오",
     "account": "studiowonkyu",
     "tags": [
-      "인물 중심",
+      "깔끔한 인물 중심",
       "단아한",
       "한옥",
       "클로즈업",
@@ -4560,7 +4560,7 @@ export const labeledVendors: Vendor[] = [
     "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
     "tags": [
       "생화 부케",
-      "인물 중심",
+      "깔끔한 인물 중심",
       "낮",
       "자연광",
       "전신"
@@ -4657,9 +4657,9 @@ export const labeledVendors: Vendor[] = [
     "summary": "인스타 게시물 10장을 판정해 태그를 붙였습니다.",
     "tags": [
       "전신",
+      "깔끔한 인물 중심",
       "낮",
       "생화 부케",
-      "인물 중심",
       "자연"
     ],
     "priceRange": "문의",
@@ -4721,7 +4721,7 @@ export const labeledVendors: Vendor[] = [
     "category": "스튜디오",
     "summary": "인스타 게시물 8장을 판정해 태그를 붙였습니다.",
     "tags": [
-      "인물+배경",
+      "인물+배경 적당히",
       "전신",
       "생화 부케",
       "자연광",
@@ -4790,7 +4790,7 @@ export const labeledVendors: Vendor[] = [
       "낮",
       "독사진",
       "생화 부케",
-      "인물+배경",
+      "인물+배경 적당히",
       "자연광"
     ],
     "priceRange": "문의",
@@ -4953,7 +4953,7 @@ export const labeledVendors: Vendor[] = [
       "생화 부케",
       "전신",
       "낮",
-      "인물+배경",
+      "인물+배경 적당히",
       "자연광"
     ],
     "priceRange": "문의",
@@ -4986,7 +4986,7 @@ export const labeledVendors: Vendor[] = [
       "낮",
       "실내 세트",
       "자연광",
-      "인물+배경",
+      "인물+배경 적당히",
       "전신"
     ],
     "priceRange": "문의",
@@ -5015,8 +5015,8 @@ export const labeledVendors: Vendor[] = [
     "category": "스튜디오",
     "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
     "tags": [
+      "깔끔한 인물 중심",
       "생화 부케",
-      "인물 중심",
       "실내 세트",
       "심플 배경",
       "타이트"
@@ -5050,8 +5050,8 @@ export const labeledVendors: Vendor[] = [
       "낮",
       "생화 부케",
       "실내 세트",
-      "인물+배경",
-      "내추럴"
+      "인물+배경 적당히",
+      "깔끔한 인물 중심"
     ],
     "priceRange": "문의",
     "match": 0,
@@ -5080,7 +5080,7 @@ export const labeledVendors: Vendor[] = [
     "summary": "인스타 게시물 6장을 판정해 태그를 붙였습니다.",
     "tags": [
       "생화 부케",
-      "인물 중심",
+      "깔끔한 인물 중심",
       "베일",
       "전신",
       "낮"
@@ -5115,7 +5115,7 @@ export const labeledVendors: Vendor[] = [
       "생화 부케",
       "베일",
       "실내 세트",
-      "인물+배경",
+      "인물+배경 적당히",
       "한옥"
     ],
     "priceRange": "문의",
