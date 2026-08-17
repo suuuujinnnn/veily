@@ -7,12 +7,12 @@ import { VenueCard } from '../../components/venues/VenueCard'
 import { VenueFilterPanel } from '../../components/venues/VenueFilterPanel'
 import { ReferenceImageAnalyzerModal } from '../../components/references/ReferenceImageAnalyzerModal'
 import { ReferenceCarouselModal } from '../../components/references/ReferenceCarouselModal'
+import { ReferenceKeywordFilter } from '../../components/references/ReferenceKeywordFilter'
 import { VendorDiscoveryFilterDock } from '../../components/vendors/VendorDiscoveryFilterDock'
 import { getReferenceCategory, referenceCategories, type ReferenceCategory } from '../../data/referenceKeywordData'
 import { weddingReferences } from '../../data/weddingReferenceData'
 import { emptyVenueFilterState, filterWeddingVenues, getVenuePrimaryReference } from '../../data/weddingVenueData'
 import type { VenueFilterState, WeddingReference } from '../../types'
-import { ReferenceSearchPanel } from './ReferenceSearchPanel'
 import { VendorDatabase } from './VendorDatabase'
 import { vendorOperationalText } from './vendorInfoUtils'
 
@@ -106,7 +106,7 @@ export function VendorsPage() {
     <nav className="reference-hub-tabs" aria-label="레퍼런스와 업체 DB"><button className={view === 'references' ? 'active' : ''} onClick={() => setView('references')}><Search size={16} /><span>레퍼런스 보드<small>이미지·웨딩홀 탐색과 추천</small></span></button><button className={view === 'database' ? 'active' : ''} onClick={() => setView('database')}><Building2 size={16} /><span>업체 DB<small>업체 상세 정보와 운영 조건</small></span></button></nav>
 
     <VendorDiscoveryFilterDock query={query} onQueryChange={setQuery} resultCount={view === 'database' ? filteredDatabaseVendors.length : resultCount} resultUnit={view === 'database' || category === '웨딩홀' ? '곳' : '장'} filtersOpen={filtersOpen} onToggleFilters={() => setFiltersOpen((open) => !open)} onReset={resetFilters} ariaLabel="업체명·스타일·실무정보 검색" title={category === '웨딩홀' ? '웨딩홀 조건 필터' : undefined}>
-      <nav className="reference-category-tabs" aria-label="검색 분야">{referenceCategories.map((item) => <button key={item.label} className={category === item.label ? 'active' : ''} onClick={() => changeCategory(item.label)}>{item.label}</button>)}</nav><ReferenceSearchPanel category={category} selectedKeywords={selectedKeywords} onKeywordToggle={(keyword) => setSelectedKeywords((current) => current.includes(keyword) ? current.filter((item) => item !== keyword) : [...current, keyword])} />{category === '웨딩홀' && <VenueFilterPanel audience="planner" value={venueFilters} resultCount={venueResults.length} onChange={setVenueFilters} />}
+      <nav className="reference-category-tabs" aria-label="검색 분야">{referenceCategories.map((item) => <button key={item.label} className={category === item.label ? 'active' : ''} onClick={() => changeCategory(item.label)}>{item.label}</button>)}</nav><ReferenceKeywordFilter category={category} selectedKeywords={selectedKeywords} onKeywordToggle={(keyword) => setSelectedKeywords((current) => current.includes(keyword) ? current.filter((item) => item !== keyword) : [...current, keyword])} variant="planner" />{category === '웨딩홀' && <VenueFilterPanel audience="planner" value={venueFilters} resultCount={venueResults.length} onChange={setVenueFilters} />}
     </VendorDiscoveryFilterDock>
 
     {view === 'database' ? <VendorDatabase vendorIds={filteredDatabaseVendors.map((vendor) => vendor.id)} /> : <>

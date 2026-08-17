@@ -20,7 +20,7 @@ export const referenceCategories: ReferenceCategoryDefinition[] = [
     description: '라인부터 소재와 장식까지',
     searchHint: '예: 미카도 실크 일자탑, 맑은 비즈',
     groups: [
-      { label: '소재 1', keywords: ['미카도 실크', '오간자 실크', '튤', '타프타'] },
+      { label: '소재 1 · 실크', keywords: ['미카도 실크', '오간자 실크', '튤', '타프타'] },
       { label: '소재 2 · 레이스', keywords: ['아플리케 레이스', '블망 레이스', '캐미컬 레이스', '기타 레이스'] },
       { label: '소재 3 · 비즈', keywords: ['글리터·펄', '맑은 비즈', '화려한 비즈'] },
       // 넥라인과 소매를 한 그룹에 둔다. 같은 그룹은 OR 로 묶이므로

@@ -8,6 +8,7 @@ import { emptyVenueFilterState, filterWeddingVenues, getVenuePrimaryReference } 
 import { VenueCard } from '../../components/venues/VenueCard'
 import { VenueFilterPanel } from '../../components/venues/VenueFilterPanel'
 import { ReferenceImageAnalyzerModal } from '../../components/references/ReferenceImageAnalyzerModal'
+import { ReferenceKeywordFilter } from '../../components/references/ReferenceKeywordFilter'
 import type { CustomerReferenceSelection, ReferenceCategory, VenueFilterState, WeddingReference } from '../../types'
 
 type StartMode = 'intro' | 'inspire' | 'search'
@@ -98,7 +99,7 @@ export function ClientTasteDiscovery({ coupleId }: { coupleId: string }) {
 
     <Card padding="none" className="taste-filter-card">
       <nav className="taste-category-tabs" aria-label="레퍼런스 분야">{referenceCategories.map((item) => <button className={category === item.label ? 'active' : ''} onClick={() => { setCategory(item.label); setSelectedTags([]); setQuery('') }} key={item.label}><span>{item.englishLabel}</span><strong>{item.label}</strong></button>)}</nav>
-      {category !== '웨딩홀' && mode === 'search' && <div className="taste-search-tools"><label className="taste-search-input"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`${category} 업체명·조건 검색`} />{(query || selectedTags.length > 0) && <button onClick={() => { setQuery(''); setSelectedTags([]) }}>초기화</button>}</label><div className="taste-filter-groups">{getReferenceCategory(category).groups.map((group) => <div key={group.label}><span>{group.label}</span><div>{group.keywords.map((tag) => <button className={selectedTags.includes(tag) ? 'active' : ''} onClick={() => setSelectedTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag])} key={tag}>{selectedTags.includes(tag) && <Check size={11} />}{tag}</button>)}</div></div>)}</div><div className="taste-upload"><div><UploadCloud size={19} /><span><strong>가지고 있는 사진으로 찾기</strong><small>AI가 분야와 해시태그를 자동으로 분석합니다.</small></span></div><Button size="sm" variant="secondary" icon={<ImagePlus size={14} />} onClick={() => setUploadOpen(true)}>이미지 분석</Button></div></div>}
+      {category !== '웨딩홀' && mode === 'search' && <div className="taste-search-tools"><label className="taste-search-input"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`${category} 업체명·조건 검색`} />{(query || selectedTags.length > 0) && <button onClick={() => { setQuery(''); setSelectedTags([]) }}>초기화</button>}</label><ReferenceKeywordFilter category={category} selectedKeywords={selectedTags} onKeywordToggle={(keyword) => setSelectedTags((current) => current.includes(keyword) ? current.filter((item) => item !== keyword) : [...current, keyword])} variant="client" /><div className="taste-upload"><div><UploadCloud size={19} /><span><strong>가지고 있는 사진으로 찾기</strong><small>AI가 분야와 해시태그를 자동으로 분석합니다.</small></span></div><Button size="sm" variant="secondary" icon={<ImagePlus size={14} />} onClick={() => setUploadOpen(true)}>이미지 분석</Button></div></div>}
     </Card>
     {category === '웨딩홀' && <VenueFilterPanel audience="client" value={venueFilters} resultCount={venueResults.length} onChange={setVenueFilters} />}
 
