@@ -40,8 +40,8 @@ export function ScheduleCoordinationPanel({ coupleId }: { coupleId: string }) {
   const [focusedEventId, setFocusedEventId] = useState<string | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingEvent, setEditingEvent] = useState<WeddingEvent | null>(null)
-  const coupleEvents = useMemo(() => events.filter((event) => event.coupleId === coupleId && event.visibility === 'couple-shared'), [coupleId, events])
-  const coordinationEvents = coupleEvents.filter((event) => event.approvalStatus)
+  const [calendarScope, setCalendarScope] = useState<'all' | 'couple'>('couple')
+  const coordinationEvents = useMemo(() => events.filter((event) => calendarScope === 'couple' ? event.coupleId === coupleId && event.visibility === 'couple-shared' : true), [calendarScope, coupleId, events])
   const selectedEvents = coordinationEvents.filter((event) => event.date === selectedDate).sort((a, b) => a.time.localeCompare(b.time))
   const overlappingEventIds = new Set(selectedEvents.flatMap((event, index) => selectedEvents.slice(index + 1).flatMap((candidate) => {
     const overlaps = timeMinutes(event.time) < timeMinutes(candidate.endTime) && timeMinutes(event.endTime) > timeMinutes(candidate.time)
@@ -61,7 +61,7 @@ export function ScheduleCoordinationPanel({ coupleId }: { coupleId: string }) {
 
   return <div className="coordination-workspace coordination-workspace--day-planner">
     <div className="feature-panel-heading"><div><p className="eyebrow">Shared calendar</p><h2>공유 캘린더</h2><p>월간 흐름과 선택한 날짜의 24시간 일정을 함께 보고 고객 확인 상태를 관리합니다.</p></div><Button icon={<Plus size={15} />} onClick={openNew}>새 일정 추가</Button></div>
-    <div className="coordination-status-summary"><span><i className="is-proposed" />고객 확인 대기</span><span><i className="is-client-ok" />고객 확인 완료</span><span><i className="is-confirmed" />최종 확정</span><Badge tone="neutral">조율 중 {coordinationEvents.filter((event) => eventStatus(event) !== 'confirmed').length}건</Badge></div>
+    <div className="coordination-scope-toggle" role="tablist" aria-label="캘린더 범위"><button type="button" className={calendarScope === 'all' ? 'active' : ''} onClick={() => setCalendarScope('all')}>전체 일정</button><button type="button" className={calendarScope === 'couple' ? 'active' : ''} onClick={() => setCalendarScope('couple')}>이 커플 일정</button></div><div className="coordination-status-summary"><span><i className="is-proposed" />고객 확인 대기</span><span><i className="is-client-ok" />고객 확인 완료</span><span><i className="is-confirmed" />최종 확정</span><Badge tone="neutral">조율 중 {coordinationEvents.filter((event) => eventStatus(event) !== 'confirmed').length}건</Badge></div>
 
     <div className="coordination-main coordination-main--planner">
       <Card padding="none" className="coordination-calendar">

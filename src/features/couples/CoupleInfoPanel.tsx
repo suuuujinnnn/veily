@@ -4,6 +4,7 @@ import { useDemoStore } from '../../app/store'
 import { Badge, Button, Card, Modal } from '../../components/ui'
 import type { Couple } from '../../types'
 import { ConsultationsPanel } from './ConsultationsPanel'
+import { CoupleTasteSummary } from './CoupleTasteSummary'
 
 const fields: { key: keyof Couple; label: string; type?: string; wide?: boolean }[] = [
   { key: 'brideName', label: '신부 이름' }, { key: 'brideOccupation', label: '신부 직업' },
@@ -39,7 +40,7 @@ export function CoupleInfoPanel({ couple }: { couple: Couple }) {
       <Card className="ceremony-info-card"><div className="info-card-title"><CalendarDays size={18} /><div><Badge tone="sage">{couple.contractType}</Badge><h3>{couple.ceremonyDate}</h3></div></div><p><MapPin size={15} /> {couple.ceremonyPlace}</p><p>계약일 {couple.contractDate}</p><p><MapPin size={15} /> {couple.address}</p></Card>
       <Card className="contact-profile-card"><div className="info-card-title"><UsersRound size={18} /><div><Badge tone="amber">연락·유입</Badge><h3>{couple.preferredContactMethod}</h3></div></div><dl><div><dt>선호 시간</dt><dd>{couple.preferredContactTime}</dd></div><div><dt>유입 경로</dt><dd>{couple.acquisitionChannel}</dd></div><div><dt>추천인</dt><dd>{couple.referrerName}</dd></div></dl></Card>
     </div>
-    <Card className="info-note info-note--planner"><span><MessageSquareText size={17} /></span><div><strong>플래너 메모</strong><p>{couple.note || '등록된 플래너 메모가 없습니다.'}</p></div><button onClick={() => setOpen(true)}>메모 편집</button></Card>
+    <CoupleTasteSummary coupleId={couple.id} />`n    <Card className="info-note info-note--planner"><span><MessageSquareText size={17} /></span><div><strong>플래너 메모</strong><p>{couple.note || '등록된 플래너 메모가 없습니다.'}</p></div><button onClick={() => setOpen(true)}>메모 편집</button></Card>
     <section className="couple-info-consultations"><ConsultationsPanel coupleId={couple.id} embedded /></section>
     <Modal open={open} onClose={() => setOpen(false)} title="부부정보 수정" eyebrow="Couple profile" footer={<><Button variant="ghost" onClick={() => setOpen(false)}>취소</Button><Button type="submit" form="couple-info-form">저장</Button></>}>
       <form id="couple-info-form" className="form-grid" onSubmit={submit}>

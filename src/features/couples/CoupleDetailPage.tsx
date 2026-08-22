@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Heart, Plus } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Badge, Button, Card, Progress } from '../../components/ui'
+import { Badge, Button, Card, Modal, Progress } from '../../components/ui'
 import type { ChecklistCategory, ChecklistItem, RecommendationStatus } from '../../types'
-import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
-import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
+import { PreparationWorkspace } from '../checklist/PreparationWorkspace'
+import { checklistCategories } from '../checklist/checklistCategories'
 import { CoupleInfoPanel } from './CoupleInfoPanel'
 import { EstimateSettlementPanel } from './EstimateSettlementPanel'
 import { ScheduleCoordinationPanel } from './ScheduleCoordinationPanel'
@@ -33,10 +33,17 @@ export function CoupleDetailPage() {
   const requestedTab = searchParams.get('tab')
   const tab: DetailTab = isDetailTab(requestedTab) ? requestedTab : 'info'
   const [editorOpen, setEditorOpen] = useState(false)
+  const [categoryChooserOpen, setCategoryChooserOpen] = useState(false)
   const [editorItem, setEditorItem] = useState<ChecklistItem | null>(null)
   const [editorCategory, setEditorCategory] = useState<ChecklistCategory>('스튜디오')
   const [scheduleOpen, setScheduleOpen] = useState(false)
   const coupleTasks = checklist.filter((item) => item.coupleId === couple.id).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
+  const startAddTask = (category?: ChecklistCategory) => {
+    if (!category) { setCategoryChooserOpen(true); return }
+    setEditorItem(null)
+    setEditorCategory(category)
+    setEditorOpen(true)
+  }
   const referenceLibrary = [...uploadedReferences, ...weddingReferences]
   const recommendedVendors = recommendations.filter((item) => item.coupleId === couple.id).map((recommendation) => ({
     vendor: vendors.find((vendor) => vendor.id === recommendation.vendorId),
@@ -65,16 +72,7 @@ export function CoupleDetailPage() {
 
       {tab === 'timeline' && <div className="checklist-workspace">
         <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><div className="heading-actions"><Button variant="secondary" icon={<Plus size={15} />} onClick={() => setScheduleOpen(true)}>일정 추가</Button></div></section>
-        <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />
-        <div className="checklist-workspace__lower">
-          <CategoryChecklist
-            tasks={coupleTasks}
-            onToggle={toggleChecklist}
-            editable
-            onAdd={(category) => { setEditorItem(null); setEditorCategory(category ?? '스튜디오'); setEditorOpen(true) }}
-            onEdit={(item) => { setEditorItem(item); setEditorCategory(item.category); setEditorOpen(true) }}
-          />
-        </div>
+        <PreparationWorkspace tasks={coupleTasks} onToggle={toggleChecklist} editable onAdd={startAddTask} onEdit={(item) => { setEditorItem(item); setEditorCategory(item.category); setEditorOpen(true) }} />
       </div>}
 
       {tab === 'info' && <CoupleInfoPanel couple={couple} />}
@@ -88,7 +86,16 @@ export function CoupleDetailPage() {
       </div>}
 
       {tab === 'finance' && <EstimateSettlementPanel coupleId={couple.id} />}
-      <ChecklistEditorModal
+      <Modal open={categoryChooserOpen} onClose={() => setCategoryChooserOpen(false)} eyebrow="New checklist item" title="분야별 할 일 만들기">
+        <div className="category-chooser-grid">
+          {checklistCategories.map((category) => (
+            <button type="button" key={category.id} onClick={() => { setCategoryChooserOpen(false); startAddTask(category.id) }}>
+              <strong>{category.id}</strong>
+              <span>{category.description}</span>
+            </button>
+          ))}
+        </div>
+      </Modal>      <ChecklistEditorModal
         open={editorOpen}
         coupleId={couple.id}
         defaultCategory={editorCategory}
