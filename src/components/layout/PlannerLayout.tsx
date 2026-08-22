@@ -29,9 +29,10 @@ export function PlannerLayout() {
   const { couples, customerRequests, orderReminders, checklist, customerReferenceSubmissions, events, vendors } = useDemoStore()
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [notificationOpen, setNotificationOpen] = useState(false)
+  const [dismissedNotificationIds, setDismissedNotificationIds] = useState<string[]>([])
   const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | null>(null)
   const unreadRequests = customerRequests.filter((message) => message.sender === 'customer' && !message.readByPlannerAt)
-  const notifications = buildPlannerNotifications({ couples, customerRequests, orderReminders, checklist, customerReferenceSubmissions, events, vendors }, DEMO_TODAY)
+  const notifications = buildPlannerNotifications({ couples, customerRequests, orderReminders, checklist, customerReferenceSubmissions, events, vendors }, DEMO_TODAY).filter((notification) => !dismissedNotificationIds.includes(notification.id))
   const openUtility = (modal: 'profile' | 'notifications') => {
     setUtilityModal(modal)
     setProfileMenuOpen(false)
@@ -59,7 +60,7 @@ export function PlannerLayout() {
         </div>
       </aside>
       <div className="planner-main">
-        <header className="planner-topbar"><div><span className="eyebrow">Planner workspace</span><strong>오늘의 준비 흐름</strong></div><div className="planner-topbar__actions"><button className="planner-notification-button" aria-label={`알림 ${notifications.length}건`} onClick={() => setNotificationOpen((open) => !open)}><Bell size={17} /><span>알림</span>{notifications.length > 0 && <em>{notifications.length}</em>}</button>{notificationOpen && <div className="planner-notification-panel"><header><div><p className="eyebrow">Notifications</p><h2>통합 알림</h2></div><span>{notifications.length}건</span></header>{notifications.length ? notifications.map((notification) => <Link to={notification.href} className={`planner-notification-item is-${notification.urgency}`} key={notification.id}><strong>{notification.title}</strong><p>{notification.message}</p><small>{notification.actionLabel}</small></Link>) : <p className="planner-notification-empty">새로운 알림이 없습니다.</p>}<Link className="planner-notification-add" to="/?openOrderReminder=1">+ 발주·확인 알림 추가</Link></div>}</div></header>
+        <header className="planner-topbar"><div><span className="eyebrow">Planner workspace</span><strong>오늘의 준비 흐름</strong></div><div className="planner-topbar__actions"><button className="planner-notification-button" aria-label={`알림 ${notifications.length}건`} onClick={() => setNotificationOpen((open) => !open)}><Bell size={17} /><span>알림</span>{notifications.length > 0 && <em>{notifications.length}</em>}</button>{notificationOpen && <div className="planner-notification-panel"><header><div><p className="eyebrow">Notifications</p><h2>통합 알림</h2></div><span>{notifications.length}건</span></header>{notifications.length ? notifications.map((notification) => <Link to={notification.href} onClick={() => { setDismissedNotificationIds((current) => [...current, notification.id]); setNotificationOpen(false) }} className={`planner-notification-item is-${notification.urgency}`} key={notification.id}><strong>{notification.title}</strong><p>{notification.message}</p><small>{notification.actionLabel}</small></Link>) : <p className="planner-notification-empty">새로운 알림이 없습니다.</p>}<Link className="planner-notification-add" to="/?openOrderReminder=1" onClick={() => setNotificationOpen(false)}>+ 발주·확인 알림 추가</Link></div>}</div></header>
         <main className="page-content"><Outlet /></main>
       </div>
       <Modal open={utilityModal === 'profile'} onClose={() => setUtilityModal(null)} title="마이페이지" eyebrow="Planner profile" footer={<Button onClick={() => setUtilityModal(null)}>확인</Button>}>
