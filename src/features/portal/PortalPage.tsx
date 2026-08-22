@@ -4,10 +4,10 @@ import { ArrowRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, MapPin, P
 import { useDemoStore } from '../../app/store'
 import { Badge, Card, Progress } from '../../components/ui'
 import { imageAssets } from '../../assets/images'
-import { CategoryChecklist } from '../checklist/CategoryChecklist'
-import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
 import { formatChecklistDate } from '../checklist/checklistUtils'
 import { PortalSharedCalendar } from './PortalSharedCalendar'
+import { PreparationWorkspace } from '../checklist/PreparationWorkspace'
+
 import { VendorInsightsPanel } from '../reviews/VendorInsightsPanel'
 import { formatDate } from '../reminders/reminderUtils'
 import { weddingReferences } from '../../data/weddingReferenceData'
@@ -27,6 +27,7 @@ export function PortalPage() {
   const allowedRequestedTab = (requestedTab === 'messages' && !settings.messagingEnabled) || (requestedTab === 'calendar' && !settings.showSchedule) || (requestedTab === 'tasks' && !settings.showChecklist) ? 'home' : requestedTab
   const initialTab = allowedRequestedTab
   const [tab, setTab] = useState<PortalTab>(initialTab)
+  const [taskView, setTaskView] = useState<'monthly' | 'category'>('monthly')
   const coupleEvents = events.filter((event) => event.coupleId === couple.id && event.visibility === 'couple-shared')
   const tasks = checklist.filter((item) => item.coupleId === couple.id && item.owner !== '플래너').sort((a, b) => a.dueDate.localeCompare(b.dueDate))
   const coupleContracts = contracts.filter((item) => item.coupleId === couple.id)
@@ -43,7 +44,8 @@ export function PortalPage() {
     setTab(allowedRequestedTab)
     if (requestedTab !== allowedRequestedTab) navigate(`/portal/${couple.id}`, { replace: true })
   }, [allowedRequestedTab, couple.id, navigate, requestedTab])
-  const openTab = (nextTab: PortalTab) => {
+  const openTab = (nextTab: PortalTab, view?: 'category') => {
+    if (view) setTaskView(view)
     setTab(nextTab)
     navigate(`/portal/${couple.id}${nextTab === 'home' ? '' : `/${nextTab}`}`)
   }
@@ -64,7 +66,7 @@ export function PortalPage() {
           <section className="portal-welcome"><div><p className="eyebrow">Hello, our lovely couple</p><h2>{partnerGreeting}.<br /><em>오늘도 설레는 준비를 시작해볼까요?</em></h2><p>결혼식까지 {dDay}일, 지금까지 아주 잘 준비하고 있어요.</p></div><div className="portal-progress"><div><span>전체 준비율</span><strong>{couple.progress}%</strong></div><Progress value={couple.progress} /><div className="milestones"><span className="done"><i><Check size={12} /></i>베뉴</span><span className="done"><i><Check size={12} /></i>스드메</span><span className="active"><i>3</i>예복·예물</span><span><i>4</i>본식 준비</span></div></div></section>
           <section className={`portal-grid ${!settings.showSchedule || !settings.showChecklist ? 'portal-grid--single' : ''}`}>
             {settings.showSchedule && <div className="portal-section portal-section--wide"><div className="portal-section__head"><div><p className="eyebrow">Next schedule</p><h2>다가오는 일정</h2></div><button onClick={() => openTab('calendar')}>전체 보기 <ChevronRight size={14} /></button></div><div className="portal-schedule">{coupleEvents.slice(0,3).map((event, index) => <article key={event.id} className={index === 0 ? 'featured' : ''}><div className="portal-date"><strong>{event.date.slice(-2)}</strong><span>AUG</span></div><div><Badge tone={index === 0 ? 'rose' : 'neutral'}>{event.type}</Badge><h3>{event.title}</h3><p><Clock3 size={13} /> {event.time}–{event.endTime}</p><p><MapPin size={13} /> {event.location}</p></div>{index === 0 && <span className="schedule-note">준비물 체크 필요</span>}</article>)}</div></div>}
-            {settings.showChecklist && <div className="portal-section"><div className="portal-section__head"><div><p className="eyebrow">This week</p><h2>이번 주 할 일</h2></div><span>{completed}/{tasks.length}</span></div><div className="portal-tasks">{tasks.slice(0,4).map((task) => <label key={task.id} className={task.status === 'completed' ? 'done' : ''}><span><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.kind === 'decision' && task.status === 'pending' ? '미결정 · ' : ''}{formatChecklistDate(task.dueDate)}까지 · {task.owner}</small></div></label>)}</div><button className="portal-full-button" onClick={() => openTab('tasks')}>할 일 전체 보기 <ArrowRight size={14} /></button></div>}
+            {settings.showChecklist && <div className="portal-section"><div className="portal-section__head"><div><p className="eyebrow">This week</p><h2>이번 주 할 일</h2></div><span>{completed}/{tasks.length}</span></div><div className="portal-tasks">{tasks.slice(0,4).map((task) => <label key={task.id} className={task.status === 'completed' ? 'done' : ''}><span><Check size={13} /></span><div><strong>{task.title}</strong><small>{task.kind === 'decision' && task.status === 'pending' ? '미결정 · ' : ''}{formatChecklistDate(task.dueDate)}까지 · {task.owner}</small></div></label>)}</div><button className="portal-full-button" onClick={() => openTab('tasks', 'category')}>분야별 할 일 전체보기 <ArrowRight size={14} /></button></div>}
           </section>
           <section className="portal-recommend-banner"><div><span><Sparkles size={18} /></span><div><p className="eyebrow">Planner selection</p><h2>분석 DB 추천 업체 {recs.length}곳이 등록되었습니다.</h2><p>검수된 포트폴리오 스타일 라벨과 두 분의 취향을 기준으로 정리했습니다.</p><button onClick={() => openTab('vendors')}>추천 목록 보기 <ArrowRight size={14} /></button></div></div><img src={recs[0]?.vendor?.image ?? imageAssets.vendorDressGallery} alt={recs[0]?.vendor ? `${recs[0].vendor.name} 포트폴리오` : '추천 웨딩 포트폴리오'} /></section>
         </>}
@@ -73,7 +75,7 @@ export function PortalPage() {
 
         {tab === 'calendar' && <PortalSharedCalendar coupleId={couple.id} />}
 
-        {tab === 'tasks' && <section className="portal-subpage portal-tasks-page"><div className="portal-subpage__intro"><p className="eyebrow">Shared checklist</p><h2>준비 할 일</h2><p>플래너가 정리한 준비 흐름과 현재 상태를 확인할 수 있습니다.</p></div><MonthlyRoadmap tasks={tasks} onToggle={() => undefined} readOnly /><CategoryChecklist tasks={tasks} onToggle={() => undefined} readOnly /></section>}
+        {tab === 'tasks' && <section className="portal-subpage portal-tasks-page"><div className="portal-subpage__intro"><p className="eyebrow">Shared checklist</p><h2>준비 할 일</h2><p>플래너가 정리한 준비 흐름과 현재 상태를 확인할 수 있습니다.</p></div><PreparationWorkspace tasks={tasks} onToggle={() => undefined} readOnly initialView={taskView} /></section>}
 
         {tab === 'discover' && <ClientTasteDiscovery coupleId={couple.id} />}
 
