@@ -1,52 +1,68 @@
 import { useMemo, useState } from 'react'
-import { AlertTriangle, ArrowRight, CalendarPlus, ChevronLeft, ChevronRight, Plus } from 'lucide-react'
+import { CalendarPlus, Palette } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Button, Card } from '../../components/ui'
-import type { WeddingEvent } from '../../types'
+import { Button, SegmentedTabs } from '../../components/ui'
+import { mockScheduleCoordinationRequests } from '../../data/scheduleCoordinationMock'
+import type { CalendarColorMode, CalendarWorkCategory, WeddingEvent } from '../../types'
 import { AddEventModal } from './AddEventModal'
-import { CalendarDayModal } from './CalendarDayModal'
-import { findCalendarConflicts } from './calendarUtils'
-
-const weekNames = ['일', '월', '화', '수', '목', '금', '토']
-const filters = ['전체', '미팅', '드레스', '스튜디오', '메이크업', '계약', '본식']
-const eventClass: Record<string, string> = { 미팅: 'meeting', 드레스: 'dress', 스튜디오: 'studio', 메이크업: 'makeup', 계약: 'contract', 본식: 'ceremony' }
+import { CalendarColorSettingsModal } from './CalendarColorSettingsModal'
+import { CalendarDayDrawer } from './CalendarDayDrawer'
+import { PlannerCalendar } from './PlannerCalendar'
+import { calendarCategoryForWorkflow, calendarWorkCategories, defaultCoupleColor, getCalendarCategory } from './calendarAppearance'
 
 export function CalendarPage() {
-  const { couples, events } = useDemoStore()
+  const { couples, events, calendarDisplayPreferences, setCalendarColorMode, setCalendarCoupleColors } = useDemoStore()
   const [view, setView] = useState<'month' | 'week'>('month')
-  const [filter, setFilter] = useState('전체')
+  const [showPersonalEvents, setShowPersonalEvents] = useState(true)
+  const [showCandidateEvents, setShowCandidateEvents] = useState(true)
+  const [selectedCoupleId, setSelectedCoupleId] = useState<'all' | string>('all')
+  const [selectedCategories, setSelectedCategories] = useState<Set<CalendarWorkCategory>>(() => new Set(calendarWorkCategories.map((item) => item.value)))
   const [selectedDate, setSelectedDate] = useState('2026-08-05')
-  const [dayModalOpen, setDayModalOpen] = useState(false)
+  const [dayDrawerOpen, setDayDrawerOpen] = useState(false)
   const [eventModalOpen, setEventModalOpen] = useState(false)
   const [editingEvent, setEditingEvent] = useState<WeddingEvent | null>(null)
   const [toast, setToast] = useState(false)
-  const filteredEvents = useMemo(() => events.filter((event) => filter === '전체' || event.type === filter), [events, filter])
-  const conflicts = useMemo(() => findCalendarConflicts(events), [events])
-  const conflictIds = useMemo(() => new Set(conflicts.flatMap((conflict) => [conflict.first.id, conflict.second.id])), [conflicts])
+  const [colorSettingsOpen, setColorSettingsOpen] = useState(false)
+  const candidateEvents = useMemo<WeddingEvent[]>(() => mockScheduleCoordinationRequests
+    .filter((request) => request.status === 'awaiting-client' || request.status === 'client-responded')
+    .flatMap((request) => request.slots.map((slot) => ({
+      id: `candidate-${slot.id}`, coupleId: request.coupleId, vendorId: request.vendorId,
+      title: request.title, date: slot.date, time: slot.time, endTime: slot.endTime,
+      type: request.type, location: request.location, workflowType: request.workflowId,
+      calendarCategory: request.calendarCategory ?? calendarCategoryForWorkflow(request.workflowId, request.type),
+      durationMinutes: request.durationMinutes, approvalStatus: 'planner-proposed' as const,
+      visibility: 'couple-shared' as const,
+    }))), [])
+  const filteredEvents = useMemo(() => {
+    const sharedEvents = events.filter((event) => event.visibility !== 'planner-private' && event.approvalStatus !== 'planner-proposed')
+    const visibleSources = [...sharedEvents, ...(showPersonalEvents ? events.filter((event) => event.visibility === 'planner-private') : []), ...(showCandidateEvents ? candidateEvents : [])]
+    return visibleSources.filter((event) => selectedCategories.has(getCalendarCategory(event)) && (event.visibility === 'planner-private' || selectedCoupleId === 'all' || event.coupleId === selectedCoupleId))
+  }, [candidateEvents, events, selectedCategories, selectedCoupleId, showCandidateEvents, showPersonalEvents])
   const selectedEvents = useMemo(() => filteredEvents.filter((event) => event.date === selectedDate).sort((a, b) => a.time.localeCompare(b.time)), [filteredEvents, selectedDate])
-  const monthDays = Array.from({ length: 42 }, (_, index) => { const day = index - 5; if (day < 1) return { day: 31 + day, current: false, date: `2026-07-${String(31 + day).padStart(2,'0')}` }; if (day > 31) return { day: day - 31, current: false, date: `2026-09-${String(day - 31).padStart(2,'0')}` }; return { day, current: true, date: `2026-08-${String(day).padStart(2,'0')}` } })
 
   const added = () => { setToast(true); window.setTimeout(() => setToast(false), 2400) }
-  const openDay = (date: string) => { setSelectedDate(date); setDayModalOpen(true) }
-  const openNew = (date = selectedDate) => { setSelectedDate(date); setDayModalOpen(false); setEditingEvent(null); setEventModalOpen(true) }
-  const openEdit = (event: WeddingEvent) => { setDayModalOpen(false); setEditingEvent(event); setEventModalOpen(true) }
-  const openConflict = () => { if (conflicts[0]) openDay(conflicts[0].date) }
+  const openDay = (date: string) => { setSelectedDate(date); setDayDrawerOpen(true) }
+  const openNew = (date = selectedDate) => { setSelectedDate(date); setDayDrawerOpen(false); setEditingEvent(null); setEventModalOpen(true) }
+  const openEdit = (event: WeddingEvent) => { if (event.approvalStatus === 'planner-proposed') return; setDayDrawerOpen(false); setEditingEvent(event); setEventModalOpen(true) }
+  const toggleCategory = (category: CalendarWorkCategory) => setSelectedCategories((current) => { const next = new Set(current); if (next.has(category)) next.delete(category); else next.add(category); return next })
+  const selectCouple = (coupleId: 'all' | string) => setSelectedCoupleId(coupleId)
+  const resetFilters = () => { setShowPersonalEvents(true); setShowCandidateEvents(true); setSelectedCoupleId('all'); setSelectedCategories(new Set(calendarWorkCategories.map((item) => item.value))) }
 
   return <div className="page-stack calendar-page calendar-page--simple">
     <section className="page-intro"><div><p className="eyebrow">Shared calendar</p><h1>일정</h1><p>커플 일정과 개인 일정을 월간·주간 캘린더에서 확인하세요.</p></div><Button icon={<CalendarPlus size={16} />} onClick={() => openNew()}>새 일정 등록</Button></section>
-    {conflicts.length > 0 && <section className="calendar-conflict-alert" role="alert"><span><AlertTriangle size={19} /></span><div><strong>겹치는 일정 {conflicts.length}건이 있습니다.</strong><p>{Number(conflicts[0].date.slice(-2))}일 {conflicts[0].first.time} {conflicts[0].first.title}과 {conflicts[0].second.time} {conflicts[0].second.title}</p></div><button onClick={openConflict}>일정 확인 <ArrowRight size={14} /></button></section>}
-    <div className="calendar-toolbar"><div className="month-controller"><button aria-label="이전 달"><ChevronLeft size={18} /></button><h2>2026년 8월</h2><button aria-label="다음 달"><ChevronRight size={18} /></button><button className="today-button" onClick={() => openDay('2026-08-05')}>오늘</button></div><div className="calendar-view-toggle"><button onClick={() => setView('month')} className={view === 'month' ? 'active' : ''}>월</button><button onClick={() => setView('week')} className={view === 'week' ? 'active' : ''}>주</button></div></div>
-    <div className="calendar-filter-row"><span>일정 유형</span>{filters.map((item) => <button key={item} onClick={() => setFilter(item)} className={filter === item ? 'active' : ''}><i className={`filter-dot filter-dot--${eventClass[item] ?? 'all'}`} />{item}</button>)}</div>
-    <div className="calendar-layout calendar-layout--full"><Card padding="none" className="month-calendar"><div className="week-header">{weekNames.map((name) => <span key={name}>{name}</span>)}</div><div className={`month-grid ${view === 'week' ? 'month-grid--week' : ''}`}>{monthDays.map((item, index) => {
-      const dayEvents = filteredEvents.filter((event) => event.date === item.date).sort((a, b) => a.time.localeCompare(b.time))
-      const visibleEvents = dayEvents.slice(0, view === 'week' ? 6 : 3)
-      const isToday = item.date === '2026-08-05'
-      const hasConflict = conflicts.some((conflict) => conflict.date === item.date)
-      if (view === 'week' && (index < 7 || index > 13)) return null
-      return <div key={item.date} role="button" tabIndex={0} onClick={() => openDay(item.date)} onKeyDown={(event) => { if (event.key === 'Enter') openDay(item.date) }} className={`calendar-cell ${!item.current ? 'calendar-cell--muted' : ''} ${isToday ? 'calendar-cell--today' : ''} ${selectedDate === item.date ? 'calendar-cell--selected' : ''} ${hasConflict ? 'calendar-cell--conflict' : ''}`}><div className="calendar-cell__top"><span>{item.day}</span>{hasConflict ? <small className="cell-conflict"><AlertTriangle size={10} /> 겹침</small> : isToday && <small>오늘</small>}<button onClick={(event) => { event.stopPropagation(); openNew(item.date) }} aria-label={`${item.day}일 일정 추가`}><Plus size={13} /></button></div><div className="calendar-cell__events">{visibleEvents.map((event) => { const eventCouple = couples.find((couple) => couple.id === event.coupleId); return <div role="button" tabIndex={0} onClick={(clickEvent) => { clickEvent.stopPropagation(); openEdit(event) }} className={`calendar-event calendar-event--${event.visibility === 'planner-private' ? 'private' : eventClass[event.type]} ${conflictIds.has(event.id) ? 'calendar-event--conflict' : ''}`} key={event.id}><strong>{event.time}</strong><span>{event.title}</span><small className="calendar-event__couple">{event.visibility === 'planner-private' ? '개인 일정' : eventCouple?.partners ?? '커플 미지정'}</small>{conflictIds.has(event.id) && <AlertTriangle size={10} />}</div> })}{dayEvents.length > visibleEvents.length && <small>+{dayEvents.length - visibleEvents.length}개 일정 더 보기</small>}</div></div>
-    })}</div></Card></div>
-    <CalendarDayModal open={dayModalOpen} date={selectedDate} events={selectedEvents} couples={couples} conflictIds={conflictIds} onClose={() => setDayModalOpen(false)} onAdd={() => openNew(selectedDate)} onEdit={openEdit} />
+    <div className="calendar-workspace">
+      <aside className="calendar-filter-sidebar">
+        <header><div><strong>내 캘린더</strong><span>{filteredEvents.length}개 일정 표시 중</span></div><button type="button" onClick={resetFilters}>필터 초기화</button></header>
+        <section className="calendar-color-mode"><div className="calendar-filter-section-title"><h2>색상 기준</h2>{calendarDisplayPreferences.colorMode === 'customer' && <button type="button" onClick={() => setColorSettingsOpen(true)}><Palette size={11} /> 색상 관리</button>}</div><SegmentedTabs size="xs" value={calendarDisplayPreferences.colorMode} onChange={(value) => setCalendarColorMode(value as CalendarColorMode)} ariaLabel="일정 색상 기준" fluid items={[{ value: 'work-category', label: '업무 유형별' }, { value: 'customer', label: '고객별' }]} /></section>
+        <section><h2>일정 표시</h2><div className="calendar-source-switches"><label><span><i className="calendar-source-dot is-private" />개인 일정</span><input type="checkbox" role="switch" checked={showPersonalEvents} onChange={(event) => setShowPersonalEvents(event.target.checked)} /><em aria-hidden="true" /></label><label><span><i className="calendar-source-dot is-candidate" />후보 일정</span><input type="checkbox" role="switch" checked={showCandidateEvents} onChange={(event) => setShowCandidateEvents(event.target.checked)} /><em aria-hidden="true" /></label></div></section>
+        <section className="calendar-couple-filters"><h2>고객별 일정</h2><div className="calendar-couple-switches" role="radiogroup" aria-label="조회할 고객"><button type="button" role="radio" aria-checked={selectedCoupleId === 'all'} className={selectedCoupleId === 'all' ? 'active' : ''} onClick={() => selectCouple('all')}><i className="calendar-couple-dot is-all" /><span>전체 고객</span><em>ALL</em></button>{couples.map((couple) => <button type="button" role="radio" aria-checked={selectedCoupleId === couple.id} className={selectedCoupleId === couple.id ? 'active' : ''} onClick={() => selectCouple(couple.id)} key={couple.id}><i className="calendar-couple-dot" style={{ background: calendarDisplayPreferences.coupleColors[couple.id] ?? defaultCoupleColor(couple.id, couples) }} /><span>{couple.partners}</span><em>{selectedCoupleId === couple.id ? 'ON' : ''}</em></button>)}</div></section>
+        <section><h2>업무 유형</h2>{calendarWorkCategories.map((category) => <label key={category.value}><input type="checkbox" checked={selectedCategories.has(category.value)} onChange={() => toggleCategory(category.value)} /><i className={`calendar-category-dot is-${category.value}`} /><span>{category.label}</span></label>)}</section>
+      </aside>
+      <div className="calendar-surface"><PlannerCalendar events={filteredEvents} couples={couples} view={view} onViewChange={setView} selectedDate={selectedDate} onDayClick={openDay} onAdd={openNew} onEventClick={openEdit} displayPreferences={calendarDisplayPreferences} /></div>
+    </div>
+    <CalendarDayDrawer open={dayDrawerOpen} date={selectedDate} events={selectedEvents} couples={couples} displayPreferences={calendarDisplayPreferences} onClose={() => setDayDrawerOpen(false)} onAdd={() => openNew(selectedDate)} onEdit={openEdit} />
+    <CalendarColorSettingsModal open={colorSettingsOpen} couples={couples} colors={calendarDisplayPreferences.coupleColors} onChange={setCalendarCoupleColors} onClose={() => setColorSettingsOpen(false)} />
     <AddEventModal open={eventModalOpen} initialDate={selectedDate} initialEvent={editingEvent} onClose={() => { setEventModalOpen(false); setEditingEvent(null) }} onAdded={added} />
-    {toast && <div className="toast"><span>✓</span><div><strong>일정이 등록되었어요.</strong><p>캘린더에 바로 반영했습니다.</p></div></div>}
+    {toast && <div className="toast"><span>✓</span><div><strong>일정을 등록했어요.</strong><p>캘린더에 바로 반영했습니다.</p></div></div>}
   </div>
 }
