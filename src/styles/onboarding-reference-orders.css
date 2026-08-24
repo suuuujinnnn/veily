@@ -12,11 +12,12 @@
 .dashboard-reminder-title{display:flex;align-items:center;gap:6px;min-width:0}
 .dashboard-reminder-title>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dashboard-dday{flex:none;padding:4px 7px;border-radius:999px;font-size:7px;font-style:normal;font-weight:850;line-height:1}
-.dashboard-reminder-row .dashboard-dday.is-calm{background:#edf3f7;color:#55758b}
-.dashboard-reminder-row .dashboard-dday.is-safe{background:#e9f3d8;color:#55732f}
-.dashboard-reminder-row .dashboard-dday.is-warning{background:#ffe9a9;color:#83610e}
-.dashboard-reminder-row .dashboard-dday.is-critical{background:#f7d6dc;color:#a43349}
-.dashboard-reminder-row .dashboard-dday.is-over{background:#f8dfc5;color:#a95a18}
+.dashboard-dday.is-calm{background:#edf3f7;color:#55758b}
+.dashboard-dday.is-safe{background:#e9f3d8;color:#55732f}
+.dashboard-dday.is-warning{background:#ffe9a9;color:#83610e}
+.dashboard-dday.is-critical{background:#f7d6dc;color:#a43349}
+.dashboard-dday.is-today{background:#edbdc6;color:#8f2438}
+.dashboard-dday.is-over{background:#f8dfc5;color:#a95a18}
 .dashboard-reminder-action{min-height:29px;padding:6px 9px;display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:7px;font-size:7px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}
 .dashboard-reminder-action--approve{border:1px solid #b9d1bf;background:#edf6ef;color:#52735b}
 .dashboard-reminder-action--message{border:1px solid #bfd4e0;background:#edf5f9;color:#397494}

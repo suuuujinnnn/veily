@@ -17,7 +17,7 @@ import {
   vendors as initialVendors,
 } from '../data/mockData'
 import { initialReferenceBoards } from '../data/weddingReferenceData'
-import { initialCustomerRequests } from '../data/customerRequestData'
+import { initialCustomerFollowUps } from '../data/customerRequestData'
 import type {
   BudgetItem,
   BudgetPlan,
@@ -40,7 +40,9 @@ import type {
   ReferenceBoard,
   WeddingReference,
   CustomerReferenceSubmission,
-  CustomerRequest,
+  CustomerFollowUp,
+  CalendarColorMode,
+  CalendarDisplayPreferences,
 } from '../types'
 
 export interface DemoState {
@@ -66,7 +68,8 @@ export interface DemoState {
   referenceBoards: ReferenceBoard[]
   uploadedReferences: WeddingReference[]
   customerReferenceSubmissions: CustomerReferenceSubmission[]
-  customerRequests: CustomerRequest[]
+  customerFollowUps: CustomerFollowUp[]
+  calendarDisplayPreferences: CalendarDisplayPreferences
 }
 
 export type DemoAction =
@@ -106,12 +109,13 @@ export type DemoAction =
   | { type: 'SAVE_REFERENCE_BOARD'; payload: ReferenceBoard }
   | { type: 'ADD_UPLOADED_REFERENCE'; payload: WeddingReference }
   | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
-  | { type: 'SEND_CUSTOMER_MESSAGE'; payload: CustomerRequest }
-  | { type: 'SET_CUSTOMER_MESSAGE_STATUS'; payload: { id: string; answerStatus: CustomerRequest['answerStatus']; updatedAt: string } }
-  | { type: 'MARK_CONVERSATION_READ'; payload: { coupleId: string; viewer: 'customer' | 'planner'; readAt: string } }
   | { type: 'COMPLETE_PORTAL_ONBOARDING'; payload: PortalOnboardingState }
   | { type: 'ADD_ORDER_REMINDER'; payload: OrderReminder }
   | { type: 'COMPLETE_ORDER_REMINDER'; payload: { id: string; completedAt: string } }
+  | { type: 'ADD_CUSTOMER_FOLLOW_UP'; payload: CustomerFollowUp }
+  | { type: 'REQUEST_CUSTOMER_FOLLOW_UP'; payload: { id: string; requestedAt: string } }
+  | { type: 'SET_CALENDAR_COLOR_MODE'; payload: CalendarColorMode }
+  | { type: 'SET_CALENDAR_COUPLE_COLORS'; payload: Record<string, string> }
 
 export const initialState: DemoState = {
   couples: initialCouples,
@@ -150,7 +154,8 @@ export const initialState: DemoState = {
     submittedAt: '2026-08-05T10:30:00+09:00',
     status: '전송완료',
   }],
-  customerRequests: initialCustomerRequests,
+  customerFollowUps: initialCustomerFollowUps,
+  calendarDisplayPreferences: { colorMode: 'work-category', coupleColors: {} },
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -158,7 +163,13 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
     case 'ADD_EVENT':
       return { ...state, events: [...state.events, action.payload] }
     case 'UPDATE_EVENT':
-      return { ...state, events: state.events.map((item) => item.id === action.payload.id ? action.payload : item) }
+      return {
+        ...state,
+        events: state.events.map((item) => item.id === action.payload.id ? action.payload : item),
+        customerFollowUps: action.payload.approvalStatus === 'client-ok' || action.payload.approvalStatus === 'confirmed'
+          ? state.customerFollowUps.map((item) => item.completionType === 'schedule' && item.relatedEntityId === action.payload.id ? { ...item, status: 'received' as const } : item)
+          : state.customerFollowUps,
+      }
     case 'DELETE_EVENT':
       return { ...state, events: state.events.filter((item) => item.id !== action.payload) }
     case 'UPDATE_COUPLE':
@@ -225,6 +236,9 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
         recommendations: existing
           ? state.recommendations.map((item) => item.id === existing.id ? { ...item, status: action.payload.status } : item)
           : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload, proposedAt: DEMO_TODAY, selectionDeadline: addDays(DEMO_TODAY, 7) }],
+        customerFollowUps: action.payload.status !== 'pending'
+          ? state.customerFollowUps.map((item) => item.completionType === 'recommendation' && item.coupleId === action.payload.coupleId && item.relatedEntityId === action.payload.vendorId ? { ...item, status: 'received' as const } : item)
+          : state.customerFollowUps,
       }
     }
     case 'SEND_RECOMMENDATION': {
@@ -257,30 +271,32 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, uploadedReferences: [action.payload, ...state.uploadedReferences] }
     case 'SAVE_CUSTOMER_REFERENCE_SUBMISSION': {
       const exists = state.customerReferenceSubmissions.some((item) => item.coupleId === action.payload.coupleId)
-      return { ...state, customerReferenceSubmissions: exists ? state.customerReferenceSubmissions.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [action.payload, ...state.customerReferenceSubmissions] }
-    }
-    case 'SEND_CUSTOMER_MESSAGE':
-      return { ...state, customerRequests: [action.payload, ...state.customerRequests] }
-    case 'SET_CUSTOMER_MESSAGE_STATUS':
-      return { ...state, customerRequests: state.customerRequests.map((item) => item.id === action.payload.id ? { ...item, answerStatus: action.payload.answerStatus, updatedAt: action.payload.updatedAt } : item) }
-    case 'MARK_CONVERSATION_READ':
       return {
         ...state,
-        customerRequests: state.customerRequests.map((item) => {
-          if (item.coupleId !== action.payload.coupleId || item.sender === action.payload.viewer) return item
-          return action.payload.viewer === 'planner'
-            ? { ...item, readByPlannerAt: item.readByPlannerAt ?? action.payload.readAt, updatedAt: action.payload.readAt }
-            : { ...item, readByCustomerAt: item.readByCustomerAt ?? action.payload.readAt, updatedAt: action.payload.readAt }
-        }),
+        customerReferenceSubmissions: exists ? state.customerReferenceSubmissions.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [action.payload, ...state.customerReferenceSubmissions],
+        customerFollowUps: state.customerFollowUps.map((item) => item.coupleId === action.payload.coupleId && (item.completionType === 'reference-submission' || item.completionType === 'taste-profile') ? { ...item, status: 'received' as const } : item),
       }
+    }
     case 'COMPLETE_PORTAL_ONBOARDING': {
       const exists = state.portalOnboardingStates.some((item) => item.coupleId === action.payload.coupleId)
-      return { ...state, portalOnboardingStates: exists ? state.portalOnboardingStates.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.portalOnboardingStates, action.payload] }
+      return {
+        ...state,
+        portalOnboardingStates: exists ? state.portalOnboardingStates.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.portalOnboardingStates, action.payload],
+        customerFollowUps: action.payload.skippedSteps.includes('taste') ? state.customerFollowUps : state.customerFollowUps.map((item) => item.coupleId === action.payload.coupleId && item.completionType === 'taste-profile' ? { ...item, status: 'received' as const } : item),
+      }
     }
     case 'ADD_ORDER_REMINDER':
       return { ...state, orderReminders: [action.payload, ...state.orderReminders] }
     case 'COMPLETE_ORDER_REMINDER':
       return { ...state, orderReminders: state.orderReminders.map((item) => item.id === action.payload.id ? { ...item, status: 'completed', completedAt: action.payload.completedAt } : item) }
+    case 'ADD_CUSTOMER_FOLLOW_UP':
+      return { ...state, customerFollowUps: [action.payload, ...state.customerFollowUps] }
+    case 'REQUEST_CUSTOMER_FOLLOW_UP':
+      return { ...state, customerFollowUps: state.customerFollowUps.map((item) => item.id === action.payload.id ? { ...item, lastRequestedAt: action.payload.requestedAt } : item) }
+    case 'SET_CALENDAR_COLOR_MODE':
+      return { ...state, calendarDisplayPreferences: { ...state.calendarDisplayPreferences, colorMode: action.payload } }
+    case 'SET_CALENDAR_COUPLE_COLORS':
+      return { ...state, calendarDisplayPreferences: { ...state.calendarDisplayPreferences, coupleColors: action.payload } }
     default:
       return state
   }
@@ -323,12 +339,13 @@ interface DemoContextValue extends DemoState {
   saveReferenceBoard: (board: ReferenceBoard) => void
   addUploadedReference: (reference: Omit<WeddingReference, 'id'>) => void
   saveCustomerReferenceSubmission: (submission: CustomerReferenceSubmission) => void
-  sendCustomerMessage: (message: Omit<CustomerRequest, 'id' | 'createdAt' | 'updatedAt' | 'readByPlannerAt' | 'readByCustomerAt'>) => void
-  setCustomerMessageStatus: (id: string, answerStatus: CustomerRequest['answerStatus']) => void
-  markConversationRead: (coupleId: string, viewer: 'customer' | 'planner') => void
   completePortalOnboarding: (state: PortalOnboardingState) => void
   addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'completedAt'>) => void
   completeOrderReminder: (id: string) => void
+  addCustomerFollowUp: (followUp: Omit<CustomerFollowUp, 'id' | 'status'>) => string
+  requestCustomerFollowUp: (id: string) => void
+  setCalendarColorMode: (mode: CalendarColorMode) => void
+  setCalendarCoupleColors: (colors: Record<string, string>) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
@@ -347,6 +364,8 @@ export function DemoProvider({ children }: PropsWithChildren) {
     addEvent: (event) => dispatch({ type: 'ADD_EVENT', payload: { ...event, id: makeId('e') } }),
     updateEvent: (event) => dispatch({ type: 'UPDATE_EVENT', payload: event }),
     deleteEvent: (id) => dispatch({ type: 'DELETE_EVENT', payload: id }),
+    setCalendarColorMode: (mode) => dispatch({ type: 'SET_CALENDAR_COLOR_MODE', payload: mode }),
+    setCalendarCoupleColors: (colors) => dispatch({ type: 'SET_CALENDAR_COUPLE_COLORS', payload: colors }),
     updateCouple: (couple) => dispatch({ type: 'UPDATE_COUPLE', payload: couple }),
     toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
     addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: makeId('t') } }),
@@ -394,21 +413,15 @@ export function DemoProvider({ children }: PropsWithChildren) {
     saveReferenceBoard: (board) => dispatch({ type: 'SAVE_REFERENCE_BOARD', payload: board }),
     addUploadedReference: (reference) => dispatch({ type: 'ADD_UPLOADED_REFERENCE', payload: { ...reference, id: makeId('ref-upload') } }),
     saveCustomerReferenceSubmission: (submission) => dispatch({ type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION', payload: submission }),
-    sendCustomerMessage: (message) => dispatch({
-      type: 'SEND_CUSTOMER_MESSAGE',
-      payload: {
-        ...message,
-        id: makeId('message'),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        ...(message.sender === 'planner' ? { readByPlannerAt: new Date().toISOString() } : { readByCustomerAt: new Date().toISOString() }),
-      },
-    }),
-    setCustomerMessageStatus: (id, answerStatus) => dispatch({ type: 'SET_CUSTOMER_MESSAGE_STATUS', payload: { id, answerStatus, updatedAt: new Date().toISOString() } }),
-    markConversationRead: (coupleId, viewer) => dispatch({ type: 'MARK_CONVERSATION_READ', payload: { coupleId, viewer, readAt: new Date().toISOString() } }),
     completePortalOnboarding: (onboardingState) => dispatch({ type: 'COMPLETE_PORTAL_ONBOARDING', payload: onboardingState }),
     addOrderReminder: (reminder) => dispatch({ type: 'ADD_ORDER_REMINDER', payload: { ...reminder, id: makeId('or'), status: 'pending' } }),
     completeOrderReminder: (id) => dispatch({ type: 'COMPLETE_ORDER_REMINDER', payload: { id, completedAt: DEMO_NOW } }),
+    addCustomerFollowUp: (followUp) => {
+      const id = makeId('followup')
+      dispatch({ type: 'ADD_CUSTOMER_FOLLOW_UP', payload: { ...followUp, id, status: 'waiting' } })
+      return id
+    },
+    requestCustomerFollowUp: (id) => dispatch({ type: 'REQUEST_CUSTOMER_FOLLOW_UP', payload: { id, requestedAt: new Date().toISOString() } }),
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>

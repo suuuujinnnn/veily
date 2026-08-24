@@ -47,3 +47,4 @@
   .portal-alert-button > span { display: none; }
   .portal-notification-panel { position: fixed; top: 66px; right: 12px; left: 12px; width: auto; }
 }
+.portal-page--unavailable{min-height:100vh;display:grid;place-items:center;background:#f5f3f0}.portal-page--unavailable .portal-content{width:min(460px,calc(100% - 32px));margin:0;padding:0}.portal-unavailable-card{min-height:220px;display:grid;place-items:center;align-content:center;gap:8px;text-align:center}.portal-unavailable-card>svg{color:#8b969c}.portal-unavailable-card>strong{font-size:15px}.portal-unavailable-card>p{margin:0;color:var(--muted);font-size:9px}

@@ -22,6 +22,38 @@ import { mockOnly, withoutMockVendors } from './mockGate'
 import { vendorStyleProfiles } from './vendorStyleData'
 import { venueVendors } from './weddingVenueData'
 
+function makeListCouple({ id, brideName, groomName, weddingDate = '', status }: { id: string; brideName: string; groomName: string; weddingDate?: string; status: Couple['status'] }): Couple {
+  return {
+    id,
+    partners: `${brideName} & ${groomName}`,
+    initials: `${brideName.slice(0, 1)} · ${groomName.slice(0, 1)}`,
+    weddingDate,
+    venue: weddingDate ? '장소 협의 중' : '미정',
+    progress: status === '완료' ? 100 : status === '취소' ? 0 : status === '집중 관리' ? 58 : 18,
+    status,
+    concept: '',
+    tone: status === '집중 관리' ? 'rose' : status === '상담중' ? 'sand' : 'sage',
+    brideName,
+    groomName,
+    bridePhone: '010-0000-0000',
+    groomPhone: '010-0000-0000',
+    brideEmail: '',
+    groomEmail: '',
+    brideOccupation: '',
+    groomOccupation: '',
+    address: '',
+    acquisitionChannel: '온라인 문의',
+    referrerName: '',
+    preferredContactMethod: '카카오톡',
+    preferredContactTime: '',
+    contractType: status === '취소' ? '상담 종료' : status === '상담중' ? '상담 전' : '기본 관리',
+    contractDate: '',
+    ceremonyDate: weddingDate,
+    ceremonyPlace: weddingDate ? '장소 협의 중' : '',
+    note: '',
+  }
+}
+
 export const couples: Couple[] = [
   {
     id: 'c1',
@@ -30,7 +62,7 @@ export const couples: Couple[] = [
     weddingDate: '2026-10-17',
     venue: '남산 라루체 가든홀',
     progress: 68,
-    status: '집중관리',
+    status: '집중 관리',
     concept: '절제된 클래식, 내추럴 가든',
     tone: 'rose',
     brideName: '김서윤', groomName: '이도현', bridePhone: '010-2451-7820', groomPhone: '010-7382-4410',
@@ -46,7 +78,7 @@ export const couples: Couple[] = [
     weddingDate: '2026-12-12',
     venue: '그랜드 인터컨티넨탈',
     progress: 43,
-    status: '준비중',
+    status: '상담중',
     concept: '화려한 호텔, 모던 로맨틱',
     tone: 'sage',
     brideName: '박민지', groomName: '최현우', bridePhone: '010-3901-2284', groomPhone: '010-8824-9103',
@@ -62,7 +94,7 @@ export const couples: Couple[] = [
     weddingDate: '2027-02-20',
     venue: '빌라드지디 청담',
     progress: 26,
-    status: '준비중',
+    status: '상담중',
     concept: '시크 미니멀, 모노톤',
     tone: 'sand',
     brideName: '정하은', groomName: '오지훈', bridePhone: '010-5502-4120', groomPhone: '010-6044-3328',
@@ -78,7 +110,7 @@ export const couples: Couple[] = [
     weddingDate: '2026-09-05',
     venue: '아펠가모 반포',
     progress: 91,
-    status: '확정',
+    status: '완료',
     concept: '따뜻한 채플, 프렌치 클래식',
     tone: 'rose',
     brideName: '윤다솜', groomName: '한재민', bridePhone: '010-7420-1852', groomPhone: '010-9921-6604',
@@ -87,19 +119,35 @@ export const couples: Couple[] = [
     contractType: '프리미엄 동행', contractDate: '2026-02-21', ceremonyDate: '2026-09-05', ceremonyPlace: '아펠가모 반포',
     note: '본식 직전 최종 확인 단계입니다.',
   },
+  makeListCouple({ id: 'c5', brideName: '최유나', groomName: '김태윤', weddingDate: '2026-11-07', status: '집중 관리' }),
+  makeListCouple({ id: 'c6', brideName: '한예림', groomName: '박준서', weddingDate: '2027-03-13', status: '집중 관리' }),
+  makeListCouple({ id: 'c7', brideName: '서지안', groomName: '이민호', status: '상담중' }),
+  makeListCouple({ id: 'c8', brideName: '강수빈', groomName: '정우진', weddingDate: '2027-05-22', status: '상담중' }),
+  makeListCouple({ id: 'c9', brideName: '문채원', groomName: '윤시후', status: '상담중' }),
+  makeListCouple({ id: 'c10', brideName: '배소영', groomName: '임현준', weddingDate: '2026-08-29', status: '완료' }),
+  makeListCouple({ id: 'c11', brideName: '신가영', groomName: '조승민', weddingDate: '2026-06-20', status: '완료' }),
+  makeListCouple({ id: 'c12', brideName: '오하린', groomName: '권도윤', status: '취소' }),
+  makeListCouple({ id: 'c13', brideName: '장나희', groomName: '송재현', weddingDate: '2027-01-16', status: '집중 관리' }),
+  makeListCouple({ id: 'c14', brideName: '유세린', groomName: '남기현', status: '상담중' }),
+  makeListCouple({ id: 'c15', brideName: '김아현', groomName: '백승호', weddingDate: '2026-07-11', status: '완료' }),
+  makeListCouple({ id: 'c16', brideName: '전다은', groomName: '홍민재', weddingDate: '2027-04-03', status: '취소' }),
+  makeListCouple({ id: 'c17', brideName: '이나경', groomName: '조현석', weddingDate: '2027-10-09', status: '집중 관리' }),
+  makeListCouple({ id: 'c18', brideName: '배지수', groomName: '문태경', status: '취소' }),
+  makeListCouple({ id: 'c19', brideName: '권예은', groomName: '차민규', weddingDate: '2027-07-17', status: '상담중' }),
 ]
 
 export const initialEvents: WeddingEvent[] = withoutMockVendors([
-  { id: 'e1', coupleId: 'c1', title: '루이즈블랑 드레스 2차 피팅', date: '2026-08-05', time: '10:30', endTime: '12:00', type: '드레스', location: '루이즈블랑, 논현동', visibility: 'couple-shared' },
-  { id: 'e2', coupleId: 'c2', title: '클레브 스튜디오 컨셉 미팅', date: '2026-08-05', time: '14:00', endTime: '15:30', type: '스튜디오', location: '클레브 스튜디오, 성수동', visibility: 'couple-shared' },
-  { id: 'e3', coupleId: 'c4', title: '본식 최종 체크', date: '2026-08-05', time: '17:00', endTime: '18:00', type: '미팅', location: '온라인 미팅', visibility: 'couple-shared' },
-  { id: 'e4', coupleId: 'c1', vendorId: 'vp-m3', title: '메이크업 테스트', date: '2026-08-08', time: '11:00', endTime: '13:00', type: '메이크업', location: '정샘물 인스피레이션', approvalStatus: 'confirmed', visibility: 'couple-shared', reminderOffsets: [14, 7, 1] },
-  { id: 'e5', coupleId: 'c3', title: '웨딩홀 투어', date: '2026-08-12', time: '15:00', endTime: '17:00', type: '미팅', location: '빌라드지디 청담', visibility: 'couple-shared' },
-  { id: 'e9', coupleId: 'c1', title: '루이즈블랑 드레스 최종 셀렉', date: '2026-08-12', time: '16:00', endTime: '17:30', type: '드레스', location: '루이즈블랑, 논현동', approvalStatus: 'planner-proposed', visibility: 'couple-shared' },
-  { id: 'e6', coupleId: 'c2', title: '클레브 스튜디오 촬영', date: '2026-08-18', time: '09:00', endTime: '15:00', type: '스튜디오', location: '클레브 스튜디오, 성수동', visibility: 'couple-shared' },
-  { id: 'e7', coupleId: 'c1', title: '예물 계약', date: '2026-08-22', time: '13:30', endTime: '15:00', type: '계약', location: '아크레도 청담', visibility: 'couple-shared' },
-  { id: 'e8', coupleId: 'c4', title: '본식', date: '2026-09-05', time: '11:30', endTime: '14:30', type: '본식', location: '아펠가모 반포', approvalStatus: 'confirmed', visibility: 'couple-shared', reminderOffsets: [21, 7, 1] },
-  { id: 'e-private-1', title: '치과 예약', date: '2026-08-05', time: '15:20', endTime: '16:10', type: '미팅', location: '한남동', visibility: 'planner-private', memo: '플래너 개인 일정' },
+  { id: 'e1', coupleId: 'c1', calendarCategory: 'tour', title: '루이즈블랑 드레스 2차 피팅', date: '2026-08-05', time: '10:30', endTime: '12:00', type: '드레스', location: '루이즈블랑, 논현동', visibility: 'couple-shared' },
+  { id: 'e2', coupleId: 'c2', calendarCategory: 'consultation', title: '클레브 스튜디오 컨셉 미팅', date: '2026-08-05', time: '14:00', endTime: '15:30', type: '스튜디오', location: '클레브 스튜디오, 성수동', visibility: 'couple-shared' },
+  { id: 'e3', coupleId: 'c4', calendarCategory: 'consultation', title: '본식 최종 체크', date: '2026-08-05', time: '17:00', endTime: '18:00', type: '미팅', location: '온라인 미팅', visibility: 'couple-shared' },
+  { id: 'e4', coupleId: 'c1', vendorId: 'vp-m3', calendarCategory: 'shooting-rehearsal', title: '메이크업 테스트', date: '2026-08-08', time: '11:00', endTime: '13:00', type: '메이크업', location: '정샘물 인스피레이션', approvalStatus: 'confirmed', visibility: 'couple-shared', reminderOffsets: [14, 7, 1] },
+  { id: 'e5', coupleId: 'c3', calendarCategory: 'tour', title: '웨딩홀 투어', date: '2026-08-12', time: '15:00', endTime: '17:00', type: '미팅', location: '빌라드지디 청담', visibility: 'couple-shared' },
+  { id: 'e9', coupleId: 'c1', calendarCategory: 'tour', title: '루이즈블랑 드레스 최종 셀렉', date: '2026-08-12', time: '16:00', endTime: '17:30', type: '드레스', location: '루이즈블랑, 논현동', approvalStatus: 'planner-proposed', visibility: 'couple-shared' },
+  { id: 'e6', coupleId: 'c2', calendarCategory: 'shooting-rehearsal', title: '클레브 스튜디오 촬영', date: '2026-08-18', time: '09:00', endTime: '15:00', type: '스튜디오', location: '클레브 스튜디오, 성수동', visibility: 'couple-shared' },
+  { id: 'e7', coupleId: 'c1', calendarCategory: 'contract', title: '예물 계약', date: '2026-08-22', time: '13:30', endTime: '15:00', type: '계약', location: '아크레도 청담', visibility: 'couple-shared' },
+  { id: 'e8', coupleId: 'c4', calendarCategory: 'ceremony', title: '본식', date: '2026-09-05', time: '11:30', endTime: '14:30', type: '본식', location: '아펠가모 반포', approvalStatus: 'confirmed', visibility: 'couple-shared', reminderOffsets: [21, 7, 1] },
+  { id: 'e-private-1', calendarCategory: 'other', title: '치과 예약', date: '2026-08-05', time: '15:20', endTime: '16:10', type: '미팅', location: '한남동', visibility: 'planner-private', memo: '플래너 개인 일정' },
+  { id: 'e10', coupleId: 'c3', calendarCategory: 'expo', title: '웨딩 박람회 동행', date: '2026-08-29', time: '13:00', endTime: '15:00', type: '미팅', location: '코엑스', visibility: 'couple-shared' },
 ])
 
 export const initialChecklist: ChecklistItem[] = [
@@ -191,6 +239,16 @@ export const initialRecommendations: Recommendation[] = withoutMockVendors([
   { id: 'r1', coupleId: 'c1', vendorId: 'vp-d4', status: 'liked', proposedAt: '2026-07-28', selectionDeadline: '2026-08-04' },
   { id: 'r2', coupleId: 'c1', vendorId: 'vp-s1', status: 'pending', proposedAt: '2026-08-01', selectionDeadline: '2026-08-08' },
   { id: 'r3', coupleId: 'c1', vendorId: 'vp-m3', status: 'hold', proposedAt: '2026-08-02', selectionDeadline: '2026-08-09' },
+  { id: 'r13', coupleId: 'c1', vendorId: 'vp-d2', status: 'pending', proposedAt: '2026-08-03', selectionDeadline: '2026-08-12' },
+  { id: 'r14', coupleId: 'c1', vendorId: 'vp-d5', status: 'hold', proposedAt: '2026-08-03', selectionDeadline: '2026-08-12' },
+  { id: 'r15', coupleId: 'c1', vendorId: 'vp-s3', status: 'liked', proposedAt: '2026-08-04', selectionDeadline: '2026-08-13' },
+  { id: 'r16', coupleId: 'c1', vendorId: 'vp-s5', status: 'hold', proposedAt: '2026-08-04', selectionDeadline: '2026-08-13' },
+  { id: 'r17', coupleId: 'c1', vendorId: 'vp-m1', status: 'liked', proposedAt: '2026-08-04', selectionDeadline: '2026-08-14' },
+  { id: 'r18', coupleId: 'c1', vendorId: 'vp-m2', status: 'pending', proposedAt: '2026-08-05', selectionDeadline: '2026-08-14' },
+  { id: 'r19', coupleId: 'c1', vendorId: 'vp-m4', status: 'liked', proposedAt: '2026-08-05', selectionDeadline: '2026-08-14' },
+  { id: 'r20', coupleId: 'c1', vendorId: 'vendor-venue-gangnam', status: 'pending', proposedAt: '2026-08-05', selectionDeadline: '2026-08-15' },
+  { id: 'r21', coupleId: 'c1', vendorId: 'vendor-venue-seocho', status: 'liked', proposedAt: '2026-08-05', selectionDeadline: '2026-08-15' },
+  { id: 'r22', coupleId: 'c1', vendorId: 'vendor-venue-yongsan', status: 'hold', proposedAt: '2026-08-05', selectionDeadline: '2026-08-15' },
   { id: 'r4', coupleId: 'c2', vendorId: 'vp-d1', status: 'pending', proposedAt: '2026-07-27', selectionDeadline: '2026-08-03' },
   { id: 'r5', coupleId: 'c2', vendorId: 'vp-s4', status: 'liked', proposedAt: '2026-07-30', selectionDeadline: '2026-08-06' },
   { id: 'r6', coupleId: 'c2', vendorId: 'vp-m2', status: 'pending', proposedAt: '2026-08-03', selectionDeadline: '2026-08-10' },
@@ -218,13 +276,14 @@ export const initialPayments: Payment[] = [
 export const initialConsultations: Consultation[] = [
   { id: 'con1', coupleId: 'c1', date: '2026-08-01T19:00', originalText: '본식 드레스는 미카도 실크 위주로 다시 보고 싶어요. 예물 수령일도 확인 부탁드려요.', requests: ['실크 드레스 후보 재정리', '예물 수령일 확인'], decisions: ['2차 피팅에 플래너 동행'], nextActions: ['르블랑에 피팅 가능 시간 문의', '예물 업체 일정 확인'] },
   { id: 'con2', coupleId: 'c2', date: '2026-07-28T20:00', originalText: '스튜디오 촬영 때 야외 컷 비중을 늘리고 싶습니다.', requests: ['야외 컷 비중 확대'], decisions: ['오전 촬영 유지'], nextActions: ['우천 시 대체 세트 확인'] },
+  { id: 'con3', coupleId: 'c18', date: '2026-07-30T19:30', originalText: '제주 스몰웨딩을 생각하고 있지만 일정과 예상 비용이 맞지 않아 우선 상담만 받고 진행하지 않기로 했습니다.', requests: ['제주 스몰웨딩 가능 범위 확인', '하객 40명 기준 예상 비용 상담'], decisions: ['플래닝 계약 진행하지 않음', '고객 포털 링크 미생성'], nextActions: [] },
 ]
 
 export const initialConsultationCards: ConsultationCard[] = [
   {
     id: 'cc1',
     coupleId: 'c1',
-    preferredDate: '2026-10-17',
+    preferredDate: '2026-10',
     shootDate: '2026-08-18',
     coupleNames: '김서윤 & 이동현',
     phone: '010-2451-7820',
@@ -239,7 +298,7 @@ export const initialConsultationCards: ConsultationCard[] = [
     extraPlanning: '예식 일정 기준 월별 플랜',
     hallDetails: '남산 라루체 가든홀, 보증 인원 250명',
     meetingDetails: '평일 저녁 7시 이후 선호',
-    contactPreference: '카톡 상담',
+    preferredRegion: '서울 중구',
     priorities: '자연스러운 인물 사진 · 미카도 실크 · 과하지 않은 메이크업',
     notes: '업체별 이동 동선과 추가 비용을 함께 비교하고 싶어요.',
     source: '고객 작성',
@@ -247,11 +306,10 @@ export const initialConsultationCards: ConsultationCard[] = [
   },
 ]
 
-export const initialPortalSettings: PortalSettings[] = couples.map((couple) => ({
+export const initialPortalSettings: PortalSettings[] = couples.filter((couple) => couple.status !== '취소').map((couple) => ({
   coupleId: couple.id,
   showSchedule: true,
   showFullEstimate: true,
-  messagingEnabled: true,
   showChecklist: true,
 }))
 

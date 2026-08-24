@@ -113,7 +113,7 @@ export function buildDashboardReminders(source: DashboardReminderSource, today =
     })
 
   source.couples
-    .filter((item) => item.status !== '확정')
+    .filter((item) => item.status !== '완료' && item.status !== '취소')
     .filter((item) => {
       const submission = source.customerReferenceSubmissions.find((entry) => entry.coupleId === item.id)
       return !submission || submission.status === '작성 중'

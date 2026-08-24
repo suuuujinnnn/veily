@@ -1,6 +1,12 @@
 export type EventType = '미팅' | '드레스' | '스튜디오' | '메이크업' | '계약' | '본식'
 export type EventApprovalStatus = 'planner-proposed' | 'client-ok' | 'confirmed'
 export type ScheduleVisibility = 'couple-shared' | 'planner-private'
+export type CalendarWorkCategory = 'consultation' | 'tour' | 'shooting-rehearsal' | 'contract' | 'ceremony' | 'expo' | 'other'
+export type CalendarColorMode = 'work-category' | 'customer'
+export interface CalendarDisplayPreferences {
+  colorMode: CalendarColorMode
+  coupleColors: Record<string, string>
+}
 
 // 헤어와 메이크업은 같은 숍이 함께 한다. 업체는 하나로 센다.
 // 레퍼런스 보드에서는 사진 성격이 달라 헤어·메이크업 탭을 따로 둔다(ReferenceCategory).
@@ -14,7 +20,7 @@ export interface Couple {
   weddingDate: string
   venue: string
   progress: number
-  status: '준비중' | '집중관리' | '확정'
+  status: '집중 관리' | '상담중' | '완료' | '취소'
   concept: string
   tone: 'rose' | 'sage' | 'sand'
   brideName: string
@@ -46,6 +52,7 @@ export interface WeddingEvent {
   time: string
   endTime: string
   type: EventType
+  calendarCategory?: CalendarWorkCategory
   location: string
   workflowType?: string
   durationMinutes?: number
@@ -77,30 +84,21 @@ export interface ChecklistItem {
   owner: '플래너' | '신랑·신부' | '함께'
 }
 
-export interface CustomerMessageAttachment {
-  id: string
-  type: 'image' | 'file' | 'link'
-  name: string
-  url: string
-  size?: number
-}
-
-export interface CustomerMessage {
+export type CustomerFollowUpKind = '레퍼런스' | '추천 응답' | '일정 확인' | '취향 찾기' | '자료 요청' | '기타'
+export type CustomerFollowUpCompletionType = 'reference-submission' | 'recommendation' | 'schedule' | 'taste-profile'
+export interface CustomerFollowUp {
   id: string
   coupleId: string
-  category: '레퍼런스' | '업체 문의' | '일정' | '계약·견적' | '기타'
-  originalText: string
-  createdAt: string
-  updatedAt: string
-  sender: 'customer' | 'planner'
-  answerStatus?: 'unanswered' | 'answered'
-  readByPlannerAt?: string
-  readByCustomerAt?: string
-  attachments: CustomerMessageAttachment[]
+  kind: CustomerFollowUpKind
+  title: string
+  channel: 'portal' | 'external'
+  sentAt: string
+  dueAt: string
+  status: 'waiting' | 'received'
+  completionType?: CustomerFollowUpCompletionType
+  relatedEntityId?: string
+  lastRequestedAt?: string
 }
-
-/** @deprecated Use CustomerMessage. Kept as a compatibility alias for mock data imports. */
-export type CustomerRequest = CustomerMessage
 
 export type BudgetCategory =
   | '웨딩홀·식대'
@@ -428,7 +426,7 @@ export interface ConsultationCard {
   extraPlanning: string
   hallDetails: string
   meetingDetails: string
-  contactPreference: string
+  preferredRegion: string
   priorities: string
   notes: string
   source: '플래너 입력' | '고객 작성'
@@ -450,7 +448,6 @@ export interface PortalSettings {
   coupleId: string
   showSchedule: boolean
   showFullEstimate: boolean
-  messagingEnabled: boolean
   showChecklist: boolean
 }
 
