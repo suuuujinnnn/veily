@@ -1,24 +1,33 @@
 import { useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, ExternalLink, Heart, Plus } from 'lucide-react'
+import { ArrowLeft, CalendarRange, ExternalLink, LayoutGrid, Plus } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Badge, Button, Card, Modal, Progress } from '../../components/ui'
-import type { ChecklistCategory, ChecklistItem, RecommendationStatus } from '../../types'
+import { Badge, Button, Card, Progress, SegmentedTabs } from '../../components/ui'
+import type { ChecklistCategory, ChecklistItem, RecommendationStatus, Vendor } from '../../types'
+import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
-import { PreparationWorkspace } from '../checklist/PreparationWorkspace'
-import { checklistCategories } from '../checklist/checklistCategories'
+import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
 import { CoupleInfoPanel } from './CoupleInfoPanel'
 import { EstimateSettlementPanel } from './EstimateSettlementPanel'
 import { ScheduleCoordinationPanel } from './ScheduleCoordinationPanel'
-import { AddEventModal } from '../calendar/AddEventModal'
-import { formatDate } from '../reminders/reminderUtils'
 import { weddingReferences } from '../../data/weddingReferenceData'
 
 type DetailTab = 'info' | 'timeline' | 'coordination' | 'vendors' | 'finance'
+type PreparationView = 'monthly' | 'category'
+const coupleStatusTone = { '집중 관리': 'rose', 상담중: 'amber', 완료: 'sage', 취소: 'neutral' } as const
 
 const detailTabs: DetailTab[] = ['info', 'timeline', 'coordination', 'vendors', 'finance']
-const vendorStatusMeta: Record<RecommendationStatus, { label: string; tone: 'neutral' | 'amber' | 'sage' }> = {
-  pending: { label: '추천 후보', tone: 'neutral' }, liked: { label: '투어 예정', tone: 'amber' }, confirmed: { label: '확정', tone: 'sage' }, hold: { label: '보류', tone: 'neutral' },
+const vendorStatusMeta: Record<RecommendationStatus, { label: string }> = {
+  pending: { label: '추천 후보' }, liked: { label: '투어 예정' }, confirmed: { label: '확정' }, hold: { label: '보류' },
+}
+
+const vendorGroups = ['드레스', '헤어', '메이크업', '스튜디오', '웨딩홀'] as const
+type VendorGroup = typeof vendorGroups[number]
+
+function getVendorGroup(vendor: Vendor): VendorGroup | null {
+  if (vendor.category === '헤어&메이크업') return /헤어/.test(`${vendor.name} ${vendor.tags.join(' ')}`) ? '헤어' : '메이크업'
+  if (vendor.category === '드레스' || vendor.category === '스튜디오' || vendor.category === '웨딩홀') return vendor.category
+  return null
 }
 
 function isDetailTab(value: string | null): value is DetailTab {
@@ -28,29 +37,25 @@ function isDetailTab(value: string | null): value is DetailTab {
 export function CoupleDetailPage() {
   const { id = 'c1' } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
-  const { couples, checklist, vendors, recommendations, uploadedReferences, setRecommendation, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
+  const { couples, checklist, vendors, recommendations, uploadedReferences, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
   const couple = couples.find((item) => item.id === id) ?? couples[0]
   const requestedTab = searchParams.get('tab')
   const tab: DetailTab = isDetailTab(requestedTab) ? requestedTab : 'info'
+  const preparationView: PreparationView = searchParams.get('taskView') === 'category' ? 'category' : 'monthly'
   const [editorOpen, setEditorOpen] = useState(false)
-  const [categoryChooserOpen, setCategoryChooserOpen] = useState(false)
   const [editorItem, setEditorItem] = useState<ChecklistItem | null>(null)
   const [editorCategory, setEditorCategory] = useState<ChecklistCategory>('스튜디오')
-  const [scheduleOpen, setScheduleOpen] = useState(false)
   const coupleTasks = checklist.filter((item) => item.coupleId === couple.id).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
-  const startAddTask = (category?: ChecklistCategory) => {
-    if (!category) { setCategoryChooserOpen(true); return }
-    setEditorItem(null)
-    setEditorCategory(category)
-    setEditorOpen(true)
-  }
   const referenceLibrary = [...uploadedReferences, ...weddingReferences]
   const recommendedVendors = recommendations.filter((item) => item.coupleId === couple.id).map((recommendation) => ({
     vendor: vendors.find((vendor) => vendor.id === recommendation.vendorId),
     recommendation,
     reference: referenceLibrary.find((reference) => reference.id === recommendation.sourceReferenceId),
   })).filter((item) => item.vendor)
-  const tourVendorCount = recommendedVendors.filter((item) => item.recommendation?.status === 'liked').length
+  const groupedVendors = vendorGroups.map((group) => ({
+    group,
+    items: recommendedVendors.filter(({ vendor }) => vendor && getVendorGroup(vendor) === group),
+  }))
 
   const openTab = (nextTab: DetailTab) => {
     const nextParams = new URLSearchParams(searchParams)
@@ -59,43 +64,72 @@ export function CoupleDetailPage() {
     setSearchParams(nextParams)
   }
 
+  const openPreparationView = (nextView: PreparationView) => {
+    const nextParams = new URLSearchParams(searchParams)
+    if (nextView === 'monthly') nextParams.delete('taskView')
+    else nextParams.set('taskView', nextView)
+    setSearchParams(nextParams)
+  }
+
   return (
     <div className="page-stack couple-detail">
-      <Link className="back-link" to="/couples"><ArrowLeft size={15} /> 모든 커플</Link>
-      <section className="couple-profile">
-        <div className={`couple-profile__mark couple-profile__mark--${couple.tone}`}><span>{couple.initials}</span></div>
-        <div className="couple-profile__main"><Badge tone="rose">{couple.status}</Badge><h1>{couple.partners}</h1></div>
-        <div className="couple-profile__progress"><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong><Progress value={couple.progress} /></div>
-        <div className="couple-profile__actions"><Link className="couple-profile__client-url" to={`/client/${couple.id}`} target="_blank"><span>고객 URL</span><strong>/client/{couple.id}</strong><ExternalLink size={14} /></Link></div>
-      </section>
-      <nav className="detail-tabs">{([['info','부부정보·상담'],['timeline', 'TODO'],['coordination','공유 캘린더'],['vendors','업체 관리'],['finance','견적·정산']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</nav>
+      <header className="couple-workspace-head">
+        <div className="couple-workspace-head__utility">
+          <Link className="back-link" to="/couples"><ArrowLeft size={15} /> 모든 커플</Link>
+          {couple.status === '취소'
+            ? <div className="couple-workspace-head__portal is-disabled"><span>고객 URL</span><strong>포털 미생성 · 상담 종료</strong></div>
+            : <Link className="couple-workspace-head__portal" to={`/client/${couple.id}`} target="_blank"><span>고객 URL</span><strong>/client/{couple.id}</strong><ExternalLink size={14} /></Link>}
+        </div>
+        <div className="couple-workspace-head__main">
+          <div className={`couple-workspace-head__mark couple-workspace-head__mark--${couple.tone}`}><span>{couple.initials}</span></div>
+          <div className="couple-workspace-head__identity"><div><Badge tone={coupleStatusTone[couple.status]}>{couple.status}</Badge><span>Customer workspace</span></div><h1>{couple.partners}</h1></div>
+          <div className="couple-workspace-head__progress"><div><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong></div><Progress value={couple.progress} /></div>
+        </div>
+      </header>
+      <nav className="detail-tabs">{([['info','부부정보·상담'],['timeline', '로드맵'],['coordination','공유 캘린더'],['vendors','업체 관리'],['finance','견적·정산']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</nav>
 
       {tab === 'timeline' && <div className="checklist-workspace">
-        <section className="checklist-workspace__intro"><div><p className="eyebrow">Wedding workflow</p><h2>월별 준비 로드맵</h2><p>결혼식까지 해야 할 일을 월별 흐름과 분야별 체크리스트로 동시에 관리합니다.</p></div><div className="heading-actions"><Button variant="secondary" icon={<Plus size={15} />} onClick={() => setScheduleOpen(true)}>일정 추가</Button></div></section>
-        <PreparationWorkspace tasks={coupleTasks} onToggle={toggleChecklist} editable onAdd={startAddTask} onEdit={(item) => { setEditorItem(item); setEditorCategory(item.category); setEditorOpen(true) }} />
+        <SegmentedTabs value={preparationView} onChange={openPreparationView} ariaLabel="로드맵 보기" items={[{ value: 'monthly', label: '월별 로드맵', icon: <CalendarRange size={13} /> }, { value: 'category', label: '분야별 체크리스트', icon: <LayoutGrid size={13} /> }]} />
+        {preparationView === 'monthly' && <MonthlyRoadmap tasks={coupleTasks} onToggle={toggleChecklist} />}
+        {preparationView === 'category' && <div className="checklist-workspace__lower">
+          <CategoryChecklist
+            tasks={coupleTasks}
+            onToggle={toggleChecklist}
+            editable
+            onAdd={(category) => { setEditorItem(null); setEditorCategory(category ?? '스튜디오'); setEditorOpen(true) }}
+            onEdit={(item) => { setEditorItem(item); setEditorCategory(item.category); setEditorOpen(true) }}
+          />
+        </div>}
       </div>}
 
       {tab === 'info' && <CoupleInfoPanel couple={couple} />}
 
       {tab === 'coordination' && <ScheduleCoordinationPanel coupleId={couple.id} />}
 
-      {tab === 'vendors' && <div className="page-stack">
-        <section className="vendor-management-heading"><div><p className="eyebrow">Vendor pipeline</p><h2>{couple.partners} 업체 관리</h2><p>고객에게 보낸 후보부터 투어 예정과 최종 확정까지 한곳에서 관리합니다.</p></div><Link to={`/vendors?coupleId=${couple.id}`}><Button variant="secondary">업체 추천 추가</Button></Link></section>
-        <div className="vendor-tour-summary"><div><Heart size={16} fill="currentColor" /><strong>고객의 하트는 투어 예정까지 반영되며 최종 확정은 플래너가 처리합니다.</strong></div><span>투어 예정 {tourVendorCount}곳 · 전체 {recommendedVendors.length}곳</span></div>
-        <div className="recommended-grid">{recommendedVendors.length ? recommendedVendors.map(({ vendor, recommendation, reference }) => vendor && <article className={`vendor-mini-card vendor-mini-card--${recommendation.status}`} key={vendor.id}><img src={reference?.image ?? vendor.image} style={{ objectPosition: reference?.imagePosition ?? vendor.imagePosition }} alt="" /><div><div className="vendor-tour-label"><Badge tone={vendorStatusMeta[recommendation.status].tone}>{vendorStatusMeta[recommendation.status].label}</Badge><span>{vendor.category}</span></div><h3>{vendor.name}</h3><p>{vendor.summary}</p><div className="tag-row">{vendor.tags.slice(0, 5).map((tag) => <span key={tag}>{tag}</span>)}</div><div className="vendor-mini-card__deadline"><span>선택 기한</span><strong>{formatDate(recommendation.selectionDeadline)}</strong></div><label className="vendor-status-control"><span>현재 상태</span><select value={recommendation.status} onChange={(event) => setRecommendation(couple.id, vendor.id, event.target.value as RecommendationStatus)}><option value="pending">추천 후보</option><option value="liked">투어 예정</option><option value="confirmed">확정</option><option value="hold">보류</option></select></label></div></article>) : <Card><p>아직 추천한 업체가 없습니다. 업체 찾기 화면에서 고객에게 업체를 추천해 주세요.</p></Card>}</div>
-      </div>}
+      {tab === 'vendors' && <section className="vendor-recommendation-panel">
+        <header className="vendor-recommendation-heading">
+          <div><h2>업체 추천</h2><p>카테고리별 추천 현황을 한눈에 확인합니다.</p></div>
+          <Link to={`/vendors?coupleId=${couple.id}`}><Button variant="secondary" size="sm" icon={<Plus size={14} />}>업체 추천 추가</Button></Link>
+        </header>
+        <div className="vendor-status-legend" aria-label="추천 상태 색상 안내">
+          {(['liked', 'pending', 'hold'] as RecommendationStatus[]).map((status) => <span key={status}><i className={`vendor-status-swatch vendor-status-swatch--${status}`} />{vendorStatusMeta[status].label}</span>)}
+        </div>
+        {recommendedVendors.length ? <div className="vendor-recommendation-table">
+          {groupedVendors.map(({ group, items }) => <section className="vendor-recommendation-group" key={group}>
+            <header><h3>{group}</h3><span>{items.length}</span></header>
+            <div className="vendor-recommendation-group__rows">
+              {items.length ? items.map(({ vendor, recommendation, reference }) => vendor && <article className={`vendor-recommendation-card vendor-recommendation-card--${recommendation.status}`} key={vendor.id} title={vendorStatusMeta[recommendation.status].label}>
+                <img src={reference?.image ?? vendor.image} style={{ objectPosition: reference?.imagePosition ?? vendor.imagePosition }} alt="" />
+                <div className="vendor-recommendation-card__body"><strong>{vendor.name}</strong><div className="vendor-recommendation-card__tags">{vendor.tags.slice(0, 3).map((tag) => <span key={tag}>#{tag.replace(/^#/, '')}</span>)}</div></div>
+                <span className="sr-only">상태: {vendorStatusMeta[recommendation.status].label}</span>
+              </article>) : <p className="vendor-recommendation-empty">추천 업체 없음</p>}
+            </div>
+          </section>)}
+        </div> : <Card><p>아직 추천한 업체가 없습니다. 업체 찾기 화면에서 고객에게 업체를 추천해 주세요.</p></Card>}
+      </section>}
 
       {tab === 'finance' && <EstimateSettlementPanel coupleId={couple.id} />}
-      <Modal open={categoryChooserOpen} onClose={() => setCategoryChooserOpen(false)} eyebrow="New checklist item" title="분야별 할 일 만들기">
-        <div className="category-chooser-grid">
-          {checklistCategories.map((category) => (
-            <button type="button" key={category.id} onClick={() => { setCategoryChooserOpen(false); startAddTask(category.id) }}>
-              <strong>{category.id}</strong>
-              <span>{category.description}</span>
-            </button>
-          ))}
-        </div>
-      </Modal>      <ChecklistEditorModal
+      <ChecklistEditorModal
         open={editorOpen}
         coupleId={couple.id}
         defaultCategory={editorCategory}
@@ -105,7 +139,6 @@ export function CoupleDetailPage() {
         onUpdate={updateChecklist}
         onDelete={deleteChecklist}
       />
-      <AddEventModal open={scheduleOpen} initialCoupleId={couple.id} onClose={() => setScheduleOpen(false)} onAdded={() => undefined} />
     </div>
   )
 }

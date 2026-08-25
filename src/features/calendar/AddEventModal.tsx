@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { CalendarPlus, Trash2 } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
 import { Button, Modal } from '../../components/ui'
-import type { EventType, WeddingEvent } from '../../types'
+import type { CalendarWorkCategory, EventType, WeddingEvent } from '../../types'
 import { workflowGroups, workflowTemplates } from './workflowTemplates'
+import { calendarCategoryForType, calendarCategoryForWorkflow, calendarWorkCategories } from './calendarAppearance'
 
 interface AddEventModalProps { open: boolean; onClose: () => void; onAdded: () => void; initialDate?: string; initialCoupleId?: string; initialEvent?: WeddingEvent | null; context?: 'default' | 'couple-coordination' }
 const getEndTime = (time: string, duration: number) => { const [hour, minute] = time.split(':').map(Number); const total = Math.min(1439, hour * 60 + minute + duration); return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}` }
@@ -15,6 +16,7 @@ export function AddEventModal({ open, onClose, onAdded, initialDate, initialCoup
   const [workflowId, setWorkflowId] = useState('dress-tour')
   const [vendorId, setVendorId] = useState('')
   const [type, setType] = useState<EventType>('드레스')
+  const [calendarCategory, setCalendarCategory] = useState<CalendarWorkCategory>('tour')
   const [title, setTitle] = useState('드레스 투어')
   const [date, setDate] = useState(initialDate ?? '2026-08-24')
   const [time, setTime] = useState('11:00')
@@ -28,21 +30,22 @@ export function AddEventModal({ open, onClose, onAdded, initialDate, initialCoup
     if (!open) return
     if (initialEvent) {
       setVisibility(initialEvent.visibility); setCoupleId(initialEvent.coupleId ?? 'c1'); setVendorId(initialEvent.vendorId ?? '')
-      setType(initialEvent.type); setTitle(initialEvent.title); setDate(initialEvent.date); setTime(initialEvent.time)
+      setType(initialEvent.type); setCalendarCategory(initialEvent.calendarCategory ?? calendarCategoryForType(initialEvent.type)); setTitle(initialEvent.title); setDate(initialEvent.date); setTime(initialEvent.time)
       setDuration(initialEvent.durationMinutes ?? 60); setLocation(initialEvent.location)
       setMemo(initialEvent.memo ?? ''); setReminderOffsets(initialEvent.reminderOffsets ?? [14, 7, 1])
       return
     }
     setVisibility('couple-shared'); setCoupleId(initialCoupleId ?? 'c1'); setWorkflowId('dress-tour'); setVendorId('')
-    setType('드레스'); setTitle('드레스 투어'); setDate(initialDate ?? '2026-08-24'); setTime('11:00')
+    setType('드레스'); setCalendarCategory('tour'); setTitle('드레스 투어'); setDate(initialDate ?? '2026-08-24'); setTime('11:00')
     setDuration(120); setLocation(''); setMemo(''); setReminderOffsets([14, 7, 1])
   }, [initialCoupleId, initialDate, initialEvent, open])
-  const selectWorkflow = (id: string) => { const template = workflowTemplates.find((item) => item.id === id); setWorkflowId(id); setVendorId(''); if (template) { setType(template.type); setTitle(template.label); setDuration(template.duration) } }
+  const selectWorkflow = (id: string) => { const template = workflowTemplates.find((item) => item.id === id); setWorkflowId(id); setVendorId(''); if (template) { setType(template.type); setCalendarCategory(calendarCategoryForWorkflow(id, template.type)); setTitle(template.label); setDuration(template.duration) } }
   const selectVisibility = (next: 'couple-shared' | 'planner-private') => {
     setVisibility(next)
     if (next === 'planner-private') {
       setTitle('')
       setType('미팅')
+      setCalendarCategory('other')
       setDuration(60)
       setLocation('')
       setMemo('')
@@ -64,7 +67,7 @@ export function AddEventModal({ open, onClose, onAdded, initialDate, initialCoup
   const submit = () => {
     if (!title.trim()) return
     const template = workflowTemplates.find((item) => item.id === workflowId)
-    const event = { ...(visibility === 'couple-shared' ? { coupleId, vendorId: vendorId || undefined, workflowType: template?.label, reminderOffsets } : {}), visibility, type, title, date, time, endTime, location: location || '장소 미정', durationMinutes: duration, memo, ...(context === 'couple-coordination' && !initialEvent ? { approvalStatus: 'planner-proposed' as const } : {}) }
+    const event = { ...(visibility === 'couple-shared' ? { coupleId, vendorId: vendorId || undefined, workflowType: template?.label, reminderOffsets } : {}), visibility, type, calendarCategory, title, date, time, endTime, location: location || '장소 미정', durationMinutes: duration, memo, ...(context === 'couple-coordination' && !initialEvent ? { approvalStatus: 'planner-proposed' as const } : {}) }
     if (initialEvent) updateEvent({ ...initialEvent, ...event })
     else addEvent(event)
     setLocation(''); setMemo(''); onAdded(); onClose()
@@ -78,6 +81,7 @@ export function AddEventModal({ open, onClose, onAdded, initialDate, initialCoup
       {context === 'default' && visibility === 'couple-shared' && <label className="form-field"><span>커플</span><select value={coupleId} onChange={(event) => setCoupleId(event.target.value)}>{couples.map((couple) => <option key={couple.id} value={couple.id}>{couple.partners}</option>)}</select></label>}
       {context === 'couple-coordination' && <div className="coordination-modal-context form-field--wide"><CalendarPlus size={16} /><span><strong>{couples.find((item) => item.id === coupleId)?.partners}</strong><small>고객과 공유되며 먼저 확인 대기 상태로 등록됩니다.</small></span></div>}
       {visibility === 'couple-shared' && <label className="form-field"><span>일정 종류</span><select value={type} onChange={(event) => { setType(event.target.value as EventType); setVendorId('') }}>{['미팅','드레스','스튜디오','메이크업','계약','본식'].map((item) => <option key={item}>{item}</option>)}</select></label>}
+      {visibility === 'couple-shared' && <label className="form-field"><span>캘린더 구분</span><select value={calendarCategory} onChange={(event) => setCalendarCategory(event.target.value as CalendarWorkCategory)}>{calendarWorkCategories.map((item) => <option value={item.value} key={item.value}>{item.label}</option>)}</select></label>}
       {visibility === 'couple-shared' && <label className="form-field form-field--wide"><span>제휴업체</span><select value={vendorId} onChange={(event) => selectVendor(event.target.value)}><option value="">업체 미정</option>{availableVendors.map((vendor) => <option value={vendor.id} key={vendor.id}>{vendor.name} · {vendor.location}</option>)}</select></label>}
       {visibility === 'couple-shared' && <label className="form-field"><span>세부 업무</span><select value={workflowId} onChange={(event) => selectWorkflow(event.target.value)}>{workflowGroups.map((group) => <optgroup label={group} key={group}>{workflowTemplates.filter((item) => item.group === group).map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</optgroup>)}</select></label>}
       <label className="form-field form-field--wide"><span>{visibility === 'planner-private' ? '일정 제목' : '표시 제목'}</span><input autoFocus value={title} onChange={(event) => setTitle(event.target.value)} placeholder={visibility === 'planner-private' ? '예: 병원 예약, 운동, 개인 약속' : undefined} /></label>

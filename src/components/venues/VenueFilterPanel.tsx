@@ -1,5 +1,6 @@
 import { Building2, BusFront, Check, MapPin, RotateCcw, Search, TrainFront, UtensilsCrossed } from 'lucide-react'
 import { Button, Card } from '../ui'
+import { ReferenceFilterGroup } from '../references/ReferenceFilterGroup'
 import { venueAccessKinds, venueAccessOptions, venueLocations, venueMealPriceRanges, venueMealTypes, venueTypes, venueWishes, weddingVenues } from '../../data/weddingVenueData'
 import type { VenueFilterState, VenueRegionGroup } from '../../types'
 
@@ -23,8 +24,22 @@ export function VenueFilterPanel({ audience, value, resultCount, onChange }: Ven
   const setRegion = (regionGroup: VenueRegionGroup) => onChange({ ...value, regionGroup, localities: [], accessKinds: [], accessPointIds: [], accessOptions: [] })
   const set = <K extends keyof VenueFilterState>(key: K, next: VenueFilterState[K]) => onChange({ ...value, [key]: next })
 
+  if (audience === 'planner') return <section className="reference-keyword-filter reference-keyword-filter--planner reference-search-panel venue-filter-panel--common">
+    <div className="reference-filter-groups">
+      <ReferenceFilterGroup label="권역" options={(['서울', '경기·인천'] as VenueRegionGroup[]).map((region) => ({ value: region }))} selectedValues={value.regionGroup ? [value.regionGroup] : []} onToggle={(region) => setRegion(region as VenueRegionGroup)} />
+      <ReferenceFilterGroup label="세부 지역" options={value.regionGroup ? venueLocations[value.regionGroup].map((locality) => ({ value: locality })) : []} selectedValues={value.localities} onToggle={(locality) => set('localities', toggle(value.localities, locality))} emptyText="권역을 먼저 선택해 주세요" />
+      <ReferenceFilterGroup label="교통수단" options={venueAccessKinds.map((kind) => ({ value: kind, icon: kind === '터미널' ? <BusFront size={12} /> : <TrainFront size={12} /> }))} selectedValues={value.accessKinds} onToggle={(kind) => set('accessKinds', toggle(value.accessKinds, kind as typeof value.accessKinds[number]))} />
+      <ReferenceFilterGroup label="이동 조건" options={venueAccessOptions.map((option) => ({ value: option }))} selectedValues={value.accessOptions} onToggle={(option) => set('accessOptions', toggle(value.accessOptions, option as typeof value.accessOptions[number]))} />
+      {availablePoints.length > 0 && <ReferenceFilterGroup label="가까운 거점" options={availablePoints.map((point) => ({ value: point.id, label: point.name }))} selectedValues={value.accessPointIds} onToggle={(pointId) => set('accessPointIds', toggle(value.accessPointIds, pointId))} />}
+      <ReferenceFilterGroup label="식사 형태" options={venueMealTypes.map((meal) => ({ value: meal }))} selectedValues={value.mealTypes} onToggle={(meal) => set('mealTypes', toggle(value.mealTypes, meal as typeof value.mealTypes[number]))} />
+      <ReferenceFilterGroup label="1인 식대" options={venueMealPriceRanges.map((range) => ({ value: range }))} selectedValues={value.mealPriceRanges} onToggle={(range) => set('mealPriceRanges', toggle(value.mealPriceRanges, range as typeof value.mealPriceRanges[number]))} />
+      <ReferenceFilterGroup label="홀 유형" options={venueTypes.map((type) => ({ value: type }))} selectedValues={value.venueTypes} onToggle={(type) => set('venueTypes', toggle(value.venueTypes, type as typeof value.venueTypes[number]))} />
+      <ReferenceFilterGroup label="희망사항" options={venueWishes.map((wish) => ({ value: wish }))} selectedValues={value.wishes} onToggle={(wish) => set('wishes', toggle(value.wishes, wish as typeof value.wishes[number]))} />
+    </div>
+  </section>
+
   return <Card padding="none" className={`venue-filter-panel venue-filter-panel--${audience}`}>
-    <header className="venue-filter-header"><div><span><Building2 size={17} /></span><div><p className="eyebrow">Venue finder</p><h2>지역부터 정하고 웨딩홀을 찾아보세요</h2><p>{audience === 'planner' ? '고객의 하객 동선과 식사 조건을 먼저 반영합니다.' : '하객이 오기 편한 지역을 먼저 선택해 주세요.'}</p></div></div><div><span>검색 결과</span><strong>{locationReady ? resultCount : '—'}<small>{locationReady ? '곳' : ''}</small></strong></div></header>
+    <header className="venue-filter-header"><div><span><Building2 size={17} /></span><div><p className="eyebrow">Venue finder</p><h2>지역부터 정하고 웨딩홀을 찾아보세요</h2><p>하객이 오기 편한 지역을 먼저 선택해 주세요.</p></div></div><div><span>검색 결과</span><strong>{locationReady ? resultCount : '—'}<small>{locationReady ? '곳' : ''}</small></strong></div></header>
 
     <section className="venue-filter-step active"><header><span>01</span><div><strong>지역</strong><small>필수 선택</small></div><em className={`venue-step-status ${locationReady ? 'selected' : 'required'}`}>{locationReady ? `${value.localities.length}곳 선택` : '먼저 선택'}</em></header><div className="venue-region-tabs">{(['서울', '경기·인천'] as VenueRegionGroup[]).map((region) => <button key={region} className={value.regionGroup === region ? 'active' : ''} onClick={() => setRegion(region)}>{region}</button>)}</div>{value.regionGroup && <div className="venue-filter-chips venue-location-chips">{venueLocations[value.regionGroup].map((locality) => <button key={locality} className={value.localities.includes(locality) ? 'active' : ''} onClick={() => set('localities', toggle(value.localities, locality))}>{value.localities.includes(locality) && <Check size={12} />}{locality}</button>)}</div>}</section>
 

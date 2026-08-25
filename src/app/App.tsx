@@ -11,7 +11,8 @@ import { PortalPage } from '../features/portal/PortalPage'
 import { PortalEntryPage } from '../features/portal/PortalEntryPage'
 import { VendorsPage } from '../features/vendors/VendorsPage'
 import { VendorDetailPage } from '../features/vendors/VendorDetailPage'
-import { CustomerRequestsPage } from '../features/requests/CustomerRequestsPage'
+import { TodoPage } from '../features/todo/TodoPage'
+import { MyPage } from '../features/mypage/MyPage'
 import { DemoProvider } from './store'
 
 export function App() {
@@ -23,7 +24,9 @@ export function App() {
             <Route index element={<DashboardPage />} />
             <Route path="couples" element={<CouplesPage />} />
             <Route path="couples/:id" element={<CoupleDetailPage />} />
-            <Route path="requests" element={<CustomerRequestsPage />} />
+            <Route path="reminders" element={<TodoPage />} />
+            <Route path="todo" element={<Navigate to="/reminders" replace />} />
+            <Route path="requests" element={<Navigate to="/" replace />} />
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="vendors" element={<VendorsPage />} />
             <Route path="vendors/:vendorId" element={<VendorDetailPage />} />
@@ -32,6 +35,7 @@ export function App() {
             <Route path="orders" element={<Navigate to="/" replace />} />
             <Route path="contracts" element={<Navigate to="/couples/c1?tab=finance" replace />} />
             <Route path="community" element={<CommunityPage />} />
+            <Route path="mypage" element={<MyPage />} />
           </Route>
           <Route path="client/:coupleId" element={<PortalEntryPage />} />
           <Route path="consultation/:coupleId" element={<PublicConsultationCardPage />} />

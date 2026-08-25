@@ -35,7 +35,7 @@ export function EstimateSettlementPanel({ coupleId }: { coupleId: string }) {
   const submitBudget = (event: FormEvent) => { event.preventDefault(); if (!budgetDraft.title.trim()) return; const next = { ...budgetDraft, title: budgetDraft.title.trim() }; if ('id' in next) store.updateBudgetItem(next); else store.addBudgetItem(next); setBudgetOpen(false) }
 
   return <>
-    <div className="feature-panel-heading"><div><p className="eyebrow">Budget, estimate & settlement</p><h2>예산·견적·정산</h2><p>처음 세운 계획부터 계약과 실제 입금까지 한 흐름으로 관리합니다.</p></div><div className="heading-actions"><Button variant="secondary" icon={<Plus size={16} />} onClick={() => editPayment()}>입금 추가</Button><Button icon={<Plus size={16} />} onClick={() => editContract()}>계약 추가</Button></div></div>
+    <div className="workspace-tab-actions"><Button variant="secondary" icon={<Plus size={16} />} onClick={() => editPayment()}>입금 추가</Button><Button icon={<Plus size={16} />} onClick={() => editContract()}>계약 추가</Button></div>
 
     <BudgetPlanSection coupleId={coupleId} onAdd={() => editBudget()} onEdit={editBudget} onDelete={(item) => { if (window.confirm('이 예산 항목을 삭제할까요? 연결된 계약은 미분류로 전환됩니다.')) store.deleteBudgetItem(item.id) }} />
 
