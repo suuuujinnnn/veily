@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, CalendarRange, ExternalLink, LayoutGrid, Plus } from 'lucide-react'
+import { ArrowLeft, CalendarRange, Check, ExternalLink, LayoutGrid, Plus } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Badge, Button, Card, Progress, SegmentedTabs } from '../../components/ui'
+import { Badge, Button, Card, Modal, Progress, SegmentedTabs } from '../../components/ui'
 import type { ChecklistCategory, ChecklistItem, RecommendationStatus, Vendor } from '../../types'
 import { CategoryChecklist } from '../checklist/CategoryChecklist'
 import { ChecklistEditorModal } from '../checklist/ChecklistEditorModal'
@@ -10,13 +10,14 @@ import { MonthlyRoadmap } from '../checklist/MonthlyRoadmap'
 import { CoupleInfoPanel } from './CoupleInfoPanel'
 import { EstimateSettlementPanel } from './EstimateSettlementPanel'
 import { ScheduleCoordinationPanel } from './ScheduleCoordinationPanel'
+import { CoupleSurveyResponsesPanel } from './CoupleSurveyResponsesPanel'
 import { weddingReferences } from '../../data/weddingReferenceData'
 
-type DetailTab = 'info' | 'timeline' | 'coordination' | 'vendors' | 'finance'
+type DetailTab = 'info' | 'survey' | 'timeline' | 'coordination' | 'vendors' | 'finance'
 type PreparationView = 'monthly' | 'category'
 const coupleStatusTone = { '집중 관리': 'rose', 상담중: 'amber', 완료: 'sage', 취소: 'neutral' } as const
 
-const detailTabs: DetailTab[] = ['info', 'timeline', 'coordination', 'vendors', 'finance']
+const detailTabs: DetailTab[] = ['info', 'survey', 'timeline', 'coordination', 'vendors', 'finance']
 const vendorStatusMeta: Record<RecommendationStatus, { label: string }> = {
   pending: { label: '추천 후보' }, liked: { label: '투어 예정' }, confirmed: { label: '확정' }, hold: { label: '보류' },
 }
@@ -37,14 +38,17 @@ function isDetailTab(value: string | null): value is DetailTab {
 export function CoupleDetailPage() {
   const { id = 'c1' } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
-  const { couples, checklist, vendors, recommendations, uploadedReferences, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
+  const { couples, checklist, vendors, recommendations, uploadedReferences, consultationCards, toggleChecklist, addChecklist, updateChecklist, deleteChecklist } = useDemoStore()
   const couple = couples.find((item) => item.id === id) ?? couples[0]
   const requestedTab = searchParams.get('tab')
-  const tab: DetailTab = isDetailTab(requestedTab) ? requestedTab : 'info'
+  const consultationCard = consultationCards.find((item) => item.coupleId === couple.id)
+  const hasSurveyResponses = Boolean(consultationCard?.surveyResponses && Object.keys(consultationCard.surveyResponses).length)
+  const tab: DetailTab = requestedTab === 'survey' && hasSurveyResponses ? 'survey' : isDetailTab(requestedTab) ? requestedTab : 'info'
   const preparationView: PreparationView = searchParams.get('taskView') === 'category' ? 'category' : 'monthly'
   const [editorOpen, setEditorOpen] = useState(false)
   const [editorItem, setEditorItem] = useState<ChecklistItem | null>(null)
   const [editorCategory, setEditorCategory] = useState<ChecklistCategory>('스튜디오')
+  const [conversionOpen, setConversionOpen] = useState(false)
   const coupleTasks = checklist.filter((item) => item.coupleId === couple.id).sort((a, b) => a.dueDate.localeCompare(b.dueDate))
   const referenceLibrary = [...uploadedReferences, ...weddingReferences]
   const recommendedVendors = recommendations.filter((item) => item.coupleId === couple.id).map((recommendation) => ({
@@ -83,10 +87,10 @@ export function CoupleDetailPage() {
         <div className="couple-workspace-head__main">
           <div className={`couple-workspace-head__mark couple-workspace-head__mark--${couple.tone}`}><span>{couple.initials}</span></div>
           <div className="couple-workspace-head__identity"><div><Badge tone={coupleStatusTone[couple.status]}>{couple.status}</Badge><span>Customer workspace</span></div><h1>{couple.partners}</h1></div>
-          <div className="couple-workspace-head__progress"><div><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong></div><Progress value={couple.progress} /></div>
+          {couple.status === '상담중' && hasSurveyResponses && <Button variant="secondary" icon={<Check size={15} />} onClick={() => setConversionOpen(true)}>정식 고객 전환</Button>}<div className="couple-workspace-head__progress"><div><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong></div><Progress value={couple.progress} /></div>
         </div>
       </header>
-      <nav className="detail-tabs">{([['info','부부정보·상담'],['timeline', '로드맵'],['coordination','공유 캘린더'],['vendors','업체 관리'],['finance','견적·정산']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</nav>
+      <nav className="detail-tabs">{([['info','부부정보·상담'], ...(hasSurveyResponses ? [['survey','설문 응답'] as [DetailTab,string]] : []), ['timeline', '로드맵'],['coordination','공유 캘린더'],['vendors','업체 관리'],['finance','견적·정산']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</nav>
 
       {tab === 'timeline' && <div className="checklist-workspace">
         <SegmentedTabs value={preparationView} onChange={openPreparationView} ariaLabel="로드맵 보기" items={[{ value: 'monthly', label: '월별 로드맵', icon: <CalendarRange size={13} /> }, { value: 'category', label: '분야별 체크리스트', icon: <LayoutGrid size={13} /> }]} />
@@ -103,6 +107,7 @@ export function CoupleDetailPage() {
       </div>}
 
       {tab === 'info' && <CoupleInfoPanel couple={couple} />}
+      {tab === 'survey' && consultationCard && <CoupleSurveyResponsesPanel card={consultationCard} />}
 
       {tab === 'coordination' && <ScheduleCoordinationPanel coupleId={couple.id} />}
 
@@ -129,6 +134,7 @@ export function CoupleDetailPage() {
       </section>}
 
       {tab === 'finance' && <EstimateSettlementPanel coupleId={couple.id} />}
+      <Modal open={conversionOpen} onClose={() => setConversionOpen(false)} eyebrow="Customer conversion" title="정식 고객으로 전환할까요?" footer={<><Button variant="ghost" onClick={() => setConversionOpen(false)}>취소</Button><Button onClick={() => setConversionOpen(false)}>전환 검토 요청</Button></>}><p>설문 응답과 상담 내용을 확인한 뒤 정식 고객 전환을 진행합니다.</p></Modal>
       <ChecklistEditorModal
         open={editorOpen}
         coupleId={couple.id}
