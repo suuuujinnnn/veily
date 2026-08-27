@@ -4,6 +4,7 @@ import { TokenStore } from './instagram/tokenStore.js'
 import { PublicError, getErrorMessage } from './lib/errors.js'
 import { createAuthRouter } from './routes/auth.js'
 import { createInstagramRouter } from './routes/instagram.js'
+import { createSurveyRouter } from './routes/surveys.js'
 
 /**
  * 현재 화면과 데이터 구조는 프런트엔드 목업을 기준으로 유지한다.
@@ -30,6 +31,7 @@ export function createApp(config: Config, tokens: TokenStore = new TokenStore(co
 
   app.use('/api', createAuthRouter(config, tokens))
   app.use('/api', createInstagramRouter(config, tokens))
+  app.use('/api', createSurveyRouter())
 
   app.use((_req, res) => {
     res.status(404).json({ success: false, error: '요청하신 경로를 찾을 수 없습니다.' })
