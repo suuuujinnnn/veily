@@ -77,6 +77,7 @@ export type DemoAction =
   | { type: 'UPDATE_EVENT'; payload: WeddingEvent }
   | { type: 'DELETE_EVENT'; payload: string }
   | { type: 'UPDATE_COUPLE'; payload: Couple }
+  | { type: 'ADD_COUPLE_WITH_CONSULTATION_CARD'; payload: { couple: Couple; consultationCard: ConsultationCard } }
   | { type: 'TOGGLE_CHECKLIST'; payload: string }
   | { type: 'ADD_CHECKLIST'; payload: ChecklistItem }
   | { type: 'UPDATE_CHECKLIST'; payload: ChecklistItem }
@@ -174,6 +175,8 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, events: state.events.filter((item) => item.id !== action.payload) }
     case 'UPDATE_COUPLE':
       return { ...state, couples: state.couples.map((couple) => couple.id === action.payload.id ? action.payload : couple) }
+    case 'ADD_COUPLE_WITH_CONSULTATION_CARD':
+      return { ...state, couples: [...state.couples, action.payload.couple], consultationCards: [action.payload.consultationCard, ...state.consultationCards] }
     case 'TOGGLE_CHECKLIST':
       return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, status: item.status === 'completed' ? 'pending' : 'completed' } : item) }
     case 'ADD_CHECKLIST':
@@ -307,6 +310,7 @@ interface DemoContextValue extends DemoState {
   updateEvent: (event: WeddingEvent) => void
   deleteEvent: (id: string) => void
   updateCouple: (couple: Couple) => void
+  addCoupleWithConsultationCard: (couple: Omit<Couple, 'id'>, card: Omit<ConsultationCard, 'id' | 'createdAt'>) => string
   toggleChecklist: (id: string) => void
   addChecklist: (item: Omit<ChecklistItem, 'id'>) => void
   updateChecklist: (item: ChecklistItem) => void
@@ -367,6 +371,11 @@ export function DemoProvider({ children }: PropsWithChildren) {
     setCalendarColorMode: (mode) => dispatch({ type: 'SET_CALENDAR_COLOR_MODE', payload: mode }),
     setCalendarCoupleColors: (colors) => dispatch({ type: 'SET_CALENDAR_COUPLE_COLORS', payload: colors }),
     updateCouple: (couple) => dispatch({ type: 'UPDATE_COUPLE', payload: couple }),
+    addCoupleWithConsultationCard: (couple, card) => {
+      const coupleId = makeId('c')
+      dispatch({ type: 'ADD_COUPLE_WITH_CONSULTATION_CARD', payload: { couple: { ...couple, id: coupleId }, consultationCard: { ...card, id: makeId('cc'), coupleId, createdAt: new Date().toISOString() } } })
+      return coupleId
+    },
     toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
     addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: makeId('t') } }),
     updateChecklist: (item) => dispatch({ type: 'UPDATE_CHECKLIST', payload: item }),

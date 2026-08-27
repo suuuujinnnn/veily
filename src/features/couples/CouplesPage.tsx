@@ -56,7 +56,7 @@ export function CouplesPage() {
 
   return (
     <div className="page-stack couples-list-page">
-      <section className="page-intro"><div><p className="eyebrow">Couple archive</p><h1>커플 관리</h1><p>상담부터 본식 완료까지 고객 현황을 목록으로 관리하세요.</p></div><Button icon={<Plus size={16} />}>새 커플 등록</Button></section>
+      <section className="page-intro"><div><p className="eyebrow">Couple archive</p><h1>커플 관리</h1><p>상담부터 본식 완료까지 고객 현황을 목록으로 관리하세요.</p></div><Link to="/consultation/new"><Button icon={<Plus size={16} />}>새 커플 등록</Button></Link></section>
       <div className="toolbar couples-list-toolbar">
         <label className="search-field"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="신부 또는 신랑 이름 검색" /></label>
         <div className="filter-tabs couple-status-filter" aria-label="상태 필터">{statusFilters.map((item) => <button type="button" data-status={item.value} key={item.value} onClick={() => setStatus(item.value)} className={status === item.value ? 'active' : ''}>{item.label}</button>)}</div>

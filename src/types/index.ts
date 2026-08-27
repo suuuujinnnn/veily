@@ -431,6 +431,7 @@ export interface ConsultationCard {
   notes: string
   source: '플래너 입력' | '고객 작성'
   createdAt: string
+  surveyResponses?: Record<string, string>
 }
 
 export interface Payment {

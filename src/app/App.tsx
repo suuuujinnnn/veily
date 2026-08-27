@@ -4,6 +4,7 @@ import { PortalLayout } from '../components/layout/PortalLayout'
 import { CalendarPage } from '../features/calendar/CalendarPage'
 import { CommunityPage } from '../features/community/CommunityPage'
 import { PublicConsultationCardPage } from '../features/consultation/PublicConsultationCardPage'
+import { CustomerSurveyLinkPage } from '../features/consultation/CustomerSurveyLinkPage'
 import { CoupleDetailPage } from '../features/couples/CoupleDetailPage'
 import { CouplesPage } from '../features/couples/CouplesPage'
 import { DashboardPage } from '../features/dashboard/DashboardPage'
@@ -38,6 +39,8 @@ export function App() {
             <Route path="mypage" element={<MyPage />} />
           </Route>
           <Route path="client/:coupleId" element={<PortalEntryPage />} />
+          <Route path="consultation/new" element={<CustomerSurveyLinkPage />} />
+          <Route path="consultation/respond/:token" element={<CustomerSurveyLinkPage />} />
           <Route path="consultation/:coupleId" element={<PublicConsultationCardPage />} />
           <Route path="portal" element={<PortalLayout />}>
             <Route path=":coupleId/:section?" element={<PortalPage />} />
