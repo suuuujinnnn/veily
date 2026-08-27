@@ -98,7 +98,7 @@ export function CoupleDetailPage() {
         <div className="couple-workspace-head__main">
           <div className={`couple-workspace-head__mark couple-workspace-head__mark--${couple.tone}`}><span>{couple.initials}</span></div>
           <div className="couple-workspace-head__identity"><div><Badge tone={coupleStatusTone[couple.status]}>{couple.status}</Badge><span>고객 작업공간</span></div><h1>{couple.partners}</h1></div>
-          {couple.status === '상담중' && hasSurveyResponses && <Button variant="secondary" icon={<Check size={15} />} onClick={() => setConversionOpen(true)}>정식 고객 전환</Button>}{conversionComplete && <Badge tone="sage">전환 완료</Badge>}<div className="couple-workspace-head__progress"><div><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong></div><Progress value={couple.progress} /></div>
+          {couple.status === '상담중' && <Button variant="secondary" icon={<Check size={15} />} onClick={() => setConversionOpen(true)}>정식 고객 전환</Button>}{conversionComplete && <Badge tone="sage">전환 완료</Badge>}<div className="couple-workspace-head__progress"><div><span>전체 준비율</span><strong>{couple.progress}<i>%</i></strong></div><Progress value={couple.progress} /></div>
         </div>
       </header>
       <nav className="detail-tabs">{([['info','부부정보·상담'], ...(hasSurveyResponses ? [['survey','설문 응답'] as [DetailTab,string]] : []), ['timeline', '로드맵'],['coordination','공유 캘린더'],['vendors','업체 관리'],['finance','견적·정산']] as [DetailTab,string][]).map(([key,label]) => <button key={key} onClick={() => openTab(key)} className={tab === key ? 'active' : ''}>{label}{key === 'timeline' && <em>{coupleTasks.filter((task) => task.status !== 'completed').length}</em>}</button>)}</nav>
@@ -145,7 +145,7 @@ export function CoupleDetailPage() {
       </section>}
 
       {tab === 'finance' && <EstimateSettlementPanel coupleId={couple.id} />}
-      <Modal open={conversionOpen} onClose={() => setConversionOpen(false)} eyebrow="고객 전환" title="정식 고객으로 전환할까요?" footer={<><Button variant="ghost" onClick={() => setConversionOpen(false)}>취소</Button><Button onClick={convertToFocus}>정식 고객 전환</Button></>}><p>설문 응답과 상담 카드 내용을 확인했습니다. 상담중 고객을 집중 관리 고객으로 이동합니다.</p></Modal>
+      <Modal open={conversionOpen} onClose={() => setConversionOpen(false)} eyebrow="고객 전환" title="정식 고객으로 전환할까요?" footer={<><Button variant="ghost" onClick={() => setConversionOpen(false)}>취소</Button><Button onClick={convertToFocus}>정식 고객 전환</Button></>}><p>현재 고객 정보와 상담 카드 내용을 확인했습니다. 상담중 고객을 집중 관리 고객으로 이동합니다.</p></Modal>
       <ChecklistEditorModal
         open={editorOpen}
         coupleId={couple.id}
