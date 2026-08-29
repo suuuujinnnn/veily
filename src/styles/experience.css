@@ -60,6 +60,9 @@
 
 /* Dual checklist */
 .checklist-workspace { display: grid; gap: 18px; }
+.preparation-view-tabs { width: max-content; padding: 3px; display: flex; align-items: center; gap: 3px; border-radius: 9px; background: #eef1f3; }
+.preparation-view-tabs button { min-height: 32px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 7px; background: transparent; color: #738089; font-size: 9px; font-weight: 750; cursor: pointer; }
+.preparation-view-tabs button.active { background: #fff; color: #314d5d; box-shadow: 0 2px 7px rgba(36,57,69,.1); }
 .checklist-workspace__intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
 .checklist-workspace__intro h2, .category-checklist__heading h2 { margin: 3px 0 5px; font-size: 24px; }
 .checklist-workspace__intro p:last-child, .category-checklist__heading p:last-child { margin: 0; color: var(--muted); font-size: 10px; }
@@ -188,6 +191,8 @@
 @keyframes instagram-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 820px) {
+  .preparation-view-tabs { width: 100%; }
+  .preparation-view-tabs button { flex: 1; justify-content: center; }
   .instagram-portfolio > header { align-items: flex-start; flex-direction: column; gap: 14px; }
   .instagram-portfolio__actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
   .instagram-sync-status { justify-items: start; }
@@ -237,7 +242,7 @@
 .portal-context-strip { min-height: 34px; padding: 0 max(24px, calc((100vw - 1180px)/2)); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #dbe8f1; background: #edf6fc; color: #5f7484; font-size: 8px; }
 .portal-context-strip strong { color: var(--blue-700); }.portal-context-strip a { color: var(--blue-700); font-weight: 700; }
 .portal-tasks-page, .portal-calendar-page { max-width: 1180px; }
-.portal-tasks-page .monthly-roadmap { margin-bottom: 20px; }
+.portal-tasks-page .checklist-workspace { width: 100%; }
 .portal-tasks-page .category-checklist__grid { grid-template-columns: repeat(2, 1fr); }
 .portal-calendar-page .vendor-schedule-board { margin-top: 24px; }
 .vendor-schedule-board--client .vendor-months { grid-template-columns: repeat(3, 1fr); }

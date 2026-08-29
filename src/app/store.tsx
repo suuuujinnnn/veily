@@ -8,13 +8,16 @@ import {
   initialConsultationCards,
   initialConsultations,
   initialEvents,
+  initialOrderReminders,
   initialPayments,
   initialPortalSettings,
   initialRecommendations,
-  initialVendorReviews,
+  initialVendorInsights,
   initialVendorSelections,
   vendors as initialVendors,
 } from '../data/mockData'
+import { initialReferenceBoards } from '../data/weddingReferenceData'
+import { initialCustomerFollowUps } from '../data/customerRequestData'
 import type {
   BudgetItem,
   BudgetPlan,
@@ -23,14 +26,23 @@ import type {
   ConsultationCard,
   Contract,
   Couple,
+  OrderReminder,
   Payment,
   PortalSettings,
+  PortalOnboardingState,
   Recommendation,
   RecommendationStatus,
   Vendor,
-  VendorReview,
+  VendorCatalogGroup,
+  VendorInsight,
   VendorSelection,
   WeddingEvent,
+  ReferenceBoard,
+  WeddingReference,
+  CustomerReferenceSubmission,
+  CustomerFollowUp,
+  CalendarColorMode,
+  CalendarDisplayPreferences,
 } from '../types'
 
 export interface DemoState {
@@ -48,13 +60,24 @@ export interface DemoState {
   portalSettings: PortalSettings[]
   availability: Record<string, string[]>
   vendorSelections: VendorSelection[]
-  vendorReviews: VendorReview[]
+  vendorInsights: VendorInsight[]
+  orderReminders: OrderReminder[]
+  portalOnboardingStates: PortalOnboardingState[]
+  favoriteVendorIds: string[]
+  vendorCatalogGroups: VendorCatalogGroup[]
+  referenceBoards: ReferenceBoard[]
+  uploadedReferences: WeddingReference[]
+  customerReferenceSubmissions: CustomerReferenceSubmission[]
+  customerFollowUps: CustomerFollowUp[]
+  calendarDisplayPreferences: CalendarDisplayPreferences
 }
 
 export type DemoAction =
   | { type: 'ADD_EVENT'; payload: WeddingEvent }
   | { type: 'UPDATE_EVENT'; payload: WeddingEvent }
+  | { type: 'DELETE_EVENT'; payload: string }
   | { type: 'UPDATE_COUPLE'; payload: Couple }
+  | { type: 'ADD_COUPLE_WITH_CONSULTATION_CARD'; payload: { couple: Couple; consultationCard: ConsultationCard } }
   | { type: 'TOGGLE_CHECKLIST'; payload: string }
   | { type: 'ADD_CHECKLIST'; payload: ChecklistItem }
   | { type: 'UPDATE_CHECKLIST'; payload: ChecklistItem }
@@ -73,11 +96,27 @@ export type DemoAction =
   | { type: 'DELETE_BUDGET_ITEM'; payload: string }
   | { type: 'ADD_VENDOR'; payload: Vendor }
   | { type: 'UPDATE_VENDOR'; payload: Vendor }
+  | { type: 'TOGGLE_FAVORITE_VENDOR'; payload: string }
+  | { type: 'ADD_VENDOR_CATALOG_GROUP'; payload: VendorCatalogGroup }
+  | { type: 'RENAME_VENDOR_CATALOG_GROUP'; payload: { id: string; name: string } }
+  | { type: 'TOGGLE_VENDOR_CATALOG_ITEM'; payload: { groupId: string; vendorId: string } }
   | { type: 'UPDATE_PORTAL_SETTINGS'; payload: PortalSettings }
   | { type: 'SET_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; status: RecommendationStatus } }
+  | { type: 'SEND_RECOMMENDATION'; payload: { coupleId: string; vendorId: string; sourceReferenceId?: string } }
+  | { type: 'REMOVE_RECOMMENDATION'; payload: { coupleId: string; vendorId: string } }
   | { type: 'TOGGLE_AVAILABILITY'; payload: { eventId: string; slot: string } }
   | { type: 'SELECT_VENDOR_SLOT'; payload: VendorSelection }
-  | { type: 'ADD_VENDOR_REVIEW'; payload: VendorReview }
+  | { type: 'ADD_VENDOR_INSIGHT'; payload: VendorInsight }
+  | { type: 'SAVE_REFERENCE_BOARD'; payload: ReferenceBoard }
+  | { type: 'ADD_UPLOADED_REFERENCE'; payload: WeddingReference }
+  | { type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION'; payload: CustomerReferenceSubmission }
+  | { type: 'COMPLETE_PORTAL_ONBOARDING'; payload: PortalOnboardingState }
+  | { type: 'ADD_ORDER_REMINDER'; payload: OrderReminder }
+  | { type: 'COMPLETE_ORDER_REMINDER'; payload: { id: string; completedAt: string } }
+  | { type: 'ADD_CUSTOMER_FOLLOW_UP'; payload: CustomerFollowUp }
+  | { type: 'REQUEST_CUSTOMER_FOLLOW_UP'; payload: { id: string; requestedAt: string } }
+  | { type: 'SET_CALENDAR_COLOR_MODE'; payload: CalendarColorMode }
+  | { type: 'SET_CALENDAR_COUPLE_COLORS'; payload: Record<string, string> }
 
 export const initialState: DemoState = {
   couples: initialCouples,
@@ -94,7 +133,30 @@ export const initialState: DemoState = {
   portalSettings: initialPortalSettings,
   availability: { e4: ['8월 8일 (토) 11:00'] },
   vendorSelections: initialVendorSelections,
-  vendorReviews: initialVendorReviews,
+  vendorInsights: initialVendorInsights,
+  orderReminders: initialOrderReminders,
+  portalOnboardingStates: [],
+  favoriteVendorIds: ['vp-d1', 'vp-d4', 'vp-s1', 'vp-m3'],
+  vendorCatalogGroups: [
+    { id: 'catalog-dress-tour', name: '드레스 투어 후보', vendorIds: ['vp-d1', 'vp-d4'] },
+    { id: 'catalog-studio', name: '자연광 스튜디오', vendorIds: ['vp-s1'] },
+  ],
+  referenceBoards: initialReferenceBoards,
+  uploadedReferences: [],
+  customerReferenceSubmissions: [{
+    id: 'customer-ref-c1',
+    coupleId: 'c1',
+    selections: [
+      { referenceId: 'ref-드레스-vp-d4-1', note: '깨끗한 실크와 단정한 탑이 좋아요.' },
+      { referenceId: 'ref-드레스-vp-d2-1', note: '풍성한 실루엣도 함께 보고 싶어요.' },
+    ],
+    preferredTags: ['미카도 실크', '일자탑', 'A라인'],
+    categoryCounts: { 드레스: 2 },
+    submittedAt: '2026-08-05T10:30:00+09:00',
+    status: '전송완료',
+  }],
+  customerFollowUps: initialCustomerFollowUps,
+  calendarDisplayPreferences: { colorMode: 'work-category', coupleColors: {} },
 }
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
@@ -102,11 +164,21 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
     case 'ADD_EVENT':
       return { ...state, events: [...state.events, action.payload] }
     case 'UPDATE_EVENT':
-      return { ...state, events: state.events.map((item) => item.id === action.payload.id ? action.payload : item) }
+      return {
+        ...state,
+        events: state.events.map((item) => item.id === action.payload.id ? action.payload : item),
+        customerFollowUps: action.payload.approvalStatus === 'client-ok' || action.payload.approvalStatus === 'confirmed'
+          ? state.customerFollowUps.map((item) => item.completionType === 'schedule' && item.relatedEntityId === action.payload.id ? { ...item, status: 'received' as const } : item)
+          : state.customerFollowUps,
+      }
+    case 'DELETE_EVENT':
+      return { ...state, events: state.events.filter((item) => item.id !== action.payload) }
     case 'UPDATE_COUPLE':
       return { ...state, couples: state.couples.map((couple) => couple.id === action.payload.id ? action.payload : couple) }
+    case 'ADD_COUPLE_WITH_CONSULTATION_CARD':
+      return { ...state, couples: [...state.couples, action.payload.couple], consultationCards: [action.payload.consultationCard, ...state.consultationCards] }
     case 'TOGGLE_CHECKLIST':
-      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, completed: !item.completed } : item) }
+      return { ...state, checklist: state.checklist.map((item) => item.id === action.payload ? { ...item, status: item.status === 'completed' ? 'pending' : 'completed' } : item) }
     case 'ADD_CHECKLIST':
       return { ...state, checklist: [...state.checklist, action.payload] }
     case 'UPDATE_CHECKLIST':
@@ -150,6 +222,14 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       return { ...state, vendors: [...state.vendors, action.payload] }
     case 'UPDATE_VENDOR':
       return { ...state, vendors: state.vendors.map((item) => item.id === action.payload.id ? action.payload : item) }
+    case 'TOGGLE_FAVORITE_VENDOR':
+      return { ...state, favoriteVendorIds: state.favoriteVendorIds.includes(action.payload) ? state.favoriteVendorIds.filter((id) => id !== action.payload) : [...state.favoriteVendorIds, action.payload] }
+    case 'ADD_VENDOR_CATALOG_GROUP':
+      return { ...state, vendorCatalogGroups: [...state.vendorCatalogGroups, action.payload] }
+    case 'RENAME_VENDOR_CATALOG_GROUP':
+      return { ...state, vendorCatalogGroups: state.vendorCatalogGroups.map((group) => group.id === action.payload.id ? { ...group, name: action.payload.name } : group) }
+    case 'TOGGLE_VENDOR_CATALOG_ITEM':
+      return { ...state, vendorCatalogGroups: state.vendorCatalogGroups.map((group) => group.id === action.payload.groupId ? { ...group, vendorIds: group.vendorIds.includes(action.payload.vendorId) ? group.vendorIds.filter((id) => id !== action.payload.vendorId) : [...group.vendorIds, action.payload.vendorId] } : group) }
     case 'UPDATE_PORTAL_SETTINGS':
       return { ...state, portalSettings: state.portalSettings.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) }
     case 'SET_RECOMMENDATION': {
@@ -158,9 +238,23 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
         ...state,
         recommendations: existing
           ? state.recommendations.map((item) => item.id === existing.id ? { ...item, status: action.payload.status } : item)
-          : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload }],
+          : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload, proposedAt: DEMO_TODAY, selectionDeadline: addDays(DEMO_TODAY, 7) }],
+        customerFollowUps: action.payload.status !== 'pending'
+          ? state.customerFollowUps.map((item) => item.completionType === 'recommendation' && item.coupleId === action.payload.coupleId && item.relatedEntityId === action.payload.vendorId ? { ...item, status: 'received' as const } : item)
+          : state.customerFollowUps,
       }
     }
+    case 'SEND_RECOMMENDATION': {
+      const existing = state.recommendations.find((item) => item.coupleId === action.payload.coupleId && item.vendorId === action.payload.vendorId)
+      return {
+        ...state,
+        recommendations: existing
+          ? state.recommendations.map((item) => item.id === existing.id ? { ...item, sourceReferenceId: action.payload.sourceReferenceId ?? item.sourceReferenceId } : item)
+          : [...state.recommendations, { id: `r-${action.payload.coupleId}-${action.payload.vendorId}`, ...action.payload, status: 'pending', proposedAt: DEMO_TODAY, selectionDeadline: addDays(DEMO_TODAY, 7) }],
+      }
+    }
+    case 'REMOVE_RECOMMENDATION':
+      return { ...state, recommendations: state.recommendations.filter((item) => item.coupleId !== action.payload.coupleId || item.vendorId !== action.payload.vendorId) }
     case 'TOGGLE_AVAILABILITY': {
       const current = state.availability[action.payload.eventId] ?? []
       const next = current.includes(action.payload.slot) ? current.filter((slot) => slot !== action.payload.slot) : [...current, action.payload.slot]
@@ -170,8 +264,42 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const others = state.vendorSelections.filter((selection) => !(selection.coupleId === action.payload.coupleId && selection.vendorId === action.payload.vendorId))
       return { ...state, vendorSelections: [...others, action.payload] }
     }
-    case 'ADD_VENDOR_REVIEW':
-      return { ...state, vendorReviews: [action.payload, ...state.vendorReviews] }
+    case 'ADD_VENDOR_INSIGHT':
+      return { ...state, vendorInsights: [action.payload, ...state.vendorInsights] }
+    case 'SAVE_REFERENCE_BOARD': {
+      const exists = state.referenceBoards.some((item) => item.id === action.payload.id)
+      return { ...state, referenceBoards: exists ? state.referenceBoards.map((item) => item.id === action.payload.id ? action.payload : item) : [...state.referenceBoards, action.payload] }
+    }
+    case 'ADD_UPLOADED_REFERENCE':
+      return { ...state, uploadedReferences: [action.payload, ...state.uploadedReferences] }
+    case 'SAVE_CUSTOMER_REFERENCE_SUBMISSION': {
+      const exists = state.customerReferenceSubmissions.some((item) => item.coupleId === action.payload.coupleId)
+      return {
+        ...state,
+        customerReferenceSubmissions: exists ? state.customerReferenceSubmissions.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [action.payload, ...state.customerReferenceSubmissions],
+        customerFollowUps: state.customerFollowUps.map((item) => item.coupleId === action.payload.coupleId && (item.completionType === 'reference-submission' || item.completionType === 'taste-profile') ? { ...item, status: 'received' as const } : item),
+      }
+    }
+    case 'COMPLETE_PORTAL_ONBOARDING': {
+      const exists = state.portalOnboardingStates.some((item) => item.coupleId === action.payload.coupleId)
+      return {
+        ...state,
+        portalOnboardingStates: exists ? state.portalOnboardingStates.map((item) => item.coupleId === action.payload.coupleId ? action.payload : item) : [...state.portalOnboardingStates, action.payload],
+        customerFollowUps: action.payload.skippedSteps.includes('taste') ? state.customerFollowUps : state.customerFollowUps.map((item) => item.coupleId === action.payload.coupleId && item.completionType === 'taste-profile' ? { ...item, status: 'received' as const } : item),
+      }
+    }
+    case 'ADD_ORDER_REMINDER':
+      return { ...state, orderReminders: [action.payload, ...state.orderReminders] }
+    case 'COMPLETE_ORDER_REMINDER':
+      return { ...state, orderReminders: state.orderReminders.map((item) => item.id === action.payload.id ? { ...item, status: 'completed', completedAt: action.payload.completedAt } : item) }
+    case 'ADD_CUSTOMER_FOLLOW_UP':
+      return { ...state, customerFollowUps: [action.payload, ...state.customerFollowUps] }
+    case 'REQUEST_CUSTOMER_FOLLOW_UP':
+      return { ...state, customerFollowUps: state.customerFollowUps.map((item) => item.id === action.payload.id ? { ...item, lastRequestedAt: action.payload.requestedAt } : item) }
+    case 'SET_CALENDAR_COLOR_MODE':
+      return { ...state, calendarDisplayPreferences: { ...state.calendarDisplayPreferences, colorMode: action.payload } }
+    case 'SET_CALENDAR_COUPLE_COLORS':
+      return { ...state, calendarDisplayPreferences: { ...state.calendarDisplayPreferences, coupleColors: action.payload } }
     default:
       return state
   }
@@ -180,7 +308,9 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 interface DemoContextValue extends DemoState {
   addEvent: (event: Omit<WeddingEvent, 'id'>) => void
   updateEvent: (event: WeddingEvent) => void
+  deleteEvent: (id: string) => void
   updateCouple: (couple: Couple) => void
+  addCoupleWithConsultationCard: (couple: Omit<Couple, 'id'>, card: Omit<ConsultationCard, 'id' | 'createdAt'>) => string
   toggleChecklist: (id: string) => void
   addChecklist: (item: Omit<ChecklistItem, 'id'>) => void
   updateChecklist: (item: ChecklistItem) => void
@@ -197,25 +327,55 @@ interface DemoContextValue extends DemoState {
   addBudgetItem: (item: Omit<BudgetItem, 'id'>) => void
   updateBudgetItem: (item: BudgetItem) => void
   deleteBudgetItem: (id: string) => void
-  addVendor: (item: Omit<Vendor, 'id'>) => void
+  addVendor: (item: Omit<Vendor, 'id'>) => string
   updateVendor: (item: Vendor) => void
+  toggleFavoriteVendor: (id: string) => void
+  addVendorCatalogGroup: (name: string) => void
+  renameVendorCatalogGroup: (id: string, name: string) => void
+  toggleVendorCatalogItem: (groupId: string, vendorId: string) => void
   updatePortalSettings: (settings: PortalSettings) => void
   setRecommendation: (coupleId: string, vendorId: string, status: RecommendationStatus) => void
+  sendRecommendation: (coupleId: string, vendorId: string, sourceReferenceId?: string) => void
+  removeRecommendation: (coupleId: string, vendorId: string) => void
   toggleAvailability: (eventId: string, slot: string) => void
   selectVendorSlot: (coupleId: string, vendorId: string, slotId: string) => void
-  addVendorReview: (review: Omit<VendorReview, 'id' | 'createdAt'>) => void
+  addVendorInsight: (insight: Omit<VendorInsight, 'id' | 'createdAt'>) => void
+  saveReferenceBoard: (board: ReferenceBoard) => void
+  addUploadedReference: (reference: Omit<WeddingReference, 'id'>) => void
+  saveCustomerReferenceSubmission: (submission: CustomerReferenceSubmission) => void
+  completePortalOnboarding: (state: PortalOnboardingState) => void
+  addOrderReminder: (reminder: Omit<OrderReminder, 'id' | 'status' | 'completedAt'>) => void
+  completeOrderReminder: (id: string) => void
+  addCustomerFollowUp: (followUp: Omit<CustomerFollowUp, 'id' | 'status'>) => string
+  requestCustomerFollowUp: (id: string) => void
+  setCalendarColorMode: (mode: CalendarColorMode) => void
+  setCalendarCoupleColors: (colors: Record<string, string>) => void
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null)
 const makeId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-
+export const DEMO_TODAY = '2026-08-05'
+export const DEMO_NOW = '2026-08-05T10:30:00+09:00'
+const addDays = (date: string, days: number) => {
+  const next = new Date(`${date}T12:00:00`)
+  next.setDate(next.getDate() + days)
+  return next.toISOString().slice(0, 10)
+}
 export function DemoProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(demoReducer, initialState)
   const value = useMemo<DemoContextValue>(() => ({
     ...state,
     addEvent: (event) => dispatch({ type: 'ADD_EVENT', payload: { ...event, id: makeId('e') } }),
     updateEvent: (event) => dispatch({ type: 'UPDATE_EVENT', payload: event }),
+    deleteEvent: (id) => dispatch({ type: 'DELETE_EVENT', payload: id }),
+    setCalendarColorMode: (mode) => dispatch({ type: 'SET_CALENDAR_COLOR_MODE', payload: mode }),
+    setCalendarCoupleColors: (colors) => dispatch({ type: 'SET_CALENDAR_COUPLE_COLORS', payload: colors }),
     updateCouple: (couple) => dispatch({ type: 'UPDATE_COUPLE', payload: couple }),
+    addCoupleWithConsultationCard: (couple, card) => {
+      const coupleId = makeId('c')
+      dispatch({ type: 'ADD_COUPLE_WITH_CONSULTATION_CARD', payload: { couple: { ...couple, id: coupleId }, consultationCard: { ...card, id: makeId('cc'), coupleId, createdAt: new Date().toISOString() } } })
+      return coupleId
+    },
     toggleChecklist: (id) => dispatch({ type: 'TOGGLE_CHECKLIST', payload: id }),
     addChecklist: (item) => dispatch({ type: 'ADD_CHECKLIST', payload: { ...item, id: makeId('t') } }),
     updateChecklist: (item) => dispatch({ type: 'UPDATE_CHECKLIST', payload: item }),
@@ -239,16 +399,38 @@ export function DemoProvider({ children }: PropsWithChildren) {
     addBudgetItem: (item) => dispatch({ type: 'ADD_BUDGET_ITEM', payload: { ...item, id: makeId('bi') } }),
     updateBudgetItem: (item) => dispatch({ type: 'UPDATE_BUDGET_ITEM', payload: item }),
     deleteBudgetItem: (id) => dispatch({ type: 'DELETE_BUDGET_ITEM', payload: id }),
-    addVendor: (item) => dispatch({ type: 'ADD_VENDOR', payload: { ...item, id: makeId('v') } }),
+    addVendor: (item) => {
+      const id = makeId('v')
+      dispatch({ type: 'ADD_VENDOR', payload: { ...item, id } })
+      return id
+    },
     updateVendor: (item) => dispatch({ type: 'UPDATE_VENDOR', payload: item }),
+    toggleFavoriteVendor: (id) => dispatch({ type: 'TOGGLE_FAVORITE_VENDOR', payload: id }),
+    addVendorCatalogGroup: (name) => dispatch({ type: 'ADD_VENDOR_CATALOG_GROUP', payload: { id: makeId('catalog'), name, vendorIds: [] } }),
+    renameVendorCatalogGroup: (id, name) => dispatch({ type: 'RENAME_VENDOR_CATALOG_GROUP', payload: { id, name } }),
+    toggleVendorCatalogItem: (groupId, vendorId) => dispatch({ type: 'TOGGLE_VENDOR_CATALOG_ITEM', payload: { groupId, vendorId } }),
     updatePortalSettings: (settings) => dispatch({ type: 'UPDATE_PORTAL_SETTINGS', payload: settings }),
     setRecommendation: (coupleId, vendorId, status) => dispatch({ type: 'SET_RECOMMENDATION', payload: { coupleId, vendorId, status } }),
+    sendRecommendation: (coupleId, vendorId, sourceReferenceId) => dispatch({ type: 'SEND_RECOMMENDATION', payload: { coupleId, vendorId, sourceReferenceId } }),
+    removeRecommendation: (coupleId, vendorId) => dispatch({ type: 'REMOVE_RECOMMENDATION', payload: { coupleId, vendorId } }),
     toggleAvailability: (eventId, slot) => dispatch({ type: 'TOGGLE_AVAILABILITY', payload: { eventId, slot } }),
     selectVendorSlot: (coupleId, vendorId, slotId) => dispatch({ type: 'SELECT_VENDOR_SLOT', payload: { coupleId, vendorId, slotId } }),
-    addVendorReview: (review) => dispatch({
-      type: 'ADD_VENDOR_REVIEW',
-      payload: { ...review, id: makeId('vr'), createdAt: new Date().toISOString() },
+    addVendorInsight: (insight) => dispatch({
+      type: 'ADD_VENDOR_INSIGHT',
+      payload: { ...insight, id: makeId('vi'), createdAt: new Date().toISOString() },
     }),
+    saveReferenceBoard: (board) => dispatch({ type: 'SAVE_REFERENCE_BOARD', payload: board }),
+    addUploadedReference: (reference) => dispatch({ type: 'ADD_UPLOADED_REFERENCE', payload: { ...reference, id: makeId('ref-upload') } }),
+    saveCustomerReferenceSubmission: (submission) => dispatch({ type: 'SAVE_CUSTOMER_REFERENCE_SUBMISSION', payload: submission }),
+    completePortalOnboarding: (onboardingState) => dispatch({ type: 'COMPLETE_PORTAL_ONBOARDING', payload: onboardingState }),
+    addOrderReminder: (reminder) => dispatch({ type: 'ADD_ORDER_REMINDER', payload: { ...reminder, id: makeId('or'), status: 'pending' } }),
+    completeOrderReminder: (id) => dispatch({ type: 'COMPLETE_ORDER_REMINDER', payload: { id, completedAt: DEMO_NOW } }),
+    addCustomerFollowUp: (followUp) => {
+      const id = makeId('followup')
+      dispatch({ type: 'ADD_CUSTOMER_FOLLOW_UP', payload: { ...followUp, id, status: 'waiting' } })
+      return id
+    },
+    requestCustomerFollowUp: (id) => dispatch({ type: 'REQUEST_CUSTOMER_FOLLOW_UP', payload: { id, requestedAt: new Date().toISOString() } }),
   }), [state])
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>

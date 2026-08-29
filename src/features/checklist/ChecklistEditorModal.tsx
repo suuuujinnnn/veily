@@ -6,15 +6,16 @@ import { checklistCategories } from './checklistCategories'
 
 const owners: ChecklistItem['owner'][] = ['플래너', '신랑·신부', '함께']
 
-type ChecklistDraft = Omit<ChecklistItem, 'id' | 'completed'>
+type ChecklistDraft = Omit<ChecklistItem, 'id'>
 
 const emptyDraft = (coupleId: string, category: ChecklistCategory = '스튜디오'): ChecklistDraft => ({
   coupleId,
   title: '',
   dueDate: new Date().toISOString().slice(0, 10),
   category,
+  kind: 'preparation',
+  status: 'pending',
   owner: '함께',
-  isTemplate: false,
 })
 
 export function ChecklistEditorModal({
@@ -44,15 +45,16 @@ export function ChecklistEditorModal({
       title: item.title,
       dueDate: item.dueDate,
       category: item.category,
+      kind: item.kind,
+      status: item.status,
       owner: item.owner,
-      isTemplate: item.isTemplate,
     } : emptyDraft(coupleId, defaultCategory))
   }, [item, coupleId, defaultCategory, open])
 
   const save = () => {
     if (!draft.title.trim()) return
     if (item) onUpdate({ ...item, ...draft, title: draft.title.trim() })
-    else onCreate({ ...draft, title: draft.title.trim(), completed: false })
+    else onCreate({ ...draft, title: draft.title.trim() })
     onClose()
   }
 
@@ -74,6 +76,8 @@ export function ChecklistEditorModal({
         <label className="form-field form-field--wide"><span>할 일</span><input autoFocus value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="예: 식순 최종 확인" /></label>
         <label className="form-field"><span>분야</span><select value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value as ChecklistCategory })}>{checklistCategories.map((category) => <option key={category.id}>{category.id}</option>)}</select></label>
         <label className="form-field"><span>마감일</span><input type="date" value={draft.dueDate} onChange={(event) => setDraft({ ...draft, dueDate: event.target.value })} /></label>
+        <label className="form-field"><span>종류</span><select value={draft.kind} onChange={(event) => setDraft({ ...draft, kind: event.target.value as ChecklistItem['kind'] })}><option value="preparation">준비 업무</option><option value="decision">결정 필요</option></select></label>
+        <label className="form-field"><span>상태</span><select value={draft.status} onChange={(event) => setDraft({ ...draft, status: event.target.value as ChecklistItem['status'] })}><option value="pending">{draft.kind === 'decision' ? '미결정' : '대기'}</option><option value="in-progress">진행 중</option><option value="completed">완료</option></select></label>
         <label className="form-field form-field--wide"><span>담당</span><select value={draft.owner} onChange={(event) => setDraft({ ...draft, owner: event.target.value as ChecklistItem['owner'] })}>{owners.map((owner) => <option key={owner}>{owner}</option>)}</select></label>
       </div>
     </Modal>

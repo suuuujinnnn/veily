@@ -38,13 +38,18 @@ export function dDayLabel(weddingDate: string, dueDate: string) {
   return days < 0 ? `D${days}` : `D+${days}`
 }
 
-export function dueStatus(dueDate: string, completed: boolean) {
-  if (completed) return 'completed' as const
-  const today = new Date()
+export function dueStatus(dueDate: string, status: 'pending' | 'in-progress' | 'completed', todayValue?: string) {
+  if (status === 'completed') return 'completed' as const
+  const today = parseLocalDate(todayValue ?? '2026-08-05')
   today.setHours(0, 0, 0, 0)
   const days = Math.ceil((parseLocalDate(dueDate).getTime() - today.getTime()) / DAY_MS)
   if (days < 0) return 'overdue' as const
   if (days <= 14) return 'soon' as const
   return 'upcoming' as const
+}
+
+export function taskUrgency(dueDate: string, status: 'pending' | 'in-progress' | 'completed', today = '2026-08-05') {
+  const days = Math.round((parseLocalDate(dueDate).getTime() - parseLocalDate(today).getTime()) / DAY_MS)
+  return { days, urgency: status === 'completed' ? 'normal' as const : days < 0 ? 'overdue' as const : days <= 7 ? 'soon' as const : 'normal' as const }
 }
 

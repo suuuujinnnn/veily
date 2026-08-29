@@ -9,7 +9,6 @@ const studioDirections = ['토탈 스튜디오', '비토탈 스튜디오', '야�
 const studioMoods = ['인물 중심', '배경 중심', '깔끔함', '초록빛', '화려함', '빈티지', '화보 느낌']
 const dressMoods = ['미카도 실크', '비즈와 레이스', '유니크', '다양한 스타일']
 const makeupMoods = ['깔끔', '누디', '생기 있는', '선명한']
-const contactOptions = ['카톡 상담', '전화 상담', '대면 상담']
 
 type EditableCard = Omit<ConsultationCard, 'id' | 'coupleId' | 'createdAt' | 'source'>
 
@@ -30,7 +29,7 @@ export function PublicConsultationCardPage() {
   const existing = consultationCards.find((item) => item.coupleId === couple.id)
   const [saved, setSaved] = useState(false)
   const [form, setForm] = useState<EditableCard>({
-    preferredDate: existing?.preferredDate ?? couple.weddingDate,
+    preferredDate: existing?.preferredDate ?? couple.weddingDate.slice(0, 7),
     shootDate: existing?.shootDate ?? '',
     coupleNames: existing?.coupleNames ?? couple.partners,
     phone: existing?.phone ?? '',
@@ -45,7 +44,7 @@ export function PublicConsultationCardPage() {
     extraPlanning: existing?.extraPlanning ?? '',
     hallDetails: existing?.hallDetails ?? '',
     meetingDetails: existing?.meetingDetails ?? '',
-    contactPreference: existing?.contactPreference ?? '',
+    preferredRegion: existing?.preferredRegion ?? couple.address.split(' ').slice(0, 2).join(' '),
     priorities: existing?.priorities ?? '',
     notes: existing?.notes ?? '',
   })
@@ -74,10 +73,11 @@ export function PublicConsultationCardPage() {
           {saved ? <div className="preference-success"><Check size={28} /><h2>취향 카드가 저장되었습니다.</h2><p>상담 탭으로 돌아가 정리된 내용을 보여드릴게요.</p></div> : (
             <form className="preference-form" onSubmit={submit}>
               <section className="preference-section"><div className="preference-section__title"><span>01</span><div><h2>기본 일정</h2><p>상담에 필요한 최소 정보를 확인합니다.</p></div></div><div className="form-grid">
-                <label className="form-field"><span>희망 예식일</span><input type="date" value={form.preferredDate} onChange={(event) => update('preferredDate', event.target.value)} required /></label>
+                <label className="form-field"><span>희망 본식 일정</span><input type="month" value={form.preferredDate} onChange={(event) => update('preferredDate', event.target.value)} required /></label>
                 <label className="form-field"><span>촬영 예정일</span><input type="date" value={form.shootDate} onChange={(event) => update('shootDate', event.target.value)} /></label>
                 <label className="form-field"><span>커플 이름</span><input value={form.coupleNames} onChange={(event) => update('coupleNames', event.target.value)} required /></label>
                 <label className="form-field"><span>연락처</span><input value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="010-0000-0000" /></label>
+                <label className="form-field"><span>희망 지역</span><input value={form.preferredRegion} onChange={(event) => update('preferredRegion', event.target.value)} placeholder="예: 서울 강남·서초" /></label>
               </div></section>
 
               <section className="preference-section"><div className="preference-section__title"><span>02</span><div><h2>스드메 취향</h2><p>정답보다 지금 마음이 가는 쪽을 골라주세요.</p></div></div>
@@ -96,7 +96,6 @@ export function PublicConsultationCardPage() {
                 <label className="form-field"><span>타 플래너 상담 여부</span><input value={form.otherPlanner} onChange={(event) => update('otherPlanner', event.target.value)} /></label>
                 <label className="form-field"><span>추가 플래닝 희망</span><input value={form.extraPlanning} onChange={(event) => update('extraPlanning', event.target.value)} /></label>
                 <label className="form-field form-field--wide"><span>대면 상담 가능 일정</span><textarea rows={2} value={form.meetingDetails} onChange={(event) => update('meetingDetails', event.target.value)} /></label>
-                <PreferenceGroup label="선호 연락 방식" value={form.contactPreference} options={contactOptions} onChange={(value) => update('contactPreference', value)} />
                 <label className="form-field form-field--wide"><span>기타 메모</span><textarea rows={4} value={form.notes} onChange={(event) => update('notes', event.target.value)} /></label>
               </div></section>
 

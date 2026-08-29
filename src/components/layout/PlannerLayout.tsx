@@ -1,13 +1,11 @@
-import { useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
-  Bell,
-  Building2,
   CalendarDays,
-  ClipboardList,
-  ChevronRight,
-  HeartHandshake,
+  ChevronDown,
   LayoutDashboard,
+  ListTodo,
+  LogOut,
   MessageCircleMore,
   Search,
   Settings,
@@ -15,85 +13,123 @@ import {
   UsersRound,
 } from 'lucide-react'
 import { useDemoStore } from '../../app/store'
-import { Button, Modal } from '../ui'
-import { WorkflowGuidePanel } from '../../features/checklist/WorkflowGuidePanel'
+import { Button, Modal, Toast } from '../ui'
+import { buildPlannerTodos, todoCounts } from '../../features/todo/todoUtils'
 
 const navItems = [
   { to: '/', label: '홈', icon: LayoutDashboard, end: true },
   { to: '/couples', label: '커플 관리', icon: UsersRound },
+  { to: '/reminders', label: '리마인더', icon: ListTodo },
   { to: '/calendar', label: '일정', icon: CalendarDays },
-  { to: '/vendors', label: '업체 찾기', icon: Building2 },
+  { to: '/vendors', label: '레퍼런스 · 업체 찾기', icon: Search },
   { to: '/community', label: '플래너 라운지', icon: MessageCircleMore },
 ]
 
-const pageTitles: Record<string, string> = {
-  '/': '홈', '/couples': '커플 관리', '/calendar': '일정', '/vendors': '업체 찾기', '/community': '플래너 라운지',
-}
+type UtilityModal = 'settings' | 'logout' | null
 
 export function PlannerLayout() {
-  const location = useLocation()
-  const { couples, checklist, addChecklist } = useDemoStore()
-  const currentCoupleId = location.pathname.match(/^\/couples\/([^/]+)/)?.[1]
+  const store = useDemoStore()
+  const navigate = useNavigate()
+  const profileMenuRef = useRef<HTMLDivElement>(null)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
-  const [utilityModal, setUtilityModal] = useState<'profile' | 'notifications' | 'guide' | null>(null)
-  const [guideCoupleId, setGuideCoupleId] = useState(currentCoupleId ?? couples[0]?.id ?? '')
-  const guideCouple = couples.find((couple) => couple.id === guideCoupleId) ?? couples[0]
-  const title = location.pathname.startsWith('/couples/') ? '커플 상세' : pageTitles[location.pathname] ?? 'VEILY'
-  const openUtility = (modal: 'profile' | 'notifications' | 'guide') => {
-    if (modal === 'guide' && currentCoupleId && couples.some((couple) => couple.id === currentCoupleId)) setGuideCoupleId(currentCoupleId)
+  const [utilityModal, setUtilityModal] = useState<UtilityModal>(null)
+  const [logoutToastOpen, setLogoutToastOpen] = useState(false)
+  const openTodoCount = todoCounts(buildPlannerTodos(store, '2026-08-05')).all
+
+  useEffect(() => {
+    if (!profileMenuOpen) return
+    const closeMenu = (event: MouseEvent) => {
+      if (!profileMenuRef.current?.contains(event.target as Node)) setProfileMenuOpen(false)
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setProfileMenuOpen(false)
+    }
+    document.addEventListener('mousedown', closeMenu)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('mousedown', closeMenu)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [profileMenuOpen])
+
+  const openUtility = (modal: Exclude<UtilityModal, null>) => {
     setUtilityModal(modal)
     setProfileMenuOpen(false)
   }
+
+  const openMyPage = () => {
+    setProfileMenuOpen(false)
+    navigate('/mypage')
+  }
+
+  const logout = () => {
+    setUtilityModal(null)
+    setLogoutToastOpen(true)
+    navigate('/')
+    window.setTimeout(() => setLogoutToastOpen(false), 2600)
+  }
+
   return (
-    <div className="planner-shell">
-      <aside className="sidebar">
-        <div className="brand-row">
-          <NavLink to="/" className="brand">VEILY<span>for planners</span></NavLink>
-        </div>
-        <nav className="sidebar__nav" aria-label="플래너 메뉴">
-          <p className="nav-label">Workspace</p>
+    <div className="planner-shell planner-shell--topnav">
+      <header className="planner-topnav">
+        <NavLink to="/" className="brand planner-topnav__brand">VEILY<span>for planners</span></NavLink>
+        <nav className="planner-topnav__nav" aria-label="플래너 메뉴">
           {navItems.map(({ to, label, icon: Icon, end }) => (
-            <NavLink key={to} to={to} end={end} className={({ isActive }) => `nav-item ${isActive ? 'nav-item--active' : ''}`}>
-              <Icon size={18} strokeWidth={1.8} /><span>{label}</span>{label === '플래너 라운지' && <em>4</em>}
+            <NavLink key={to} to={to} end={end} className={({ isActive }) => `planner-topnav__item ${isActive ? 'is-active' : ''}`}>
+              <Icon size={18} strokeWidth={1.8} />
+              <span>{label}</span>
+              {label === '리마인더' && openTodoCount > 0
+                ? <em>{openTodoCount}</em>
+                : label === '플래너 라운지'
+                    ? <em>4</em>
+                    : null}
             </NavLink>
           ))}
         </nav>
-        <div className="sidebar__insight">
-          <HeartHandshake size={21} />
-          <strong>이번 주 웨딩 리포트</strong>
-          <p>4개 일정과 7개의 할 일이 남아 있어요.</p>
-          <span>리포트 보기 <ChevronRight size={13} /></span>
+        <div className="planner-profile planner-topnav__profile" ref={profileMenuRef}>
+          <button
+            type="button"
+            className="planner-topnav__profile-trigger"
+            aria-label="계정 메뉴 열기"
+            aria-haspopup="menu"
+            aria-expanded={profileMenuOpen}
+            onClick={() => setProfileMenuOpen((open) => !open)}
+          >
+            <span className="avatar">YJ</span>
+            <span className="planner-topnav__profile-copy">
+              <strong>이지윤 플래너</strong>
+              <small>VEILY Partner</small>
+            </span>
+            <ChevronDown className="planner-topnav__profile-chevron" size={15} aria-hidden="true" />
+          </button>
+          {profileMenuOpen && (
+            <div className="planner-profile-menu" role="menu">
+              <button type="button" role="menuitem" onClick={openMyPage}><UserRound size={16} /><span>마이페이지</span></button>
+              <button type="button" role="menuitem" onClick={() => openUtility('settings')}><Settings size={16} /><span>설정</span></button>
+              <button type="button" role="menuitem" className="planner-profile-menu__logout" onClick={() => openUtility('logout')}><LogOut size={16} /><span>로그아웃</span></button>
+            </div>
+          )}
         </div>
-        <div className="planner-profile">
-          <span className="avatar">YJ</span>
-          <div><strong>이지윤 플래너</strong><small>VEILY Partner</small></div>
-          <button className="icon-button" aria-label="프로필 메뉴" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen((open) => !open)}>•••</button>
-          {profileMenuOpen && <div className="planner-profile-menu" role="menu">
-            <button role="menuitem" onClick={() => openUtility('profile')}><UserRound size={16} /><span>마이페이지</span></button>
-            <button role="menuitem" onClick={() => openUtility('notifications')}><Settings size={16} /><span>알림 설정</span></button>
-            <button role="menuitem" onClick={() => openUtility('guide')}><ClipboardList size={16} /><span>표준 업무 가이드</span></button>
-          </div>}
-        </div>
-      </aside>
+      </header>
       <div className="planner-main">
-        <header className="topbar">
-          <div className="topbar__title"><span>{title}</span></div>
-          <div className="topbar__actions">
-            <label className="global-search"><Search size={16} /><input aria-label="전체 검색" placeholder="커플, 업체, 일정 검색" /></label>
-            <button className="icon-button notification" aria-label="알림"><Bell size={18} /><i /></button>
-          </div>
-        </header>
         <main className="page-content"><Outlet /></main>
       </div>
-      <Modal open={utilityModal === 'profile'} onClose={() => setUtilityModal(null)} title="마이페이지" eyebrow="Planner profile" footer={<Button onClick={() => setUtilityModal(null)}>확인</Button>}>
-        <div className="utility-modal-content"><span className="avatar utility-modal-avatar">YJ</span><div><strong>이지윤 플래너</strong><p>VEILY Partner · 인증 플래너</p><small>프로필과 계정 정보 관리 기능은 데모 범위에서 준비 중입니다.</small></div></div>
+      <Modal open={utilityModal === 'settings'} onClose={() => setUtilityModal(null)} title="설정" eyebrow="Settings" footer={<Button onClick={() => setUtilityModal(null)}>저장</Button>}>
+        <div className="utility-setting-list">
+          <label><span><strong>일정 알림</strong><small>예정된 상담과 업체 일정을 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label>
+          <label><span><strong>고객 응답 알림</strong><small>추천 업체와 일정에 고객이 응답하면 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label>
+          <label><span><strong>정산 알림</strong><small>입금 예정일과 확인이 필요한 계약을 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label>
+        </div>
       </Modal>
-      <Modal open={utilityModal === 'notifications'} onClose={() => setUtilityModal(null)} title="알림 설정" eyebrow="Notifications" footer={<Button onClick={() => setUtilityModal(null)}>확인</Button>}>
-        <div className="utility-setting-list"><label><span><strong>일정 알림</strong><small>예정된 상담과 업체 일정을 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label><label><span><strong>고객 응답 알림</strong><small>추천 업체와 일정에 고객이 응답하면 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label><label><span><strong>정산 알림</strong><small>입금 예정일과 확인이 필요한 계약을 알려드립니다.</small></span><input type="checkbox" defaultChecked /></label></div>
+      <Modal
+        open={utilityModal === 'logout'}
+        onClose={() => setUtilityModal(null)}
+        title="로그아웃하시겠어요?"
+        footer={<><Button variant="secondary" onClick={() => setUtilityModal(null)}>취소</Button><Button onClick={logout}>로그아웃</Button></>}
+      >
+        <p className="utility-logout-copy">현재 플래너 세션을 종료합니다. 저장된 고객과 일정 데이터는 그대로 유지됩니다.</p>
       </Modal>
-      <Modal open={utilityModal === 'guide'} onClose={() => setUtilityModal(null)} title="표준 업무 가이드" eyebrow="Korean wedding workflow" footer={<Button variant="secondary" onClick={() => setUtilityModal(null)}>닫기</Button>}>
-        {guideCouple && <div className="workflow-guide-modal-body"><label className="workflow-guide-couple"><span>적용할 커플</span><select value={guideCouple.id} onChange={(event) => setGuideCoupleId(event.target.value)}>{couples.map((couple) => <option key={couple.id} value={couple.id}>{couple.partners} · {couple.weddingDate}</option>)}</select></label><WorkflowGuidePanel coupleId={guideCouple.id} weddingDate={guideCouple.weddingDate} tasks={checklist.filter((task) => task.coupleId === guideCouple.id)} onAdd={addChecklist} hideHeading /></div>}
-      </Modal>
+      <Toast open={logoutToastOpen} title="로그아웃되었습니다" message="데모 환경에서는 홈 화면으로 이동합니다." />
     </div>
   )
 }

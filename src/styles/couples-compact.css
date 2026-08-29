@@ -1,0 +1,241 @@
+.couple-grid--page {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.couple-compact-card {
+  min-width: 0;
+  min-height: 104px;
+  padding: 13px 15px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e4e6;
+  border-radius: 11px;
+  background: #fff;
+  color: var(--ink);
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.couple-compact-card:hover {
+  transform: translateY(-2px);
+  border-color: #bfcdd4;
+  box-shadow: 0 9px 22px rgba(35, 60, 73, .07);
+}
+
+.couple-compact-card--focus { border-top: 3px solid #d36b7c; }
+.couple-compact-card--consulting { border-top: 3px solid #d39a43; }
+.couple-compact-card--completed { border-top: 3px solid #6f9f7b; }
+.couple-compact-card--focus .badge { color: #a33f52; background: #fdecef; }
+.couple-compact-card--consulting .badge { color: #93611c; background: #fff2d9; }
+.couple-compact-card--completed .badge { color: #4c7657; background: #e9f4ec; }
+
+.couple-status-filter button { display: flex; align-items: center; gap: 6px; }
+.couple-status-filter button::before { width: 6px; height: 6px; flex: none; display: inline-block; border-radius: 50%; content: ''; background: #aeb7bc; }
+.couple-status-filter button[data-status='전체']::before { display: none; }
+.couple-status-filter button[data-status='집중 관리']::before { background: #d36b7c; }
+.couple-status-filter button[data-status='상담중']::before { background: #d39a43; }
+.couple-status-filter button[data-status='완료']::before { background: #6f9f7b; }
+.couple-status-filter button[data-status='집중 관리'].active { color: #9d4050; background: #fdecef; }
+.couple-status-filter button[data-status='상담중'].active { color: #8a5c1d; background: #fff2d9; }
+.couple-status-filter button[data-status='완료'].active { color: #4d7357; background: #e9f4ec; }
+
+.couple-compact-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.couple-compact-card__top > svg { color: #a0abb0; }
+
+.couple-compact-card__names {
+  min-width: 0;
+  margin: 12px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  align-items: center;
+  gap: 8px;
+  color: #253b47;
+}
+
+.couple-compact-card__names > span { min-width: 0; display: grid; grid-template-columns: 18px minmax(0,1fr); align-items: center; column-gap: 4px; }
+.couple-compact-card__names svg { grid-row: 1 / 3; }
+.couple-compact-card__names small { color: var(--muted); font-family: var(--sans); font-size: 7px; font-weight: 650; }
+.couple-compact-card__names strong { overflow: hidden; font-family: var(--serif); font-size: 15px; font-weight: 550; text-overflow: ellipsis; white-space: nowrap; }
+.couple-compact-card__names .is-bride svg { color: #c5687a; }
+.couple-compact-card__names .is-groom svg { color: #4e83a4; }
+
+.couple-compact-card__dday {
+  margin-top: auto;
+  padding-top: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid #edf0f1;
+}
+
+.couple-compact-card__dday span { color: #9b5966; font-size: 7px; font-weight: 700; }
+.couple-compact-card__dday strong { color: #a33f52; font-size: 10px; }
+
+@media (max-width: 1180px) {
+  .couple-grid--page { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .couple-grid--page { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .couple-grid--page { grid-template-columns: 1fr; }
+  .couple-compact-card { min-height: 100px; }
+}
+
+/* Paginated couple list */
+.couples-list-toolbar { flex-wrap: wrap; }
+.couples-list-toolbar .search-field { width: min(320px, 100%); }
+.couple-status-filter button[data-status='all']::before { display: none; }
+.couple-status-filter button[data-status='취소']::before { background: #9aa3a8; }
+.couple-status-filter button[data-status='취소'].active { color: #5e686d; background: #eceff1; }
+.couple-list-panel { overflow: hidden; border: 1px solid #dfe5e8; border-radius: 12px; background: #fff; box-shadow: var(--shadow-sm); }
+.couple-list-panel__summary { min-height: 42px; padding: 0 17px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e9eb; background: #fafbfb; color: #7a888f; font-size: 9px; }
+.couple-list-panel__summary strong { margin-left: 3px; color: #273e49; font-size: 12px; }
+.couple-list-panel__summary small { font-size: 8px; }
+.couple-table { min-width: 0; }
+.couple-table__header,
+.couple-table__row { min-width: 720px; display: grid; grid-template-columns: 120px 120px minmax(180px, 1fr) 105px 22px; align-items: center; gap: 10px; }
+.couple-table__header { min-height: 34px; padding: 0 14px; border-bottom: 1px solid #e5e9eb; background: #f5f7f8; color: #7e8b92; font-size: 8px; font-weight: 750; }
+.couple-table__body { overflow-x: auto; }
+.couple-table__row { min-height: 50px; padding: 0 14px; border-bottom: 1px solid #edf0f1; color: #2b414c; transition: background .16s ease; }
+.couple-table__row:last-child { border-bottom: 0; }
+.couple-table__row:hover { background: #f7fafb; }
+.couple-table__row:focus-visible { position: relative; outline: 2px solid var(--blue-500); outline-offset: -2px; }
+.couple-person { min-width: 0; display: flex; align-items: center; gap: 7px; }
+.couple-person > i { width: 24px; height: 24px; display: grid; flex: none; place-items: center; border-radius: 50%; font-style: normal; }
+.couple-person.is-bride > i { background: #fdecef; color: #b9576a; }
+.couple-person.is-groom > i { background: #eaf3f8; color: #4f82a0; }
+.couple-person strong { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.couple-wedding-date { display: flex; align-items: center; gap: 7px; color: #526a76; }
+.couple-wedding-date svg { color: #7f9dab; }
+.couple-wedding-date strong { font-size: 10px; font-weight: 680; }
+.couple-wedding-date.is-undecided { color: #9ca7ac; }
+.couple-wedding-date.is-undecided svg { color: #b5bdc1; }
+.couple-status-pill { width: max-content; min-height: 25px; padding: 0 9px; display: inline-flex; align-items: center; gap: 6px; border-radius: 99px; font-size: 8px; font-style: normal; font-weight: 750; }
+.couple-status-pill > i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.couple-status-pill.is-focus { color: #a33f52; background: #fdecef; }
+.couple-status-pill.is-consulting { color: #93611c; background: #fff2d9; }
+.couple-status-pill.is-completed { color: #4c7657; background: #e9f4ec; }
+.couple-status-pill.is-cancelled { color: #69757b; background: #edf0f2; }
+.couple-row-arrow { color: #9aa7ad; }
+.couple-table__row:hover .couple-row-arrow { color: var(--blue-600); transform: translateX(2px); }
+.couple-table__empty { min-height: 240px; display: grid; place-items: center; align-content: center; gap: 7px; color: #9ca7ac; text-align: center; }
+.couple-table__empty strong { color: #485b65; font-size: 11px; }
+.couple-table__empty p { margin: 0; font-size: 8px; }
+.couple-pagination { min-height: 54px; padding: 8px 14px; display: flex; align-items: center; justify-content: center; gap: 4px; border-top: 1px solid #e5e9eb; background: #fafbfb; }
+.couple-pagination button { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 7px; background: transparent; color: #73828a; font-size: 9px; font-weight: 700; }
+.couple-pagination button:hover:not(:disabled) { border-color: #d9e3e8; background: #fff; }
+.couple-pagination button.active { border-color: var(--blue-200); background: var(--blue-50); color: var(--blue-700); }
+.couple-pagination button:disabled { opacity: .35; cursor: default; }
+
+@media (max-width: 760px) {
+  .couples-list-toolbar { align-items: stretch; flex-direction: column; }
+  .couples-list-toolbar .search-field { width: 100%; }
+  .couple-status-filter { width: max-content; }
+  .couples-list-toolbar { overflow-x: auto; }
+}
+
+.vendor-recommendation-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.vendor-recommendation-heading {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.vendor-recommendation-heading h2 { margin: 0 0 3px; font-size: 17px; }
+.vendor-recommendation-heading p { margin: 0; color: var(--muted); font-size: 8px; }
+.vendor-recommendation-heading > a { flex: none; }
+
+.vendor-status-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.vendor-status-legend > span { display: inline-flex; align-items: center; gap: 5px; color: #66757d; font-size: 8px; }
+.vendor-status-swatch { width: 12px; height: 7px; display: inline-block; border-radius: 2px; }
+.vendor-status-swatch--liked { background: #e3a64f; }
+.vendor-status-swatch--pending { background: #72a8c4; }
+.vendor-status-swatch--hold { background: #aab2b7; }
+
+.vendor-recommendation-table {
+  overflow: hidden;
+  border: 1px solid #dfe5e8;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.vendor-recommendation-group {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  border-bottom: 1px solid #e7ebed;
+}
+
+.vendor-recommendation-group:last-child { border-bottom: 0; }
+.vendor-recommendation-group > header { padding: 10px; display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; background: #f6f8f9; }
+.vendor-recommendation-group > header h3 { margin: 0; color: #354b57; font-size: 9px; }
+.vendor-recommendation-group > header span { min-width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; background: #e7ecee; color: #6f7d84; font-size: 7px; }
+.vendor-recommendation-group__rows {
+  min-width: 0;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+  gap: 7px;
+  background: #fff;
+}
+
+.vendor-recommendation-card {
+  position: relative;
+  min-width: 0;
+  min-height: 52px;
+  padding: 6px 8px 6px 7px;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dfe5e8;
+  border-left-width: 4px;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.vendor-recommendation-card--liked { border-left-color: #e3a64f; }
+.vendor-recommendation-card--pending { border-left-color: #72a8c4; }
+.vendor-recommendation-card--hold { border-left-color: #aab2b7; }
+.vendor-recommendation-card--confirmed { border-left-color: #6f9f7b; }
+.vendor-recommendation-card > img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
+.vendor-recommendation-card__body { min-width: 0; display: grid; gap: 5px; }
+.vendor-recommendation-card__body > strong { overflow: hidden; color: #263d49; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.vendor-recommendation-card__tags { min-width: 0; display: flex; align-items: center; gap: 4px; overflow: hidden; }
+.vendor-recommendation-card__tags span { flex: none; color: #78868d; font-size: 6px; white-space: nowrap; }
+.vendor-recommendation-empty { min-height: 42px; margin: 0; padding: 0 14px; display: flex; align-items: center; color: #a0aaaf; font-size: 8px; }
+
+@media (max-width: 720px) {
+  .vendor-recommendation-heading { align-items: flex-start; }
+  .vendor-status-legend { justify-content: flex-start; }
+  .vendor-recommendation-group { grid-template-columns: 76px minmax(0, 1fr); }
+  .vendor-recommendation-group__rows { grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .vendor-recommendation-heading { flex-wrap: wrap; }
+  .vendor-status-legend { flex-wrap: wrap; gap: 7px 12px; }
+  .vendor-recommendation-group { grid-template-columns: 1fr; }
+  .vendor-recommendation-group > header { padding: 7px 9px; align-items: center; }
+  .vendor-recommendation-group__rows { grid-template-columns: 1fr; }
+}
